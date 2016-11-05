@@ -20,6 +20,8 @@ import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.view.fragment.FavoriteQuchuFragment;
+import co.quchu.quchu.view.fragment.MeGenFragment;
+import co.quchu.quchu.view.fragment.UserCenterAvatarFragment;
 import co.quchu.quchu.widget.CircleIndicator;
 
 /**

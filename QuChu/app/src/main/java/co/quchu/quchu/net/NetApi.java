@@ -267,4 +267,9 @@ public interface NetApi {
    * 获得首页场景列表
    */
   String getSceneList = HOST + "/scene/getIndexSceneList";
+
+  /**
+   * 获取历史浏览记录
+   */
+  String getHistoryPlace = HOST + "/personal/getHistoryPlace";
 }

@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +35,10 @@ import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.FavoriteActivity;
+import co.quchu.quchu.view.activity.FeedbackActivity;
+import co.quchu.quchu.view.activity.MessageActivity;
+import co.quchu.quchu.view.activity.QuFriendsActivity;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.UserMarkDialog;
 import io.rong.imkit.RongIM;

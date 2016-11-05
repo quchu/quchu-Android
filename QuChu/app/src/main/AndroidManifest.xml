@@ -76,12 +76,7 @@
         android:screenOrientation="portrait"/>
     <activity
         android:name=".view.activity.MessageCenterActivity"
-        android:label="@string/titlebar_word_message_center"
         android:screenOrientation="portrait"/>
-    <activity
-        android:name=".view.activity.MessageActivityNew"
-        android:screenOrientation="portrait"/>
-
     <activity
         android:name=".view.activity.PickingQuchuActivity"
         android:label="@string/picking_quchu"
@@ -287,6 +282,11 @@
     <!-- 设置 -->
     <activity
         android:name=".view.activity.SettingActivity"
+        android:screenOrientation="portrait"/>
+
+    <!-- 趣处浏览历史记录 -->
+    <activity
+        android:name=".view.activity.QuChuHistoryActivity"
         android:screenOrientation="portrait"/>
 
     <!-- 小Q设置 -->

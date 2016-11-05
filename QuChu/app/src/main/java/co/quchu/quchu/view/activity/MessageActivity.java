@@ -23,6 +23,7 @@ import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.im.activity.ConversationListFragmentEx;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.fragment.NoticeFragment;
 import co.quchu.quchu.widget.NoScrollViewPager;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;

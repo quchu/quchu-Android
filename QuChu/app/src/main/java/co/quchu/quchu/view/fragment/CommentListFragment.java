@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -22,9 +28,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.view.adapter.CommentAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
-import com.android.volley.VolleyError;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nico on 16/7/11.

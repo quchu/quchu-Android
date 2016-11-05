@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;

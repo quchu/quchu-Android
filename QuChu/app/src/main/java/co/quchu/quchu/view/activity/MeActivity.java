@@ -27,6 +27,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.fragment.MeAvatarFragment;
 
 /**
  * Created by mwb on 16/10/25.

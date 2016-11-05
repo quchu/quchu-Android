@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -46,6 +46,14 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.view.activity.AccountSettingActivity;
+import co.quchu.quchu.view.activity.FavoriteActivity;
+import co.quchu.quchu.view.activity.FindPositionListActivity;
+import co.quchu.quchu.view.activity.LoginActivity;
+import co.quchu.quchu.view.activity.MessageActivity;
+import co.quchu.quchu.view.activity.MyFootprintActivity;
+import co.quchu.quchu.view.activity.QuFriendsActivity;
+import co.quchu.quchu.view.activity.SettingActivity;
 import co.quchu.quchu.widget.PolygonProgressView;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {

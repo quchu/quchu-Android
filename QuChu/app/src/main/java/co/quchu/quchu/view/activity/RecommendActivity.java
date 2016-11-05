@@ -17,7 +17,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +43,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
-import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -113,7 +111,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     ButterKnife.bind(this);
 
 
-
     initPush();
 
     initDrawerView();
@@ -138,8 +135,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
         float offset = Math.abs(verticalOffset);
 
         float progress = offset / appbar.getTotalScrollRange();
-        progress = progress>=0.8?1:progress;
-        progress = progress<=0.2?0:progress;
+        progress = progress >= 0.8 ? 1 : progress;
+        progress = progress <= 0.2 ? 0 : progress;
 
         placeHolder.setAlpha(progress);
       }
@@ -156,7 +153,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
    * 添加Fragment
    */
   private void initFragment() {
-    getSupportFragmentManager().beginTransaction().add(R.id.flContainer,new AIConversationFragment()).commitAllowingStateLoss();
+    getSupportFragmentManager().beginTransaction().add(R.id.flContainer, new AIConversationFragment()).commitAllowingStateLoss();
   }
 
   /**
@@ -164,11 +161,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
    */
   private void getSceneList() {
     RecommendPresenter.getSceneList(getApplicationContext(), new CommonListener<List<SceneInfoModel>>() {
-      @Override public void successListener(List<SceneInfoModel> response) {
+      @Override
+      public void successListener(List<SceneInfoModel> response) {
 
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
 
       }
     });
@@ -303,7 +302,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
               mDrawerItemMessage.hideRedDot();
             }
 
-            startActivity(MessageActivityNew.class);
+            startActivity(MessageCenterActivity.class);
             break;
 
           case R.id.drawerItemFeedback://意见反馈
@@ -440,7 +439,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({R.id.tvCity})
+  @OnClick({R.id.tvCity, R.id.fab})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.tvCity:
@@ -462,6 +461,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
         } else {
           Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
         }
+        break;
+
+      case R.id.fab://历史记录
+        startActivity(QuChuHistoryActivity.class);
         break;
     }
   }
@@ -503,23 +506,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
    */
   private void selectedCity() {
     SelectedCityActivity.launch(this, list);
-  }
-
-  @Override
-  public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
-      long secondTime = System.currentTimeMillis();
-      if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
-        Toast.makeText(RecommendActivity.this, R.string.app_exit_text, Toast.LENGTH_SHORT).show();
-        firstTime = secondTime;// 更新firstTime
-        return true;
-      } else {
-        new IMPresenter().disconnect();
-
-        ActManager.getAppManager().AppExit();
-      }
-    }
-    return true;
   }
 
   @Override
@@ -637,11 +623,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
   @Override
   public void onBackPressed() {
-
     if (mDrawer.isDrawerOpen(GravityCompat.START)) {
       mDrawer.closeDrawer(GravityCompat.START);
     } else {
-      super.onBackPressed();
+      long secondTime = System.currentTimeMillis();
+      if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
+        Toast.makeText(RecommendActivity.this, R.string.app_exit_text, Toast.LENGTH_SHORT).show();
+        firstTime = secondTime;// 更新firstTime
+      } else {
+//        new IMPresenter().disconnect();
+        ActManager.getAppManager().AppExit();
+        super.onBackPressed();
+      }
     }
   }
 
