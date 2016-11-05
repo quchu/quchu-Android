@@ -198,7 +198,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   }
 
   public static class NoNetworkViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
 
     NoNetworkViewHolder(View view) {
       super(view);

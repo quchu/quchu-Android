@@ -121,7 +121,7 @@ public class XiaoQFab extends FloatingActionButton {
     animator.start();
 
     ValueAnimator animator2 = new ValueAnimator().ofFloat(0,1);
-    animator2.setDuration(1000);
+    animator2.setDuration(2000);
     animator2.setInterpolator(new AccelerateDecelerateInterpolator());
     animator2.setStartDelay(500);
     animator2.setRepeatMode(ValueAnimator.REVERSE);

@@ -48,6 +48,7 @@ public class AIConversationFragment extends BaseFragment {
   private boolean mNetworkInterrupted = false;
   @Bind(R.id.rv) RecyclerView mRecyclerView;
   private XiaoQFab mXiaoQFab;
+  private boolean mNetworkBusy = false;
 
   @Override protected String getPageNameCN() {
     return null;
@@ -80,6 +81,10 @@ public class AIConversationFragment extends BaseFragment {
 
             if (!NetUtil.isNetworkConnected(getActivity())) {
               makeToast(R.string.network_error);
+              return;
+            }
+
+            if (mNetworkBusy){
               return;
             }
 
@@ -168,6 +173,11 @@ public class AIConversationFragment extends BaseFragment {
 
       return;
     }
+    if (!mXiaoQFab.mLoading){
+      mXiaoQFab.animateLoading();
+    }
+    mNetworkBusy = true;
+
 
     mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {
@@ -184,6 +194,8 @@ public class AIConversationFragment extends BaseFragment {
                 }else{
                   mXiaoQFab.endLoading();
                 }
+                mNetworkBusy = false;
+
               }
 
               @Override public void errorListener(VolleyError error, String exception, String msg) {
@@ -191,6 +203,7 @@ public class AIConversationFragment extends BaseFragment {
                 mAdapter.updateNoNetwork(true);
                 scrollToBottom();
                 mXiaoQFab.endLoading();
+                mNetworkBusy = false;
               }
             });
       }
@@ -206,6 +219,8 @@ public class AIConversationFragment extends BaseFragment {
       scrollToBottom();
       return;
     }
+
+    mNetworkBusy = true;
 
     AIConversationPresenter.startConversation(getActivity(), starter,
         new CommonListener<AIConversationModel>() {
@@ -224,9 +239,11 @@ public class AIConversationFragment extends BaseFragment {
               //mAdapter.notifyItemRemoved(mConversation.size()-1);
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             }
+            mNetworkBusy = false;
           }
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
+            mNetworkBusy = false;
             mNetworkInterrupted = true;
             mAdapter.updateNoNetwork(true);
             scrollToBottom();
