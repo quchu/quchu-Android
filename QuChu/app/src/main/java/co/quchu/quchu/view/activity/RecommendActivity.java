@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import co.quchu.quchu.widget.XiaoQFab;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -72,7 +73,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.appbar) AppBarLayout appbar;
   @Bind(R.id.llShit) LinearLayout llShit;
-  @Bind(R.id.fab) FloatingActionButton fab;
+  @Bind(R.id.fab) XiaoQFab fab;
   @Bind(R.id.tvCity) TextView tvCity;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
 
@@ -146,6 +147,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
     initFragment();
+
+
 
   }
 

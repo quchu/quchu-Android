@@ -24,6 +24,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
+import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class AIConversationFragment extends BaseFragment {
   //是否断开网络
   private boolean mNetworkInterrupted = false;
   @Bind(R.id.rv) RecyclerView mRecyclerView;
+  private XiaoQFab mXiaoQFab;
 
   @Override protected String getPageNameCN() {
     return null;
@@ -99,8 +101,20 @@ public class AIConversationFragment extends BaseFragment {
           }
         });
     mRecyclerView.setAdapter(mAdapter);
-    startConversation(true);
 
+    mXiaoQFab = (XiaoQFab) getActivity().findViewById(R.id.fab);
+
+    mXiaoQFab.postDelayed(new Runnable() {
+      @Override public void run() {
+        mXiaoQFab.animateInitial();
+      }
+    },200);
+
+    mXiaoQFab.postDelayed(new Runnable() {
+      @Override public void run() {
+        startConversation(true);
+      }
+    },1500);
     return v;
   }
 
@@ -167,6 +181,8 @@ public class AIConversationFragment extends BaseFragment {
 
                 if (Integer.valueOf(response.getType()) == 1) {
                   getNext(response.getAnswerPramms().get(0), response.getFlash());
+                }else{
+                  mXiaoQFab.endLoading();
                 }
               }
 
@@ -174,6 +190,7 @@ public class AIConversationFragment extends BaseFragment {
                 mNetworkInterrupted = true;
                 mAdapter.updateNoNetwork(true);
                 scrollToBottom();
+                mXiaoQFab.endLoading();
               }
             });
       }
@@ -181,6 +198,7 @@ public class AIConversationFragment extends BaseFragment {
   }
 
   private void startConversation(final boolean starter) {
+    mXiaoQFab.animateLoading();
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
@@ -212,6 +230,7 @@ public class AIConversationFragment extends BaseFragment {
             mNetworkInterrupted = true;
             mAdapter.updateNoNetwork(true);
             scrollToBottom();
+            mXiaoQFab.endLoading();
           }
         });
   }

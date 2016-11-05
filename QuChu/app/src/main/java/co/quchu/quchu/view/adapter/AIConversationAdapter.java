@@ -96,10 +96,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   }
 
   @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-    Uri xiaoQLogoUri = new Uri.Builder()
-        .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-        .path(String.valueOf(R.mipmap.ic_xiaoq_logo))
-        .build();
+
       AIConversationModel q = mDataSet.get(position);
       switch (getItemViewType(position)) {
         case TYPE_QUESTION:
@@ -111,7 +108,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           }
 
 
-          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
+
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           break;
         case TYPE_ANSWER:
@@ -140,7 +137,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           break;
         case TYPE_NO_NETWORK:
 
-          ((NoNetworkViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
+
           break;
       }
   }
@@ -171,7 +168,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   public static class QuestionViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.tvQuestion) TextView tvQuestion;
     @Bind(R.id.vSpace) View vSpace;
-    @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
 
     QuestionViewHolder(View view) {
       super(view);

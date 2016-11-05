@@ -7,16 +7,17 @@
     android:orientation="horizontal"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
+    android:gravity="right"
+
     >
 
   <TextView
       android:id="@+id/tvAnswer"
-      android:layout_weight="1"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="right"
-      android:layout_marginLeft="@dimen/toolbar_item_size"
       android:background="@mipmap/bg_conversation_yellow"
+      android:layout_marginLeft="@dimen/toolbar_item_size"
       android:padding="12dp"
       android:textSize="12sp"
       tools:text="Super Super Super Super Super Super Super Super Super Super Super Super Super Super Long Answer Number 1"
