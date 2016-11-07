@@ -12,7 +12,7 @@ import android.util.DisplayMetrics;
  */
 
 public class ScrollToLinearLayoutManager extends LinearLayoutManager {
-  private static final float MILLISECONDS_PER_INCH = 50f;
+  private static final float MILLISECONDS_PER_INCH = 150f;
   private Context mContext;
 
   public ScrollToLinearLayoutManager(Context context) {

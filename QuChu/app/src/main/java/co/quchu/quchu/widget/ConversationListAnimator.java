@@ -23,9 +23,34 @@ public class ConversationListAnimator extends DefaultItemAnimator {
   }
 
   @Override
-  public boolean animateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder,
+  public boolean animateChange(final RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder,
       int fromX, int fromY, int toX, int toY) {
-    return super.animateChange(oldHolder, newHolder, fromX, fromY, toX, toY);
+
+    if (oldHolder instanceof AIConversationAdapter.OptionViewHolder) {
+      oldHolder.itemView.animate()
+          .translationX(oldHolder.itemView.getWidth())
+          .setInterpolator(new AccelerateDecelerateInterpolator())
+          .setDuration(500)
+          .setListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animation) {
+              dispatchChangeStarting(oldHolder,true);
+            }
+
+            @Override public void onAnimationEnd(Animator animation) {
+              dispatchChangeFinished(oldHolder,true);
+            }
+
+            @Override public void onAnimationCancel(Animator animation) {}
+
+            @Override public void onAnimationRepeat(Animator animation) {}
+          })
+          .start();
+      return true;
+    }else{
+      return super.animateChange(oldHolder, newHolder, fromX, fromY, toX, toY);
+
+    }
+
   }
 
   @Override public boolean animateAdd(final RecyclerView.ViewHolder holder) {
@@ -36,7 +61,8 @@ public class ConversationListAnimator extends DefaultItemAnimator {
       holder.itemView.animate()
           .translationX(0)
           .setInterpolator(new AccelerateDecelerateInterpolator())
-          .setDuration(300)
+          .setDuration(500)
+          .setStartDelay(100)
           .setListener(new Animator.AnimatorListener() {
             @Override public void onAnimationStart(Animator animation) {
               dispatchAddStarting(holder);
@@ -57,7 +83,8 @@ public class ConversationListAnimator extends DefaultItemAnimator {
       holder.itemView.animate()
           .translationX(0)
           .setInterpolator(new AccelerateDecelerateInterpolator())
-          .setDuration(300)
+          .setDuration(500)
+          .setStartDelay(100)
           .setListener(new Animator.AnimatorListener() {
             @Override public void onAnimationStart(Animator animation) {
               dispatchAddStarting(holder);

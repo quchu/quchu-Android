@@ -153,16 +153,15 @@ public class AIConversationFragment extends BaseFragment {
           if (null!=galleryModel.getPlaceList() && galleryModel.getPlaceList().size()>0){
             mConversation.add(galleryModel);
             mAdapter.notifyItemInserted(mConversation.size() - 1);
-            galleryAdded = true;
             scrollToBottom();
+            galleryAdded = true;
           }
 
-          int delay = galleryAdded?250:0;
+          int delay = galleryAdded?CONVERSATION_ANSWER_DELAY:0;
           new Handler().postDelayed(new Runnable() {
             @Override public void run() {
               mConversation.add(modelOption);
               mAdapter.notifyItemInserted(mConversation.size() - 1);
-              scrollToBottom();
             }
           },delay);
         }
@@ -182,7 +181,7 @@ public class AIConversationFragment extends BaseFragment {
           mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
         }
       }
-    }, 100);
+    }, 50);
   }
 
   private void getNext(final String question, final String flash) {

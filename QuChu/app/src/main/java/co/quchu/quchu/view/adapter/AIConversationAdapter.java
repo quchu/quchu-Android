@@ -98,7 +98,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return new NoNetworkViewHolder(
             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ai_conversation_no_network, parent, false));
       default:
-        return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_banner,parent,false));
+        return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_space,parent,false));
 
 
     }
@@ -300,9 +300,26 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       View v = LayoutInflater.from(container.getContext())
           .inflate(R.layout.item_ai_conversation_place, container, false);
 
-      SimpleDraweeView simpleDraweeView = (SimpleDraweeView) v.findViewById(R.id.simpleDraweeView);
+      DetailModel dataObj = mData.get(position);
+      SimpleDraweeView sdv = (SimpleDraweeView) v.findViewById(R.id.history_cover_img);
 
-      simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
+      TextView tvTitle = (TextView) v.findViewById(R.id.history_title_tv);
+      TextView tvSubTitle = (TextView) v.findViewById(R.id.history_subtitle_tv);
+      TextView tvInfo = (TextView) v.findViewById(R.id.history_tag_tv);
+
+
+      tvTitle.setText(dataObj.getName());
+      tvSubTitle.setText(dataObj.getAreaCircleName());
+      String tagsString = "";
+      if (null != dataObj.getTags()) {
+        for (int i = 0; i < dataObj.getTags().size(); i++) {
+          tagsString += dataObj.getTags().get(i).getZh();
+          tagsString += (i + 1) < dataObj.getTags().size() ? " | " : "";
+        }
+      }
+      tvInfo.setText(tagsString);
+
+      sdv.setImageURI(Uri.parse(dataObj.getCover()));
       v.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
           Intent intent = new Intent(mAnchor, QuchuDetailsActivity.class);

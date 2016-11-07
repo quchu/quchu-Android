@@ -1,19 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
-    android:layout_marginTop="@dimen/half_margin">
+    android:layout_marginTop="@dimen/half_margin"
+    >
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/simpleDraweeView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        fresco:roundedCornerRadius="10px"
-        android:padding="@dimen/half_margin"
-        fresco:placeholderImage="@mipmap/ic_image_empty"
-         />
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/history_cover_img"
+      android:layout_width="match_parent"
+      android:layout_height="175dp"
+      android:layout_margin="10dp"
+      fresco:overlayImage="@color/translucent_dark"
+      fresco:placeholderImage="@mipmap/ic_image_empty"
+      fresco:roundedCornerRadius="10dp"
+      fresco:viewAspectRatio="2"
+      />
 
-</LinearLayout>
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:gravity="center"
+      android:orientation="vertical"
+      >
+
+    <TextView
+        android:id="@+id/history_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="给味蕾一次歇斯底里的呐喊"
+        />
+
+    <TextView
+        android:id="@+id/history_subtitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:textColor="@color/standard_color_white"
+        android:textSize="14sp"
+        tools:text="- 辣家私厨（万达店）"
+        />
+
+    <TextView
+        android:id="@+id/history_tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_white"
+        android:textSize="13sp"
+        tools:text="咖啡 | 2.4km"
+        />
+
+  </LinearLayout>
+
+</RelativeLayout>
