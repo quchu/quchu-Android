@@ -269,6 +269,14 @@
         android:name=".view.activity.SearchResultActivity"
         android:screenOrientation="portrait"/>
 
+    <activity
+        android:name=".view.activity.SceneListActivity"
+        android:screenOrientation="portrait"/>
+
+    <activity
+        android:name=".view.activity.BusinessActivity"
+        android:screenOrientation="portrait"/>
+
     <!-- 用户反馈详情 -->
     <activity
         android:name=".view.activity.FeedbackDetailActivity"

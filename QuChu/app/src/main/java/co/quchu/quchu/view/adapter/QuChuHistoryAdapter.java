@@ -80,7 +80,8 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (isChooseNextBest) {
           holder.mBestDescribeTv.setVisibility(View.GONE);
           holder.mRightIcon.setVisibility(View.GONE);
-          holder.mDistanceTv.setText("10km");
+          holder.mOffsetTv.setVisibility(View.VISIBLE);
+          holder.mOffsetTv.setText(bestListBean.getGapStr());
           holder.mLeftIcon.setVisibility(View.VISIBLE);
           holder.mLeftIcon.setTag(actualPosition);
           holder.mLeftIcon.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +94,8 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else {
           holder.mBestDescribeTv.setVisibility(View.VISIBLE);
+          holder.mLeftIcon.setVisibility(View.GONE);
+          holder.mOffsetTv.setVisibility(View.GONE);
           holder.mBestDescribeTv.setText(bestListBean.getTitle());
           if (bestListBean.isBest()) {
             holder.mRightIcon.setVisibility(View.GONE);
@@ -136,7 +139,7 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.mBestDescribeTv.setVisibility(View.VISIBLE);
         holder.mLeftIcon.setVisibility(View.GONE);
         holder.mRightIcon.setVisibility(View.GONE);
-        holder.mDistanceTv.setVisibility(View.GONE);
+        holder.mOffsetTv.setVisibility(View.GONE);
         holder.mBestDescribeTv.setText("其他");
 
         setItemClick(holder, resultBean);
@@ -264,7 +267,7 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.best_describe_tv) TextView mBestDescribeTv;
     @Bind(R.id.history_right_icon) ImageView mRightIcon;
     @Bind(R.id.history_left_icon) ImageView mLeftIcon;
-    @Bind(R.id.history_distance_tv) TextView mDistanceTv;
+    @Bind(R.id.history_offset_tv) TextView mOffsetTv;
     @Bind(R.id.history_cover_img) SimpleDraweeView mCoverImg;
     @Bind(R.id.history_top_label_layout) RelativeLayout mTopLableLayout;
     @Bind(R.id.history_title_tv) TextView mTitleTv;

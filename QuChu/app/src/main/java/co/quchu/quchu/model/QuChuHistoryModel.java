@@ -403,6 +403,7 @@ public class QuChuHistoryModel {
   }
 
   public static class BestListBean {
+    private String gapStr;
     private String title;
     private boolean isBest;
     /**
@@ -451,6 +452,14 @@ public class QuChuHistoryModel {
      */
 
     private PlaceListBean.ResultBean placeInfo;
+
+    public String getGapStr() {
+      return gapStr;
+    }
+
+    public void setGapStr(String gapStr) {
+      this.gapStr = gapStr;
+    }
 
     public String getTitle() {
       return title;

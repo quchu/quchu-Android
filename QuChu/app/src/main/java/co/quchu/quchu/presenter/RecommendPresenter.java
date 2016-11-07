@@ -3,26 +3,24 @@ package co.quchu.quchu.presenter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
-import co.quchu.quchu.model.FeedbackModel;
-import co.quchu.quchu.model.SceneInfoModel;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-
 import com.google.gson.reflect.TypeToken;
-import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -42,24 +40,23 @@ import co.quchu.quchu.utils.StringUtils;
 public class RecommendPresenter {
 
   public static void getSceneList(Context context, final CommonListener<List<SceneInfoModel>> listener) {
-
-    NetService.get(context, NetApi.getSceneList, new IRequestListener() {
-      @Override public void onSuccess(JSONObject response) {
-
-        List<SceneInfoModel> sceneList =
-            new Gson().fromJson(response.toString(), new TypeToken<List<SceneInfoModel>>() {
-            }.getType());
-        listener.successListener(sceneList);
+    GsonRequest<List<SceneInfoModel>> request = new GsonRequest<List<SceneInfoModel>>(NetApi.getSceneList, new TypeToken<List<SceneInfoModel>>() {
+    }.getType(), new ResponseListener<List<SceneInfoModel>>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        listener.errorListener(error, "", "");
       }
 
-      @Override public boolean onError(String error) {
-        return false;
+      @Override
+      public void onResponse(List<SceneInfoModel> response, boolean result, String errorCode, @Nullable String msg) {
+        listener.successListener(response);
       }
     });
+    request.start(context);
   }
 
   public static void getRecommendList(final Context context, boolean isDefaultData,
-      final GetRecommendListener listener) {
+                                      final GetRecommendListener listener) {
     DialogUtil.showProgess(context, "数据加载中...");
     final String urlStr;
     if (isDefaultData) {
@@ -74,7 +71,8 @@ public class RecommendPresenter {
 
     NetService.get(context, urlStr, new IRequestListener() {
 
-      @Override public void onSuccess(JSONObject response) {
+      @Override
+      public void onSuccess(JSONObject response) {
         int pageCount = 2, pageNum = 1;
 
         LogUtils.json("getPlaceList==" + response.toString());
@@ -100,7 +98,8 @@ public class RecommendPresenter {
         DialogUtil.dismissProgess();
       }
 
-      @Override public boolean onError(String error) {
+      @Override
+      public boolean onError(String error) {
         DialogUtil.dismissProgess();
         return false;
       }
@@ -110,12 +109,12 @@ public class RecommendPresenter {
   /**
    * 加载更多
    *
-   * @param context c
+   * @param context       c
    * @param isDefaultData s
-   * @param listener s
+   * @param listener      s
    */
   public static void loadMoreRecommendList(final Context context, boolean isDefaultData,
-      int pageNumber, final GetRecommendListener listener) {
+                                           int pageNumber, final GetRecommendListener listener) {
     //    DialogUtil.showProgess(context, "数据加载中...");
     String urlStr = "";
     if (isDefaultData) {
@@ -128,7 +127,8 @@ public class RecommendPresenter {
     }
     NetService.get(context, urlStr, new IRequestListener() {
 
-      @Override public void onSuccess(JSONObject response) {
+      @Override
+      public void onSuccess(JSONObject response) {
         int pageCount = 2, pageNum = 1;
 
         LogUtils.json("getPlaceList==" + response.toString());
@@ -158,7 +158,8 @@ public class RecommendPresenter {
         }
       }
 
-      @Override public boolean onError(String error) {
+      @Override
+      public boolean onError(String error) {
         listener.onError();
         return false;
       }
@@ -174,13 +175,14 @@ public class RecommendPresenter {
   public static void getCityList(Context context, final CityListListener listener) {
     GsonRequest<CityEntity> request =
         new GsonRequest<>(NetApi.GetCityList, CityEntity.class, new ResponseListener<CityEntity>() {
-          @Override public void onErrorResponse(@Nullable VolleyError error) {
+          @Override
+          public void onErrorResponse(@Nullable VolleyError error) {
 
           }
 
           @Override
           public void onResponse(CityEntity response, boolean result, @Nullable String exception,
-              @Nullable String msg) {
+                                 @Nullable String msg) {
             ArrayList<CityModel> list = response.getPage().getResult();
 
             if (SPUtils.getCityId() == 1 && !TextUtils.isEmpty(AppLocationListener.currentCity)) {

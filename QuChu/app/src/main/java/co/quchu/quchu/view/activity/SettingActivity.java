@@ -120,21 +120,23 @@ public class SettingActivity extends BaseBehaviorActivity {
     return "设置";
   }
 
-  @OnClick({R.id.setting_item_dahuo, R.id.setting_item_about})
+  @OnClick({R.id.setting_item_dahuo, R.id.setting_item_about, R.id.setting_item_business})
   public void onClick(View view) {
     switch (view.getId()) {
-      case R.id.setting_item_dahuo:
-        //搭伙
+      case R.id.setting_item_dahuo://搭伙
         break;
 
-      case R.id.setting_item_about:
-        //关于
+      case R.id.setting_item_about://关于
         Intent intent = new Intent(this, StatementActivity.class);
         intent.putExtra(StatementActivity.REQUEST_KEY_TITLE, "关于我们");
         String about = String.format(Locale.CHINA, getString(R.string.about_us_text),
             AppContext.packageInfo.versionName);
         intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, about);
         startActivity(intent);
+        break;
+
+      case R.id.setting_item_business://商务合作
+        startActivity(BusinessActivity.class);
         break;
     }
   }

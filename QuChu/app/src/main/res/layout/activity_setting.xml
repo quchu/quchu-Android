@@ -36,7 +36,8 @@
       android:layout_marginTop="15dp"
       android:text="系统设置"
       android:textColor="@color/standard_color_h3_dark"
-      android:textSize="13sp"/>
+      android:textSize="13sp"
+      android:visibility="gone"/>
 
   <co.quchu.quchu.widget.SettingItemView
       android:id="@+id/setting_item_dahuo"
@@ -60,6 +61,14 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:stText="关于趣处"/>
+
+  <View style="@style/HorizontalDivider"/>
+
+  <co.quchu.quchu.widget.SettingItemView
+      android:id="@+id/setting_item_business"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stText="商务合作"/>
 
   <View style="@style/HorizontalDivider"/>
 

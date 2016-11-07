@@ -90,7 +90,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
-  private ArrayList<CityModel> list = new ArrayList<>();
+  private ArrayList<CityModel> mCityList = new ArrayList<>();
+  private List<SceneInfoModel> mAllSceneList = new ArrayList<>();
 
   @Override
   protected String getPageNameCN() {
@@ -150,15 +151,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
    * 获得场景列表
    */
   private void getSceneList() {
-    RecommendPresenter.getSceneList(getApplicationContext(), new CommonListener<List<SceneInfoModel>>() {
+    RecommendPresenter.getSceneList(this, new CommonListener<List<SceneInfoModel>>() {
       @Override
       public void successListener(List<SceneInfoModel> response) {
-
+        mAllSceneList.clear();
+        mAllSceneList.addAll(response);
       }
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
-
       }
     });
   }
@@ -180,8 +181,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
       @Override
       public void hasCityList(ArrayList<CityModel> pList) {
-        list.clear();
-        list.addAll(pList);
+        mCityList.clear();
+        mCityList.addAll(pList);
         checkIfCityChanged();
       }
     });
@@ -285,17 +286,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
   }
 
   private void checkIfCityChanged() {
-    if (null != list && null != AppLocationListener.currentCity) {
+    if (null != mCityList && null != AppLocationListener.currentCity) {
       String currentLocation = AppLocationListener.currentCity;
       int cityIdInList = -1;
       if (currentLocation.endsWith("市")) {
         currentLocation = currentLocation.substring(0, currentLocation.length() - 1);
       }
       boolean inList = false;
-      for (int i = 0; i < list.size(); i++) {
-        if (list.get(i).getCvalue().equals(currentLocation)) {
+      for (int i = 0; i < mCityList.size(); i++) {
+        if (mCityList.get(i).getCvalue().equals(currentLocation)) {
           inList = true;
-          cityIdInList = list.get(i).getCid();
+          cityIdInList = mCityList.get(i).getCid();
         }
       }
       if (!currentLocation.equals(SPUtils.getCityName())) {
@@ -361,14 +362,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
       case R.id.tvCity://选择城市
         UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
-          if (list != null) {
+          if (mCityList != null) {
             selectedCity();
           } else {
             RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
               @Override
               public void hasCityList(ArrayList<CityModel> list) {
-                RecommendActivity.this.list = list;
-                if (RecommendActivity.this.list != null) {
+                RecommendActivity.this.mCityList = list;
+                if (RecommendActivity.this.mCityList != null) {
                   selectedCity();
                 }
               }
@@ -416,47 +417,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemShareApp://分享 App
+        SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
         break;
     }
   }
-
-  //@OnClick({
-  //    R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv
-  //})
-  //public void titleClick(View view) {
-  //  if (KeyboardUtils.isFastDoubleClick()) return;
-  //
-  //  switch (view.getId()) {
-  //
-  //    case R.id.ivLeft:
-  //      if (mDrawer != null) {
-  //        mDrawer.openDrawer(GravityCompat.START);
-  //      }
-  //      break;
-  //
-  //    case R.id.recommend_title_more_iv:
-  //      startActivity(SearchActivityNew.class);
-  //      break;
-  //
-  //    case R.id.tvRight:
-  //      UserInfoModel user = AppContext.user;
-  //      if (user.isIsVisitors()) {
-  //        //游客
-  //        startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
-  //      } else {
-  //        UMEvent("profile_c");
-  //        startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
-  //      }
-  //      break;
-  //
-  //  }
-  //}
 
   /**
    * 切换城市
    */
   private void selectedCity() {
-    SelectedCityActivity.launch(this, list);
+    SelectedCityActivity.launch(this, mCityList);
   }
 
   @Override

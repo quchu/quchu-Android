@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/standard_color_white"
+              android:orientation="vertical">
+
+  <include layout="@layout/cp_enhanced_toolbar"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginTop="50dp"
+      android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商务合作"
+        android:textColor="@color/standard_color_h0_dark"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="商务合作资源： \n1.APP广告 \n2. 微信广告、活动 \n3. 新媒体服务 \n4. 线下活动
+      \n\n如果您希望与趣处达成商务合作 \n联系电话：18156007737 任女士，邮箱：contact@quchu.co"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="媒体合作"
+        android:textColor="@color/standard_color_h0_dark"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="如有意向预约采访或洽谈媒体合作 \n联系电话：18156007737 任女士，邮箱：contact@quchu.co"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="14sp"/>
+
+  </LinearLayout>
+
+</LinearLayout>

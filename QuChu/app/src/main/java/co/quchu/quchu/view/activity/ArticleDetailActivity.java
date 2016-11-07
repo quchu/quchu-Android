@@ -177,6 +177,10 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, id, new CommonListener<ArticleDetailModel>() {
             @Override
             public void successListener(final ArticleDetailModel response) {
+                if (response == null) {
+                    return;
+                }
+
                 if (firstLoad){
                     DialogUtil.dismissProgessDirectly();
                 }

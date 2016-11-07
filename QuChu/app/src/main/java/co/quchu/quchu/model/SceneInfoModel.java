@@ -1,9 +1,11 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Nico on 16/7/11.
  */
-public class SceneInfoModel {
+public class SceneInfoModel implements Serializable{
     private String height = "";
     private String intro = "";
     private String rgb = "";

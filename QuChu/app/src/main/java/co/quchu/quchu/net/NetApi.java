@@ -272,4 +272,9 @@ public interface NetApi {
    * 获取历史浏览记录
    */
   String getHistoryPlace = HOST + "/personal/getHistoryPlace";
+
+  /**
+   * 获取系统消息
+   */
+  String getSysMessageList = HOST + "/personal/getSysMessageList";
 }
