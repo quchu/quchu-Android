@@ -147,6 +147,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((GalleryViewHolder) holder).vpPlace.setClipToPadding(false);
             ((GalleryViewHolder) holder).vpPlace.setPadding(40, 0, 40, 20);
             ((GalleryViewHolder) holder).vpPlace.setPageMargin(0);
+            ((GalleryViewHolder) holder).vpPlace.setCurrentItem(q.getPlaceList().size());
           } else {
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.GONE);
           }
@@ -299,6 +300,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override public Object instantiateItem(ViewGroup container, final int position) {
       View v = LayoutInflater.from(container.getContext())
           .inflate(R.layout.item_ai_conversation_place, container, false);
+
 
       DetailModel dataObj = mData.get(position);
       SimpleDraweeView sdv = (SimpleDraweeView) v.findViewById(R.id.history_cover_img);
