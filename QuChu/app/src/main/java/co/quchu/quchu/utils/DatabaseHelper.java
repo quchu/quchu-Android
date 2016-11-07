@@ -30,7 +30,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
       + "(id integer primary key autoincrement,title text,content text,type text,eventRemark text, timestamp long);";
 
   public static final String TABLE_NAME_AI_CONVERSATION = "tb_ai_conversation";
-  public static final String SQL_CREATE_USER_AI_CONVERSATION = "";
+  public static final String SQL_CREATE_USER_AI_CONVERSATION = "create table "
+      + TABLE_NAME_AI_CONVERSATION
+      + "(id integer primary key autoincrement,dataType integer not null,chatContent text,placeList text,options text,timeStamp long)";
 
   private static final int DATABASE_VERSION = 2;
 
@@ -57,14 +59,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     db.execSQL(SQL_CREATE_TABLE_USER_BEHAVIOR);
     db.execSQL(SQL_CREATE_TABLE_USER_SEARCH_HISTORY);
     db.execSQL(SQL_CREATE_TABLE_SYSTEM_MSG);
-    //db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
+    db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     if (oldVersion == 1) {
       db.execSQL(SQL_CREATE_TABLE_USER_SEARCH_HISTORY);
       db.execSQL(SQL_CREATE_TABLE_SYSTEM_MSG);
-      //db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
+      db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
     }
   }
 

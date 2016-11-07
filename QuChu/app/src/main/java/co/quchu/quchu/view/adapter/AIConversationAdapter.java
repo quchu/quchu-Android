@@ -120,8 +120,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
           }
 
-
-
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           break;
         case TYPE_ANSWER:

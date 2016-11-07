@@ -93,6 +93,7 @@ public class AIConversationFragment extends BaseFragment {
 
             int position = mConversation.size() - 1;
             mConversation.get(position).getAnswerPramms().clear();
+            AIConversationPresenter.delOptionMessages(getActivity());
             mAdapter.notifyItemChanged(position);
 
             mRecyclerView.postDelayed(new Runnable() {
@@ -100,6 +101,7 @@ public class AIConversationFragment extends BaseFragment {
                 AIConversationModel answerModel = new AIConversationModel();
                 answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
                 answerModel.setAnswer(answer);
+                AIConversationPresenter.insertMessage(getActivity(),answerModel);
                 mConversation.add(answerModel);
                 mAdapter.notifyItemInserted(mConversation.size() - 1);
                 scrollToBottom();
@@ -132,6 +134,8 @@ public class AIConversationFragment extends BaseFragment {
 
     } else {
       mConversation.add(model);
+      AIConversationPresenter.insertMessage(getActivity(),model);
+
       mAdapter.notifyItemInserted(mConversation.size() - 1);
       scrollToBottom();
     }
@@ -152,6 +156,7 @@ public class AIConversationFragment extends BaseFragment {
           boolean galleryAdded = false;
           if (null!=galleryModel.getPlaceList() && galleryModel.getPlaceList().size()>0){
             mConversation.add(galleryModel);
+            AIConversationPresenter.insertMessage(getActivity(),galleryModel);
             mAdapter.notifyItemInserted(mConversation.size() - 1);
             scrollToBottom();
             galleryAdded = true;
@@ -161,6 +166,7 @@ public class AIConversationFragment extends BaseFragment {
           new Handler().postDelayed(new Runnable() {
             @Override public void run() {
               mConversation.add(modelOption);
+              AIConversationPresenter.insertMessage(getActivity(),modelOption);
               mAdapter.notifyItemInserted(mConversation.size() - 1);
             }
           },delay);
