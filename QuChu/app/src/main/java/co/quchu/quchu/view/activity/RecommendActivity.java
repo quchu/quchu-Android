@@ -11,19 +11,16 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.quchu.quchu.widget.XiaoQFab;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -60,6 +57,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.AIConversationFragment;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
+import co.quchu.quchu.widget.XiaoQFab;
 
 /**
  * RecommendActivity
@@ -115,7 +113,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
-
     initPush();
 
     initDrawerView();
@@ -127,7 +124,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     checkForceUpdate();
 
     tvCity.setText(SPUtils.getCityName());
-
 
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
       @Override
@@ -225,98 +221,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getGenes();
-
-    mDrawerItemFavorite.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onDrawerItemClick(v);
-      }
-    });
-
-    mDrawerItemUserCenter.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onDrawerItemClick(v);
-      }
-    });
-
-    mDrawerItemMessage.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onDrawerItemClick(v);
-      }
-    });
-
-    mDrawerItemFeedback.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onDrawerItemClick(v);
-      }
-    });
-
-    mDrawerItemSetting.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onDrawerItemClick(v);
-      }
-    });
-
-    mDrawerItemShareApp.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onDrawerItemClick(v);
-      }
-    });
-  }
-
-  /**
-   * Drawer Item Click
-   */
-  private void onDrawerItemClick(final View v) {
-    mDrawer.closeDrawer(GravityCompat.START);
-
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        switch (v.getId()) {
-          case R.id.drawerItemFavorite://收藏
-            startActivity(FavoriteActivity.class);
-            break;
-
-          case R.id.drawerItemUserCenter://个人中心
-            if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-              startActivity(MeActivity.class);
-            } else {
-              startActivity(LoginActivity.class);
-            }
-            break;
-
-          case R.id.drawerItemMessage://消息
-            if (mDrawerItemMessage.getRedDotVisibility() == View.VISIBLE) {
-              mDrawerItemMessage.hideRedDot();
-            }
-
-            startActivity(MessageCenterActivity.class);
-            break;
-
-          case R.id.drawerItemFeedback://意见反馈
-            if (mDrawerItemFeedback.getRedDotVisibility() == View.VISIBLE) {
-              mDrawerItemFeedback.hideRedDot();
-            }
-
-            startActivity(FeedbackActivity.class);
-            break;
-
-          case R.id.drawerItemSetting://设置
-            startActivity(SettingActivity.class);
-            break;
-
-          case R.id.drawerItemShareApp://分享 App
-            startActivity(SearchActivityNew.class);
-            break;
-        }
-      }
-    }, 200);
   }
 
   /**
@@ -433,26 +337,28 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({R.id.tvCity,R.id.vSearchBar,R.id.vFakeDrawer,R.id.vFakeSearchBar})
+  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer, R.id.vFakeSearchBar, R.id.fab,
+      R.id.drawerItemFavorite, R.id.drawerItemUserCenter, R.id.drawerItemMessage,
+      R.id.drawerItemFeedback, R.id.drawerItemSetting, R.id.drawerItemShareApp})
   public void onClick(View view) {
     switch (view.getId()) {
 
       case R.id.vFakeDrawer:
-        if (placeHolder.getAlpha()==1){
+        if (placeHolder.getAlpha() == 1) {
           mDrawer.openDrawer(GravityCompat.START);
         }
         break;
-      case R.id.vFakeSearchBar:
-        if (placeHolder.getAlpha()==1){
+      case R.id.vFakeSearchBar://搜索
+        if (placeHolder.getAlpha() == 1) {
           startActivity(SearchActivityNew.class);
         }
         break;
 
-      case R.id.vSearchBar:
+      case R.id.vSearchBar://搜索
         startActivity(SearchActivityNew.class);
         break;
 
-      case R.id.tvCity:
+      case R.id.tvCity://选择城市
         UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
           if (list != null) {
@@ -475,6 +381,41 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case R.id.fab://历史记录
         startActivity(QuChuHistoryActivity.class);
+        break;
+
+      case R.id.drawerItemFavorite://收藏
+        startActivity(FavoriteActivity.class);
+        break;
+
+      case R.id.drawerItemUserCenter://个人中心
+        if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
+          startActivity(MeActivity.class);
+        } else {
+          startActivity(LoginActivity.class);
+        }
+        break;
+
+      case R.id.drawerItemMessage://消息
+        if (mDrawerItemMessage.getRedDotVisibility() == View.VISIBLE) {
+          mDrawerItemMessage.hideRedDot();
+        }
+
+        startActivity(MessageCenterActivity.class);
+        break;
+
+      case R.id.drawerItemFeedback://意见反馈
+        if (mDrawerItemFeedback.getRedDotVisibility() == View.VISIBLE) {
+          mDrawerItemFeedback.hideRedDot();
+        }
+
+        startActivity(FeedbackActivity.class);
+        break;
+
+      case R.id.drawerItemSetting://设置
+        startActivity(SettingActivity.class);
+        break;
+
+      case R.id.drawerItemShareApp://分享 App
         break;
     }
   }

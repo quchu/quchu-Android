@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
@@ -17,10 +18,11 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.QuChuHistoryModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.QuChuHistoryPresenter;
-import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.QuChuHistoryAdapter;
 
 /**
@@ -36,6 +38,9 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
   private int pageNo = 1;
   private String mPlaceIds = "";
   private QuChuHistoryAdapter mAdapter;
+  private boolean mHasMoreData;
+  private boolean mIsLoadMore;
+  private boolean mIsLoading;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
   private void initView() {
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     mAdapter = new QuChuHistoryAdapter(this);
+    mAdapter.setQuChuHistoryClickListener(onItemClickListener);
     mRecyclerView.setAdapter(mAdapter);
     mRefreshLayout.setOnRefreshListener(this);
     mRefreshLayout.post(new Runnable() {
@@ -61,15 +67,54 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
         onRefresh();
       }
     });
+
+    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+
+        //判断是否在顶部 false-顶部
+        boolean canScrollDown = recyclerView.canScrollVertically(-1);
+        //判断是否在底部 false-底部
+        boolean canScrollUp = recyclerView.canScrollVertically(1);
+
+        if (!canScrollDown) {
+          //已经在顶部,可以下拉刷新
+          mRecyclerView.setEnabled(true);
+        } else {
+          //不能下拉刷新
+          mRecyclerView.setEnabled(false);
+        }
+
+        if (!canScrollUp && mHasMoreData) {
+          //已经在底部,可以上拉加载更多
+          queryMoreData();
+        }
+      }
+    });
   }
 
-  private void queryData() {
+  /**
+   * 加载更多数据
+   */
+  private void queryMoreData() {
+    if (mIsLoading) return;
+
+    if (NetUtil.isNetworkConnected(this)) {
+      DialogUtil.showProgess(this, R.string.loading_dialog_text);
+    }
+
+    mIsLoading = true;
+    mIsLoadMore = true;
+    pageNo++;
+
     QuChuHistoryPresenter.getHistory(this, mPlaceIds, pageNo, mCommonListener);
   }
 
   @Override
   public void onRefresh() {
     pageNo = 1;
+    mIsLoadMore = false;
     mRefreshLayout.setRefreshing(true);
     QuChuHistoryPresenter.getHistory(this, mPlaceIds, pageNo, mCommonListener);
   }
@@ -81,35 +126,64 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
         return;
       }
 
-      mRefreshLayout.setRefreshing(false);
+      mIsLoading = false;
+      if (DialogUtil.isDialogShowing()) {
+        DialogUtil.dismissProgess();
+      }
 
-      List<QuChuHistoryModel.BestListBean> bestList = response.getBestList();
+      if (mRefreshLayout.isRefreshing()) {
+        mRefreshLayout.setRefreshing(false);
+      }
+
+      if (!mIsLoadMore) {
+        mPlaceIds = response.getPlaceIds();
+
+        mAdapter.setBestList(response.getBestList());
+      }
+
       QuChuHistoryModel.PlaceListBean placeListBean = response.getPlaceList();
       List<QuChuHistoryModel.PlaceListBean.ResultBean> resultBeanList = null;
       if (placeListBean != null) {
         resultBeanList = placeListBean.getResult();
-      }
 
-      mAdapter.setData(bestList, resultBeanList);
+        int pageCount = placeListBean.getPageCount();
+        int pagesNo = placeListBean.getPagesNo();
+        int resultCount = placeListBean.getResultCount();
+
+        //判断是否存在分页
+        if (pagesNo < pageCount) {
+          mHasMoreData = true;
+        } else {
+          mHasMoreData = false;
+        }
+
+        if (pagesNo == 1) {
+          mAdapter.setResultList(resultBeanList);
+        } else {
+          mAdapter.addMoreResultList(resultBeanList);
+        }
+      }
     }
 
     @Override
     public void errorListener(VolleyError error, String exception, String msg) {
+      mIsLoading = false;
+      DialogUtil.dismissProgess();
 
+      if (mRefreshLayout.isRefreshing()) {
+        mRefreshLayout.setRefreshing(false);
+      }
     }
   };
 
-  private AdapterBase.OnLoadmoreListener loadMoreListener = new AdapterBase.OnLoadmoreListener() {
+  private QuChuHistoryAdapter.QuChuHistoryClickListener onItemClickListener = new QuChuHistoryAdapter.QuChuHistoryClickListener() {
     @Override
-    public void onLoadmore() {
-
-    }
-  };
-
-  private AdapterBase.OnItemClickListener onItemClickListener = new AdapterBase.OnItemClickListener() {
-    @Override
-    public void itemClick(RecyclerView.ViewHolder holder, Object item, int type, @Deprecated int position) {
-
+    public void onItemClick(QuChuHistoryModel.PlaceListBean.ResultBean resultBean) {
+      if (resultBean != null) {
+        Intent intent = new Intent(getApplicationContext(), QuchuDetailsActivity.class);
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, resultBean.getPid());
+        startActivity(intent);
+      }
     }
   };
 

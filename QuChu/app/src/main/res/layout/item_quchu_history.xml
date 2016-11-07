@@ -7,40 +7,45 @@
               android:orientation="vertical">
 
   <RelativeLayout
+      android:id="@+id/history_top_label_layout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingLeft="10dp"
-      android:paddingRight="10dp">
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp">
 
     <TextView
         android:id="@+id/best_describe_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="距离最近的"
         android:textColor="@color/standard_color_h1_dark"
-        android:textSize="13sp"/>
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="距离最近的"/>
 
     <ImageView
-        android:id="@+id/right_icon"
+        android:id="@+id/history_right_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@mipmap/ic_shoucang"/>
+        android:src="@mipmap/ic_shoucang"
+        android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/left_icon"
+        android:id="@+id/history_left_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_shoucang"/>
+        android:src="@mipmap/ic_shoucang"
+        android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/distance_tv"
+        android:id="@+id/history_distance_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="距离最近的"
         android:textColor="@color/standard_color_h1_dark"
-        android:textSize="13sp"/>
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="距离最近的"/>
 
   </RelativeLayout>
 
@@ -49,11 +54,11 @@
       android:layout_height="wrap_content">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/cover_img"
+        android:id="@+id/history_cover_img"
         android:layout_width="match_parent"
         android:layout_height="175dp"
         android:layout_margin="10dp"
-        android:background="#e0e0e0"
+        fresco:overlayImage="@color/translucent_dark"
         fresco:placeholderImage="@mipmap/ic_image_empty"
         fresco:roundedCornerRadius="10dp"
         fresco:viewAspectRatio="2"/>
@@ -66,25 +71,32 @@
         android:orientation="vertical">
 
       <TextView
+          android:id="@+id/history_title_tv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:singleLine="true"
           android:textColor="@color/standard_color_white"
-          android:textSize="14sp"
+          android:textSize="20sp"
+          android:textStyle="bold"
           tools:text="给味蕾一次歇斯底里的呐喊"/>
 
       <TextView
+          android:id="@+id/history_subtitle_tv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/half_margin"
           android:textColor="@color/standard_color_white"
-          android:textSize="12sp"
+          android:textSize="14sp"
           tools:text="- 辣家私厨（万达店）"/>
 
       <TextView
+          android:id="@+id/history_tag_tv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginTop="30dp"
+          android:singleLine="true"
           android:textColor="@color/standard_color_white"
-          android:textSize="12sp"
+          android:textSize="13sp"
           tools:text="咖啡 | 2.4km"/>
 
     </LinearLayout>
