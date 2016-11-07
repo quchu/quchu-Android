@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,6 +26,7 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
+import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class AIConversationFragment extends BaseFragment {
           }
         });
 
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
     mAdapter = new AIConversationAdapter(getActivity(), mConversation,
         new AIConversationAdapter.OnAnswerListener() {
@@ -135,16 +137,34 @@ public class AIConversationFragment extends BaseFragment {
     }
 
     if (Integer.valueOf(model.getType()) == 0 && model.getAnswerPramms().size() > 0) {
+
+
       final AIConversationModel modelOption = new AIConversationModel();
       modelOption.setAnswerPramms(model.getAnswerPramms());
       modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
-      modelOption.setPlaceList(model.getPlaceList());
       modelOption.setFlash(model.getFlash());
+
+      final AIConversationModel galleryModel = new AIConversationModel();
+      galleryModel.setPlaceList(model.getPlaceList());
+      galleryModel.setDataType(AIConversationModel.EnumDataType.GALLERY);
       mRecyclerView.postDelayed(new Runnable() {
         @Override public void run() {
-          mConversation.add(modelOption);
-          mAdapter.notifyItemInserted(mConversation.size() - 1);
-          scrollToBottom();
+          boolean galleryAdded = false;
+          if (null!=galleryModel.getPlaceList() && galleryModel.getPlaceList().size()>0){
+            mConversation.add(galleryModel);
+            mAdapter.notifyItemInserted(mConversation.size() - 1);
+            galleryAdded = true;
+            scrollToBottom();
+          }
+
+          int delay = galleryAdded?250:0;
+          new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+              mConversation.add(modelOption);
+              mAdapter.notifyItemInserted(mConversation.size() - 1);
+              scrollToBottom();
+            }
+          },delay);
         }
       }, CONVERSATION_ANSWER_DELAY);
       scrollToBottom();

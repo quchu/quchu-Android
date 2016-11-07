@@ -2,21 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     >
-
-  <android.support.v4.view.ViewPager
-      android:layout_width="match_parent"
-      android:layout_height="180dp"
-      android:id="@+id/vpPlace"
-      android:fadingEdgeLength="0dp"
-      android:requiresFadingEdge="none"
-      android:layout_alignParentBottom="true"
-      tools:listItem="@layout/item_quchu_favorite"
-      />
-
   <android.support.v7.widget.RecyclerView
       android:id="@+id/rvOption"
       android:layout_marginLeft="@dimen/toolbar_item_size"
@@ -26,4 +15,5 @@
       app:layoutManager="android.support.v7.widget.LinearLayoutManager"
       tools:listitem="@layout/item_ai_conversation_txt_opt"
       />
+
 </LinearLayout>

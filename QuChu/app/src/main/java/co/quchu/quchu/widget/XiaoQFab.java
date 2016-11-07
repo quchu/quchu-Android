@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -39,18 +40,24 @@ public class XiaoQFab extends FloatingActionButton {
 
   @Override protected void onDraw(Canvas canvas) {
 
+    int size = Math.min(getWidth(), getHeight());
 
     Paint paint = new Paint();
     paint.setColor(Color.BLACK);
-    paint.setStrokeWidth(15);
+    paint.setStrokeWidth(size/10);
     paint.setStyle(Paint.Style.STROKE);
     paint.setAntiAlias(true);
-    int size = Math.min(getWidth(), getHeight());
+
+
+    Paint bg = new Paint();
+    bg.setColor(Color.WHITE);
+    bg.setStyle(Paint.Style.FILL);
+    bg.setAntiAlias(true);
+    canvas.drawCircle(size/2,size/2,size/2,bg);
 
     if (!mLoadingAnimationStart){
-
       if (null != mAnimationProgress) {
-        int offSet = (int) (size / 21.1);
+        int offSet = (size / 21);
         canvas.drawArc(new RectF(offSet, offSet, size - offSet, size - offSet),
             360 * mAnimationProgress[0], 360 * mAnimationProgress[0], false, paint);
 
@@ -59,13 +66,13 @@ public class XiaoQFab extends FloatingActionButton {
         canvas.drawArc(new RectF(offSetSec, offSetSec, size - offSetSec, size - offSetSec),
             180 * mAnimationProgress[1], 360 * mAnimationProgress[1], false, paint);
 
-        paint.setStrokeWidth(18);
+        paint.setStrokeWidth(size/9);
         paint.setColor(Color.parseColor("#ffd702"));
         int offSetThd = (int) (size / 4.5f);
         canvas.drawArc(new RectF(offSetThd, offSetThd, size - offSetThd, size - offSetThd),
             120 * mAnimationProgress[2], -360 * mAnimationProgress[2], false, paint);
 
-        paint.setStrokeWidth(19);
+        paint.setStrokeWidth(size/8);
         paint.setColor(Color.BLACK);
         int offSetF = (int) (size / 3.15f);
         canvas.drawArc(new RectF(offSetF, offSetF, size - offSetF, size - offSetF),
@@ -75,18 +82,18 @@ public class XiaoQFab extends FloatingActionButton {
         canvas.rotate(-180 + (mAnimationProgress[4] * 180), getWidth() / 2, getHeight() / 2);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.parseColor("#eaeaea"));
-        canvas.drawCircle(size / 4, size - (size / 4), 16 * mAnimationProgress[3], paint);
+        canvas.drawCircle(size / 4, size - (size / 4), (size/20) * mAnimationProgress[3], paint);
         canvas.restore();
       }
 
 
     }else{
-      canvas.save();
-      canvas.rotate((revert?360:-360)* mAnimationProgress[0],getWidth()/2,getHeight()/2);
-      int offSet = (int) (size / 21.1);
+      //canvas.save();
+      //canvas.rotate((revert?360:-360)* mAnimationProgress[0],getWidth()/2,getHeight()/2);
+      int offSet = (int) (size / 21);
       canvas.drawArc(new RectF(offSet, offSet, size - offSet, size - offSet),
-          0, (revert?360:-360)  * mAnimationProgress[0], false, paint);
-      canvas.restore();
+          (revert?360:-360)  * mAnimationProgress[0], (revert?360:-360)  * mAnimationProgress[0], false, paint);
+      //canvas.restore();
     }
   }
 

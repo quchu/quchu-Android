@@ -65,8 +65,10 @@
       <View
           android:id="@+id/vSearchBar"
           android:layout_width="match_parent"
-          android:layout_height="36dp"
-          android:layout_margin="16dp"
+          android:layout_height="32dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginRight="16dp"
+          android:layout_marginBottom="8dp"
           android:background="@color/standard_color_white"
           />
       <LinearLayout
@@ -120,22 +122,21 @@
         android:alpha="0"
         android:background="@color/transparent"
         android:paddingBottom="36dp"
+        android:layout_marginTop="8dp"
         >
 
       <ImageView
           android:id="@+id/vFakeDrawer"
-          android:layout_width="?attr/actionBarSize"
-          android:layout_height="?attr/actionBarSize"
-          android:layout_centerVertical="true"
-          android:scaleType="centerInside"
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:scaleType="center"
           android:src="@mipmap/ic_add_position"
           />
 
       <View
           android:id="@+id/vFakeSearchBar"
           android:layout_width="match_parent"
-          android:layout_height="36dp"
-          android:layout_centerVertical="true"
+          android:layout_height="32dp"
           android:layout_marginRight="16dp"
           android:layout_toRightOf="@+id/vFakeDrawer"
           android:background="@color/standard_color_white"
@@ -160,15 +161,16 @@
 
   <co.quchu.quchu.widget.XiaoQFab
       android:id="@+id/fab"
-      android:layout_width="56dp"
-      android:layout_height="56dp"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:padding="1dp"
+      app:useCompatPadding="true"
       android:clickable="true"
       android:src="@mipmap/ic_xiaoq_logo"
-      app:backgroundTint="@android:color/white"
+      app:backgroundTint="@android:color/transparent"
       app:fabSize="normal"
       app:layout_anchor="@id/appbar"
       app:layout_anchorGravity="bottom|center_horizontal"
-
       app:layout_behavior="co.quchu.quchu.widget.DisableAutoHideFABBehavior"
       />
 

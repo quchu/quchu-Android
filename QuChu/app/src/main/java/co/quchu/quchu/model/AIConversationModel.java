@@ -64,7 +64,7 @@ public class AIConversationModel {
   }
 
   public enum EnumDataType {
-    QUESTION, ANSWER, OPTION, NO_NETWORK;
+    QUESTION, ANSWER, OPTION,GALLERY, NO_NETWORK;
   }
 
 }

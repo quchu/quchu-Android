@@ -30,7 +30,8 @@ public class ConversationListAnimator extends DefaultItemAnimator {
 
   @Override public boolean animateAdd(final RecyclerView.ViewHolder holder) {
     int holderWidth = holder.itemView.getWidth();
-    if (holder instanceof AIConversationAdapter.QuestionViewHolder) {
+    if (holder instanceof AIConversationAdapter.QuestionViewHolder
+        || holder instanceof AIConversationAdapter.GalleryViewHolder) {
       holder.itemView.setTranslationX(-holderWidth);
       holder.itemView.animate()
           .translationX(0)
@@ -50,7 +51,8 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             @Override public void onAnimationRepeat(Animator animation) {}
           })
           .start();
-    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder || holder instanceof AIConversationAdapter.OptionViewHolder) {
+    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder
+        || holder instanceof AIConversationAdapter.OptionViewHolder) {
       holder.itemView.setTranslationX(holderWidth);
       holder.itemView.animate()
           .translationX(0)
