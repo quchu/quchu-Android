@@ -67,4 +67,14 @@ public class AIConversationModel {
     QUESTION, ANSWER, OPTION,GALLERY, NO_NETWORK;
   }
 
+  @Override public String toString() {
+    return "AIConversationModel{" +
+        "answer='" + answer + '\'' +
+        ", flash='" + flash + '\'' +
+        ", type='" + type + '\'' +
+        ", answerPramms=" + answerPramms +
+        ", placeList=" + placeList +
+        ", dataType=" + dataType +
+        '}';
+  }
 }
