@@ -133,8 +133,8 @@ public class AIConversationPresenter {
     Cursor c = DatabaseHelper.getInstance(context)
         .getReadableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,
-            new String[] { "dataType", "chatContent", "placeList", "options", "timeStamp" }, null,
-            null, null, null, "timestamp asc");
+            new String[] { "dataType", "chatContent", "placeList", "timeStamp" }, null,
+            null, null, null, "timestamp desc limit 20");
 
     while (c.moveToNext()) {
       AIConversationModel acm = new AIConversationModel();
@@ -149,12 +149,12 @@ public class AIConversationPresenter {
           acm.setAnswer(c.getString(1));
           break;
         case 3:
-          acm.setDataType(AIConversationModel.EnumDataType.OPTION);
+          //acm.setDataType(AIConversationModel.EnumDataType.OPTION);
 
-          List<String> answers =
-              new Gson().fromJson(c.getString(3).toString(), new TypeToken<List<String>>() {
-              }.getType());
-          acm.setAnswerPramms(answers);
+          //List<String> answers =
+          //    new Gson().fromJson(c.getString(3).toString(), new TypeToken<List<String>>() {
+          //    }.getType());
+          //acm.setAnswerPramms(answers);
           break;
         case 4:
           acm.setDataType(AIConversationModel.EnumDataType.GALLERY);

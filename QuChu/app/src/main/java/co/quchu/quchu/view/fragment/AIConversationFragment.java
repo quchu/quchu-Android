@@ -30,6 +30,7 @@ import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -121,7 +122,9 @@ public class AIConversationFragment extends BaseFragment {
       }
     },200);
 
+    AIConversationPresenter.delOptionMessages(getActivity());
     history = AIConversationPresenter.getMessages(getActivity());
+    Collections.reverse(history);
     mConversation.addAll(history);
     mAdapter.notifyDataSetChanged();
 
@@ -131,12 +134,9 @@ public class AIConversationFragment extends BaseFragment {
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
 
-        if (history.size()>0 && history.get(history.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION){
-          AIConversationPresenter.delOptionMessages(getActivity());
+        if (history.size()>0 ){
           startConversation(false);
-          makeToast("1");
         }else{
-          makeToast("2");
           startConversation(true);
         }
 
