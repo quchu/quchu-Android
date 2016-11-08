@@ -124,12 +124,11 @@ public class AIConversationFragment extends BaseFragment {
 
     AIConversationPresenter.delOptionMessages(getActivity());
     history = AIConversationPresenter.getMessages(getActivity());
-    Collections.reverse(history);
     mConversation.addAll(history);
     mAdapter.notifyDataSetChanged();
 
     if (mConversation.size()>0){
-      scrollToBottom();
+      mRecyclerView.scrollToPosition(mConversation.size()-1);
     }
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {

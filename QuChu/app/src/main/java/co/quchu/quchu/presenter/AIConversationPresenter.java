@@ -134,7 +134,7 @@ public class AIConversationPresenter {
         .getReadableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,
             new String[] { "dataType", "chatContent", "placeList", "timeStamp" }, null,
-            null, null, null, "timestamp desc limit 20");
+            null, null, null, "timestamp asc limit 3");
 
     while (c.moveToNext()) {
       AIConversationModel acm = new AIConversationModel();

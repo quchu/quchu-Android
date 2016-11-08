@@ -84,7 +84,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.placeHolder) View placeHolder;
 
   @Bind(R.id.vFakeDrawer) View vLeft;
-  @Bind(R.id.vFakeSearchBar) View vRight;
   @Bind(R.id.vSearchBar) View vSearchBar;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
@@ -215,10 +214,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
       mDrawer.setDrawerShadow(new ColorDrawable(Color.TRANSPARENT), GravityCompat.START);
     }
 
-    ActionBarDrawerToggle toggle =
-        new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    mDrawer.addDrawerListener(toggle);
-    toggle.syncState();
+    //ActionBarDrawerToggle toggle =
+    //    new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    //mDrawer.addDrawerListener(toggle);
+    //toggle.syncState();
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getGenes();
@@ -338,7 +337,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer, R.id.vFakeSearchBar, R.id.fab,
+  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer, R.id.fab,
       R.id.drawerItemFavorite, R.id.drawerItemUserCenter, R.id.drawerItemMessage,
       R.id.drawerItemFeedback, R.id.drawerItemSetting, R.id.drawerItemShareApp})
   public void onClick(View view) {
@@ -349,11 +348,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
           mDrawer.openDrawer(GravityCompat.START);
         }
         break;
-      case R.id.vFakeSearchBar://搜索
-        if (placeHolder.getAlpha() == 1) {
-          startActivity(SearchActivityNew.class);
-        }
-        break;
+      //case R.id.vFakeSearchBar://搜索
+      //  if (placeHolder.getAlpha() == 1) {
+      //    startActivity(SearchActivityNew.class);
+      //  }
+      //  break;
 
       case R.id.vSearchBar://搜索
         startActivity(SearchActivityNew.class);
