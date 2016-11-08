@@ -52,6 +52,7 @@ public class AIConversationFragment extends BaseFragment {
   @Bind(R.id.rv) RecyclerView mRecyclerView;
   private XiaoQFab mXiaoQFab;
   private boolean mNetworkBusy = false;
+  private List<AIConversationModel> history;
 
   @Override protected String getPageNameCN() {
     return null;
@@ -120,7 +121,8 @@ public class AIConversationFragment extends BaseFragment {
       }
     },200);
 
-    mConversation.addAll(AIConversationPresenter.getMessages(getActivity()));
+    history = AIConversationPresenter.getMessages(getActivity());
+    mConversation.addAll(history);
     mAdapter.notifyDataSetChanged();
 
     if (mConversation.size()>0){
@@ -129,9 +131,12 @@ public class AIConversationFragment extends BaseFragment {
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
 
-        if (mConversation.size()>0 && mConversation.get(mConversation.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION){
-          
+        if (history.size()>0 && history.get(history.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION){
+          AIConversationPresenter.delOptionMessages(getActivity());
+          startConversation(false);
+          makeToast("1");
         }else{
+          makeToast("2");
           startConversation(true);
         }
 
