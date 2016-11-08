@@ -1,6 +1,7 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.Nullable;
 
 import com.android.volley.VolleyError;
@@ -10,10 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.FeedbackModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * 用户反馈接口请求
@@ -29,12 +32,13 @@ public class FeedbackPresenter {
    * @param listener
    */
   public static void getFeedbackList(final Context context,
-      final CommonListener<List<FeedbackModel>> listener) {
+                                     final CommonListener<List<FeedbackModel>> listener) {
 
     GsonRequest<List<FeedbackModel>> request =
         new GsonRequest<>(NetApi.getFeedbackList, new TypeToken<List<FeedbackModel>>() {
         }.getType(), new ResponseListener<List<FeedbackModel>>() {
-          @Override public void onErrorResponse(@Nullable VolleyError error) {
+          @Override
+          public void onErrorResponse(@Nullable VolleyError error) {
             if (listener != null) {
               listener.errorListener(error, "", "");
             }
@@ -42,7 +46,7 @@ public class FeedbackPresenter {
 
           @Override
           public void onResponse(List<FeedbackModel> response, boolean result, String errorCode,
-              @Nullable String msg) {
+                                 @Nullable String msg) {
             if (response != null && listener != null) {
               listener.successListener(response);
             }
@@ -55,23 +59,32 @@ public class FeedbackPresenter {
    * 提交用户反馈
    *
    * @param context
+   * @param title         标题
+   * @param value         内容
    * @param listener
    */
   public static void sendFeedback(Context context, String title, String value,
-      final CommonListener listener) {
+                                  final CommonListener listener) {
     Map<String, String> map = new HashMap<>();
     map.put("title", title);
     map.put("value", value);
+    map.put("clientMsg", "设备型号 : " + Build.MODEL);//终端类型
+    map.put("systemVersion", "Android os version : " + Build.VERSION.RELEASE);//系统版本
+    map.put("appVersion", "App version : " + AppContext.packageInfo.versionName);//应用版本
+    map.put("cityName", SPUtils.getCityName());//城市名
+
     GsonRequest<Object> request =
         new GsonRequest<>(NetApi.sendFeedback, Object.class, map, new ResponseListener<Object>() {
-          @Override public void onErrorResponse(@Nullable VolleyError error) {
+          @Override
+          public void onErrorResponse(@Nullable VolleyError error) {
             if (listener != null) {
               listener.errorListener(error, "", "");
             }
           }
 
-          @Override public void onResponse(Object response, boolean result, String errorCode,
-              @Nullable String msg) {
+          @Override
+          public void onResponse(Object response, boolean result, String errorCode,
+                                 @Nullable String msg) {
             if (listener != null) {
               listener.successListener(response);
             }
@@ -84,7 +97,7 @@ public class FeedbackPresenter {
    * 用户反馈详情列表
    */
   public static void getFeedMsgList(Context context, String feedbackId,
-      final CommonListener<FeedbackModel> listener) {
+                                    final CommonListener<FeedbackModel> listener) {
 
     Map<String, String> map = new HashMap<>();
     map.put("feedbackId", feedbackId);
@@ -92,7 +105,8 @@ public class FeedbackPresenter {
     GsonRequest<FeedbackModel> request =
         new GsonRequest<>(NetApi.getFeedMsgList, FeedbackModel.class, map,
             new ResponseListener<FeedbackModel>() {
-              @Override public void onErrorResponse(@Nullable VolleyError error) {
+              @Override
+              public void onErrorResponse(@Nullable VolleyError error) {
                 if (listener != null) {
                   listener.errorListener(error, "", "");
                 }
@@ -100,7 +114,7 @@ public class FeedbackPresenter {
 
               @Override
               public void onResponse(FeedbackModel response, boolean result, String errorCode,
-                  @Nullable String msg) {
+                                     @Nullable String msg) {
                 if (response != null && listener != null) {
                   listener.successListener(response);
                 }
@@ -118,17 +132,19 @@ public class FeedbackPresenter {
     map.put("content", content);
 
     GsonRequest<Object> request = new GsonRequest<Object>(NetApi.sendFeedMsg, Object.class, map, new ResponseListener<Object>() {
-      @Override public void onErrorResponse(@Nullable VolleyError error) {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
         if (listener != null) {
           listener.errorListener(error, "", "");
         }
       }
 
-      @Override public void onResponse(Object response, boolean result, String errorCode,
-          @Nullable String msg) {
-          if (listener != null) {
-            listener.successListener(response);
-          }
+      @Override
+      public void onResponse(Object response, boolean result, String errorCode,
+                             @Nullable String msg) {
+        if (listener != null) {
+          listener.successListener(response);
+        }
       }
     });
     request.start(context);

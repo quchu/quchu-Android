@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/footer_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:padding="@dimen/half_margin">
+
+    <ImageView
+        android:id="@+id/ivIndicator"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/half_margin">
+        android:src="@mipmap/ic_loadmore"/>
 
-        <ImageView
-            android:id="@+id/ivIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_loadmore"/>
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextView.H3"
+        android:padding="8dp"
+        android:text="加载中~~"/>
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/TextView.H3"
-            android:padding="8dp"
-            android:text="加载中~~"/>
-
-        <TextView
-            android:id="@+id/loadmore_massage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dialog_margin"
-            android:text="@string/promote_no_network_naughty"
-            android:textColor="@color/standard_color_h2_dark"
-            android:textSize="@dimen/word_size_body"
-            android:visibility="gone"/>
-
-    </LinearLayout>
-
-    <include
-        android:id="@+id/feedback_empty_view"
-        layout="@layout/view_feedback_empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/loadmore_massage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dialog_margin"
+        android:text="@string/promote_no_network_naughty"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="@dimen/word_size_body"
         android:visibility="gone"/>
+
+  </LinearLayout>
+
+  <include
+      android:id="@+id/feedback_empty_view"
+      layout="@layout/view_feedback_empty"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"/>
 
 </RelativeLayout>

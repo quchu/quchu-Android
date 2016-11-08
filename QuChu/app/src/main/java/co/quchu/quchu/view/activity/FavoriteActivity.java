@@ -45,7 +45,7 @@ public class FavoriteActivity extends BaseBehaviorActivity {
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         TextView titleTv = toolbar.getTitleTv();
-        titleTv.setText("收藏");
+        titleTv.setText("");
 
         tabLayout.addTab(tabLayout.newTab().setText("趣处"));
         tabLayout.addTab(tabLayout.newTab().setText("文章"));
