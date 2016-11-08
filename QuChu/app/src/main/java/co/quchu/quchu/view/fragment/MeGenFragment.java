@@ -25,7 +25,6 @@ import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
-import co.quchu.quchu.utils.SPUtils;
 
 /**
  * Created by mwb on 16/8/22.
@@ -146,6 +145,8 @@ public class MeGenFragment extends BaseFragment {
       labels[i] = genes.get(i).getZh();
     }
 
+    computeMaxGene(genes);
+
     new Handler().postDelayed(new Runnable() {
       @Override
       public void run() {
@@ -171,53 +172,24 @@ public class MeGenFragment extends BaseFragment {
         va.start();
       }
     }, 100);
-
-    setMaxStatus();
   }
 
   /**
-   * 设置基因
+   * 获取最大的基因
    */
-  private void setGenes(float progress, List<MyGeneModel.GenesEntity> genes) {
-    for (MyGeneModel.GenesEntity gene : genes) {
-      switch (gene.getMark()) {
-        case "小食神":
-          chihuoTv.setText(String.valueOf((int) (progress * gene.getWeight())));
-          break;
-
-        case "艺术家":
-          wenyiTv.setText(String.valueOf((int) (progress * gene.getWeight())));
-          break;
-
-        case "外交官":
-          shejiaoTv.setText(String.valueOf((int) (progress * gene.getWeight())));
-          break;
-
-        case "时尚精":
-          shishangTv.setText(String.valueOf((int) (progress * gene.getWeight())));
-          break;
-
-        case "大财阀":
-          tuhaoTv.setText(String.valueOf((int) (progress * gene.getWeight())));
-          break;
-
-        case "玩乐咖":
-          haoqiTv.setText(String.valueOf((int) (progress * gene.getWeight())));
-          break;
+  private void computeMaxGene(List<MyGeneModel.GenesEntity> genes) {
+    double defaultValue = 0;
+    int index = 0;
+    for (int i = 0; i < genes.size(); i++) {
+      if (genes.get(i).getWeight() > defaultValue) {
+        defaultValue = genes.get(i).getWeight();
+        index = i;
       }
     }
-  }
 
-  /**
-   * 设置最大值的状态
-   */
-  private void setMaxStatus() {
-    String userMark = SPUtils.getUserMark();
-    if (userMark == null) {
-      return;
-    }
+    String mark = genes.get(index).getMark();
 
-    switch (userMark) {
+    switch (mark) {
       case "小食神":
         chihuoImg.setImageResource(R.mipmap.ic_chihuo_yellow);
         chihuoTv.setTextColor(getResources().getColor(R.color.colorPrimary));

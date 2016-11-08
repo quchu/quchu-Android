@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -20,7 +21,6 @@
           android:id="@+id/user_avatar_img"
           android:layout_width="100dp"
           android:layout_height="100dp"
-          android:layout_marginLeft="@dimen/base_margin"
           fresco:placeholderImage="@mipmap/head_place_hold"
           fresco:roundAsCircle="true"
           fresco:roundingBorderColor="@color/colorBorder"
@@ -59,27 +59,30 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_name_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/shape_me_user_tag"
+        android:layout_marginTop="@dimen/half_margin"
+        android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingRight="@dimen/half_margin"
+        android:paddingBottom="3dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="3dp"
         android:visibility="invisible">
 
       <ImageView
           android:id="@+id/user_mark_img"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"/>
+          android:layout_height="wrap_content"
+          android:visibility="gone"/>
 
       <TextView
           android:id="@+id/user_mark_tv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="2dp"
-          android:layout_marginTop="2dp"
           android:gravity="center"
-          android:textColor="@color/standard_color_h3_dark"
-          android:textSize="@dimen/standard_text_size_h4"/>
+          android:textColor="@color/standard_color_h2_dark"
+          android:textSize="@dimen/standard_text_size_h4"
+          tools:text="好奇猫"/>
 
     </LinearLayout>
 
