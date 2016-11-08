@@ -12,6 +12,7 @@ import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.DatabaseHelper;
+import co.quchu.quchu.utils.SPUtils;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,6 +34,10 @@ public class AIConversationPresenter {
 
     Map<String, String> map = new HashMap<>();
     map.put("type", startor ? String.valueOf("01") : "03");
+
+    map.put("longitude",String.valueOf(SPUtils.getLongitude()));
+    map.put("latitude",String.valueOf(SPUtils.getLatitude()));
+    map.put("cityId",String.valueOf(SPUtils.getCityId()));
     GsonRequest<AIConversationModel> request =
         new GsonRequest<>(NetApi.getAIQuestion, AIConversationModel.class, map,
             new ResponseListener<AIConversationModel>() {
@@ -59,6 +64,11 @@ public class AIConversationPresenter {
     Map<String, String> map = new HashMap<>();
     map.put("question", question);
     map.put("flash", flash);
+
+    map.put("longitude",String.valueOf(SPUtils.getLongitude()));
+    map.put("latitude",String.valueOf(SPUtils.getLatitude()));
+    map.put("cityId",String.valueOf(SPUtils.getCityId()));
+
     GsonRequest<AIConversationModel> request =
         new GsonRequest<>(NetApi.getAIAnswer, AIConversationModel.class, map,
             new ResponseListener<AIConversationModel>() {
@@ -124,7 +134,7 @@ public class AIConversationPresenter {
         .getReadableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,
             new String[] { "dataType", "chatContent", "placeList", "options", "timeStamp" }, null,
-            null, null, null, "timestamp desc");
+            null, null, null, "timestamp asc");
 
     while (c.moveToNext()) {
       AIConversationModel acm = new AIConversationModel();
@@ -165,17 +175,23 @@ public class AIConversationPresenter {
    * 删除最后一个Option如果存在的话
    */
   public static boolean delOptionMessages(Context context) {
-    Cursor c = DatabaseHelper.getInstance(context)
-        .getReadableDatabase()
-        .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, new String[] { "id,dataType" },
-            "dataType", new String[] { "3" }, null, null, null);
+
+    Cursor c = DatabaseHelper.getInstance(context).getReadableDatabase().rawQuery("select id,dataType from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" order by timestamp desc limit 1",null);
+
     if (c.moveToNext()) {
       int id = c.getInt(0);
+      int type = c.getInt(1);
       c.close();
-      return DatabaseHelper.getInstance(context)
-          .getReadableDatabase()
-          .delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, "id",
-              new String[] { String.valueOf(id) }) > 0;
+
+      if (type  == 3){
+        return DatabaseHelper.getInstance(context)
+            .getReadableDatabase()
+            .delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, "id=?",
+                new String[] { String.valueOf(id) }) > 0;
+      }else{
+        return false;
+      }
+
     }
     return false;
   }

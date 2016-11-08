@@ -120,9 +120,21 @@ public class AIConversationFragment extends BaseFragment {
       }
     },200);
 
+    mConversation.addAll(AIConversationPresenter.getMessages(getActivity()));
+    mAdapter.notifyDataSetChanged();
+
+    if (mConversation.size()>0){
+      scrollToBottom();
+    }
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
-        startConversation(true);
+
+        if (mConversation.size()>0 && mConversation.get(mConversation.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION){
+          
+        }else{
+          startConversation(true);
+        }
+
       }
     },1500);
     return v;
