@@ -10,11 +10,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -26,7 +31,6 @@ import co.quchu.quchu.model.QuchuDetailArticleModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.presenter.NearbyPresenter;
-
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -34,9 +38,6 @@ import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
-import com.facebook.drawee.view.SimpleDraweeView;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by admin on 2016/3/7.
@@ -238,15 +239,25 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     } else if (holder instanceof ArticleViewHolder) {
       if (null != mData.getArticleList()) {
         int articleIndex = 0;
-        final QuchuDetailArticleModel article = mData.getArticleList().get(articleIndex);
+        List<QuchuDetailArticleModel> articleModelList = mData.getArticleList();
+        QuchuDetailArticleModel article = null;
+        if (articleModelList != null && articleModelList.size() > 0) {
+          article = articleModelList.get(articleIndex);
+        }
+
+        if (article == null) {
+          return;
+        }
+
         ((ArticleViewHolder) holder).sdvAuthor.setImageURI(Uri.parse(article.getUserPhoto()));
         ((ArticleViewHolder) holder).tvTitle.setText(String.valueOf(article.getUserName()));
         ((ArticleViewHolder) holder).tvSubTitle.setText(String.valueOf(article.getTitle()));
         if (null != article.getUrl()) {
 
+          final QuchuDetailArticleModel finalArticle = article;
           holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-              WebViewActivity.enterActivity(mAnchorActivity, article.getUrl(), article.getTitle(),
+              WebViewActivity.enterActivity(mAnchorActivity, finalArticle.getUrl(), finalArticle.getTitle(),
                   false);
             }
           });

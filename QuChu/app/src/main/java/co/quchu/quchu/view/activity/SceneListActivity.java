@@ -54,6 +54,12 @@ public class SceneListActivity extends BaseBehaviorActivity {
   private void initRecyclerView() {
     mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
     SceneListAdapter adapter = new SceneListAdapter(this, mSceneList);
+    adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
+      @Override
+      public void onItemClick(SceneInfoModel sceneInfoModel) {
+        SceneDetailActivity.enterActivity(SceneListActivity.this, sceneInfoModel.getSceneId(), sceneInfoModel.getSceneName(), true);
+      }
+    });
     mRecyclerView.setAdapter(adapter);
     mRecyclerView.addItemDecoration(new SpacesItemDecoration(40, 4));
   }

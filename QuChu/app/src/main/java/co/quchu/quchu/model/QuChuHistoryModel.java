@@ -1,27 +1,11 @@
 package co.quchu.quchu.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by mwb on 16/11/5.
  */
 public class QuChuHistoryModel {
-
-  private List<PlaceListBean.ResultBean> data = new ArrayList<>();
-
-  public List<PlaceListBean.ResultBean> getData() {
-    data.clear();
-    if (placeList != null) {
-      data.addAll(placeList.getResult());
-    }
-
-    if (bestList != null) {
-
-    }
-
-    return null;
-  }
 
   /**
    * pageCount : 1
@@ -198,7 +182,7 @@ public class QuChuHistoryModel {
       private int placeId;
       private String price;
       private Object rgb;
-      private int suggest;
+      private double suggest;
       private int width;
       /**
        * code :
@@ -337,11 +321,11 @@ public class QuChuHistoryModel {
         this.rgb = rgb;
       }
 
-      public int getSuggest() {
+      public double getSuggest() {
         return suggest;
       }
 
-      public void setSuggest(int suggest) {
+      public void setSuggest(double suggest) {
         this.suggest = suggest;
       }
 

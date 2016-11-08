@@ -17,7 +17,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MessageModel;
-import co.quchu.quchu.presenter.MessageCenterPresenter;
+import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.activity.MyFootprintDetailActivity;
 import co.quchu.quchu.view.activity.UserCenterActivityNew;
@@ -48,7 +48,7 @@ public class NoticeFragment extends BaseFragment {
         adapter = new MessageCenterAdapter(getActivity());
         adapter.setLoadmoreListener(loadMoreListener);
         messagesRv.setAdapter(adapter);
-        MessageCenterPresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
+        MessagePresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
         adapter.setItemClickListener(onItemClickListener);
         refreshLayout.setOnRefreshListener(onRefreshListener);
 
@@ -61,7 +61,7 @@ public class NoticeFragment extends BaseFragment {
     private AdapterBase.OnLoadmoreListener loadMoreListener = new AdapterBase.OnLoadmoreListener() {
         @Override
         public void onLoadmore() {
-            MessageCenterPresenter.getMessageList(getActivity(), pagesNo + 1, pageLoadListener);
+            MessagePresenter.getMessageList(getActivity(), pagesNo + 1, pageLoadListener);
         }
     };
 
@@ -103,7 +103,7 @@ public class NoticeFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     refreshLayout.setRefreshing(false);
-                    MessageCenterPresenter.getMessageList(getActivity(), pageNo, pageLoadListener);
+                    MessagePresenter.getMessageList(getActivity(), pageNo, pageLoadListener);
                 }
             });
         }
@@ -118,8 +118,8 @@ public class NoticeFragment extends BaseFragment {
             switch (type) {
                 case MessageCenterAdapter.CLICK_TYPE_FOLLOW://关注
                     DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
-                    MessageCenterPresenter.followMessageCenterFriends(getActivity(), item.getFormId(),
-                            "yes".equals(item.getCome()), new MessageCenterPresenter.MessageGetDataListener() {
+                    MessagePresenter.followMessageCenterFriends(getActivity(), item.getFormId(),
+                            "yes".equals(item.getCome()), new MessagePresenter.MessageGetDataListener() {
                                 @Override
                                 public void onSuccess(MessageModel arrayList) {
                                     if ("yes".equals(item.getCome())) {
@@ -161,7 +161,7 @@ public class NoticeFragment extends BaseFragment {
         @Override
         public void onRefresh() {
             pagesNo = 1;
-            MessageCenterPresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
+            MessagePresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
         }
     };
 

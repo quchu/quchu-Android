@@ -37,7 +37,6 @@ import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
@@ -57,7 +56,6 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     return 103;
   }
 
-
   @Override
   protected String getPageNameCN() {
     return getString(R.string.pname_scene_detail);
@@ -67,13 +65,9 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   private static final String BUNDLE_KEY_SCENE_NAME = "BUNDLE_KEY_SCENE_NAME";
   private static final String BUNDLE_KEY_SCENE_IS_FAVORITE = "BUNDLE_KEY_SCENE_IS_FAVORITE";
 
-  @Bind(R.id.rv)
-  RecyclerView rv;
-  @Bind(R.id.swipeRefreshLayout)
-  SwipeRefreshLayout mSwipeRefreshLayout;
-
-  @Bind(R.id.errorView)
-  ErrorView errorView;
+  @Bind(R.id.rv) RecyclerView rv;
+  @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.errorView) ErrorView errorView;
   @Bind(R.id.likeFab) FloatingActionButton mLikeFab;
 
   private boolean isFavorite = false;
@@ -117,7 +111,6 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     }
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
-
     mLoadingListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
       @Override
       public void onLoadMore(int current_page) {
@@ -131,15 +124,14 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     getData();
 
     //喜欢场景
-    mLikeFab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        changeFavorite();
-      }
-    });
-
-    mLikeFab.setVisibility(View.VISIBLE);
-    changeFavoriteBtn(isFavorite);
+//    mLikeFab.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        changeFavorite();
+//      }
+//    });
+//    mLikeFab.setVisibility(View.VISIBLE);
+//    changeFavoriteBtn(isFavorite);
   }
 
   public void getData() {
@@ -179,7 +171,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
           Toast.makeText(getApplicationContext(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
 
-          changeFavoriteBtn(isFavorite);
+//          changeFavoriteBtn(isFavorite);
         }
 
         @Override
@@ -194,7 +186,6 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         @Override
         public void successListener(Object response) {
 
-
           ArrayMap<String, Object> params = new ArrayMap<>();
           params.put("趣处名称", mSceneInfo.getSceneName());
           params.put("入口名称", "场景详情");
@@ -205,7 +196,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
           Toast.makeText(getApplicationContext(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
 
-          changeFavoriteBtn(isFavorite);
+//          changeFavoriteBtn(isFavorite);
         }
 
         @Override
@@ -221,15 +212,15 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   /**
    * 改变按钮状态
    */
-  private void changeFavoriteBtn(boolean isFavorite) {
-    if (isFavorite) {
-      //场景已经收藏
-      mLikeFab.setImageResource(R.mipmap.ic_favorite_yichu);
-
-    } else {
-      mLikeFab.setImageResource(R.mipmap.ic_favorite_add);
-    }
-  }
+//  private void changeFavoriteBtn(boolean isFavorite) {
+//    if (isFavorite) {
+//      //场景已经收藏
+//      mLikeFab.setImageResource(R.mipmap.ic_favorite_yichu);
+//
+//    } else {
+//      mLikeFab.setImageResource(R.mipmap.ic_favorite_add);
+//    }
+//  }
 
   private void getData(final boolean firstLoad, final boolean loadMore) {
     if (firstLoad) {
@@ -305,12 +296,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
             @Override
             public void onPlaceClick(int pid, String pName) {
 
-
               ArrayMap<String, Object> params = new ArrayMap<>();
               params.put("趣处名称", pName);
               params.put("入口名称", getPageNameCN());
               ZGEvent(params, "进入趣处详情页");
-
 
               Intent intent = new Intent(SceneDetailActivity.this, QuchuDetailsActivity.class);
               intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
@@ -324,10 +313,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         mSwipeRefreshLayout.setRefreshing(false);
         mLoadingListener.loadingComplete();
 
-        if (!isFavorite) {
-          //显示添加收藏引导
-          WizardHelper.showWizard(SceneDetailActivity.this, WizardHelper.Wizard.scene_detail, null);
-        }
+//        if (!isFavorite) {
+//          //显示添加收藏引导
+//          WizardHelper.showWizard(SceneDetailActivity.this, WizardHelper.Wizard.scene_detail, null);
+//        }
       }
 
       @Override

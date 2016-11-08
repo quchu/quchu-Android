@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,10 +16,15 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.MessageModel;
-import co.quchu.quchu.presenter.MessageCenterPresenter;
+import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.view.activity.ArticleDetailActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.view.activity.SceneDetailActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MessageAdapter;
+
+import static android.R.attr.id;
 
 /**
  * 消息
@@ -49,15 +55,15 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
     mAdapter = new MessageAdapter(getActivity());
     mAdapter.setLoadmoreListener(loadMoreListener);
     mRecyclerView.setAdapter(mAdapter);
-    MessageCenterPresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
-    mAdapter.setItemClickListener(onItemClickListener);
+    MessagePresenter.getSysMessageList(getActivity(), pagesNo, pageLoadListener);
+    mAdapter.setOnMessageistListener(onItemClickListener);
     mRefreshLayout.setOnRefreshListener(this);
   }
 
   @Override
   public void onRefresh() {
     pagesNo = 1;
-    MessageCenterPresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
+    MessagePresenter.getSysMessageList(getActivity(), pagesNo, pageLoadListener);
   }
 
   private PageLoadListener<MessageModel> pageLoadListener = new PageLoadListener<MessageModel>() {
@@ -95,7 +101,7 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
         @Override
         public void onClick(View v) {
           mRefreshLayout.setRefreshing(false);
-          MessageCenterPresenter.getMessageList(getActivity(), pageNo, pageLoadListener);
+          MessagePresenter.getMessageList(getActivity(), pageNo, pageLoadListener);
         }
       });
 
@@ -105,14 +111,38 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
   private AdapterBase.OnLoadmoreListener loadMoreListener = new AdapterBase.OnLoadmoreListener() {
     @Override
     public void onLoadmore() {
-      MessageCenterPresenter.getMessageList(getActivity(), pagesNo + 1, pageLoadListener);
+      MessagePresenter.getMessageList(getActivity(), pagesNo + 1, pageLoadListener);
     }
   };
 
-  private AdapterBase.OnItemClickListener<MessageModel.ResultBean> onItemClickListener = new AdapterBase.OnItemClickListener<MessageModel.ResultBean>() {
+  private MessageAdapter.OnMessageListListener onItemClickListener = new MessageAdapter.OnMessageListListener() {
     @Override
-    public void itemClick(RecyclerView.ViewHolder holder, MessageModel.ResultBean item, int type, @Deprecated int position) {
+    public void onItemClick(MessageModel.ResultBean model) {
+      Intent intent;
+      switch (model.getTargetType()) {
+        case MessageModel.TARGET_TYPE_QUCHU:
+          intent = new Intent(getActivity(), QuchuDetailsActivity.class);
+          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, Integer.valueOf(id));
+          startActivity(intent);
+          break;
 
+        case MessageModel.TARGET_TYPE_SCENE:
+          SceneDetailActivity.enterActivity(getActivity(), model.getTargetId(), "场景详情", true);
+          break;
+
+        case MessageModel.TARGET_TYPE_ARTICLE:
+          ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(model.getTargetId()), "文章详情", "小Q聊天界面");
+          break;
+
+        case MessageModel.TARGET_TYPE_ACTIVITY:
+          break;
+
+        case MessageModel.TARGET_TYPE_CITY:
+          break;
+
+        case MessageModel.TARGET_TYPE_TEXT:
+          break;
+      }
     }
   };
 

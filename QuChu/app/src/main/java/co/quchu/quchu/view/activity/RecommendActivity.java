@@ -48,7 +48,7 @@ import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.UpdateInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
-import co.quchu.quchu.presenter.MeActivityPresenter;
+import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -228,7 +228,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
    * 获取未读消息
    */
   private void getUnreadMessage() {
-    new MeActivityPresenter(this).getUnreadMessageCound(new MeActivityPresenter.OnUnreadMessageCountListener() {
+    MessagePresenter.getUnreadMessageCount(this, new MessagePresenter.OnMessagePresenterListener() {
       @Override
       public void onUnreadMessageCount(int msgCount, int feedbackMsgCount) {
         showMsgUnreadView(msgCount);

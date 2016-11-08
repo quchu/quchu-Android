@@ -2,10 +2,9 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -15,12 +14,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.utils.DateUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by Nico on 16/5/27.
@@ -73,12 +70,14 @@ public class ShareQuchuActivity extends BaseActivity {
         setContentView(R.layout.activity_share_quchu);
         ButterKnife.bind(this);
 
-
+        getEnhancedToolbar().getTitleTv().setText(R.string.share_to);
 
         mDetailModel = (DetailModel) getIntent().getSerializableExtra(BUNDLE_KEY_QUCHU_MODEL);
-        getEnhancedToolbar().getTitleTv().setText(R.string.share_to);
-        ivQuchuCover.setImageURI(Uri.parse(mDetailModel.getCover()));
-        ivQuchuCover.setAspectRatio(1.5f);
+
+        if (!TextUtils.isEmpty(mDetailModel.getCover())) {
+            ivQuchuCover.setImageURI(Uri.parse(mDetailModel.getCover()));
+            ivQuchuCover.setAspectRatio(1.5f);
+        }
         tvPlaceLocation.setText(mDetailModel.getAddress());
 
         tvPlaceName.setText(mDetailModel.getName());
@@ -88,8 +87,6 @@ public class ShareQuchuActivity extends BaseActivity {
         prbRating.setRating(mDetailModel.getSuggest());
         tvAuthor.setText("By 趣处");
         tvDate.setText(DateUtils.getDateToString(DateUtils.DATA_FORMAT_MM_DD_YYYY_CLEAR,System.currentTimeMillis()));
-
-
 
         tvShare.setOnClickListener(new View.OnClickListener() {
             @Override

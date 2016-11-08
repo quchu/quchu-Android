@@ -45,6 +45,17 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
       holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getSceneCover()));
       holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
+
+      holder.itemView.setTag(sceneInfoModel);
+      holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          SceneInfoModel sceneInfoModel = (SceneInfoModel) v.getTag();
+          if (sceneInfoModel != null && mListener != null) {
+            mListener.onItemClick(sceneInfoModel);
+          }
+        }
+      });
     }
   }
 
@@ -62,5 +73,15 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
       super(itemView);
       ButterKnife.bind(this, itemView);
     }
+  }
+
+  private OnSceneListListener mListener;
+
+  public void setOnSceneListListener(OnSceneListListener listener) {
+    mListener = listener;
+  }
+
+  public interface OnSceneListListener {
+    void onItemClick(SceneInfoModel sceneInfoModel);
   }
 }
