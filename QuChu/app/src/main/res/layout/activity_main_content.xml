@@ -193,12 +193,12 @@
 
   <co.quchu.quchu.widget.XiaoQFab
       android:id="@+id/fab"
-      android:layout_width="30dp"
-      android:layout_height="30dp"
+      android:layout_width="42dp"
+      android:layout_height="42dp"
       android:padding="1dp"
       app:useCompatPadding="true"
+      app:elevation="0dp"
       android:clickable="true"
-      android:src="@mipmap/ic_xiaoq_logo"
       app:backgroundTint="@android:color/transparent"
       app:fabSize="normal"
       app:layout_anchor="@id/appbar"

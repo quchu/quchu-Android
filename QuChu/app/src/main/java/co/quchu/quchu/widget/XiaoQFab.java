@@ -5,6 +5,8 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.DiscretePathEffect;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +26,13 @@ public class XiaoQFab extends FloatingActionButton {
   private float[] mAnimationProgress;
   private int mSides = 5;
   public boolean mLoading = false;
-
+  private int mSize = -1;
+  private float mStrokeWidth = -1;
+  private int mHalfSize = -1;
+  private int mOffSetOutBlk = -1;
+  private int mOffSetSec = -1;
+  private int mOffSetThd = -1;
+  private int mOffSetF = -1;
 
   public XiaoQFab(Context context) {
     super(context);
@@ -38,51 +46,68 @@ public class XiaoQFab extends FloatingActionButton {
     super(context, attrs, defStyleAttr);
   }
 
+
+
   @Override protected void onDraw(Canvas canvas) {
 
-    int size = Math.min(getWidth(), getHeight());
+    if(-1==mSize)mSize =  Math.min(getWidth(), getHeight());
+    if(-1==mStrokeWidth) mStrokeWidth = mSize/13f;
+    if(-1==mHalfSize)mHalfSize =  mSize/2;
+    if(-1==mOffSetOutBlk)mOffSetOutBlk =  (mSize / 21);
+    if(-1==mOffSetSec) mOffSetSec = (int) (mSize / 7f);
+    if(-1==mOffSetThd) mOffSetThd = (int) (mSize / 4.5f);
+    if(-1==mOffSetF) mOffSetF = (int) (mSize / 3.15f);
 
     Paint paint = new Paint();
     paint.setColor(Color.BLACK);
-    paint.setStrokeWidth(size/10);
+    paint.setStrokeWidth(mStrokeWidth);
     paint.setStyle(Paint.Style.STROKE);
     paint.setAntiAlias(true);
+    paint.setStrokeCap(Paint.Cap.ROUND);
 
 
     Paint bg = new Paint();
     bg.setColor(Color.WHITE);
     bg.setStyle(Paint.Style.FILL);
     bg.setAntiAlias(true);
-    canvas.drawCircle(size/2,size/2,size/2,bg);
+
+
+    canvas.drawCircle(mHalfSize,mHalfSize,mHalfSize-(mStrokeWidth/2),bg);
+
+
 
     if (!mLoadingAnimationStart){
       if (null != mAnimationProgress) {
-        int offSet = (size / 21);
-        canvas.drawArc(new RectF(offSet, offSet, size - offSet, size - offSet),
-            360 * mAnimationProgress[0], 360 * mAnimationProgress[0], false, paint);
+
+        float radius1 = 360 *mAnimationProgress[0];
+        float radius2 = 360 *mAnimationProgress[1];
+        float radius3 = 360 *mAnimationProgress[2];
+        float radius4 = 360 *mAnimationProgress[3];
+
+        canvas.drawArc(new RectF(mOffSetOutBlk, mOffSetOutBlk, mSize - mOffSetOutBlk, mSize - mOffSetOutBlk),
+            radius1, radius1, false, paint);
 
         paint.setColor(Color.WHITE);
-        int offSetSec = (int) (size / 7f);
-        canvas.drawArc(new RectF(offSetSec, offSetSec, size - offSetSec, size - offSetSec),
-            180 * mAnimationProgress[1], 360 * mAnimationProgress[1], false, paint);
 
-        paint.setStrokeWidth(size/9);
+        canvas.drawArc(new RectF(mOffSetSec, mOffSetSec, mSize - mOffSetSec, mSize - mOffSetSec),
+            180 * mAnimationProgress[1], radius2, false, paint);
+
+        paint.setStrokeWidth(mSize/9);
         paint.setColor(Color.parseColor("#ffd702"));
-        int offSetThd = (int) (size / 4.5f);
-        canvas.drawArc(new RectF(offSetThd, offSetThd, size - offSetThd, size - offSetThd),
-            120 * mAnimationProgress[2], -360 * mAnimationProgress[2], false, paint);
 
-        paint.setStrokeWidth(size/8);
+        canvas.drawArc(new RectF(mOffSetThd, mOffSetThd, mSize - mOffSetThd, mSize - mOffSetThd),
+            120 * mAnimationProgress[2], radius3, false, paint);
+
+        paint.setStrokeWidth(mSize/8);
         paint.setColor(Color.BLACK);
-        int offSetF = (int) (size / 3.15f);
-        canvas.drawArc(new RectF(offSetF, offSetF, size - offSetF, size - offSetF),
-            240 * mAnimationProgress[3], 360 * mAnimationProgress[3], false, paint);
+        canvas.drawArc(new RectF(mOffSetF, mOffSetF, mSize - mOffSetF, mSize - mOffSetF),
+            240 * mAnimationProgress[3], radius4, false, paint);
 
         canvas.save();
         canvas.rotate(-180 + (mAnimationProgress[4] * 180), getWidth() / 2, getHeight() / 2);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.parseColor("#eaeaea"));
-        canvas.drawCircle(size / 4, size - (size / 4), (size/20) * mAnimationProgress[3], paint);
+        canvas.drawCircle(mHalfSize / 4, mHalfSize - (mHalfSize / 4), (mHalfSize/17) * mAnimationProgress[3], paint);
         canvas.restore();
       }
 
@@ -90,8 +115,7 @@ public class XiaoQFab extends FloatingActionButton {
     }else{
       //canvas.save();
       //canvas.rotate((revert?360:-360)* mAnimationProgress[0],getWidth()/2,getHeight()/2);
-      int offSet = (int) (size / 21);
-      canvas.drawArc(new RectF(offSet, offSet, size - offSet, size - offSet),
+      canvas.drawArc(new RectF(mOffSetOutBlk, mOffSetOutBlk, mSize - mOffSetOutBlk, mSize - mOffSetOutBlk),
           (revert?360:-360)  * mAnimationProgress[0], (revert?360:-360)  * mAnimationProgress[0], false, paint);
       //canvas.restore();
     }
@@ -202,7 +226,7 @@ public class XiaoQFab extends FloatingActionButton {
           invalidate();
         }
       });
-      animator.setStartDelay(75 * i);
+      animator.setStartDelay(100 * i);
       if (finalI == mSides - 1) {
         animator.addListener(new Animator.AnimatorListener() {
           @Override public void onAnimationStart(Animator animation) {}
