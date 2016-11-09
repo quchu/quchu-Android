@@ -387,9 +387,11 @@ public class QuChuHistoryModel {
   }
 
   public static class BestListBean {
+
     private String gapStr;
     private String title;
     private boolean isBest;
+    private boolean isChooseNextBest;
     /**
      * address : 民族路120号
      * areaCircleName : 思明区厦门大学
@@ -459,6 +461,14 @@ public class QuChuHistoryModel {
 
     public void setBest(boolean best) {
       isBest = best;
+    }
+
+    public boolean isChooseNextBest() {
+      return isChooseNextBest;
+    }
+
+    public void setChooseNextBest(boolean chooseNextBest) {
+      isChooseNextBest = chooseNextBest;
     }
 
     public PlaceListBean.ResultBean getSecondPlaceInfo() {

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -391,35 +390,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   @Override
   protected String getPageNameCN() {
     return null;
-  }
-
-  /**
-   * 隐藏软键盘
-   */
-  protected void hideSoftware() {
-//    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-      if (getCurrentFocus() != null)
-        mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-  }
-
-  protected void hideSoftware(EditText editText) {
-//    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-  }
-
-  /**
-   * 显示软键盘
-   */
-  protected void showSoftWare(final EditText editText) {
-//    final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    editText.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        mInputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-      }
-    }, 200);
   }
 
   /**

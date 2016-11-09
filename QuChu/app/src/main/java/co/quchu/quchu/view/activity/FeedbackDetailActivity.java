@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,6 +29,7 @@ import co.quchu.quchu.model.FeedbackModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.adapter.FeedbackDetailAdapter;
 
 import static co.quchu.quchu.R.id.inputEditText;
@@ -204,7 +203,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
           public void successListener(Object response) {
             makeToast("感谢您对我们的支持");
             mInputEditText.setText("");
-            hideSoftware(mInputEditText);
+            SoftInputUtils.hideSoftInput(FeedbackDetailActivity.this);
             getFeedbackDetail(mFeedbackId);
           }
 
@@ -213,21 +212,6 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
             makeToast(R.string.network_error);
           }
         });
-
-  }
-
-  /**
-   * 隐藏键盘
-   */
-  private void hideSoftware(EditText editText) {
-    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-      if (getCurrentFocus() != null)
-        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    //manager
-    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
   }
 
   @Override

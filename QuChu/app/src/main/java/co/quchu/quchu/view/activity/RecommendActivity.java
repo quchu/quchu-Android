@@ -422,7 +422,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemShareApp://分享 App
-        SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
         break;
     }
   }

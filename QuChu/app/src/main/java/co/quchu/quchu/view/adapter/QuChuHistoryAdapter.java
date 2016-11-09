@@ -35,8 +35,6 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private List<QuChuHistoryModel.BestListBean> mBestList;
   private List<QuChuHistoryModel.PlaceListBean.ResultBean> mResultBeanList;
 
-  private boolean isChooseNextBest;//是否选择下一条最优
-
   public QuChuHistoryAdapter(Context context) {
     mContext = context;
   }
@@ -77,12 +75,31 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         holder.mTopLableLayout.setVisibility(View.VISIBLE);
 
-        if (isChooseNextBest) {
-          holder.mBestDescribeTv.setVisibility(View.GONE);
+        holder.mBestDescribeTv.setVisibility(View.VISIBLE);
+        holder.mLeftIcon.setVisibility(View.GONE);
+        holder.mOffsetTv.setVisibility(View.GONE);
+        holder.mBestDescribeTv.setText(bestListBean.getTitle());
+        if (bestListBean.isBest()) {
           holder.mRightIcon.setVisibility(View.GONE);
-          holder.mOffsetTv.setVisibility(View.VISIBLE);
-          holder.mOffsetTv.setText(bestListBean.getGapStr());
+        } else {
+          holder.mRightIcon.setVisibility(View.VISIBLE);
+          holder.mRightIcon.setTag(actualPosition);
+          holder.mRightIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              int position = (int) v.getTag();
+              chooseNextBest(position);
+            }
+          });
+        }
+
+        //此时选择了下一条最优数据
+        if (bestListBean.isChooseNextBest()) {
+          holder.mBestDescribeTv.setVisibility(View.GONE);
           holder.mLeftIcon.setVisibility(View.VISIBLE);
+          holder.mOffsetTv.setVisibility(View.VISIBLE);
+          holder.mRightIcon.setVisibility(View.GONE);
+          holder.mOffsetTv.setText(bestListBean.getGapStr());
           holder.mLeftIcon.setTag(actualPosition);
           holder.mLeftIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,25 +108,6 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
               chooseNextBest(position);
             }
           });
-
-        } else {
-          holder.mBestDescribeTv.setVisibility(View.VISIBLE);
-          holder.mLeftIcon.setVisibility(View.GONE);
-          holder.mOffsetTv.setVisibility(View.GONE);
-          holder.mBestDescribeTv.setText(bestListBean.getTitle());
-          if (bestListBean.isBest()) {
-            holder.mRightIcon.setVisibility(View.GONE);
-          } else {
-            holder.mRightIcon.setVisibility(View.VISIBLE);
-            holder.mRightIcon.setTag(actualPosition);
-            holder.mRightIcon.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                int position = (int) v.getTag();
-                chooseNextBest(position);
-              }
-            });
-          }
         }
 
         setItemClick(holder, bestPlaceInfo);
@@ -170,17 +168,19 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     QuChuHistoryModel.BestListBean bestListBean = mBestList.get(position);
     QuChuHistoryModel.PlaceListBean.ResultBean bestPlaceInfo = bestListBean.getPlaceInfo();
     QuChuHistoryModel.PlaceListBean.ResultBean secondPlaceInfo = bestListBean.getSecondPlaceInfo();
-    if (secondPlaceInfo == null) {
-      return;
-    }
-    isChooseNextBest = !isChooseNextBest;
+
     if (mBestList.contains(bestListBean)) {
       mBestList.remove(bestListBean);
     }
-    if (isChooseNextBest) {
+
+    if (bestListBean.isChooseNextBest()) {
+      bestListBean.setSecondPlaceInfo(bestPlaceInfo);
       bestListBean.setPlaceInfo(secondPlaceInfo);
+      bestListBean.setChooseNextBest(false);
     } else {
-      bestListBean.setPlaceInfo(bestPlaceInfo);
+      bestListBean.setPlaceInfo(secondPlaceInfo);
+      bestListBean.setSecondPlaceInfo(bestPlaceInfo);
+      bestListBean.setChooseNextBest(true);
     }
     mBestList.add(position, bestListBean);
     notifyDataSetChanged();

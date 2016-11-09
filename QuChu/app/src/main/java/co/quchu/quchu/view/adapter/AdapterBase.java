@@ -104,7 +104,6 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
   public final void onBindViewHolder(VH holder, int position) {
     if (holder instanceof LoadMoreViewHolder) {
       final LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
-      loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
       if (loadMoreEnable) {
         loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
         loadMoreHold.retryView.setText("加载中~~");
@@ -159,6 +158,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
           if (getFeedback()) {
             loadMoreHold.feedbackEmptyView.setVisibility(View.VISIBLE);
             loadMoreHold.retryView.setText("");
+            loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
             loadMoreHold.retryView.setText(getNullDataHint());
           }
@@ -167,6 +167,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
           if (getFeedback()) {
             loadMoreHold.feedbackEmptyView.setVisibility(View.GONE);
             loadMoreHold.retryView.setText(getAllDataHint());
+            loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
             loadMoreHold.retryView.setText(getAllDataHint());
           }
@@ -177,7 +178,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     }
   }
 
-  public int getFooterBackgroundColor() {
+  protected int getFooterBackgroundColor() {
     return R.color.standard_color_white;
   }
 

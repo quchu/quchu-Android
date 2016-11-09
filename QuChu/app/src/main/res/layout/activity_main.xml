@@ -75,6 +75,7 @@
           android:id="@+id/drawerItemShareApp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:visibility="gone"
           app:divImage="@mipmap/ic_shezhi"
           app:divText="将趣处 App 分享给朋友"/>
 

@@ -50,12 +50,12 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
       holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
     }
 
-    if (feedbackModel.getState().equals("2")) {
+//    if (feedbackModel.getState().equals("2")) {
       holder.chatLayout.setVisibility(View.VISIBLE);
       holder.unReadTv.setVisibility(feedbackModel.getFeedmsgCount() > 0 ? View.VISIBLE : View.INVISIBLE);
-    } else {
-      holder.chatLayout.setVisibility(View.GONE);
-    }
+//    } else {
+//      holder.chatLayout.setVisibility(View.GONE);
+//    }
 
     //和pm聊天
     holder.chatLayout.setTag(feedbackModel);
