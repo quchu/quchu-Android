@@ -12,7 +12,7 @@ public class PushMessageBean implements Parcelable {
 
     /**
      * title : 标题
-     * contetn : 内容
+     * content : 内容
      * type : 01
      * eventId : 1
      * eventRemark : 事件备注
@@ -23,7 +23,7 @@ public class PushMessageBean implements Parcelable {
     //eventId:根据类别，打开应用相应页面的ID type: 01 为趣处ID 02:场景ID 03：文章ID
 
     private String title;
-    private String contetn;
+    private String content;
     private String type;
     private String eventId;
     private String eventRemark;
@@ -46,12 +46,12 @@ public class PushMessageBean implements Parcelable {
         this.title = title;
     }
 
-    public String getContetn() {
-        return contetn;
+    public String getContent() {
+        return content;
     }
 
-    public void setContetn(String contetn) {
-        this.contetn = contetn;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getType() {
@@ -94,7 +94,7 @@ public class PushMessageBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
-        dest.writeString(this.contetn);
+        dest.writeString(this.content);
         dest.writeString(this.type);
         dest.writeString(this.eventId);
         dest.writeString(this.eventRemark);
@@ -107,7 +107,7 @@ public class PushMessageBean implements Parcelable {
 
     protected PushMessageBean(Parcel in) {
         this.title = in.readString();
-        this.contetn = in.readString();
+        this.content = in.readString();
         this.type = in.readString();
         this.eventId = in.readString();
         this.eventRemark = in.readString();
@@ -130,7 +130,7 @@ public class PushMessageBean implements Parcelable {
     @Override public String toString() {
         return "PushMessageBean{" +
             "title='" + title + '\'' +
-            ", contetn='" + contetn + '\'' +
+            ", content='" + content + '\'' +
             ", type='" + type + '\'' +
             ", eventId='" + eventId + '\'' +
             ", eventRemark='" + eventRemark + '\'' +

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -18,8 +17,6 @@ import java.util.Set;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PushMessageBean;
-import co.quchu.quchu.net.GsonRequest;
-import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
@@ -57,30 +54,29 @@ public class GeTuiReceiver extends BroadcastReceiver {
 
                     builder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(messageBean.getTitle())
-                            .setContentText(messageBean.getContetn())
+                            .setContentText(messageBean.getContent())
                             .setAutoCancel(true)
-                            .setTicker(messageBean.getContetn());//第一次提示消息的时候显示在通知栏上
+                            .setTicker(messageBean.getContent());//第一次提示消息的时候显示在通知栏上
 
-                    Intent inten = new Intent(context, RecommendActivity.class);
-                    inten.putExtra(REQUEST_KEY_MODEL, messageBean);
+                    Intent pushIntent = new Intent(context, RecommendActivity.class);
+                    pushIntent.putExtra(RecommendActivity.BUNDLE_KEY_FROM_PUSH,true);
+                    pushIntent.putExtra(REQUEST_KEY_MODEL, messageBean);
 
-                    Random random = new Random();
-                    int id = random.nextInt();
-
-                    builder.setContentIntent(PendingIntent.getActivity(context, id, inten, PendingIntent.FLAG_UPDATE_CURRENT));
+                    int id = 10086;
+                    builder.setContentIntent(PendingIntent.getActivity(context, id, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                     NotificationManagerCompat notificationManiage = NotificationManagerCompat.from(context);
                     notificationManiage.notify(id, builder.build());
                 }
                 break;
-            case PushConsts.GET_CLIENTID:
-                // 获取ClientID(CID)
-
-                if (!TextUtils.isEmpty(AppContext.token)) {
-                    String cid = bundle.getString("clientid");
-                    LogUtils.e("个推cid" + cid);
-                    new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
-                }
-                break;
+            //case PushConsts.GET_CLIENTID:
+            //    // 获取ClientID(CID)
+            //
+            //    if (!TextUtils.isEmpty(AppContext.token)) {
+            //        String cid = bundle.getString("clientid");
+            //        LogUtils.e("个推cid" + cid);
+            //        new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
+            //    }
+            //    break;
         }
         Set<String> keySet = bundle.keySet();
         for (String key : keySet) {

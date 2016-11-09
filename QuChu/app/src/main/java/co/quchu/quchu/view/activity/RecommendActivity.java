@@ -86,6 +86,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.vSearchBar) View vSearchBar;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
+  public static final String BUNDLE_KEY_FROM_PUSH = "BUNDLE_KEY_FROM_PUSH";
+
+
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
   private ArrayList<CityModel> mCityList = new ArrayList<>();
@@ -136,6 +139,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
     });
 
     initFragment();
+
+
+    if (null!=getIntent()&&getIntent().getBooleanExtra(BUNDLE_KEY_FROM_PUSH,false)){
+      mDrawerItemMessage.performClick();
+    }
   }
 
   /**

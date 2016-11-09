@@ -4,17 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import co.quchu.quchu.model.PushMessageBean;
-import co.quchu.quchu.model.UserBehaviorModel;
-import co.quchu.quchu.net.IRequestListener;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.DatabaseHelper;
-import co.quchu.quchu.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Nico on 16/6/2.
@@ -53,7 +45,7 @@ public class SystemMessagePresentor {
     while (c.moveToNext()) {
       PushMessageBean ubm = new PushMessageBean();
       ubm.setTitle(c.getString(0));
-      ubm.setContetn(c.getString(1));
+      ubm.setContent(c.getString(1));
       ubm.setType(c.getString(2));
       ubm.setEventRemark(c.getString(3));
       ubm.setEventTimeStamp(c.getLong(4));
