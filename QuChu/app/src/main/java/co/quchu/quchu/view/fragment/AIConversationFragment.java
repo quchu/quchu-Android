@@ -157,6 +157,7 @@ public class AIConversationFragment extends BaseFragment {
     calendar.setTimeInMillis(System.currentTimeMillis());
 
     if (calendar.get(Calendar.HOUR_OF_DAY)>=4){
+      //TODO delete > current date
       AIConversationPresenter.delMessages(getActivity());
       return true;
     }else{

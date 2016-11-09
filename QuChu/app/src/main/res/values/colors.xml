@@ -12,7 +12,7 @@
 
   <color name="colorSceneColor">#66000000</color>
 
-  <color name="colorDivider">#e3e3e3</color>
+  <color name="colorDivider">#efefef</color>
   //分割线颜色
   <color name="colorBorder">#dbdbdb</color>
   //描边

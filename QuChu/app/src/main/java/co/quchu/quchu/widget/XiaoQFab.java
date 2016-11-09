@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 /**
@@ -154,7 +155,7 @@ public class XiaoQFab extends FloatingActionButton {
 
     ValueAnimator animator2 = new ValueAnimator().ofFloat(0,1);
     animator2.setDuration(2000);
-    animator2.setInterpolator(new AccelerateDecelerateInterpolator());
+    animator2.setInterpolator(new LinearInterpolator());
     animator2.setStartDelay(500);
     animator2.setRepeatMode(ValueAnimator.REVERSE);
     animator2.setRepeatCount(ValueAnimator.INFINITE);

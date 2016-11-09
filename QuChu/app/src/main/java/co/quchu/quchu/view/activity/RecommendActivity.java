@@ -135,6 +135,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
         float progress = offset / appbar.getTotalScrollRange();
 
         placeHolder.setAlpha(progress);
+
+
+        llShit.setAlpha(1-progress);
+        toolbar.setAlpha(1-progress);
+
       }
     });
 

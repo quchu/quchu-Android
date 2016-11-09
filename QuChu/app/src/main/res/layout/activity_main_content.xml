@@ -29,6 +29,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      android:background="@color/standard_color_yellow_label"
       app:elevation="0dp"
       >
 
@@ -44,7 +45,7 @@
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
-          android:background="?attr/colorPrimary"
+          android:background="@color/standard_color_yellow_label"
           app:contentInsetStart="0dp"
           app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
           >
@@ -54,19 +55,19 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
+            android:drawableLeft="@mipmap/ic_location"
+            android:drawablePadding="4dp"
             android:gravity="center"
             android:text="厦门"
-            android:drawablePadding="4dp"
-            android:drawableLeft="@mipmap/ic_location"
             android:textColor="@color/standard_color_black"
-            android:textSize="@dimen/standard_text_size_h2"
+            android:textSize="@dimen/standard_text_size_h1"
             />
 
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:scaleType="center"
             android:layout_marginLeft="8dp"
+            android:scaleType="center"
             android:src="@mipmap/ic_hamburger"
             />
 
@@ -74,52 +75,130 @@
       </android.support.v7.widget.Toolbar>
 
 
-      <View
+      <LinearLayout
           android:id="@+id/vSearchBar"
           android:layout_width="match_parent"
           android:layout_height="32dp"
+          android:layout_marginBottom="8dp"
           android:layout_marginLeft="16dp"
           android:layout_marginRight="16dp"
-          android:layout_marginBottom="8dp"
-          android:background="@color/standard_color_white"
-          />
+          android:background="@drawable/shape_lineframe_ai_search_bar"
+          android:orientation="horizontal"
+          >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:layout_marginLeft="16dp"
+            android:drawablePadding="4dp"
+            android:drawableLeft="@mipmap/ic_pull_menus_search"
+            android:textColor="@color/standard_color_h3_dark"
+            android:gravity="left|center_vertical"
+            android:text="搜你麻痹"
+            />
+
+      </LinearLayout>
       <LinearLayout
           android:id="@+id/llShit"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
+          android:layout_marginTop="8dp"
           android:orientation="horizontal"
           >
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:scaleType="center"
-            android:src="@mipmap/ic_bind_type_sina"
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleType="center"
-            android:src="@mipmap/ic_bind_type_sina"
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleType="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:scaleType="center"
+              android:src="@mipmap/icc1"
+              />
 
-            android:src="@mipmap/ic_bind_type_sina"
-            />
-        <ImageView
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="寻欢作乐"
+              android:textColor="@color/standard_color_black"
+              />
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:scaleType="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:scaleType="center"
+              android:src="@mipmap/icc2"
+              />
 
-            android:src="@mipmap/ic_bind_type_sina"
-            />
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="寻欢作乐"
+              android:textColor="@color/standard_color_black"
+              />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:scaleType="center"
+              android:src="@mipmap/icc3"
+              />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="寻欢作乐"
+              android:textColor="@color/standard_color_black"
+              />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:scaleType="center"
+              android:src="@mipmap/icc4"
+              />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="寻欢作乐"
+              android:textColor="@color/standard_color_black"
+              />
+
+        </LinearLayout>
 
 
       </LinearLayout>
@@ -139,20 +218,20 @@
           android:id="@+id/vFakeDrawer"
           android:layout_width="36dp"
           android:layout_height="36dp"
-          android:scaleType="center"
-          android:layout_marginLeft="8dp"
           android:layout_centerVertical="true"
+          android:layout_marginLeft="8dp"
+          android:scaleType="center"
           android:src="@mipmap/ic_hamburger"
           />
 
       <LinearLayout
-          android:layout_centerVertical="true"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_toRightOf="@id/vFakeDrawer"
+          android:layout_centerVertical="true"
           android:layout_marginRight="8dp"
-          android:orientation="horizontal"
+          android:layout_toRightOf="@id/vFakeDrawer"
           android:gravity="center_vertical|right"
+          android:orientation="horizontal"
           >
         <ImageView
             android:layout_width="36dp"
@@ -195,15 +274,15 @@
       android:id="@+id/fab"
       android:layout_width="42dp"
       android:layout_height="42dp"
-      android:padding="1dp"
-      app:useCompatPadding="true"
-      app:elevation="0dp"
       android:clickable="true"
+      android:padding="1dp"
       app:backgroundTint="@android:color/transparent"
+      app:elevation="0dp"
       app:fabSize="normal"
       app:layout_anchor="@id/appbar"
       app:layout_anchorGravity="bottom|center_horizontal"
       app:layout_behavior="co.quchu.quchu.widget.DisableAutoHideFABBehavior"
+      app:useCompatPadding="true"
       />
 
 </android.support.design.widget.CoordinatorLayout>

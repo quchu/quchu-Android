@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import co.quchu.quchu.view.activity.PlaceMapActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -236,6 +237,20 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
               + "&height="
               + 256
               + "&zoom=18&scale=2"));
+      ((MapViewHolder) holder).ivMap.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          Intent mapIntent = new Intent(mAnchorActivity, PlaceMapActivity.class);
+          mapIntent.putExtra("pid", mData.getPid());
+          mapIntent.putExtra("lat", mData.getLatitude());
+          mapIntent.putExtra("lon", mData.getLongitude());
+          mapIntent.putExtra("gdlon", mData.gdLongitude);
+          mapIntent.putExtra("gdlat", mData.gdLatitude);
+          mapIntent.putExtra("title", mData.getName());
+          mapIntent.putExtra("entity", mData.convert2NearbyMapItem());
+          mapIntent.putExtra("placeAddress", mData.getAddress());
+          mAnchorActivity.startActivity(mapIntent);
+        }
+      });
     } else if (holder instanceof ArticleViewHolder) {
       if (null != mData.getArticleList()) {
         int articleIndex = 0;
