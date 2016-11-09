@@ -92,13 +92,13 @@ public class XiaoQFab extends FloatingActionButton {
         canvas.drawArc(new RectF(mOffSetSec, mOffSetSec, mSize - mOffSetSec, mSize - mOffSetSec),
             180 * mAnimationProgress[1], radius2, false, paint);
 
-        paint.setStrokeWidth(mSize/9);
+        paint.setStrokeWidth(mSize/12);
         paint.setColor(Color.parseColor("#ffd702"));
 
         canvas.drawArc(new RectF(mOffSetThd, mOffSetThd, mSize - mOffSetThd, mSize - mOffSetThd),
             120 * mAnimationProgress[2], radius3, false, paint);
 
-        paint.setStrokeWidth(mSize/8);
+        paint.setStrokeWidth(mSize/9);
         paint.setColor(Color.BLACK);
         canvas.drawArc(new RectF(mOffSetF, mOffSetF, mSize - mOffSetF, mSize - mOffSetF),
             240 * mAnimationProgress[3], radius4, false, paint);
@@ -107,8 +107,9 @@ public class XiaoQFab extends FloatingActionButton {
         canvas.rotate(-180 + (mAnimationProgress[4] * 180), getWidth() / 2, getHeight() / 2);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.parseColor("#eaeaea"));
-        canvas.drawCircle(mHalfSize / 4, mHalfSize - (mHalfSize / 4), (mHalfSize/17) * mAnimationProgress[3], paint);
+        canvas.drawCircle(mSize / 4, mSize - (mSize/4), (mHalfSize/7) * mAnimationProgress[3], paint);
         canvas.restore();
+
       }
 
 
@@ -248,7 +249,7 @@ public class XiaoQFab extends FloatingActionButton {
 
     ValueAnimator animator1 = new ValueAnimator().ofFloat(0, 1);
     animator1.setDuration(700);
-    animator1.setInterpolator(new OvershootInterpolator(2));
+    animator1.setInterpolator(new OvershootInterpolator(4f));
     animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         mAnimationProgress[4] = (float) animation.getAnimatedValue();
@@ -256,6 +257,6 @@ public class XiaoQFab extends FloatingActionButton {
       }
     });
     animator1.start();
-
   }
+
 }

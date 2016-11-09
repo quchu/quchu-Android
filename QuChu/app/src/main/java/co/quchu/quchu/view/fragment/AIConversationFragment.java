@@ -30,6 +30,7 @@ import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
@@ -122,18 +123,23 @@ public class AIConversationFragment extends BaseFragment {
       }
     },200);
 
-    AIConversationPresenter.delOptionMessages(getActivity());
-    history = AIConversationPresenter.getMessages(getActivity());
-    mConversation.addAll(history);
-    mAdapter.notifyDataSetChanged();
 
-    if (mConversation.size()>0){
-      mRecyclerView.scrollToPosition(mConversation.size()-1);
+    final boolean cleared = deleteHistoryIfNeed();
+
+    if (!cleared){
+      AIConversationPresenter.delOptionMessages(getActivity());
+      history = AIConversationPresenter.getMessages(getActivity());
+      mConversation.addAll(history);
+      mAdapter.notifyDataSetChanged();
+
+      if (mConversation.size()>0){
+        mRecyclerView.scrollToPosition(mConversation.size()-1);
+      }
     }
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
 
-        if (history.size()>0 ){
+        if (!cleared&& history.size()>0 ){
           startConversation(false);
         }else{
           startConversation(true);
@@ -142,6 +148,20 @@ public class AIConversationFragment extends BaseFragment {
       }
     },1500);
     return v;
+  }
+
+
+  private boolean deleteHistoryIfNeed(){
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(System.currentTimeMillis());
+
+    if (calendar.get(Calendar.HOUR_OF_DAY)>=4){
+      AIConversationPresenter.delMessages(getActivity());
+      return true;
+    }else{
+      return false;
+    }
   }
 
   private void addModel(AIConversationModel model) {
