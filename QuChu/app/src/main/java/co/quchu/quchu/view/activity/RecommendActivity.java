@@ -140,9 +140,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     initFragment();
 
+    startIntentIfFromPush(getIntent());
 
-    if (null!=getIntent()&&getIntent().getBooleanExtra(BUNDLE_KEY_FROM_PUSH,false)){
-      mDrawerItemMessage.performClick();
+
+  }
+
+  private void startIntentIfFromPush(Intent intent) {
+    if (null!=intent&& intent.getBooleanExtra(BUNDLE_KEY_FROM_PUSH,false)){
+      startActivity(MessageCenterActivity.class);
     }
   }
 
@@ -216,6 +221,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
 
     getUnreadMessage();
+
+    startIntentIfFromPush(intent);
   }
 
   /**
