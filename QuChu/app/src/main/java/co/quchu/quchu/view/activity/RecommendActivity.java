@@ -386,7 +386,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       break;
       case R.id.vFakeDrawer:
         if (placeHolder.getAlpha() == 1) {
-          vDrawer.performClick();
+          mDrawer.openDrawer(GravityCompat.START);
         }
         break;
       //case R.id.vFakeSearchBar://搜索

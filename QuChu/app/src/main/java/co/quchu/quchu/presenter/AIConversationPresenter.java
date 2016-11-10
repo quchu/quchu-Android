@@ -134,7 +134,7 @@ public class AIConversationPresenter {
         .getReadableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,
             new String[] { "dataType", "chatContent", "placeList", "timeStamp" }, null,
-            null, null, null, "timestamp asc limit 3");
+            null, null, null, "timestamp asc");
 
     while (c.moveToNext()) {
       AIConversationModel acm = new AIConversationModel();
@@ -214,7 +214,7 @@ public class AIConversationPresenter {
     boolean delSuccess = DatabaseHelper.getInstance(context)
         .getReadableDatabase()
         .delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, null, null) > 0;
-    DatabaseHelper.getInstance(context).getReadableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," timestamp < "+date,null);
+    DatabaseHelper.getInstance(context).getReadableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,"timeStamp <"+date,null);
     DatabaseHelper.closeIfOpend(context);
     return delSuccess;
   }

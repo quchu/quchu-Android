@@ -124,6 +124,7 @@ public class AIConversationFragment extends BaseFragment {
     },200);
 
 
+    //deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
     history = AIConversationPresenter.getMessages(getActivity());
     mConversation.addAll(history);
