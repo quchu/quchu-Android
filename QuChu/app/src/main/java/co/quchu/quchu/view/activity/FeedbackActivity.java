@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -47,6 +48,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
   @Bind(R.id.feedback_swipeRefreshLayout) SwipeRefreshLayout refreshLayout;
   @Bind(R.id.inputEditText) EditText mInputEditText;
   @Bind(R.id.submitBtn) TextView mSubmitBtn;
+  @Bind(R.id.background_layout) RelativeLayout mBackgroundLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,11 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     FeedbackPresenter.getFeedbackList(this, new CommonListener<List<FeedbackModel>>() {
       @Override
       public void successListener(List<FeedbackModel> response) {
+        if (response != null && response.size() > 0) {
+          mBackgroundLayout.setVisibility(View.VISIBLE);
+        } else {
+          mBackgroundLayout.setVisibility(View.GONE);
+        }
         adapter.initData(response);
         adapter.setLoadMoreEnable(false);
         refreshLayout.setRefreshing(false);
@@ -106,6 +113,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
         makeToast(R.string.network_error);
         adapter.setLoadMoreEnable(false);
         refreshLayout.setRefreshing(false);
+        mBackgroundLayout.setVisibility(View.GONE);
       }
     });
   }

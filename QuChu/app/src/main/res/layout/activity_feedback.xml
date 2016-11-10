@@ -2,7 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBackground">
+                android:background="@color/standard_color_white">
+
+  <RelativeLayout
+      android:id="@+id/background_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/colorBackground"
+      android:visibility="gone"/>
 
   <include layout="@layout/cp_enhanced_toolbar"/>
 
@@ -17,7 +24,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/feedback_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:overScrollMode="always"/>
 
   </android.support.v4.widget.SwipeRefreshLayout>
