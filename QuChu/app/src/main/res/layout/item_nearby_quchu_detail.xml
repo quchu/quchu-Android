@@ -78,7 +78,7 @@
           app:tcvItemBorderHorizontal="5dp"
           app:tcvSingleLine="true"
           app:tcvTextColor="@color/standard_color_h3_dark"
-          app:tcvTextSize="4dp"
+          app:tcvTextSize="12sp"
           />
 
 

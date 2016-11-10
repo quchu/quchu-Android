@@ -80,7 +80,7 @@ public class TagCloudView extends ViewGroup {
                 defStyleAttr
         );
 
-        mTagSize = a.getDimension(R.styleable.TagCloudView_tcvTextSize, DEFAULT_TEXT_SIZE);
+        mTagSize = a.getDimension(R.styleable.TagCloudView_tcvTextSize, sp2px(getContext(),DEFAULT_TEXT_SIZE));
         mTagColor = a.getColor(R.styleable.TagCloudView_tcvTextColor, DEFAULT_TEXT_COLOR);
         mBackground = a.getResourceId(R.styleable.TagCloudView_tcvBackground, DEFAULT_TEXT_BACKGROUND);
         mViewBorder = a.getDimensionPixelSize(R.styleable.TagCloudView_tcvBorder, DEFAULT_VIEW_BORDER);
@@ -271,7 +271,7 @@ public class TagCloudView extends ViewGroup {
                         tagView.setBackgroundResource(mBackground);
                     }
 
-                    tagView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTagSize);
+                    //tagView.setTextSize(mTagSize);
                     tagView.setTextColor(mTagColor);
 
                 }
@@ -313,4 +313,9 @@ public class TagCloudView extends ViewGroup {
         void onTagClick(int position);
     }
 
+
+    public float sp2px(Context context, float sp) {
+        final float scale = context.getResources().getDisplayMetrics().scaledDensity;
+        return sp * scale;
+    }
 }
