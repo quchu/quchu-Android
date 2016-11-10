@@ -161,6 +161,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
             loadMoreHold.retryView.setText(getNullDataHint());
+            loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
           }
 
         } else {
@@ -170,6 +171,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
             loadMoreHold.retryView.setText(getAllDataHint());
+            loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
           }
         }
       }

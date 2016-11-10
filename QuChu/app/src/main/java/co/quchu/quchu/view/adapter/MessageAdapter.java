@@ -59,6 +59,11 @@ public class MessageAdapter extends AdapterBase<MessageModel.ResultBean, Recycle
     return new MessageViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_message, parent, false));
   }
 
+  @Override
+  protected int getFooterBackgroundColor() {
+    return R.color.colorBackground;
+  }
+
   public class MessageViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.item_message_date_tv) TextView mDateTv;

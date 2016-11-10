@@ -101,6 +101,11 @@ public class FeedbackDetailAdapter
     mYAvatar = yAvatar;
   }
 
+  @Override
+  protected int getFooterBackgroundColor() {
+    return R.color.colorBackground;
+  }
+
   public class FeedbackDetailViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.feedback_item_create_time_tv) TextView createTimeTv;
