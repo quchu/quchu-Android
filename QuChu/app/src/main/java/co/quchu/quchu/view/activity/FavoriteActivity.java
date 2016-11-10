@@ -5,6 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.ArrayMap;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -47,8 +49,12 @@ public class FavoriteActivity extends BaseBehaviorActivity {
         TextView titleTv = toolbar.getTitleTv();
         titleTv.setText("");
 
-        tabLayout.addTab(tabLayout.newTab().setText("趣处"));
-        tabLayout.addTab(tabLayout.newTab().setText("文章"));
+        TextView tag0 = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_detail_tab,tabLayout,false);
+        TextView tag1 = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_detail_tab,tabLayout,false);
+        tag0.setText("趣处");
+        tag1.setText("文章");
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tag0).setTag(0));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tag1).setTag(1));
 
         final FavoriteQuchuFragment quchuFragment = FavoriteQuchuFragment.newInstance(true, -1);
         final FavoriteEssayFragment essayFragment = new FavoriteEssayFragment();

@@ -113,9 +113,9 @@ public class EnhancedToolbar extends Toolbar {
     public TextView getTitleTv() {
 
         TextView v = null == findViewById(R.id.toolbar_tv_title) ? addTitleTv() : (TextView) findViewById(getActionViewId(TYPE_TITLE_TV));
-        if (null!=v){
-            v.setTypeface(null, Typeface.BOLD);
-        }
+        //if (null!=v){
+        //    v.setTypeface(null, Typeface.BOLD);
+        //}
         return v;
     }
 

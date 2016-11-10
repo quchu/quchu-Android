@@ -224,6 +224,9 @@ public class XiaoQFab extends FloatingActionButton {
       animator.setInterpolator(new AccelerateDecelerateInterpolator());
       animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
         @Override public void onAnimationUpdate(ValueAnimator animation) {
+          if (finalI==4){
+            return;
+          }
           mAnimationProgress[finalI] = (float) animation.getAnimatedValue();
           invalidate();
         }
@@ -250,6 +253,7 @@ public class XiaoQFab extends FloatingActionButton {
 
     ValueAnimator animator1 = new ValueAnimator().ofFloat(0, 1);
     animator1.setDuration(700);
+    animator1.setStartDelay(500);
     animator1.setInterpolator(new OvershootInterpolator(4f));
     animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {

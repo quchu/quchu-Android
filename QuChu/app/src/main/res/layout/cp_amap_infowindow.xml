@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_map_pin"
-android:gravity="center"
+    android:gravity="center"
     >
 
     <TextView
@@ -13,6 +15,7 @@ android:gravity="center"
         android:textColor="@color/standard_color_h0_dark"
         android:textSize="@dimen/standard_text_size_h2"
         android:padding="@dimen/half_margin"
+        tools:text="11111111111111"
         />
 
     <ImageView

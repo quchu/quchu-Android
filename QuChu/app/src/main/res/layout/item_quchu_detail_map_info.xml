@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical"
     >
-  <RelativeLayout
+
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/ivMap"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      >
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/ivMap"
-        android:background="@color/transparent"
-        fresco:actualImageScaleType="fitXY"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        fresco:viewAspectRatio="2"
-        />
+      android:background="@color/transparent"
+      fresco:actualImageScaleType="fitXY"
+      fresco:viewAspectRatio="2"
+      />
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_map_pin_me"
-        android:layout_centerInParent="true"
-        />
-  </RelativeLayout>
+  <ImageView
+      android:id="@+id/ivIndicator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:src="@mipmap/ic_map_pin_me"
+      />
+
   <TextView
       android:id="@+id/tvAddress"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/base_margin"
+      android:gravity="center"
+      android:padding="@dimen/base_margin"
+      android:layout_marginLeft="@dimen/double_margin"
+      android:layout_marginRight="@dimen/double_margin"
+      android:layout_marginBottom="@dimen/half_margin"
+      android:layout_above="@+id/ivIndicator"
+      android:layout_centerHorizontal="true"
+      android:background="@drawable/bg_map_pin"
       android:textSize="@dimen/standard_text_size_h2"
       android:textColor="@color/standard_color_h1_dark"
       android:drawablePadding="@dimen/quarter_margin"
-      android:paddingBottom="@dimen/base_margin"
       android:drawableLeft="@mipmap/ic_zuobiao"
       tools:text="环岛路30号"
       />
+</RelativeLayout>
 
-</LinearLayout>
+
