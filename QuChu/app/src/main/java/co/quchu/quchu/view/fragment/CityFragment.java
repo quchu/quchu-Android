@@ -72,7 +72,7 @@ public class CityFragment extends BaseFragment {
         }
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
+        LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(cityList, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(String cityName, int cityId) {
 //                if (getActivity() instanceof RecommendActivity)

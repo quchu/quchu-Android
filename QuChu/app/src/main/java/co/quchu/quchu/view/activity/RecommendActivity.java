@@ -40,6 +40,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
+import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -92,6 +93,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
   private ArrayList<CityModel> mCityList = new ArrayList<>();
+  private CityEntity mCityEntity;
   private List<SceneInfoModel> mAllSceneList = new ArrayList<>();
 
   @Override
@@ -204,9 +206,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
       @Override
-      public void hasCityList(ArrayList<CityModel> pList) {
+      public void hasCityEntity(CityEntity response) {
         mCityList.clear();
-        mCityList.addAll(pList);
+        mCityList.addAll(response.getPage().getResult());
+        mCityEntity = response;
         checkIfCityChanged();
       }
     });
@@ -392,8 +395,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
           } else {
             RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
               @Override
-              public void hasCityList(ArrayList<CityModel> list) {
-                RecommendActivity.this.mCityList = list;
+              public void hasCityEntity(CityEntity response) {
+                RecommendActivity.this.mCityList = response.getPage().getResult();
                 if (RecommendActivity.this.mCityList != null) {
                   selectedCity();
                 }
@@ -450,7 +453,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
    * 切换城市
    */
   private void selectedCity() {
-    SelectedCityActivity.launch(this, mCityList);
+    if (mCityEntity != null) {
+      SelectedCityActivity.launch(this, mCityEntity);
+    }
   }
 
   @Override

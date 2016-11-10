@@ -23,15 +23,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
@@ -185,7 +183,7 @@ public class SplashActivity extends BaseActivity {
 
             RecommendPresenter.getCityList(SplashActivity.this,
                 new RecommendPresenter.CityListListener() {
-                  @Override public void hasCityList(ArrayList<CityModel> list) {
+                  @Override public void hasCityEntity(CityEntity response) {
 
                     if ((System.currentTimeMillis() / 1000 - visitorStartTime) > viewDuration) {
                       enterApp();

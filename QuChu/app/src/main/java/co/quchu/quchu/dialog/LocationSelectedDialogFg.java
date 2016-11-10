@@ -119,7 +119,7 @@ public class LocationSelectedDialogFg extends DialogFragment {
         });
 
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
+        adapter = new LocationSelectedAdapter(cityList, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(String cityName, int CityId) {
                 //保存数据 而后关闭

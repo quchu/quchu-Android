@@ -2,6 +2,7 @@ package co.quchu.quchu.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * email:437943145@qq.com
  * desc:
  */
-public class CityEntity {
+public class CityEntity implements Serializable {
 
     /**
      * cvalue : 厦门
@@ -31,6 +32,16 @@ public class CityEntity {
 
     private PageEntity page;
 
+    private String[] future;
+
+    public String[] getFuture() {
+        return future;
+    }
+
+    public void setFuture(String[] future) {
+        this.future = future;
+    }
+
     public void setDefaultX(DefaultEntity defaultX) {
         this.defaultX = defaultX;
     }
@@ -47,7 +58,7 @@ public class CityEntity {
         return page;
     }
 
-    public static class DefaultEntity {
+    public static class DefaultEntity implements Serializable {
         private String cvalue;
         private int cid;
 
@@ -68,7 +79,7 @@ public class CityEntity {
         }
     }
 
-    public static class PageEntity {
+    public static class PageEntity implements Serializable {
         private int pageCount;
         private int pageSize;
         private int pagesNo;
@@ -147,7 +158,7 @@ public class CityEntity {
             return result;
         }
 
-        public static class ResultEntity {
+        public static class ResultEntity implements Serializable {
             private String cvalue;
             private int cid;
 

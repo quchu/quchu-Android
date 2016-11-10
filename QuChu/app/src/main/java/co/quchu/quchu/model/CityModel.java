@@ -20,12 +20,27 @@ public class CityModel implements Serializable {
         this.isSelected = isSelected;
     }
 
+    public CityModel() {
+
+    }
+
     private String cvalue = "";
     private int cid = 0;
     private boolean isSelected = false;
 
     //1-为国内;0-为国外
     private String isInland = "";
+
+    //自己加的字段,区分国内和国外分组
+    private int group = -1;
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
 
     public String getIsInland() {
         return isInland;

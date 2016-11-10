@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by Nico on 16/7/11.
  */
 public class SceneInfoModel implements Serializable{
+
     private String height = "";
     private String intro = "";
     private String rgb = "";
@@ -16,6 +17,15 @@ public class SceneInfoModel implements Serializable{
     private String width = "";
     private int sceneId;
     private String en;
+    private String iconUrl;
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
 
     public String getEn() {
         return en;

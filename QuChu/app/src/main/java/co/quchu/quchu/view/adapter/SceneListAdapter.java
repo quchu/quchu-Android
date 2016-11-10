@@ -3,6 +3,7 @@ package co.quchu.quchu.view.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,9 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     if (viewHolder instanceof SceneViewHolder) {
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
-      holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getSceneCover()));
+      if (!TextUtils.isEmpty(sceneInfoModel.getIconUrl())) {
+        holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrl()));
+      }
       holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
 
       holder.itemView.setTag(sceneInfoModel);

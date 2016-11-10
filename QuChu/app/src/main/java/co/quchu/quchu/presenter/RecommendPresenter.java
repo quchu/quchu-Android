@@ -206,13 +206,13 @@ public class RecommendPresenter {
               SPUtils.setCityName(cvalue);
             }
 
-            listener.hasCityList(list);
+            listener.hasCityEntity(response);
           }
         });
     request.start(context, null);
   }
 
   public interface CityListListener {
-    void hasCityList(ArrayList<CityModel> list);
+    void hasCityEntity(CityEntity response);
   }
 }

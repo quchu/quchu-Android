@@ -22,82 +22,103 @@ import co.quchu.quchu.utils.SPUtils;
  * User: Chenhs
  * Date: 2015-12-24
  */
-public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelectedAdapter.LocationHodler> {
+public class LocationSelectedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
-    private ArrayList<CityModel> cityList;
-    private TextView titleText;
-    private int selectedIndex = 0;
-    private int dataType = 0;
-    private OnItemSelectedListener mListener;
+  private int ITEM_TYPE_HEADER = 1;
+  private int ITEM_TYPE_NORMAL = 2;
 
-    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, OnItemSelectedListener listener) {
-        cityList = cList;
-        this.titleText = titleText;
-        this.mContext = mContext;
-        this.mListener = listener;
+  private Context mContext;
+  private ArrayList<CityModel> mCityList;
+  private int selectedIndex = 0;
+  private OnItemSelectedListener mListener;
+
+  public LocationSelectedAdapter(ArrayList<CityModel> cityList, Context mContext, OnItemSelectedListener listener) {
+    mCityList = cityList;
+    this.mContext = mContext;
+    this.mListener = listener;
+  }
+
+  @Override
+  public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    if (viewType == ITEM_TYPE_HEADER) {
+      return new CityHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_list_header, parent, false));
     }
 
-    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, int dataType, OnItemSelectedListener listener) {
-        cityList = cList;
-        this.titleText = titleText;
-        this.mContext = mContext;
-        this.dataType = dataType;
-        this.mListener = listener;
-    }
+    return new LocationViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_item_city, parent, false));
+  }
 
-    @Override
-    public LocationHodler onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new LocationHodler(LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_item_city, parent, false));
-    }
+  @Override
+  public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+    if (viewHolder instanceof CityHeaderViewHolder) {
+      CityHeaderViewHolder holder = (CityHeaderViewHolder) viewHolder;
+      holder.mCityGroupTv.setText(mCityList.get(position).getCvalue());
 
-    @Override
-    public void onBindViewHolder(LocationHodler holder, int position) {
-        CityModel cityModel = cityList.get(position);
-        holder.dialogItemCityCb.setText(cityList.get(position).getCvalue());
-        int cityId = SPUtils.getCityId();
-        if (cityId == cityModel.getCid()) {
-            holder.dialogItemCityCb.setChecked(true);
-            holder.dialogItemCityCb.setClickable(false);
+    } else if (viewHolder instanceof LocationViewHolder) {
+      LocationViewHolder holder = (LocationViewHolder) viewHolder;
+      CityModel cityModel = mCityList.get(position);
+      holder.dialogItemCityCb.setText(cityModel.getCvalue());
+      int cityId = SPUtils.getCityId();
+      if (cityId == cityModel.getCid()) {
+        holder.dialogItemCityCb.setChecked(true);
+        holder.dialogItemCityCb.setClickable(false);
 //            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
-        } else {
-            holder.dialogItemCityCb.setChecked(false);
-            holder.dialogItemCityCb.setClickable(true);
+      } else {
+        holder.dialogItemCityCb.setChecked(false);
+        holder.dialogItemCityCb.setClickable(true);
 //            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_white));
-        }
+      }
+    }
+  }
+
+  @Override
+  public int getItemCount() {
+    return mCityList != null ? mCityList.size() : 0;
+  }
+
+  @Override
+  public int getItemViewType(int position) {
+    if (mCityList.get(position).getGroup() == 1 || mCityList.get(position).getGroup() == 0) {
+      return ITEM_TYPE_HEADER;
+    }
+    return ITEM_TYPE_NORMAL;
+  }
+
+  public class LocationViewHolder extends RecyclerView.ViewHolder {
+
+    @Bind(R.id.dialog_item_city_cb)
+    public CheckBox dialogItemCityCb;
+
+    public LocationViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
     }
 
-    @Override
-    public int getItemCount() {
-        return cityList != null ? cityList.size() : 0;
+    @OnClick(R.id.dialog_item_city_cb)
+    public void locationClick(View view) {
+      CityModel model = mCityList.get(getAdapterPosition());
+      notifyDataSetChanged();
+      if (null != mListener) {
+        mListener.onSelected(model.getCvalue(), model.getCid());
+      }
     }
+  }
 
-    public class LocationHodler extends RecyclerView.ViewHolder {
+  public class CityHeaderViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.dialog_item_city_cb)
-        public CheckBox dialogItemCityCb;
+    @Bind(R.id.city_group_tv) TextView mCityGroupTv;
 
-        public LocationHodler(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @OnClick(R.id.dialog_item_city_cb)
-        public void locationClick(View view) {
-            CityModel model = cityList.get(getAdapterPosition());
-            notifyDataSetChanged();
-            if (null != mListener) {
-                mListener.onSelected(model.getCvalue(), model.getCid());
-            }
-        }
+    public CityHeaderViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
     }
+  }
 
-    public interface OnItemSelectedListener {
-        void onSelected(String cityName, int cityId);
-    }
+  public interface OnItemSelectedListener {
+    void onSelected(String cityName, int cityId);
+  }
 
-    public int getSelectedIndex() {
-        return selectedIndex;
-    }
+  public int getSelectedIndex() {
+    return selectedIndex;
+  }
 
 }
