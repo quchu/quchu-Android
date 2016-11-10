@@ -176,11 +176,16 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
       for (int i = 0; i < futureCity.length; i++) {
         String s = futureCity[i];
         sb.append(s);
+
+        if (!TextUtils.isEmpty(fixStr) && fixStr.equals(s)) {
+          sb.append("(您所在的城市)");
+        }
+
         if (i < futureCity.length - 1) {
           sb.append(", ");
         }
 
-        if (!futureHasCurrentCity) {
+        if (!TextUtils.isEmpty(fixStr) && !futureHasCurrentCity) {
           if (fixStr.equals(s)) {
             if (i + 1 == futureCity.length) {
               endIndex = sb.toString().length();
