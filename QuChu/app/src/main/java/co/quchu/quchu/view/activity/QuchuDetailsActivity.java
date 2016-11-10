@@ -7,10 +7,12 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -90,13 +92,26 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     tabLayout.setTabMode(TabLayout.MODE_FIXED);
     tabLayout.setTabTextColors(getResources().getColor(R.color.standard_color_h2_dark),getResources().getColor(R.color.standard_color_h1_dark));
 
-    int tabLayoutWidth = ScreenUtils.getScreenWidth(getApplicationContext());
-    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(tabLayoutWidth/3, ViewGroup.LayoutParams.WRAP_CONTENT);
+    int screenWidth = ScreenUtils.getScreenWidth(getApplicationContext());
+    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     lp.addRule(RelativeLayout.CENTER_IN_PARENT);
     getEnhancedToolbar().addCustomView(tabLayout,lp);
 
+
+    //
+    //TextView tag0 = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_detail_tab,tabLayout,false);
+    //TextView tag1 = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_detail_tab,tabLayout,false);
+    //tag0.setTag(0);
+    //tag1.setTag(1);
+    //tag0.setText("趣处");
+    //tag1.setText("评论");
+    //tabLayout.addTab(tabLayout.newTab().setCustomView(tag0));
+    //tabLayout.addTab(tabLayout.newTab().setCustomView(tag1));
+    //
+
     tabLayout.addTab(tabLayout.newTab().setText("趣处").setTag(0));
-    tabLayout.addTab(tabLayout.newTab().setText("评论").setTag(1));
+    tabLayout.addTab(tabLayout.newTab().setText("文章").setTag(1));
+
 
     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override public void onTabSelected(TabLayout.Tab tab) {

@@ -14,6 +14,7 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+
     <style name="Base.CardView" parent="android:Widget">
         <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
         <item name="cardElevation">@dimen/cardview_default_elevation</item>

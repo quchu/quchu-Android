@@ -124,22 +124,19 @@ public class AIConversationFragment extends BaseFragment {
     },200);
 
 
-    final boolean cleared = deleteHistoryIfNeed();
+    AIConversationPresenter.delOptionMessages(getActivity());
+    history = AIConversationPresenter.getMessages(getActivity());
+    mConversation.addAll(history);
+    mAdapter.notifyDataSetChanged();
 
-    if (!cleared){
-      AIConversationPresenter.delOptionMessages(getActivity());
-      history = AIConversationPresenter.getMessages(getActivity());
-      mConversation.addAll(history);
-      mAdapter.notifyDataSetChanged();
-
-      if (mConversation.size()>0){
-        mRecyclerView.scrollToPosition(mConversation.size()-1);
-      }
+    if (mConversation.size()>0){
+      mRecyclerView.scrollToPosition(mConversation.size()-1);
     }
+
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
 
-        if (!cleared&& history.size()>0 ){
+        if (history.size()>0 ){
           startConversation(false);
         }else{
           startConversation(true);
@@ -151,17 +148,19 @@ public class AIConversationFragment extends BaseFragment {
   }
 
 
-  private boolean deleteHistoryIfNeed(){
+  private void deleteHistoryIfNeed(){
 
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(System.currentTimeMillis());
 
-    if (calendar.get(Calendar.HOUR_OF_DAY)>=4){
+    if (calendar.get(Calendar.HOUR_OF_DAY)>=4) {
       //TODO delete > current date
-      AIConversationPresenter.delMessages(getActivity());
-      return true;
-    }else{
-      return false;
+
+      calendar.set(Calendar.HOUR_OF_DAY,0);
+      calendar.set(Calendar.MINUTE,0);
+      calendar.set(Calendar.SECOND,0);
+
+      AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
     }
   }
 
