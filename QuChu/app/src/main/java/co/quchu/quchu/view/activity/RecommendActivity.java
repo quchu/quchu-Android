@@ -83,7 +83,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemShareApp) DrawerItemView mDrawerItemShareApp;
   @Bind(R.id.placeHolder) View placeHolder;
 
-  @Bind(R.id.vFakeDrawer) View vLeft;
+  @Bind(R.id.vFakeDrawer) View vFakeDrawer;
+  @Bind(R.id.vDrawer) View vDrawer;
+  @Bind(R.id.ivSearch) View ivSearch;
+  @Bind(R.id.ivSwitchCity) View ivSwitchCity;
+  @Bind(R.id.ivAllScene) View ivAllScene;
   @Bind(R.id.vSearchBar) View vSearchBar;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
@@ -366,12 +370,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer, R.id.fab,
+  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer,R.id.vDrawer,
+      R.id.ivSearch,R.id.ivAllScene,R.id.ivSwitchCity, R.id.fab,
       R.id.drawerItemFavorite, R.id.drawerItemUserCenter, R.id.drawerItemMessage,
       R.id.drawerItemFeedback, R.id.drawerItemSetting, R.id.drawerItemShareApp})
   public void onClick(View view) {
     switch (view.getId()) {
-
+      case R.id.ivAllScene:
+        if (null!=mAllSceneList && mAllSceneList.size()>=1){
+          SceneListActivity.launch(RecommendActivity.this,mAllSceneList);
+        }
+        break;
+      case R.id.vDrawer:
       case R.id.vFakeDrawer:
         if (placeHolder.getAlpha() == 1) {
           mDrawer.openDrawer(GravityCompat.START);
@@ -383,10 +393,12 @@ public class RecommendActivity extends BaseBehaviorActivity {
       //  }
       //  break;
 
+      case R.id.ivSearch:
       case R.id.vSearchBar://搜索
         startActivity(SearchActivityNew.class);
         break;
 
+      case R.id.ivSwitchCity:
       case R.id.tvCity://选择城市
         UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
