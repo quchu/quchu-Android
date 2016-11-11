@@ -11,59 +11,78 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
 
-  <co.quchu.quchu.widget.TagCloudView
-      android:id="@+id/tag_cloud_view"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@+id/search_view"
-      app:tcvBackground="@drawable/shape_lineframe_search_tag"
-      app:tcvBorder="10dp"
-      app:tcvItemBorderHorizontal="10dp"
-      app:tcvItemBorderVertical="10dp"
-      app:tcvMultiLine="4"
-      app:tcvTagResId="@layout/item_search_tag"
-      app:tcvTextColor="@color/standard_color_white"
-      app:tcvTextSize="6dp"/>
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@+id/tag_cloud_view"
-      android:layout_marginTop="15dp"
-      android:background="@color/standard_color_white"
       android:orientation="vertical">
 
-    <co.quchu.quchu.widget.MFrameLayout.MFrameLayout
+    <co.quchu.quchu.widget.TagCloudView
+        android:id="@+id/tag_cloud_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:tcvBackground="@drawable/shape_lineframe_search_tag"
+        app:tcvBorder="10dp"
+        app:tcvItemBorderHorizontal="10dp"
+        app:tcvItemBorderVertical="10dp"
+        app:tcvMultiLine="2"
+        app:tcvTagResId="@layout/item_search_tag"
+        app:tcvTextColor="@color/standard_color_white"
+        app:tcvTextSize="6dp"/>
 
-      <RelativeLayout
+    <TextView
+        android:id="@+id/tag_refresh_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/base_margin"
+        android:drawableRight="@mipmap/ic_back"
+        android:gravity="center"
+        android:text="换一批"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/base_margin"
+        android:background="@color/standard_color_white"
+        android:orientation="vertical">
+
+      <co.quchu.quchu.widget.MFrameLayout.MFrameLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true"
+              android:layout_marginBottom="30dp"
+              android:layout_marginTop="15dp"
+              android:src="@mipmap/ic_xiaoq_logo"/>
+
+        </RelativeLayout>
+
+        <GridView
+            android:id="@+id/search_category_grid_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="15dp"
-            android:src="@mipmap/ic_xiaoq_logo"/>
+            android:fadingEdge="none"
+            android:listSelector="@color/transparent"
+            android:numColumns="3"
+            android:overScrollMode="never"
+            android:paddingTop="30dp"
+            android:scrollbars="none"
+            android:verticalSpacing="30dp"/>
 
-      </RelativeLayout>
+      </co.quchu.quchu.widget.MFrameLayout.MFrameLayout>
 
-      <GridView
-          android:id="@+id/search_category_grid_view"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fadingEdge="none"
-          android:listSelector="@color/transparent"
-          android:numColumns="3"
-          android:overScrollMode="never"
-          android:paddingTop="30dp"
-          android:scrollbars="none"
-          android:verticalSpacing="30dp"/>
-
-    </co.quchu.quchu.widget.MFrameLayout.MFrameLayout>
+    </LinearLayout>
 
   </LinearLayout>
 

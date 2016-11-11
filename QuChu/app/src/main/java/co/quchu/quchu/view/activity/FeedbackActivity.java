@@ -247,11 +247,6 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     return "意见和帮助";
   }
 
-  @Override
-  protected int activitySetup() {
-    return TRANSITION_TYPE_LEFT;
-  }
-
   @OnClick(R.id.submitBtn)
   public void onClick() {
     submitFeedbackClick();

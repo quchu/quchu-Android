@@ -161,7 +161,9 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
             loadMoreHold.retryView.setText(getNullDataHint());
-            loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
+            if (data != null && data.size() > 0) {
+              loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
+            }
           }
 
         } else {

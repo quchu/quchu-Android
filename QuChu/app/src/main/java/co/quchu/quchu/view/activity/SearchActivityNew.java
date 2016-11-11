@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,14 +28,17 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.model.ArticleKeyword;
+import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchKeywordModel;
 import co.quchu.quchu.net.NetUtil;
@@ -56,6 +61,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   @Bind(R.id.tag_cloud_view) TagCloudView mTagCloudView;
   @Bind(R.id.history_recycler_view) RecyclerView mHistoryRv;
   @Bind(R.id.search_category_grid_view) GridView mCategoryGridView;
+  @Bind(R.id.tag_refresh_btn) TextView mTagRefreshBtn;
+
+  private static String INTENT_KEY_ALL_SCENE_LIST = "intent_key_all_scene_list";
 
   private CategoryGridAdapter mCategoryAdapter;
   private SearchAdapterNew mSearchHistoryAdapter;
@@ -64,6 +72,14 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
   private List<SearchKeywordModel> mSearchHistoryList;
   private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
+  private List<String> mTags;
+  private List<SceneInfoModel> mAllSceneList;
+
+  public static void launch(Activity activity, List<SceneInfoModel> allSceneList) {
+    Intent intent = new Intent(activity, SearchActivityNew.class);
+    intent.putExtra(INTENT_KEY_ALL_SCENE_LIST, (Serializable) allSceneList);
+    activity.startActivity(intent);
+  }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,31 +87,65 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     setContentView(R.layout.activity_search_new);
     ButterKnife.bind(this);
 
+    mAllSceneList = (List<SceneInfoModel>) getIntent().getSerializableExtra(INTENT_KEY_ALL_SCENE_LIST);
+
+    initTags();
+
     initHistory();
 
     initSearchView();
 
     initCategory();
 
-    getNetArticleKeyword();
+//    getNetArticleKeyword();
+  }
+
+  private void initTags() {
+    mTags = new ArrayList<>();
+    if (mAllSceneList != null && mAllSceneList.size() > 0) {
+      mTagRefreshBtn.setVisibility(View.VISIBLE);
+      for (SceneInfoModel model : mAllSceneList) {
+        mTags.add(model.getSceneName());
+      }
+    }
+
+    mTagCloudView.setTags(mTags);
+    mTagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
+      @Override
+      public void onTagClick(int position) {
+        SceneInfoModel model = mAllSceneList.get(position);
+        SceneDetailActivity.enterActivity(SearchActivityNew.this, model.getSceneId(), model.getSceneName(), true);
+      }
+    });
+  }
+
+  /**
+   * 对场景列表随机排序
+   */
+  private void shuffleTagList() {
+    if (mAllSceneList != null && mAllSceneList.size() > 3) {
+      Collections.shuffle(mAllSceneList);
+    }
+
+    initTags();
   }
 
   /**
    * 获取文章关键字
    */
-  private void getNetArticleKeyword() {
-    SearchPresenter.getNetArticleKeyword(this, new CommonListener<List<ArticleKeyword>>() {
-      @Override
-      public void successListener(List<ArticleKeyword> response) {
-        initTags(response);
-      }
-
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-
-      }
-    });
-  }
+//  private void getNetArticleKeyword() {
+//    SearchPresenter.getNetArticleKeyword(this, new CommonListener<List<ArticleKeyword>>() {
+//      @Override
+//      public void successListener(List<ArticleKeyword> response) {
+//        initTags(response);
+//      }
+//
+//      @Override
+//      public void errorListener(VolleyError error, String exception, String msg) {
+//
+//      }
+//    });
+//  }
 
   /**
    * 编辑框
@@ -345,23 +395,22 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   /**
    * 搜索标签
    */
-  private void initTags(final List<ArticleKeyword> articleKeywords) {
-    final List<String> tags = new ArrayList<>();
-    if (articleKeywords != null && articleKeywords.size() > 0) {
-      for (ArticleKeyword keyword : articleKeywords) {
-        tags.add(keyword.getKeyword());
-      }
-    }
-    mTagCloudView.setTags(tags);
-    mTagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
-      @Override
-      public void onTagClick(int position) {
-        ArticleKeyword keyword = articleKeywords.get(position);
-        ArticleDetailActivity.enterActivity(SearchActivityNew.this, String.valueOf(keyword.getNetArticleId()), keyword.getKeyword(), "");
-      }
-    });
-  }
-
+//  private void initTags(final List<ArticleKeyword> articleKeywords) {
+//    final List<String> tags = new ArrayList<>();
+//    if (articleKeywords != null && articleKeywords.size() > 0) {
+//      for (ArticleKeyword keyword : articleKeywords) {
+//        tags.add(keyword.getKeyword());
+//      }
+//    }
+//    mTagCloudView.setTags(tags);
+//    mTagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
+//      @Override
+//      public void onTagClick(int position) {
+//        ArticleKeyword keyword = articleKeywords.get(position);
+//        ArticleDetailActivity.enterActivity(SearchActivityNew.this, String.valueOf(keyword.getNetArticleId()), keyword.getKeyword(), "");
+//      }
+//    });
+//  }
   @Override
   public void onBackPressed() {
     if (mHistoryRv.getVisibility() == View.VISIBLE) {
@@ -370,6 +419,11 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     }
 
     super.onBackPressed();
+  }
+
+  @OnClick(R.id.tag_refresh_btn)
+  public void onClick() {
+    shuffleTagList();
   }
 
   @Override

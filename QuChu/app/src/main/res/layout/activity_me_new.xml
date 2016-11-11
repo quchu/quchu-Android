@@ -37,7 +37,7 @@
           android:layout_height="wrap_content"
           android:layout_below="@+id/me_horizontal_divider"
           android:orientation="vertical"
-          android:visibility="invisible">
+          android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -135,20 +135,20 @@
 
       </LinearLayout>
 
-      <RelativeLayout
+      <LinearLayout
           android:id="@+id/user_mask_layout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_alignBottom="@+id/user_operate_layout"
-          android:layout_alignTop="@+id/user_operate_layout"
+          android:layout_below="@+id/me_horizontal_divider"
           android:background="@mipmap/bg_user_center"
-          android:visibility="gone">
+          android:gravity="center"
+          android:orientation="vertical"
+          android:visibility="visible">
 
         <TextView
             android:id="@+id/user_login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
             android:gravity="center"
@@ -156,11 +156,17 @@
             android:paddingLeft="58dp"
             android:paddingRight="58dp"
             android:paddingTop="8dp"
-            android:text="登录"
+            android:text="登录/注册"
             android:textColor="@color/standard_color_h1_dark"
             android:textSize="14sp"/>
 
-      </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/half_margin"
+            android:text="目前处于游客状态，部分功能无法使用。"/>
+
+      </LinearLayout>
 
     </RelativeLayout>
 

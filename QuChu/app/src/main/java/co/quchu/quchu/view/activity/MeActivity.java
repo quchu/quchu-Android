@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -34,7 +33,7 @@ import co.quchu.quchu.view.fragment.MeAvatarFragment;
  */
 public class MeActivity extends BaseBehaviorActivity {
 
-  @Bind(R.id.user_mask_layout) RelativeLayout mUserMaskLayout;
+  @Bind(R.id.user_mask_layout) LinearLayout mUserMaskLayout;
   @Bind(R.id.user_operate_layout) LinearLayout mUserOperateLayout;
 
   @Override
@@ -61,7 +60,7 @@ public class MeActivity extends BaseBehaviorActivity {
       mUserOperateLayout.setVisibility(View.VISIBLE);
     } else {
       mUserMaskLayout.setVisibility(View.VISIBLE);
-      mUserOperateLayout.setVisibility(View.INVISIBLE);
+      mUserOperateLayout.setVisibility(View.GONE);
     }
   }
 

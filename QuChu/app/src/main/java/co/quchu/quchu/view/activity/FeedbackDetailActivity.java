@@ -225,11 +225,6 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
   }
 
   @Override
-  protected int activitySetup() {
-    return TRANSITION_TYPE_LEFT;
-  }
-
-  @Override
   protected String getPageNameCN() {
     return null;
   }

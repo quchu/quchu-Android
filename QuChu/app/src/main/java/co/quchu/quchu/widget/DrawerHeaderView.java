@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.MyGeneModel;
@@ -32,6 +34,8 @@ public class DrawerHeaderView extends LinearLayout {
   @Bind(R.id.drawerHeaderGenderImg) SimpleDraweeView mDrawerHeaderGenderImg;
   @Bind(R.id.drawerHeaderNameTv) TextView mDrawerHeaderNameTv;
   @Bind(R.id.drawerHeaderMarkTv) TextView mDrawerHeaderMarkTv;
+  @Bind(R.id.drawerLoginBtn) TextView mDrawerLoginBtn;
+  @Bind(R.id.drawerLoginLayout) RelativeLayout mDrawerLoginLayout;
 
   private List<MyGeneModel.GenesEntity> mGenes;
 
@@ -40,35 +44,23 @@ public class DrawerHeaderView extends LinearLayout {
 
     LayoutInflater.from(context).inflate(R.layout.view_drawer_header, this);
     ButterKnife.bind(this);
-
-    mDrawerHeaderAvatarImg.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (mListener != null) {
-          mListener.onAvatarClick();
-        }
-      }
-    });
   }
 
   public void setUser() {
-    if (AppContext.user == null) {
-      return;
-    }
-
-    if (!AppContext.user.isIsVisitors()) {
-      mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
+    if (AppContext.user == null || (AppContext.user != null && AppContext.user.isIsVisitors())) {
+      mDrawerLoginLayout.setVisibility(VISIBLE);
     } else {
-      mDrawerHeaderNameTv.setText("未知生物");
-    }
+      mDrawerLoginLayout.setVisibility(GONE);
 
-    mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
-    mDrawerHeaderGenderImg.setImageURI(Uri.parse(
-        "res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male
-            : R.mipmap.ic_female)));
+      mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
+      mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+      mDrawerHeaderGenderImg.setImageURI(Uri.parse(
+          "res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male
+              : R.mipmap.ic_female)));
+    }
   }
 
-  public void setMark(String mark) {
+  private void setMark(String mark) {
     if (TextUtils.isEmpty(SPUtils.getUserMark())) {
       mDrawerHeaderMarkTv.setVisibility(GONE);
     } else {
@@ -112,13 +104,27 @@ public class DrawerHeaderView extends LinearLayout {
     setMark(mark);
   }
 
-  private OnDrawerAvatarClickListener mListener;
+  private OnDrawerHeaderClickListener mListener;
 
-  public void setOnDrawerAvatarClickListener(OnDrawerAvatarClickListener listener) {
+  public void setOnDrawerHeaderClickListener(OnDrawerHeaderClickListener listener) {
     mListener = listener;
   }
 
-  public interface OnDrawerAvatarClickListener {
-    void onAvatarClick();
+  @OnClick({R.id.drawerHeaderAvatarImg, R.id.drawerLoginBtn})
+  public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.drawerHeaderAvatarImg:
+        break;
+
+      case R.id.drawerLoginBtn:
+        if (mListener != null) {
+          mListener.onLoginClick();
+        }
+        break;
+    }
+  }
+
+  public interface OnDrawerHeaderClickListener {
+    void onLoginClick();
   }
 }

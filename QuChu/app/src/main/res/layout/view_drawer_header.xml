@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:fresco="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/standard_color_white"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:paddingTop="54dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/standard_color_white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="54dp">
 
   <RelativeLayout
+      android:id="@+id/drawerAvatarLayout"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/drawerHeaderAvatarImg"
@@ -41,6 +43,8 @@
       android:id="@+id/drawerHeaderNameTv"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_below="@+id/drawerAvatarLayout"
+      android:layout_centerHorizontal="true"
       android:layout_marginTop="@dimen/half_margin"
       android:singleLine="true"
       android:textColor="@color/standard_color_h2_dark"
@@ -51,6 +55,8 @@
       android:id="@+id/drawerHeaderMarkTv"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_below="@+id/drawerHeaderNameTv"
+      android:layout_centerHorizontal="true"
       android:layout_marginTop="@dimen/half_margin"
       android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
       android:gravity="center"
@@ -63,4 +69,29 @@
       android:visibility="invisible"
       tools:text="好奇猫"/>
 
-</LinearLayout>
+  <RelativeLayout
+      android:id="@+id/drawerLoginLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@+id/drawerHeaderMarkTv"
+      android:layout_alignTop="@+id/drawerAvatarLayout"
+      android:background="@color/standard_color_white"
+      android:visibility="gone">
+
+    <TextView
+        android:id="@+id/drawerLoginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
+        android:paddingBottom="8dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="8dp"
+        android:text="登录/注册"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="14sp"/>
+
+  </RelativeLayout>
+
+</RelativeLayout>

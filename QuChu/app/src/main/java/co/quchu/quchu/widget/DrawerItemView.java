@@ -44,6 +44,12 @@ public class DrawerItemView extends LinearLayout {
     }
   }
 
+  public void setText(String str) {
+    if (!TextUtils.isEmpty(str)) {
+      mDrawerTitleTv.setText(str);
+    }
+  }
+
   public void showRedDot(int msgCount) {
     if (mUnReadMessageView != null) {
       mUnReadMessageView.setVisibility(msgCount > 0 ? VISIBLE : INVISIBLE);

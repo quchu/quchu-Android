@@ -40,6 +40,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
@@ -143,8 +144,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
         placeHolder.setAlpha(progress);
 
 
-        llShit.setAlpha(1-progress);
-        toolbar.setAlpha(1-progress);
+        llShit.setAlpha(1 - progress);
+        toolbar.setAlpha(1 - progress);
 
       }
     });
@@ -152,12 +153,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
     initFragment();
 
     startIntentIfFromPush(getIntent());
-
-
   }
 
   private void startIntentIfFromPush(Intent intent) {
-    if (null!=intent&& intent.getBooleanExtra(BUNDLE_KEY_FROM_PUSH,false)){
+    if (null != intent && intent.getBooleanExtra(BUNDLE_KEY_FROM_PUSH, false)) {
       startActivity(MessageCenterActivity.class);
     }
   }
@@ -231,6 +230,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       mDrawerHeaderView.setUser();
       mDrawerHeaderView.getGenes();
     }
+    setDrawerItemText();
 
     getUnreadMessage();
 
@@ -254,6 +254,25 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getGenes();
+    setDrawerItemText();
+
+    mDrawerHeaderView.setOnDrawerHeaderClickListener(new DrawerHeaderView.OnDrawerHeaderClickListener() {
+      @Override
+      public void onLoginClick() {
+        startActivity(LoginActivity.class);
+      }
+    });
+  }
+
+  /**
+   * 设置侧滑菜单特定文本
+   */
+  private void setDrawerItemText() {
+    if (AppContext.user == null || (AppContext.user != null && AppContext.user.isIsVisitors())) {
+      mDrawerItemUserCenter.setText("个人中心(游客模式)");
+    } else {
+      mDrawerItemUserCenter.setText("个人中心");
+    }
   }
 
   /**
@@ -370,17 +389,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer,R.id.vDrawer,
-      R.id.ivSearch,R.id.ivAllScene,R.id.ivSwitchCity, R.id.fab,
+  @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer, R.id.vDrawer,
+      R.id.ivSearch, R.id.ivAllScene, R.id.ivSwitchCity, R.id.fab,
       R.id.drawerItemFavorite, R.id.drawerItemUserCenter, R.id.drawerItemMessage,
       R.id.drawerItemFeedback, R.id.drawerItemSetting, R.id.drawerItemShareApp})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivAllScene:
-        if (null!=mAllSceneList && mAllSceneList.size()>=1){
-          SceneListActivity.launch(RecommendActivity.this,mAllSceneList);
+        if (null != mAllSceneList && mAllSceneList.size() >= 1) {
+          SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
         }
         break;
+
       case R.id.vDrawer:
         mDrawer.openDrawer(GravityCompat.START);
       break;
@@ -397,7 +417,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case R.id.ivSearch:
       case R.id.vSearchBar://搜索
-        startActivity(SearchActivityNew.class);
+        if (mAllSceneList != null && mAllSceneList.size() > 0) {
+          SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
+        }
         break;
 
       case R.id.ivSwitchCity:
@@ -431,11 +453,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemUserCenter://个人中心
-        if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-          startActivity(MeActivity.class);
-        } else {
-          startActivity(LoginActivity.class);
-        }
+        startActivity(MeActivity.class);
         break;
 
       case R.id.drawerItemMessage://消息
@@ -459,6 +477,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemShareApp://分享 App
+        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("", "", "");
+        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
         break;
     }
   }
