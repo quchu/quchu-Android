@@ -15,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
+import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -31,11 +33,9 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.QuchuDetailArticleModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
-import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
@@ -358,69 +358,54 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
       }
     } else if (holder instanceof MatchedTagsViewHolder) {
-      List<String> tags = new ArrayList<>();
-      List<Boolean> highLights = new ArrayList<>();
-      int blockIndex = 0;
-      if (null != mData) {
-        if (null != mData.getAreaMap()) {
-          tags.add(" " + mData.getAreaMap().getName() + " ");
-          blockIndex += 1;
-          highLights.add(true);
-        }
-        if (null != mData.getCircleMap()) {
-          tags.add(" " + mData.getCircleMap().getName() + " ");
-          blockIndex += 1;
-          highLights.add(true);
-        }
-      }
-      if (null != mData.getTags()) {
-        for (int i = 0; i < mData.getTags().size(); i++) {
-          tags.add(" " + mData.getTags().get(i).getZh() + " ");
-          highLights.add(false);
-        }
-        ((MatchedTagsViewHolder) holder).tags.setTags(tags, highLights);
-        final int finalBlockIndex = blockIndex;
-        ((MatchedTagsViewHolder) holder).tags.setOnTagClickListener(
-            new TagCloudView.OnTagClickListener() {
-              @Override public void onTagClick(int position) {
 
-                Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
-                if (position < finalBlockIndex) {
-                  if (finalBlockIndex < 2) {
-                    if (null != mData.getCircleMap()) {
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_CIRCLE);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
-                          mData.getAreaMap().getId());
-                    } else {
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_AREA);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
-                          mData.getCircleMap().getId());
-                    }
-                  } else {
-                    if (position == 0) {
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_CIRCLE);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
-                          mData.getAreaMap().getId());
-                    } else {
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_AREA);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
-                          mData.getCircleMap().getId());
-                    }
-                  }
-                } else {
-                  intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
-                      mData.getTags().get(position - finalBlockIndex).getId());
-                  intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,
-                      mData.getTags().get(position - finalBlockIndex).getZh());
-                }
-                mAnchorActivity.startActivity(intent);
-              }
-            });
+      final List<MatchedTagModel> tags = new ArrayList<>();
+
+      if (null != mData.getAreaMap()) {
+        MatchedTagModel areaTag = new MatchedTagModel();
+        areaTag.setType(NearbyPresenter.TYPE_AREA);
+        areaTag.setId(mData.getAreaMap().getId());
+        areaTag.setZh(mData.getAreaMap().getName());
+        tags.add(areaTag);
       }
+
+      if (null != mData.getCircleMap()) {
+        MatchedTagModel circleTag = new MatchedTagModel();
+        circleTag.setType(NearbyPresenter.TYPE_CIRCLE);
+        circleTag.setId(mData.getCircleMap().getId());
+        circleTag.setZh(mData.getCircleMap().getName());
+        tags.add(circleTag);
+      }
+
+      for (int i = 0; i < mData.getTags().size(); i++) {
+        MatchedTagModel model = new MatchedTagModel();
+        model.setZh(mData.getTags().get(i).getZh());
+        model.setId(mData.getTags().get(i).getId());
+        model.setType(-1);
+        tags.add(model);
+      }
+      MatchedTagAdapter adapter = new MatchedTagAdapter(tags);
+      ((MatchedTagsViewHolder) holder).rvMatchedTags.setAdapter(adapter);
+      ((MatchedTagsViewHolder) holder).rvMatchedTags.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
+      adapter.setOnItemClickListener(new CommonItemClickListener() {
+        @Override public void onItemClick(View v, int position) {
+
+          MatchedTagModel tag = tags.get(position);
+          Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+          intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, tag.getId());
+
+          if (tag.getType()==NearbyPresenter.TYPE_CIRCLE){
+            intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE, NearbyPresenter.TYPE_CIRCLE);
+          }else if(tag.getType()==NearbyPresenter.TYPE_AREA){
+            intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE, NearbyPresenter.TYPE_AREA);
+          }
+          intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, tag.getZh());
+
+          mAnchorActivity.startActivity(intent);
+
+        }
+      });
+
     } else if (holder instanceof NearbyViewHolder) {
       if (null != mData.getNearPlace()) {
         int imgIndex = position - getBasicChildCount();
@@ -604,11 +589,56 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.tcvTags) TagCloudView tags;
+    //@Bind(R.id.tcvTags) TagCloudView tags;
+    @Bind(R.id.rvMatchedTags) RecyclerView rvMatchedTags;
 
     MatchedTagsViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
+    }
+  }
+
+  public class MatchedTagAdapter extends RecyclerView.Adapter<MatchedTagAdapter.ViewHolder> {
+
+    List<MatchedTagModel> tags;
+    CommonItemClickListener mListener;
+
+    public MatchedTagAdapter(List<MatchedTagModel> dataSet) {
+      this.tags = dataSet;
+    }
+
+    public void setOnItemClickListener(CommonItemClickListener listener) {
+      mListener = listener;
+    }
+
+    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new ViewHolder(LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.item_quchu_detail_matched_tags_item, parent, false));
+    }
+
+    @Override public void onBindViewHolder(ViewHolder holder, final int position) {
+      holder.tvName.setText(tags.get(position).zh);
+      holder.tvName.setBackgroundResource(tags.get(position).getType()==NearbyPresenter.TYPE_CIRCLE||tags.get(position).getType()==NearbyPresenter.TYPE_AREA?R.drawable.shape_lineframe_yellow_fill:R.drawable.shape_lineframe_black_thin_rect);
+      holder.tvName.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+          if (null != mListener) {
+            mListener.onItemClick(view, position);
+          }
+        }
+      });
+    }
+
+    @Override public int getItemCount() {
+      return null != tags ? tags.size() : 0;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+      @Bind(R.id.tvName) TextView tvName;
+
+      public ViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+      }
     }
   }
 
@@ -627,6 +657,36 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   public static class BlankViewHolder extends RecyclerView.ViewHolder {
     BlankViewHolder(View view) {
       super(view);
+    }
+  }
+
+  public class MatchedTagModel {
+    private String zh;
+    private int type;
+    private int id;
+
+    public String getZh() {
+      return zh;
+    }
+
+    public void setZh(String zh) {
+      this.zh = zh;
+    }
+
+    public int getType() {
+      return type;
+    }
+
+    public void setType(int type) {
+      this.type = type;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    public void setId(int id) {
+      this.id = id;
     }
   }
 }

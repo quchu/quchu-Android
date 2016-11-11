@@ -31,19 +31,25 @@
       android:orientation="horizontal">
 
 
-    <co.quchu.quchu.widget.TagCloudView
-        android:id="@+id/tcvTags"
-        app:tcvBackground="@drawable/shape_lineframe_black_thin_rect"
-        app:tcvTextSize="4dp"
-        app:tcvBorder = "8dp"
-        app:tcvItemBorderVertical="@dimen/base_margin"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvMatchedTags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tcvCanTagClick="false"
-        app:tcvTextColor="@color/standard_color_h2_dark"
         />
+
+    <!--<co.quchu.quchu.widget.TagCloudView-->
+        <!--android:id="@+id/tcvTags"-->
+        <!--app:tcvBackground="@drawable/shape_lineframe_black_thin_rect"-->
+        <!--app:tcvTextSize="4dp"-->
+        <!--app:tcvBorder = "8dp"-->
+        <!--app:tcvItemBorderVertical="@dimen/base_margin"-->
+        <!--android:layout_marginLeft="@dimen/half_margin"-->
+        <!--android:layout_marginRight="@dimen/half_margin"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:tcvCanTagClick="false"-->
+        <!--app:tcvTextColor="@color/standard_color_h2_dark"-->
+        <!--/>-->
 
   </RelativeLayout>
 </RelativeLayout>
