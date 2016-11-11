@@ -60,9 +60,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   @Bind(R.id.detail_recyclerview) RecyclerView mRecyclerView;
-  @Bind(R.id.ivShouCang) ImageView ivShouCang;
   @Bind(R.id.detail_bottom_group_ll) View detail_bottom_group_ll;
   @Bind(R.id.errorView) ErrorView errorView;
+  @Bind(R.id.llFavorite) View llFavorite;
+  @Bind(R.id.tvFavorite) TextView tvFavorite;
 
   public static final String REQUEST_KEY_PID = "pid";
   public static final String REQUEST_KEY_FROM = "from";
@@ -141,8 +142,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   private void resetFavorite() {
-    ivShouCang.setImageResource(
-        dModel.isIsf() ? R.mipmap.ic_shoucang_yellow : R.mipmap.ic_shoucang_large);
+    llFavorite.setBackgroundResource(!dModel.isIsf() ? R.drawable.shape_lineframe_yellow_fill : R.drawable.shape_lineframe_gray_fill);
+    tvFavorite.setTextColor(!dModel.isIsf() ? getResources().getColor(R.color.standard_color_h1_dark) : getResources().getColor(R.color.standard_color_h3_dark));
+    tvFavorite.setText(dModel.isIsf() ? R.string.cancel_favorite:R.string.favorite);
   }
 
   @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -292,7 +294,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     resetFavorite();
   }
 
-  @OnClick({ R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia })
+  @OnClick({R.id.llFavorite, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia })
   public void detailClick(View v) {
     if (!NetUtil.isNetworkConnected(this)) {
       Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
@@ -337,7 +339,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
           }
 
           break;
-        case R.id.ivShouCang:
+        case R.id.llFavorite:
           //收藏
           UMEvent("like_c");
           ZGEvent("趣处名称", dModel.getName(), "收藏趣处");

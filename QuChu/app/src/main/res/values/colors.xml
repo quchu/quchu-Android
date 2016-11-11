@@ -33,7 +33,7 @@
   //主题红
   <color name="standard_color_red">#ff231f</color>
   //主题黄
-  <color name="standard_color_yellow">#ffd102</color>
+  <color name="standard_color_yellow">#ffdf4e</color>
   //标签黄
   <color name="standard_color_yellow_label">#ffdf4e</color>
   <color name="standard_color_h0_dark">#111111</color>

@@ -96,7 +96,7 @@
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_below="@+id/llStart"
       android:layout_marginRight="@dimen/base_margin"
-      android:background="@color/colorBackground"
+      android:background="@drawable/shape_lineframe_common_gray_fill"
       android:orientation="vertical"
       android:padding="@dimen/base_margin"
 
