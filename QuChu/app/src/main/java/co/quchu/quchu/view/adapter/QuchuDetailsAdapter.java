@@ -660,7 +660,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public class MatchedTagModel {
+  private class MatchedTagModel {
     private String zh;
     private int type;
     private int id;
