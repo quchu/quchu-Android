@@ -156,6 +156,7 @@
       android:visibility="gone"
       android:layout_centerHorizontal="true"
       android:padding="@dimen/half_margin"
+      android:layout_marginTop="@dimen/half_margin"
       android:textColor="@color/standard_color_h3_dark"
       android:textSize="@dimen/standard_text_size_h3"
       />

@@ -135,9 +135,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     initData();
     getVisitors();
-    getRatingInfo();
-
-
 
   }
 
@@ -172,20 +169,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         });
   }
 
-  private void getRatingInfo() {
-    InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId,
-        new CommonListener<VisitedInfoModel>() {
-          @Override public void successListener(VisitedInfoModel response) {
-            if (null != response) {
-              mVisitedInfoModel = response;
-              mQuchuDetailAdapter.updateRatingInfo(mVisitedInfoModel);
-            }
-          }
-
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
-          }
-        });
-  }
 
   @Override protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
@@ -408,7 +391,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         }
         break;
       case EventFlags.EVENT_QUCHU_RATING_UPDATE:
-        getRatingInfo();
         getVisitors();
         break;
       case EventFlags.EVENT_CANCLE_FAVORITE_QUCHU:

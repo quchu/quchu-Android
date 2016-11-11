@@ -61,7 +61,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private LayoutInflater mLayoutInflater;
   private Activity mAnchorActivity;
   private DetailModel mData;
-  private VisitedInfoModel mVisitedInfoModel;
   private List<ImageModel> mImageSet = new ArrayList<>();
 
   protected static final int VIEW_TYPES[] = new int[] {
@@ -90,11 +89,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       mImageSet.clear();
       mImageSet.addAll(mData);
     }
-  }
-
-  public void updateRatingInfo(VisitedInfoModel pVisitedInfoModel) {
-    mVisitedInfoModel = pVisitedInfoModel;
-    notifyDataSetChanged();
   }
 
   private int getBasicChildCount() {
@@ -134,7 +128,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       case LAYOUT_TYPE_ADDITIONAL_INFO:
         return new AdditionalInfoViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
-
       case LAYOUT_TYPE_MAP_INFO:
         return new MapViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_map_info, parent, false));
@@ -235,6 +228,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_rise);
         ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#ff4242"));
       }
+
+      ((RatingInfoViewHolder) holder).tvRatingCount.setText(mData.getSuggest()+"分");
       ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
 
     } else if (holder instanceof PartyInfoViewHolder) {
@@ -244,6 +239,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(
           mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
     } else if (holder instanceof AdditionalInfoViewHolder) {
+
+      ((AdditionalInfoViewHolder) holder).ivDeliver.setImageResource(StringUtils.isEmpty(mData.getTakeoutUrl())?R.mipmap.ic_nowaimai:R.mipmap.ic_waimai);
+      ((AdditionalInfoViewHolder) holder).ivOrder.setImageResource(StringUtils.isEmpty(mData.getNet())?R.mipmap.ic_noyuding:R.mipmap.ic_yuding);
+      ((AdditionalInfoViewHolder) holder).ivQueue.setImageResource(StringUtils.isEmpty(mData.getLineUrl())?R.mipmap.ic_nopaiwei:R.mipmap.ic_paiwei);
+      ((AdditionalInfoViewHolder) holder).ivTel.setImageResource(StringUtils.isEmpty(mData.getTel())?R.mipmap.ic_nodianhua:R.mipmap.ic_dianhua);
 
     } else if (holder instanceof MapViewHolder) {
 

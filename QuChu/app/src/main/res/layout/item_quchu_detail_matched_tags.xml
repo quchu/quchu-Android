@@ -14,7 +14,7 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       android:layout_marginLeft="@dimen/base_margin"
-      android:layout_marginTop="@dimen/base_margin"
+      android:layout_marginTop="@dimen/double_margin"
       android:text="@string/guess_what_you_like"
       android:gravity="center"
       style="@style/TextView.H2"
@@ -27,7 +27,7 @@
       android:layout_alignParentLeft="true"
       android:layout_below="@+id/tvLabel"
       android:layout_centerHorizontal="true"
-      android:layout_marginTop="@dimen/half_margin"
+      android:layout_marginTop="@dimen/base_margin"
       android:orientation="horizontal">
 
 
@@ -35,21 +35,12 @@
         android:id="@+id/rvMatchedTags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:paddingBottom="@dimen/base_margin"
         />
 
-    <!--<co.quchu.quchu.widget.TagCloudView-->
-        <!--android:id="@+id/tcvTags"-->
-        <!--app:tcvBackground="@drawable/shape_lineframe_black_thin_rect"-->
-        <!--app:tcvTextSize="4dp"-->
-        <!--app:tcvBorder = "8dp"-->
-        <!--app:tcvItemBorderVertical="@dimen/base_margin"-->
-        <!--android:layout_marginLeft="@dimen/half_margin"-->
-        <!--android:layout_marginRight="@dimen/half_margin"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:tcvCanTagClick="false"-->
-        <!--app:tcvTextColor="@color/standard_color_h2_dark"-->
-        <!--/>-->
+
 
   </RelativeLayout>
 </RelativeLayout>

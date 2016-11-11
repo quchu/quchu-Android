@@ -62,6 +62,8 @@ public class DetailModel implements Serializable{
     private String traffic = "";
     public String gdLatitude= "";
     public String gdLongitude= "";
+    private String lineUrl = "";
+    private String takeoutUrl = "";
     private int joinPartnerCount;
     private int placeReviewCount;
     private boolean isActivity;
@@ -73,7 +75,6 @@ public class DetailModel implements Serializable{
     private int autorId;
     private int height;
     private float suggest;
-
     private float recentSuggest;
     private int myCardId;                   //明信片ID -1为未创建明信片
     private List<GenesEntity> genes;
@@ -240,7 +241,8 @@ public class DetailModel implements Serializable{
         setCircleMap(objTarget.getCircleMap());
         setDescribe(objTarget.getDescribe());
         setRecentSuggest(objTarget.getRecentSuggest());
-
+        setTakeoutUrl(objTarget.getTakeoutUrl());
+        setLineUrl(objTarget.getLineUrl());
 
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
@@ -311,6 +313,22 @@ public class DetailModel implements Serializable{
         cardCount = objTarget.getCardCount();
 
 
+    }
+
+    public String getTakeoutUrl() {
+        return takeoutUrl;
+    }
+
+    public void setTakeoutUrl(String takeoutUrl) {
+        this.takeoutUrl = takeoutUrl;
+    }
+
+    public String getLineUrl() {
+        return lineUrl;
+    }
+
+    public void setLineUrl(String lineUrl) {
+        this.lineUrl = lineUrl;
     }
 
     public List<CommentModel> getReviewList() {

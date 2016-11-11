@@ -53,4 +53,8 @@
 
   </LinearLayout>
 
+  <View
+      style="@style/HorizontalDividerDark"
+      />
+
 </LinearLayout>
