@@ -124,7 +124,7 @@ public class AIConversationFragment extends BaseFragment {
     },200);
 
 
-    //deleteHistoryIfNeed();
+    deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
     history = AIConversationPresenter.getMessages(getActivity());
     mConversation.addAll(history);
@@ -154,8 +154,10 @@ public class AIConversationFragment extends BaseFragment {
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(System.currentTimeMillis());
 
+    AIConversationPresenter.getMessages(getActivity());
+
     if (calendar.get(Calendar.HOUR_OF_DAY)>=4) {
-      //TODO delete > current date
+      //TODO delete < current date
 
       calendar.set(Calendar.HOUR_OF_DAY,0);
       calendar.set(Calendar.MINUTE,0);

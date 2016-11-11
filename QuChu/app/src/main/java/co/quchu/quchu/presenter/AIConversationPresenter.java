@@ -210,13 +210,9 @@ public class AIConversationPresenter {
   /**
    * 删除小于日期前的
    */
-  public static boolean delMessagesBefore(Context context,long date) {
-    boolean delSuccess = DatabaseHelper.getInstance(context)
-        .getReadableDatabase()
-        .delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, null, null) > 0;
-    DatabaseHelper.getInstance(context).getReadableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,"timeStamp <"+date,null);
+  public static void delMessagesBefore(Context context,long date) {
+    DatabaseHelper.getInstance(context).getReadableDatabase().rawQuery("delete from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" where timeStamp <"+date,null);
     DatabaseHelper.closeIfOpend(context);
-    return delSuccess;
   }
 
   /**
