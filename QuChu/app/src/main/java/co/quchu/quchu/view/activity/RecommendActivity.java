@@ -343,6 +343,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       if (currentLocation.endsWith("市")) {
         currentLocation = currentLocation.substring(0, currentLocation.length() - 1);
       }
+
       boolean inList = false;
       for (int i = 0; i < mCityList.size(); i++) {
         if (mCityList.get(i).getCvalue().equals(currentLocation)) {
@@ -350,13 +351,21 @@ public class RecommendActivity extends BaseBehaviorActivity {
           cityIdInList = mCityList.get(i).getCid();
         }
       }
-      if (!currentLocation.equals(SPUtils.getCityName())) {
-        //                if (!inList) {
-        //城市列表中没有当前位置
-        //                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
-        //                } else
-        if (inList) {                    //城市列表中有但不是当前位置
 
+      if (!currentLocation.equals(SPUtils.getCityName())) {
+        if (!inList) {//城市列表中没有当前位置
+          new MaterialDialog.Builder(this).title("切换城市")
+              .content("您所在的城市并没有收录，我们已经为你切换至默认城市厦门")
+              .positiveText("知道了")
+              .cancelable(false)
+              .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                }
+              })
+              .show();
+
+        } else {//城市列表中有但不是当前位置
           final boolean finalInList = inList;
           final int finalCityIdInList = cityIdInList;
           final String finalCurrentLocation = currentLocation;
@@ -403,7 +412,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case R.id.vDrawer:
         mDrawer.openDrawer(GravityCompat.START);
-      break;
+        break;
       case R.id.vFakeDrawer:
         if (placeHolder.getAlpha() == 1) {
           mDrawer.openDrawer(GravityCompat.START);

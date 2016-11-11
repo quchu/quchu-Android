@@ -60,27 +60,6 @@
               android:background="@color/colorBackground"/>
 
           <co.quchu.quchu.widget.MeItemView
-              android:id="@+id/me_friend_view"
-              android:layout_width="0dp"
-              android:layout_height="match_parent"
-              android:layout_weight="1"
-              app:miImage="@mipmap/ic_quyouquan"
-              app:miText="趣友圈"/>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/colorBackground"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/standard_color_white"
-            android:orientation="horizontal">
-
-          <co.quchu.quchu.widget.MeItemView
               android:id="@+id/me_social_account_view"
               android:layout_width="0dp"
               android:layout_height="match_parent"

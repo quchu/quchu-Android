@@ -36,6 +36,7 @@ public class DrawerHeaderView extends LinearLayout {
   @Bind(R.id.drawerHeaderMarkTv) TextView mDrawerHeaderMarkTv;
   @Bind(R.id.drawerLoginBtn) TextView mDrawerLoginBtn;
   @Bind(R.id.drawerLoginLayout) RelativeLayout mDrawerLoginLayout;
+  @Bind(R.id.drawerUserLayout) LinearLayout mDrawerUserLayout;
 
   private List<MyGeneModel.GenesEntity> mGenes;
 
@@ -49,8 +50,10 @@ public class DrawerHeaderView extends LinearLayout {
   public void setUser() {
     if (AppContext.user == null || (AppContext.user != null && AppContext.user.isIsVisitors())) {
       mDrawerLoginLayout.setVisibility(VISIBLE);
+      mDrawerUserLayout.setVisibility(GONE);
     } else {
       mDrawerLoginLayout.setVisibility(GONE);
+      mDrawerUserLayout.setVisibility(VISIBLE);
 
       mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
       mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());

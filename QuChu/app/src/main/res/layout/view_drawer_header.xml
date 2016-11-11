@@ -6,76 +6,82 @@
                 android:layout_height="wrap_content"
                 android:background="@color/standard_color_white"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="54dp">
+                android:orientation="vertical">
 
-  <RelativeLayout
-      android:id="@+id/drawerAvatarLayout"
-      android:layout_width="wrap_content"
+  <LinearLayout
+      android:id="@+id/drawerUserLayout"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true">
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:paddingBottom="15dp"
+      android:paddingTop="50dp"
+      android:visibility="visible">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/drawerHeaderAvatarImg"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        fresco:placeholderImage="@mipmap/head_place_hold"
-        fresco:roundAsCircle="true"
-        fresco:roundingBorderColor="@color/colorBorder"
-        fresco:roundingBorderWidth="2dp"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/drawerHeaderGenderImg"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignBottom="@id/drawerHeaderAvatarImg"
-        android:layout_alignRight="@id/drawerHeaderAvatarImg"
-        android:layout_marginBottom="7dp"
-        android:layout_marginRight="7dp"
-        fresco:backgroundImage="@color/standard_color_white"
-        fresco:roundAsCircle="true"
-        fresco:roundingBorderColor="@color/colorBorder"
-        fresco:roundingBorderWidth="2dp"/>
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/drawerHeaderAvatarImg"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          fresco:placeholderImage="@mipmap/head_place_hold"
+          fresco:roundAsCircle="true"
+          fresco:roundingBorderColor="@color/colorBorder"
+          fresco:roundingBorderWidth="2dp"/>
 
-  </RelativeLayout>
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/drawerHeaderGenderImg"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_alignBottom="@id/drawerHeaderAvatarImg"
+          android:layout_alignRight="@id/drawerHeaderAvatarImg"
+          android:layout_marginBottom="7dp"
+          android:layout_marginRight="7dp"
+          fresco:backgroundImage="@color/standard_color_white"
+          fresco:roundAsCircle="true"
+          fresco:roundingBorderColor="@color/colorBorder"
+          fresco:roundingBorderWidth="2dp"/>
 
-  <TextView
-      android:id="@+id/drawerHeaderNameTv"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/drawerAvatarLayout"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="@dimen/half_margin"
-      android:singleLine="true"
-      android:textColor="@color/standard_color_h2_dark"
-      android:textSize="18sp"
-      tools:text="我的手_做不到"/>
+    </RelativeLayout>
 
-  <TextView
-      android:id="@+id/drawerHeaderMarkTv"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/drawerHeaderNameTv"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="@dimen/half_margin"
-      android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
-      android:gravity="center"
-      android:paddingBottom="3dp"
-      android:paddingLeft="18dp"
-      android:paddingRight="18dp"
-      android:paddingTop="3dp"
-      android:textColor="@color/standard_color_h2_dark"
-      android:textSize="12sp"
-      android:visibility="invisible"
-      tools:text="好奇猫"/>
+    <TextView
+        android:id="@+id/drawerHeaderNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/drawerAvatarLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/half_margin"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="18sp"
+        tools:text="我的手_做不到"/>
+
+    <TextView
+        android:id="@+id/drawerHeaderMarkTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/drawerHeaderNameTv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/half_margin"
+        android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
+        android:gravity="center"
+        android:paddingBottom="3dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="3dp"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        tools:text="好奇猫"/>
+
+  </LinearLayout>
 
   <RelativeLayout
       android:id="@+id/drawerLoginLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignBottom="@+id/drawerHeaderMarkTv"
-      android:layout_alignTop="@+id/drawerAvatarLayout"
-      android:background="@color/standard_color_white"
       android:visibility="gone">
 
     <TextView
@@ -83,6 +89,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="65dp"
         android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
         android:paddingBottom="8dp"
         android:paddingLeft="50dp"

@@ -64,7 +64,7 @@ public class MeActivity extends BaseBehaviorActivity {
     }
   }
 
-  @OnClick({R.id.me_info_view, R.id.me_friend_view, R.id.me_social_account_view, R.id.me_change_password_view, R.id.user_logout_btn, R.id.user_login_btn})
+  @OnClick({R.id.me_info_view, R.id.me_social_account_view, R.id.me_change_password_view, R.id.user_logout_btn, R.id.user_login_btn})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.me_info_view://个人信息
@@ -72,10 +72,10 @@ public class MeActivity extends BaseBehaviorActivity {
         startActivity(AccountSettingActivity.class);
         break;
 
-      case R.id.me_friend_view://趣友圈
-        UMEvent("community_c");
-        startActivity(QuFriendsActivity.class);
-        break;
+//      case R.id.me_friend_view://趣友圈
+//        UMEvent("community_c");
+//        startActivity(QuFriendsActivity.class);
+//        break;
 
       case R.id.me_social_account_view://绑定社交账号
         startActivity(BindActivity.class);

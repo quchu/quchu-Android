@@ -7,23 +7,31 @@
                 android:background="@color/standard_color_white"
                 tools:context="co.quchu.quchu.view.activity.FavoriteActivity">
 
-  <include layout="@layout/cp_enhanced_toolbar"/>
+  <include
+      android:id="@+id/favorite_tool_bar"
+      layout="@layout/cp_enhanced_toolbar"/>
 
-  <android.support.design.widget.TabLayout
-      android:id="@+id/tabLayout"
-      android:layout_width="wrap_content"
-      android:layout_height="?attr/actionBarSize"
-      android:layout_centerHorizontal="true"
-      app:tabIndicatorColor="@color/standard_color_h1_dark"
-      app:tabIndicatorHeight="2dp"
-      app:tabMode="fixed"
-      app:tabSelectedTextColor="@color/standard_color_h1_dark"
-      app:tabTextColor="@color/standard_color_h3_dark"/>
-
-  <co.quchu.quchu.widget.NoScrollViewPager
-      android:id="@+id/viewpager"
+  <RelativeLayout
+      android:id="@+id/favoriteContainer"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="?attr/actionBarSize"/>
+      android:layout_below="@+id/favorite_tool_bar"/>
+
+  <!--<android.support.design.widget.TabLayout-->
+  <!--android:id="@+id/tabLayout"-->
+  <!--android:layout_width="wrap_content"-->
+  <!--android:layout_height="?attr/actionBarSize"-->
+  <!--android:layout_centerHorizontal="true"-->
+  <!--app:tabIndicatorColor="@color/standard_color_h1_dark"-->
+  <!--app:tabIndicatorHeight="2dp"-->
+  <!--app:tabMode="fixed"-->
+  <!--app:tabSelectedTextColor="@color/standard_color_h1_dark"-->
+  <!--app:tabTextColor="@color/standard_color_h3_dark"/>-->
+
+  <!--<co.quchu.quchu.widget.NoScrollViewPager-->
+  <!--android:id="@+id/viewpager"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:layout_height="match_parent"-->
+  <!--android:layout_marginTop="?attr/actionBarSize"/>-->
 
 </RelativeLayout>
