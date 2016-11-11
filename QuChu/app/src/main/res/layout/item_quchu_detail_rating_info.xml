@@ -2,17 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
     android:orientation="vertical"
     >
 
-  <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="全网综合评分"
-      style="@style/TextView.H2"
-      />
+
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -41,9 +37,40 @@
         android:textSize="@dimen/standard_text_size_h4"
         />
   </LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/quarter_margin"
+      android:orientation="horizontal"
+      >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="近期评价: "
+        android:textColor="@color/standard_color_h0_dark"
+        style="@style/TextView.H3"
+        />
+
+    <ImageView
+        android:id="@+id/ivTrend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@mipmap/ic_rate_rise"
+        />
+    <TextView
+        android:id="@+id/tvRatingChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="1.2分"
+        android:textColor="@color/standard_color_red"
+        style="@style/TextView.H3"
+        />
+
+  </LinearLayout>
   <View
       android:layout_marginBottom="@dimen/half_margin"
-      android:layout_marginTop="@dimen/half_margin"
+      android:layout_marginTop="@dimen/base_margin"
       style="@style/HorizontalDividerDark"
       />
 </LinearLayout>

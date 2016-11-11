@@ -73,6 +73,8 @@ public class DetailModel implements Serializable{
     private int autorId;
     private int height;
     private float suggest;
+
+    private float recentSuggest;
     private int myCardId;                   //明信片ID -1为未创建明信片
     private List<GenesEntity> genes;
     private List<IconsEntity> icons;
@@ -91,6 +93,14 @@ public class DetailModel implements Serializable{
 
     public void setArticleList(List<QuchuDetailArticleModel> articleList) {
         this.articleList = articleList;
+    }
+
+    public float getRecentSuggest() {
+        return recentSuggest;
+    }
+
+    public void setRecentSuggest(float recentSuggest) {
+        this.recentSuggest = recentSuggest;
     }
 
     public String getDescribe() {
@@ -229,6 +239,8 @@ public class DetailModel implements Serializable{
         setAreaMap(objTarget.getAreaMap());
         setCircleMap(objTarget.getCircleMap());
         setDescribe(objTarget.getDescribe());
+        setRecentSuggest(objTarget.getRecentSuggest());
+
 
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;

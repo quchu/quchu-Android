@@ -2,6 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import co.quchu.quchu.presenter.NearbyPresenter;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -205,16 +207,36 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           tagsString += mData.getTags().get(i).getZh();
           tagsString += (i + 1) < mData.getTags().size() ? " | " : "";
         }
-        ((SimpleInfoViewHolder) holder).tvTags.setText(tagsString);
-        ((SimpleInfoViewHolder) holder).tvTags.setVisibility(View.VISIBLE);
-      } else {
-        ((SimpleInfoViewHolder) holder).tvTags.setVisibility(View.GONE);
       }
+
+      String distanceStr = "";
+      if (null!=mData.getLatitude() && null!=mData.getLongitude()){
+
+        distanceStr += StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(mData.getLatitude()),Double.valueOf(mData.getLongitude()));
+
+      }
+      tagsString += " | ¥ "+mData.getPrice()+" | "+distanceStr;
+
+      ((SimpleInfoViewHolder) holder).tvTags.setText(tagsString);
+
+
+
     } else if (holder instanceof RatingInfoViewHolder) {
 
-      if (null != mVisitedInfoModel) {
-        ((RatingInfoViewHolder) holder).rbRating.setProgress(mVisitedInfoModel.getScore());
+
+      ((RatingInfoViewHolder) holder).rbRating.setProgress((int) mData.getSuggest());
+      if (mData.getSuggest() == mData.getRecentSuggest()){
+        ((RatingInfoViewHolder) holder).ivTrend.setVisibility(View.GONE);
       }
+      if (mData.getRecentSuggest()-mData.getSuggest()<0){
+        ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_fall);
+        ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#00b38a"));
+      }else{
+        ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_rise);
+        ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#ff4242"));
+      }
+      ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
+
     } else if (holder instanceof PartyInfoViewHolder) {
 
       ((PartyInfoViewHolder) holder).detail_activity_info_ll.setVisibility(
@@ -474,6 +496,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   public static class RatingInfoViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.tvRatingCount) TextView tvRatingCount;
+    @Bind(R.id.tvRatingChange) TextView tvRatingChange;
+    @Bind(R.id.ivTrend) ImageView ivTrend;
 
     RatingInfoViewHolder(View view) {
       super(view);
