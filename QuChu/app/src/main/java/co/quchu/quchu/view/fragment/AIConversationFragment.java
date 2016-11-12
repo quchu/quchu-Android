@@ -1,18 +1,16 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -24,6 +22,8 @@ import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
+import co.quchu.quchu.view.activity.SearchActivity;
+import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
 import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
@@ -31,7 +31,6 @@ import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -82,7 +81,7 @@ public class AIConversationFragment extends BaseFragment {
     mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
     mAdapter = new AIConversationAdapter(getActivity(), mConversation,
-        new AIConversationAdapter.OnAnswerListener() {
+        new AIConversationAdapter.OnInteractiveClick() {
           @Override public void onAnswer(final String answer, final String additionalShit) {
 
             if (!NetUtil.isNetworkConnected(getActivity())) {
@@ -111,6 +110,14 @@ public class AIConversationFragment extends BaseFragment {
                 getNext(answer, additionalShit);
               }
             }, CONVERSATION_REQUEST_DELAY);
+          }
+
+          @Override public void onRetry() {
+            startConversation(false);
+          }
+
+          @Override public void onSearch() {
+            startActivity(new Intent(getActivity(), SearchActivityNew.class));
           }
         });
     mRecyclerView.setAdapter(mAdapter);

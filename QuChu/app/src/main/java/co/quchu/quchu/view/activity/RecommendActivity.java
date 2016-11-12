@@ -418,12 +418,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
           mDrawer.openDrawer(GravityCompat.START);
         }
         break;
-      //case R.id.vFakeSearchBar://搜索
-      //  if (placeHolder.getAlpha() == 1) {
-      //    startActivity(SearchActivityNew.class);
-      //  }
-      //  break;
-
+      
       case R.id.ivSearch:
       case R.id.vSearchBar://搜索
         if (mAllSceneList != null && mAllSceneList.size() > 0) {

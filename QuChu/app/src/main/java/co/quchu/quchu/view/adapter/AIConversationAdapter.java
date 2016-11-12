@@ -18,9 +18,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   private Activity mAnchor;
   private List<AIConversationModel> mDataSet;
-  private OnAnswerListener mOnAnswerListener;
+  private OnInteractiveClick mOnInteractiveListener;
 
   public void updateNoNetwork(boolean noNetWork) {
     if (noNetWork){
@@ -69,15 +67,17 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   }
 
-  public interface OnAnswerListener {
+  public interface OnInteractiveClick {
     void onAnswer(String answer, String additionalShit);
+    void onRetry();
+    void onSearch();
   }
 
   public AIConversationAdapter(Activity context, List<AIConversationModel> data,
-      OnAnswerListener onAnswerListener) {
+      OnInteractiveClick onAnswerListener) {
     this.mAnchor = context;
     this.mDataSet = data;
-    this.mOnAnswerListener = onAnswerListener;
+    this.mOnInteractiveListener = onAnswerListener;
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -95,10 +95,11 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return new GalleryViewHolder(LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_ai_conversation_gallery_option, parent, false));
       case TYPE_NO_NETWORK:
-        return new NoNetworkViewHolder(
-            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ai_conversation_no_network, parent, false));
+        return new NoNetworkViewHolder(LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_ai_conversation_no_network, parent, false));
       default:
-        return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_space,parent,false));
+        return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_space,parent,false));
 
 
     }
@@ -152,7 +153,21 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
           break;
         case TYPE_NO_NETWORK:
+          ((NoNetworkViewHolder)holder).tvRetry.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+              if (null!=mOnInteractiveListener){
+                mOnInteractiveListener.onRetry();
+              }
+            }
+          });
 
+          ((NoNetworkViewHolder) holder).tvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+              if (null!=mOnInteractiveListener){
+                mOnInteractiveListener.onSearch();
+              }
+            }
+          });
 
           break;
       }
@@ -232,6 +247,9 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   public static class NoNetworkViewHolder extends RecyclerView.ViewHolder {
 
+    @Bind(R.id.tvRetry) TextView tvRetry;
+    @Bind(R.id.tvSearch) TextView tvSearch;
+
     NoNetworkViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
@@ -259,7 +277,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       holder.tvOption.setText(s+": "+answer);
       holder.tvOption.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-          mOnAnswerListener.onAnswer(answer, additionalShit);
+          mOnInteractiveListener.onAnswer(answer, additionalShit);
         }
       });
     }
@@ -308,8 +326,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       TextView tvInfo = (TextView) v.findViewById(R.id.history_tag_tv);
 
 
-      tvTitle.setText(dataObj.getName());
-      tvSubTitle.setText(dataObj.getAreaCircleName());
+      tvTitle.setText(dataObj.getDescribe());
+      tvSubTitle.setText(dataObj.getName());
       String tagsString = "";
       if (null != dataObj.getTags()) {
         for (int i = 0; i < dataObj.getTags().size(); i++) {
