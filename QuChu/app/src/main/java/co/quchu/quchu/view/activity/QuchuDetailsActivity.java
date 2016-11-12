@@ -199,12 +199,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         bindingDetailData(dModel);
       }
 
-      mCommentListFragment = new CommentListFragment();
-      Bundle bundle = new Bundle();
-      bundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID,pId);
-      mCommentListFragment.setArguments(bundle);
-      getSupportFragmentManager().beginTransaction().add(R.id.flContainer,mCommentListFragment).commitAllowingStateLoss();
-      findViewById(R.id.flContainer).setVisibility(View.INVISIBLE);
+
 
     }
   }
@@ -216,6 +211,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
       @Override public void successListener(DetailModel response) {
         DialogUtil.dismissProgess();
         bindingDetailData(response);
+
         errorView.hideView();
       }
 
@@ -263,6 +259,17 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     changeCollectState(dModel.isIsf());
     mQuchuDetailAdapter.notifyDataSetChanged();
+
+    mCommentListFragment = new CommentListFragment();
+    Bundle bundle = new Bundle();
+    bundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID,pId);
+    mCommentListFragment.setArguments(bundle);
+    getSupportFragmentManager().beginTransaction().add(R.id.flContainer,mCommentListFragment).commitAllowingStateLoss();
+
+    if (null!=mCommentListFragment){
+      mCommentListFragment.updateRatingInfo(dModel.getPlaceReviewCount(),dModel.getSuggest(),dModel.getReviewGroupList(),dModel.getReviewTagList());
+    }
+    findViewById(R.id.flContainer).setVisibility(View.INVISIBLE);
 
     mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {

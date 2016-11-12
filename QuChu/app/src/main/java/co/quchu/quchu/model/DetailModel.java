@@ -55,7 +55,7 @@ public class DetailModel implements Serializable{
     private String name;
     private String net;
     private String price;
-    private String describe = "";
+    private String described = "";
     private String restDay = "";
     private String rgb;
     private String tel;
@@ -87,6 +87,24 @@ public class DetailModel implements Serializable{
     private SimpleCircleModel areaMap;
     private SimpleCircleModel circleMap;
     private List<QuchuDetailArticleModel> articleList;
+    private List<String> reviewTagList;
+    private List<BizInfoModel> reviewGroupList;
+
+    public List<String> getReviewTagList() {
+        return reviewTagList;
+    }
+
+    public void setReviewTagList(List<String> reviewTagList) {
+        this.reviewTagList = reviewTagList;
+    }
+
+    public List<BizInfoModel> getReviewGroupList() {
+        return reviewGroupList;
+    }
+
+    public void setReviewGroupList(List<BizInfoModel> reviewGroupList) {
+        this.reviewGroupList = reviewGroupList;
+    }
 
     public List<QuchuDetailArticleModel> getArticleList() {
         return articleList;
@@ -104,12 +122,12 @@ public class DetailModel implements Serializable{
         this.recentSuggest = recentSuggest;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescribed() {
+        return described;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescribed(String described) {
+        this.described = described;
     }
 
     public SimpleCircleModel getAreaMap() {
@@ -173,7 +191,7 @@ public class DetailModel implements Serializable{
         model.setAddress(this.getAddress());
         model.setCover(this.getCover());
         model.setName(this.getName());
-        //model.setDescribe(this.get);
+        //model.setDescribed(this.get);
         model.setGdLatitude(this.gdLatitude);
         model.setGdLongitude(this.gdLongitude);
         model.setLatitude(this.getLatitude());
@@ -239,7 +257,7 @@ public class DetailModel implements Serializable{
         setPlaceReviewCount(objTarget.getPlaceReviewCount());
         setAreaMap(objTarget.getAreaMap());
         setCircleMap(objTarget.getCircleMap());
-        setDescribe(objTarget.getDescribe());
+        setDescribed(objTarget.getDescribed());
         setRecentSuggest(objTarget.getRecentSuggest());
         setTakeoutUrl(objTarget.getTakeoutUrl());
         setLineUrl(objTarget.getLineUrl());
@@ -309,6 +327,21 @@ public class DetailModel implements Serializable{
         if (null!= objTarget.getArticleList()){
             articleList.addAll(objTarget.getArticleList());
         }
+
+        if (null==reviewTagList){
+            reviewTagList = new ArrayList<>();
+        }
+        if (null!= objTarget.getReviewTagList()){
+            reviewTagList.addAll(objTarget.getReviewTagList());
+        }
+
+        if (null==reviewGroupList){
+            reviewGroupList = new ArrayList<>();
+        }
+        if (null!= objTarget.getReviewGroupList()){
+            reviewGroupList.addAll(objTarget.getReviewGroupList());
+        }
+
 
         cardCount = objTarget.getCardCount();
 
@@ -761,35 +794,43 @@ public class DetailModel implements Serializable{
         }
     }
 
-    public static class Places {
-        private String cover;
-        private String name;
-        private int pid;
+    public static class BizInfoModel implements Serializable{
+        private float score;
+        private int type;
+        private String sourceName;
+        private String sourceImgUrl;
 
-        public String getCover() {
-            return cover;
+        public float getScore() {
+            return score;
         }
 
-        public void setCover(String cover) {
-            this.cover = cover;
+        public void setScore(float score) {
+            this.score = score;
         }
 
-        public String getName() {
-            return name;
+        public int getType() {
+            return type;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setType(int type) {
+            this.type = type;
         }
 
-        public int getPid() {
-            return pid;
+        public String getSourceName() {
+            return sourceName;
         }
 
-        public void setPid(int pid) {
-            this.pid = pid;
+        public void setSourceName(String sourceName) {
+            this.sourceName = sourceName;
         }
 
+        public String getSourceImgUrl() {
+            return sourceImgUrl;
+        }
+
+        public void setSourceImgUrl(String sourceImgUrl) {
+            this.sourceImgUrl = sourceImgUrl;
+        }
     }
 
     public int getMyCardId() {

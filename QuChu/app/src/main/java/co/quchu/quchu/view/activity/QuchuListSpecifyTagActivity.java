@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -46,6 +47,8 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
 
     @Bind(R.id.rv)
     RecyclerView mRecyclerView;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     NearbyAdapter mAdapter;
     private List<NearbyItemModel> mData = new ArrayList<>();
 
@@ -88,6 +91,16 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
         //mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                getData();
+            }
+        });
+
+    }
+
+    private void getData() {
         if (mDataType==-1){
             NearbyPresenter.getQuchuListViaTagId(getApplicationContext(), mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
                 new NearbyPresenter.getNearbyDataListener() {
@@ -96,6 +109,7 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
                         mData.clear();
                         mData.addAll(model);
                         mAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
         }else {
@@ -107,14 +121,11 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
                         mData.clear();
                         mData.addAll(model);
                         mAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
         }
-
-
-
     }
-
 
     @Override
     public void onStart() {

@@ -34,7 +34,6 @@ import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.QuchuDetailArticleModel;
 import co.quchu.quchu.model.TagsModel;
-import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -65,12 +64,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   protected static final int VIEW_TYPES[] = new int[] {
       LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_RATING_INFO,
-      LAYOUT_TYPE_ADDITIONAL_INFO, LAYOUT_TYPE_ARTICLE, LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT,
+      LAYOUT_TYPE_ADDITIONAL_INFO,  LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT,
       LAYOUT_TYPE_MATCHED_TAGS
   };
 
   protected static final int VIEW_TYPES_PARTY[] = new int[] {
-      LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_PARTY_INFO, LAYOUT_TYPE_ARTICLE,
+      LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_PARTY_INFO,
       LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT, LAYOUT_TYPE_MATCHED_TAGS
   };
 
@@ -190,8 +189,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           null != mData.getName() ? mData.getName().trim() : "");
       String tagsString = "";
 
-      if (!TextUtils.isEmpty(mData.getDescribe())) {
-        ((SimpleInfoViewHolder) holder).tvDesc.setText(mData.getDescribe());
+      if (!TextUtils.isEmpty(mData.getDescribed())) {
+        ((SimpleInfoViewHolder) holder).tvDesc.setText(mData.getDescribed());
       } else {
         ((SimpleInfoViewHolder) holder).tvDesc.setText("- 还没有简介");
       }
@@ -378,6 +377,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != commentModel.getSourceUrl()) {
           ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
         }
+        ((CommentViewHolder) holder).tvRatingCount.setText("共"+mData.getPlaceReviewCount()+"人评价");
         ((CommentViewHolder) holder).tvRatingCount.setVisibility(View.VISIBLE);
 
       }

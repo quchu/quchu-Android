@@ -18,6 +18,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
@@ -144,9 +145,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);
 
             ((GalleryViewHolder) holder).vpPlace.setClipToPadding(false);
-            ((GalleryViewHolder) holder).vpPlace.setPadding(40, 0, 40, 20);
+            ((GalleryViewHolder) holder).vpPlace.setPadding(80, 0, 80, 20);
             ((GalleryViewHolder) holder).vpPlace.setPageMargin(0);
-            ((GalleryViewHolder) holder).vpPlace.setCurrentItem(q.getPlaceList().size());
           } else {
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.GONE);
           }
@@ -326,7 +326,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       TextView tvInfo = (TextView) v.findViewById(R.id.history_tag_tv);
 
 
-      tvTitle.setText(dataObj.getDescribe());
+      tvTitle.setText(dataObj.getDescribed());
       tvSubTitle.setText(dataObj.getName());
       String tagsString = "";
       if (null != dataObj.getTags()) {
@@ -345,6 +345,16 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           mAnchor.startActivity(intent);
         }
       });
+      //
+      //if (position==0){
+      //  v.setTranslationX(-ScreenUtils.getScreenWidth(mAnchor));
+      //  v.animate().translationX(0).setStartDelay(100).setDuration(500).start();
+      //}
+      //if (position==1){
+      //  v.setTranslationX(-ScreenUtils.getScreenWidth(mAnchor));
+      //  v.animate().translationX(0).setStartDelay(0).setDuration(500).start();
+      //}
+
       container.addView(v);
       return v;
     }

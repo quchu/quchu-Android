@@ -426,8 +426,11 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
         infoWindow.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                NearbyMapModel nearbyMapModel = mDataSet.get(index);
-                popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
+                if(mDataSet.size()>index){
+
+                    NearbyMapModel nearbyMapModel = mDataSet.get(index);
+                    popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
+                }
             }
         });
 

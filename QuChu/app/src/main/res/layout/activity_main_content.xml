@@ -96,7 +96,7 @@
             android:drawableLeft="@mipmap/ic_pull_menus_search"
             android:textColor="@color/standard_color_h3_dark"
             android:gravity="left|center_vertical"
-            android:text="搜你麻痹"
+            android:text="@string/search"
             />
 
       </LinearLayout>

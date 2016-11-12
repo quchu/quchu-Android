@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import co.quchu.quchu.model.DetailModel;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
@@ -57,7 +58,6 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
 
     private List<CommentModel> mSceneList = new ArrayList<>();
     private CommentAdapter mAdapter;
-
     private boolean mActivityStop = false;
 
     @Nullable @Override
@@ -82,7 +82,7 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
 
-        mLoadingListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
+        mLoadingListener = new EndlessRecyclerOnScrollListener( rv.getLayoutManager()) {
             @Override
             public void onLoadMore(int current_page) {
                 getData(false, true);
@@ -109,7 +109,6 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
 
     private void getData(final boolean firstLoad, final boolean loadMore) {
         if (firstLoad) {
-
             mSceneList.clear();
             mMaxPageNo = -1;
             mPageNo = 1;
@@ -174,6 +173,12 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
 
             }
         });
+    }
+
+    public void updateRatingInfo(int ratingCount,float avgRating,List<DetailModel.BizInfoModel> bizList,List<String> tagList){
+        if (null!=mAdapter){
+            mAdapter.updateHeader(ratingCount,avgRating,bizList,tagList);
+        }
     }
 
     @Override

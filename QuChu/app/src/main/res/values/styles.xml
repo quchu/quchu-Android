@@ -190,8 +190,8 @@
 
     <style name="CustomProgressBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_ratingbar_selector</item>
-        <item name="android:minHeight">19dip</item>
-        <item name="android:maxHeight">19dip</item>
+        <item name="android:minHeight">20dip</item>
+        <item name="android:maxHeight">20dip</item>
     </style>
 
 
