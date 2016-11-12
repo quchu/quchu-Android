@@ -70,7 +70,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   private int pId = 0;
   public DetailModel dModel = new DetailModel();
   private QuchuDetailsAdapter mQuchuDetailAdapter;
-  private VisitedInfoModel mVisitedInfoModel;
   private CommentListFragment mCommentListFragment;
 
   public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
@@ -314,12 +313,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
           break;
         case R.id.ivPingJia:
 
-          if (null != mVisitedInfoModel) {
             UMEvent("comment_c");
             ZGEvent("趣处名称", dModel.getName(), "进入评价");
-            AddFootprintActivity.enterActivity(QuchuDetailsActivity.this, mVisitedInfoModel,
+            AddFootprintActivity.enterActivity(QuchuDetailsActivity.this, null,
                 dModel.getPid(), getPageNameCN());
-          }
 
           break;
         case R.id.llFavorite:

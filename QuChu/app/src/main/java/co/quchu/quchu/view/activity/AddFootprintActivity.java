@@ -46,7 +46,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
 
   @Bind(R.id.etContent) EditText etContent;
   @Bind(R.id.recyclerView) RecyclerView recyclerView;
-  @Bind(R.id.rvTags) RecyclerView rvTags;
+  //@Bind(R.id.rvTags) RecyclerView rvTags;
   @Bind(R.id.textLength) TextView textLength;
   @Bind(R.id.rbRating) RatingBar rbRating;
   @Bind(R.id.tvSubmit) TextView tvSubmit;
@@ -65,7 +65,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
   private int pId;
   private int rating = 0;
   private String fromPageName;
-  private VisitedInfoModel mData;
+  //private VisitedInfoModel mData;
   private RatingQuchuDialogAdapter ratingQuchuDialogAdapter;
 
   private boolean dataChange = false;
@@ -102,13 +102,13 @@ public class AddFootprintActivity extends BaseBehaviorActivity
 
     pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
     fromPageName = getIntent().getStringExtra(REQUEST_KEY_FROM_PAGE_NAME);
-    mData = (VisitedInfoModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
-    rating = mData.getScore();
-    tags = mData.getResult();
-
-    for (int i = 0; i < mData.getResult().size(); i++) {
-      mData.getResult().get(i).setPraise(false);
-    }
+    //mData = (VisitedInfoModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
+    //rating = mData.getScore();
+    //tags = mData.getResult();
+    //
+    //for (int i = 0; i < mData.getResult().size(); i++) {
+    //  mData.getResult().get(i).setPraise(false);
+    //}
     tvSubmit.setBackgroundResource(R.color.colorBorder);
 
     getEnhancedToolbar().getTitleTv().setText(R.string.rating);
@@ -134,15 +134,15 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     });
 
     init();
-    ratingQuchuDialogAdapter =
-        new RatingQuchuDialogAdapter(tags, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
-          @Override public void onSelected(int index, boolean select) {
-            tags.get(index).setPraise(!tags.get(index).isPraise());
-            ratingQuchuDialogAdapter.notifyDataSetChanged();
-          }
-        });
-    rvTags.setLayoutManager(new GridLayoutManager(AddFootprintActivity.this, 3));
-    rvTags.setAdapter(ratingQuchuDialogAdapter);
+    //ratingQuchuDialogAdapter =
+    //    new RatingQuchuDialogAdapter(tags, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
+    //      @Override public void onSelected(int index, boolean select) {
+    //        tags.get(index).setPraise(!tags.get(index).isPraise());
+    //        ratingQuchuDialogAdapter.notifyDataSetChanged();
+    //      }
+    //    });
+    //rvTags.setLayoutManager(new GridLayoutManager(AddFootprintActivity.this, 3));
+    //rvTags.setAdapter(ratingQuchuDialogAdapter);
   }
 
   @Override protected void onDestroy() {

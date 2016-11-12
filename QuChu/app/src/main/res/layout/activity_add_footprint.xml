@@ -86,6 +86,7 @@
         android:layout_centerHorizontal="true"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="3"
+        android:visibility="gone"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         tools:listitem="@layout/item_tags_filter"
