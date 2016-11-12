@@ -50,6 +50,8 @@ public class FeedbackActivity extends BaseBehaviorActivity {
   @Bind(R.id.submitBtn) TextView mSubmitBtn;
   @Bind(R.id.background_layout) RelativeLayout mBackgroundLayout;
 
+  private boolean mIsSubmitting;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -200,11 +202,17 @@ public class FeedbackActivity extends BaseBehaviorActivity {
       return;
     }
 
+    if (mIsSubmitting) {
+      return;
+    }
+    mIsSubmitting = true;
+
     inputStr = mInputEditText.getText().toString();
 
     FeedbackPresenter.sendFeedback(this, "", inputStr, new CommonListener() {
       @Override
       public void successListener(Object response) {
+        mIsSubmitting = false;
         makeToast("感谢您对我们的支持");
         mInputEditText.setText("");
         hideSoftware(mInputEditText);
@@ -213,6 +221,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
+        mIsSubmitting = false;
         makeToast(R.string.network_error);
       }
     });

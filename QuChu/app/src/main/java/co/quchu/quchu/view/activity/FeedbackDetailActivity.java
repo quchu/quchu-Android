@@ -51,6 +51,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
   private FeedbackDetailAdapter mAdapter;
   private int mFeedbackId;
   private FeedbackModel mFeedbackModel;
+  private boolean mIsSubmitting;
 
   public static void launch(Activity activity, FeedbackModel feedbackModel) {
     Intent intent = new Intent(activity, FeedbackDetailActivity.class);
@@ -194,6 +195,11 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
       return;
     }
 
+    if (mIsSubmitting) {
+      return;
+    }
+    mIsSubmitting = true;
+
     inputStr = mInputEditText.getText().toString();
 
     //提交反馈消息
@@ -201,6 +207,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
         .sendFeedMsg(this, String.valueOf(mFeedbackId), inputStr, new CommonListener() {
           @Override
           public void successListener(Object response) {
+            mIsSubmitting = false;
             makeToast("感谢您对我们的支持");
             mInputEditText.setText("");
             SoftInputUtils.hideSoftInput(FeedbackDetailActivity.this);
@@ -209,6 +216,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
 
           @Override
           public void errorListener(VolleyError error, String exception, String msg) {
+            mIsSubmitting = false;
             makeToast(R.string.network_error);
           }
         });

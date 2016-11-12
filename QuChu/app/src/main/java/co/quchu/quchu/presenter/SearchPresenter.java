@@ -95,8 +95,10 @@ public class SearchPresenter {
             if (array.length() > 0) {
               List<RecommendModel> arrayList = new Gson().fromJson(array.toString(), new TypeToken<ArrayList<RecommendModel>>() {
               }.getType());
-
               listener.onSuccess(arrayList, pageNo, pageCount, resultCount);
+
+            } else {
+              listener.onSuccess(null, pageNo, pageCount, resultCount);
             }
 
           } else {

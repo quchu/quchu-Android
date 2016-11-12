@@ -35,6 +35,7 @@ import co.quchu.quchu.model.SearchSortBean;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchPresenter;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
 import co.quchu.quchu.widget.DropDownMenu.DropContentView;
@@ -249,6 +250,12 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       mInputStr = inputStr;
     }
 
+    SoftInputUtils.hideSoftInput(this);
+
+    if (mDropDownMenu != null && mDropDownMenu.isShowing()) {
+      mDropDownMenu.closeMenu();
+    }
+
     queryResult(isLoadMore);
   }
 
@@ -256,7 +263,6 @@ public class SearchResultActivity extends BaseBehaviorActivity {
    * 查询搜索结果
    */
   private void queryResult(final boolean isLoadMore) {
-
     if (!NetUtil.isNetworkConnected(this)) {
       makeToast(R.string.network_error);
       return;
@@ -304,19 +310,38 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         if (!isLoadMore) {
           mSearchResultRv.smoothScrollToPosition(0);
         }
+
+        validateData(data);
       }
 
       @Override
       public void onError() {
         mIsLoading = false;
-        mSearchNoDataTv.setVisibility(View.VISIBLE);
         DialogUtil.dismissProgess();
 
         if (mSearchRefreshLayout.isRefreshing()) {
           mSearchRefreshLayout.setRefreshing(false);
         }
+
+        validateData(null);
       }
     });
+  }
+
+  /**
+   * 检查服务器是否有返回数据
+   */
+  private void validateData(List<RecommendModel> data) {
+    if (data == null || (data != null && data.size() == 0)) {
+      mSearchNoDataTv.setVisibility(View.VISIBLE);
+      mSearchResultRv.setVisibility(View.GONE);
+      mSearchRefreshLayout.setEnabled(false);
+
+    } else {
+      mSearchNoDataTv.setVisibility(View.GONE);
+      mSearchResultRv.setVisibility(View.VISIBLE);
+      mSearchRefreshLayout.setEnabled(true);
+    }
   }
 
   /**

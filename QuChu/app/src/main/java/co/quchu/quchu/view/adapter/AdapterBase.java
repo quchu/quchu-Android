@@ -106,6 +106,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
       final LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
       if (loadMoreEnable) {
         loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
+        loadMoreHold.loadView.setVisibility(View.VISIBLE);
         loadMoreHold.retryView.setText("加载中~~");
         ((LoadMoreViewHolder) holder).massage.setVisibility(View.GONE);
         loadMoreHold.itemView.setVisibility(View.VISIBLE);
@@ -124,30 +125,32 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
       } else if (netError) {
         if (rotation != null)
           rotation.cancel();
-        loadMoreHold.loadView.setImageResource(R.mipmap.ic_nointernet);
-        loadMoreHold.retryView.setText("点击重试");
-        ((LoadMoreViewHolder) holder).massage.setVisibility(View.VISIBLE);
-
-        loadMoreHold.retryView.setClickable(true);
-        loadMoreHold.retryView.setBackgroundResource(R.drawable.shape_lineframe_black_fill);
-        loadMoreHold.retryView.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            v.setClickable(false);
-            loadMoreHold.loadView.setVisibility(View.VISIBLE);
-            loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
-            rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
-            rotation.setInterpolator(new LinearInterpolator());
-            rotation.setRepeatMode(ValueAnimator.RESTART);
-            rotation.setRepeatCount(ValueAnimator.INFINITE);
-            rotation.setDuration(1500);
-            rotation.start();
-            loadMoreHold.retryView.setBackground(null);
-            netError = false;
-            loadMoreHold.retryView.setText("加载中~~");
-            errorListener.onClick(v);
-          }
-        });
+        loadMoreHold.loadView.setVisibility(View.GONE);
+        loadMoreHold.retryView.setText("");
+//        loadMoreHold.loadView.setImageResource(R.mipmap.ic_nointernet);
+//        loadMoreHold.retryView.setText("点击重试");
+//        ((LoadMoreViewHolder) holder).massage.setVisibility(View.VISIBLE);
+//
+//        loadMoreHold.retryView.setClickable(true);
+//        loadMoreHold.retryView.setBackgroundResource(R.drawable.shape_lineframe_black_fill);
+//        loadMoreHold.retryView.setOnClickListener(new View.OnClickListener() {
+//          @Override
+//          public void onClick(View v) {
+//            v.setClickable(false);
+//            loadMoreHold.loadView.setVisibility(View.VISIBLE);
+//            loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
+//            rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
+//            rotation.setInterpolator(new LinearInterpolator());
+//            rotation.setRepeatMode(ValueAnimator.RESTART);
+//            rotation.setRepeatCount(ValueAnimator.INFINITE);
+//            rotation.setDuration(1500);
+//            rotation.start();
+//            loadMoreHold.retryView.setBackground(null);
+//            netError = false;
+//            loadMoreHold.retryView.setText("加载中~~");
+//            errorListener.onClick(v);
+//          }
+//        });
       } else {
         ((LoadMoreViewHolder) holder).massage.setVisibility(View.GONE);
         loadMoreHold.retryView.setBackground(null);

@@ -106,6 +106,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       mTagRefreshBtn.setVisibility(View.VISIBLE);
       for (SceneInfoModel model : mAllSceneList) {
         mTags.add(model.getSceneName());
+
       }
     }
 
@@ -368,6 +369,10 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     if (mSearchHistoryList.contains(keywordModel)) {
       mSearchHistoryList.remove(keywordModel);
       mSearchHistoryAdapter.setHistoryList(mSearchHistoryList);
+    }
+
+    if (mSearchCategoryList.size() == 0 && mHistoryRv.getVisibility() == View.VISIBLE) {
+      mHistoryRv.setVisibility(View.GONE);
     }
 
     SearchHistoryPresenter.deleteIfExisted(SearchActivityNew.this, keywordModel.getKeyword());

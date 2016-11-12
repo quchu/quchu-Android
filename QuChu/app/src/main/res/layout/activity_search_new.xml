@@ -28,7 +28,7 @@
         app:tcvMultiLine="2"
         app:tcvTagResId="@layout/item_search_tag"
         app:tcvTextColor="@color/standard_color_white"
-        app:tcvTextSize="6dp"/>
+        app:tcvTextSize="12sp"/>
 
     <TextView
         android:id="@+id/tag_refresh_btn"
@@ -36,11 +36,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/base_margin"
-        android:drawableRight="@mipmap/ic_back"
+        android:drawableRight="@mipmap/ic_baocuo"
         android:gravity="center"
         android:text="换一批"
         android:textColor="@color/standard_color_h2_dark"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:visibility="gone"/>
 
     <LinearLayout
