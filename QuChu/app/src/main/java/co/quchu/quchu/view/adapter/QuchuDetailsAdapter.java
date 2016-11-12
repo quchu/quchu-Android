@@ -248,7 +248,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     } else if (holder instanceof MapViewHolder) {
 
       ((MapViewHolder) holder).tvAddress.setText(mData.getAddress());
-      //http://developer.baidu.com/map/static-1.htm
+      /**
+       *  Learn More -> http://developer.baidu.com/map/static-1.htm
+       */
       ((MapViewHolder) holder).ivMap.setImageURI(Uri.parse(
           "http://api.map.baidu.com/staticimage?center="
               + mData.getLongitude()
