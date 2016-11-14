@@ -77,6 +77,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="@dimen/base_margin"
         android:text="全网1200人评价过"
+        android:textSize="13sp"
         android:textColor="@color/standard_color_h3_dark"
         />
   </RelativeLayout>

@@ -20,6 +20,7 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;

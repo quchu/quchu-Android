@@ -20,6 +20,7 @@ import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -410,6 +411,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       }
       MatchedTagAdapter adapter = new MatchedTagAdapter(tags);
       ((MatchedTagsViewHolder) holder).rvMatchedTags.setAdapter(adapter);
+
       ((MatchedTagsViewHolder) holder).rvMatchedTags.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
       adapter.setOnItemClickListener(new CommonItemClickListener() {
         @Override public void onItemClick(View v, int position) {
