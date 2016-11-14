@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -40,6 +42,7 @@ public class PhotoViewActivity extends BaseActivity {
     private static String BUNDLE_KEY_PHOTO_LIST = "BUNDLE_KEY_PHOTO_LIST";
     private static String BUNDLE_KEY_PHOTO_LIST_INDEX = "BUNDLE_KEY_PHOTO_LIST_INDEX";
     @Bind(R.id.ivReturn) ImageView mIvReturn;
+    @Bind(R.id.tvIndicator) TextView mTvIndicator;
 
 
     public static void enterActivity(Activity from,int position, List<ImageModel> imageSet) {
@@ -77,7 +80,18 @@ public class PhotoViewActivity extends BaseActivity {
         viewPager.setAdapter(new DraweePagerAdapter());
         indicator.setViewPager(viewPager);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override public void onPageSelected(int position) {
+                mTvIndicator.setText((position+1)+" of "+(mPhotoList.size()+1));
+            }
+
+            @Override public void onPageScrollStateChanged(int state) {}
+        });
+
         if (mIndex!=-1 && mIndex< mPhotoList.size()){
+            mTvIndicator.setText("1 of "+(mPhotoList.size()+1));
             viewPager.setCurrentItem(mIndex);
         }
     }

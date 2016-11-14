@@ -14,12 +14,14 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import co.quchu.quchu.view.adapter.SceneListAdapter;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -70,7 +72,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.appbar) AppBarLayout appbar;
-  @Bind(R.id.llShit) LinearLayout llShit;
+  @Bind(R.id.rvScene) RecyclerView mRvScene;
   @Bind(R.id.fab) XiaoQFab fab;
   @Bind(R.id.tvCity) TextView tvCity;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
@@ -144,7 +146,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         placeHolder.setAlpha(progress);
 
 
-        llShit.setAlpha(1 - progress);
+        mRvScene.setAlpha(1 - progress);
         toolbar.setAlpha(1 - progress);
 
       }
@@ -177,6 +179,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
       public void successListener(List<SceneInfoModel> response) {
         mAllSceneList.clear();
         mAllSceneList.addAll(response);
+        mRvScene.setAdapter(new SceneListAdapter(getApplicationContext(),mAllSceneList,4));
+        mRvScene.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
+        makeToast("kuah kuha");
       }
 
       @Override

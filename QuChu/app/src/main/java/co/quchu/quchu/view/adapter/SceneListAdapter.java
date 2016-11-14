@@ -27,10 +27,17 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
   private Context mContext;
   private List<SceneInfoModel> mSceneList;
+  private int mLimitation = 0;
 
   public SceneListAdapter(Context context, List<SceneInfoModel> sceneList) {
     mContext = context;
     mSceneList = sceneList;
+  }
+
+  public SceneListAdapter(Context context,List<SceneInfoModel> sceneList,int limitation ){
+    mContext = context;
+    mSceneList = sceneList;
+    mLimitation = limitation;
   }
 
   @Override
@@ -48,6 +55,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrl()));
       }
       holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
+      holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation>0?R.color.standard_color_h1_dark:R.color.standard_color_h3_dark));
 
       holder.itemView.setTag(sceneInfoModel);
       holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +72,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
   @Override
   public int getItemCount() {
-    return mSceneList != null ? mSceneList.size() : 0;
+    return mSceneList != null ? mLimitation>0 ?Math.min(mSceneList.size(),mLimitation):mSceneList.size() : 0;
   }
 
   public class SceneViewHolder extends RecyclerView.ViewHolder {

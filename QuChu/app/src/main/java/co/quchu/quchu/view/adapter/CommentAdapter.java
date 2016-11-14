@@ -83,7 +83,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       ((HeaderViewHolder) holder).tvRatingCount.setText(String.valueOf("全网"+mRatingCount+"人评价过"));
 
       if (null!=mTagsList){
-        Toast.makeText(mAnchorActivity,mTagsList.size()+"||",Toast.LENGTH_SHORT).show();
         TagAdapter adapter = new TagAdapter(mTagsList);
         ((HeaderViewHolder) holder).rvTagList.setAdapter(adapter);
         ((HeaderViewHolder) holder).rvTagList.setLayoutManager(new GridLayoutManager(mAnchorActivity,4,GridLayoutManager.VERTICAL,false));

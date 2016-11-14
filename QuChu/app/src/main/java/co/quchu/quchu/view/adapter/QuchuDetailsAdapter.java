@@ -220,17 +220,21 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       ((RatingInfoViewHolder) holder).rbRating.setProgress((int) mData.getSuggest());
       if (mData.getSuggest() == mData.getRecentSuggest()){
         ((RatingInfoViewHolder) holder).ivTrend.setVisibility(View.GONE);
-      }
-      if (mData.getRecentSuggest()-mData.getSuggest()<0){
+        ((RatingInfoViewHolder) holder).tvRatingChange.setText("- 持平");
+        ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#666666"));
+      }else if (mData.getRecentSuggest()-mData.getSuggest()<0){
+        ((RatingInfoViewHolder) holder).ivTrend.setVisibility(View.VISIBLE);
         ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_fall);
         ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#00b38a"));
+        ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
       }else{
+        ((RatingInfoViewHolder) holder).ivTrend.setVisibility(View.VISIBLE);
         ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_rise);
         ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#ff4242"));
+        ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
       }
 
       ((RatingInfoViewHolder) holder).tvRatingCount.setText(mData.getSuggest()+"分");
-      ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
 
     } else if (holder instanceof PartyInfoViewHolder) {
 

@@ -18,6 +18,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,8 +29,8 @@
       android:id="@+id/appbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
       android:background="@color/standard_color_yellow_label"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
       app:elevation="0dp"
       >
 
@@ -37,6 +38,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
         app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
         >
@@ -54,14 +56,16 @@
             android:id="@+id/tvCity"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
             android:drawableLeft="@mipmap/ic_location"
             android:drawablePadding="4dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="厦门"
             android:textColor="@color/standard_color_black"
             android:textSize="@dimen/standard_text_size_h1"
             />
+
 
         <ImageView
             android:id="@+id/vDrawer"
@@ -72,137 +76,44 @@
             android:src="@mipmap/ic_hamburger"
             />
 
+        <LinearLayout
+            android:id="@+id/vSearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/shape_lineframe_ai_search_bar"
+            android:orientation="horizontal"
+            >
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="16dp"
+              android:drawableLeft="@mipmap/ic_pull_menus_search"
+              android:drawablePadding="4dp"
+              android:gravity="left|center_vertical"
+              android:text="@string/search"
+              android:textColor="@color/standard_color_h3_dark"
+              android:textSize="16sp"
+              />
+
+        </LinearLayout>
+
 
       </android.support.v7.widget.Toolbar>
 
 
-      <LinearLayout
-          android:id="@+id/vSearchBar"
-          android:layout_width="match_parent"
-          android:layout_height="32dp"
-          android:layout_marginBottom="8dp"
-          android:layout_marginLeft="16dp"
-          android:layout_marginRight="16dp"
-          android:background="@drawable/shape_lineframe_ai_search_bar"
-          android:orientation="horizontal"
-          >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="16sp"
-            android:layout_marginLeft="16dp"
-            android:drawablePadding="4dp"
-            android:drawableLeft="@mipmap/ic_pull_menus_search"
-            android:textColor="@color/standard_color_h3_dark"
-            android:gravity="left|center_vertical"
-            android:text="@string/search"
-            />
-
-      </LinearLayout>
-      <LinearLayout
-          android:id="@+id/llShit"
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rvScene"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:gravity="center_vertical"
           android:layout_marginTop="8dp"
-          android:orientation="horizontal"
-          >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            >
-          <ImageView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:scaleType="center"
-              android:src="@mipmap/icc1"
-              />
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="寻欢作乐"
-              android:textColor="@color/standard_color_black"
-              />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            >
-          <ImageView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:scaleType="center"
-              android:src="@mipmap/icc2"
-              />
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="寻欢作乐"
-              android:textColor="@color/standard_color_black"
-              />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            >
-          <ImageView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:scaleType="center"
-              android:src="@mipmap/icc3"
-              />
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="寻欢作乐"
-              android:textColor="@color/standard_color_black"
-              />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            >
-          <ImageView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:scaleType="center"
-              android:src="@mipmap/icc4"
-              />
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="寻欢作乐"
-              android:textColor="@color/standard_color_black"
-              />
-
-        </LinearLayout>
-
-
-      </LinearLayout>
+          app:layoutManager="android.support.v7.widget.GridLayoutManager"
+          app:spanCount="4"
+          tools:listitem="@layout/item_scene_list"
+          />
 
     </LinearLayout>
 
@@ -238,16 +149,16 @@
             android:id="@+id/ivSearch"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:scaleType="center"
             android:layout_marginRight="8dp"
+            android:scaleType="center"
             android:src="@mipmap/ic_fangdajing"
             />
         <ImageView
             android:id="@+id/ivSwitchCity"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:scaleType="center"
             android:layout_marginRight="8dp"
+            android:scaleType="center"
             android:src="@mipmap/ic_location"
             />
         <ImageView
