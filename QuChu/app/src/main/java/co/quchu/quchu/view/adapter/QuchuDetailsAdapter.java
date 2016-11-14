@@ -615,7 +615,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
-    //@Bind(R.id.tcvTags) TagCloudView tags;
+    //@Bind(R.id.tcvTags) TagCloudView bizList;
     @Bind(R.id.rvMatchedTags) RecyclerView rvMatchedTags;
 
     MatchedTagsViewHolder(View view) {

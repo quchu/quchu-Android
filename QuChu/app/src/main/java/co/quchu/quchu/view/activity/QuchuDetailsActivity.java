@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import java.io.Serializable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -263,12 +264,16 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     mCommentListFragment = new CommentListFragment();
     Bundle bundle = new Bundle();
     bundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID,pId);
+    bundle.putInt(CommentListFragment.BUNDLE_KEY_RATING_COUNT,dModel.getPlaceReviewCount());
+    bundle.putFloat(CommentListFragment.BUNDLE_KEY_AVG_RATING,dModel.getSuggest());
+    bundle.putSerializable(CommentListFragment.BUNDLE_KEY_BIZ_LIST,
+        (Serializable) dModel.getReviewGroupList());
+    bundle.putSerializable(CommentListFragment.BUNDLE_KEY_TAG_LIST,
+        (Serializable) dModel.getReviewTagList());
     mCommentListFragment.setArguments(bundle);
+
     getSupportFragmentManager().beginTransaction().add(R.id.flContainer,mCommentListFragment).commitAllowingStateLoss();
 
-    if (null!=mCommentListFragment){
-      mCommentListFragment.updateRatingInfo(dModel.getPlaceReviewCount(),dModel.getSuggest(),dModel.getReviewGroupList(),dModel.getReviewTagList());
-    }
     findViewById(R.id.flContainer).setVisibility(View.INVISIBLE);
 
     mRecyclerView.postDelayed(new Runnable() {

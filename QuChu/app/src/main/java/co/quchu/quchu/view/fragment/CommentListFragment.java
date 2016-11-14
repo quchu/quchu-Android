@@ -42,6 +42,10 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     public static final String BUNDLE_KEY_PLACE_ID = "BUNDLE_KEY_PLACE_ID";
+    public static final String BUNDLE_KEY_AVG_RATING = "BUNDLE_KEY_AVG_RATING";
+    public static final String BUNDLE_KEY_RATING_COUNT = "BUNDLE_KEY_RATING_COUNT";
+    public static final String BUNDLE_KEY_BIZ_LIST = "BUNDLE_KEY_BIZ_LIST";
+    public static final String BUNDLE_KEY_TAG_LIST = "BUNDLE_KEY_TAG_LIST";
 
     @Bind(R.id.rv)
     RecyclerView rv;
@@ -50,6 +54,12 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
 
     @Bind(R.id.errorView)
     ErrorView errorView;
+
+    private float mAvgRating = 0;
+    private int mRatingCount = 0;
+    private List<DetailModel.BizInfoModel> mBizList;
+    private List<CommentModel> mDataSet;
+    private List<String> mTagsList;
 
     private int sceneId;
     private int mMaxPageNo = -1;
@@ -68,6 +78,12 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
         ButterKnife.bind(this,v);
 
         sceneId = getArguments().getInt(BUNDLE_KEY_PLACE_ID, -1);
+        mAvgRating = getArguments().getFloat(BUNDLE_KEY_AVG_RATING,0);
+        mRatingCount = getArguments().getInt(BUNDLE_KEY_RATING_COUNT,0);
+        mBizList = (List<DetailModel.BizInfoModel>) getArguments().getSerializable(BUNDLE_KEY_BIZ_LIST);
+        mTagsList = (List<String>) getArguments().getSerializable(BUNDLE_KEY_TAG_LIST);
+
+
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(mLayoutManager);
         if (!NetUtil.isNetworkConnected(getActivity()) && mAdapter == null) {
@@ -143,7 +159,7 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
                 mSceneList.addAll(response.getResult());
 
                 if (firstLoad) {
-                    mAdapter = new CommentAdapter(getActivity(),mSceneList);
+                    mAdapter = new CommentAdapter(getActivity(),mSceneList,mRatingCount,mAvgRating,mBizList,mTagsList);
                     rv.setAdapter(mAdapter);
                 } else {
                     mAdapter.notifyDataSetChanged();
@@ -175,11 +191,6 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
         });
     }
 
-    public void updateRatingInfo(int ratingCount,float avgRating,List<DetailModel.BizInfoModel> bizList,List<String> tagList){
-        if (null!=mAdapter){
-            mAdapter.updateHeader(ratingCount,avgRating,bizList,tagList);
-        }
-    }
 
     @Override
     public void onStart() {

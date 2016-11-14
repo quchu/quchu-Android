@@ -19,7 +19,6 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
-import co.quchu.quchu.widget.TagCloudView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +30,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   private float mAvgRating = 0;
   private int mRatingCount = 0;
-  private List<Object> mBizList;
+  private List<DetailModel.BizInfoModel> mBizList;
   private List<CommentModel> mDataSet;
-  private Activity mAnchorActivity;
   private List<String> mTagsList;
+
+  private Activity mAnchorActivity;
   private boolean mShowingNoData = false;
 
   public static final int TYPE_HEADER = 0x001;
@@ -42,25 +42,21 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   public static final int TYPE_PAGE_END = 0x003;
 
 
-  public void updateHeader(int ratingCount,float avgRating,List<DetailModel.BizInfoModel> bizList,List<String> tagList){
-    mTagsList = new ArrayList<>();
-    mTagsList.addAll(tagList);
-
-    mBizList = new ArrayList<>();
-    mBizList.addAll(bizList);
-    mAvgRating = avgRating;
-    mRatingCount = ratingCount;
-    notifyDataSetChanged();
-  }
 
   public void showPageEnd(boolean bl) {
     mShowingNoData = bl;
     notifyDataSetChanged();
   }
 
-  public CommentAdapter(Activity activity, List<CommentModel> mDataSet) {
+  public CommentAdapter(Activity activity, List<CommentModel> mDataSet,int ratingCount,float avgRating,List<DetailModel.BizInfoModel> bizList,List<String> tagList) {
     this.mDataSet = mDataSet;
     this.mAnchorActivity = activity;
+    this.mTagsList = new ArrayList<>();
+    this.mTagsList.addAll(tagList);
+    this.mBizList = new ArrayList<>();
+    this.mBizList.addAll(bizList);
+    this.mAvgRating = avgRating;
+    this.mRatingCount = ratingCount;
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,7 +81,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       ((HeaderViewHolder) holder).tvRatingCount.setText(String.valueOf("全网"+mRatingCount+"人评价过"));
 
       if (null!=mTagsList){
-        ((HeaderViewHolder) holder).tcvTags.setTags(mTagsList);
+        TagAdapter adapter = new TagAdapter(mTagsList);
+        ((HeaderViewHolder) holder).rvTagList.setAdapter(adapter);
+        ((HeaderViewHolder) holder).rvTagList.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
+      }
+
+      if (null!=mBizList){
+        CommentSourceAdapter adapter = new CommentSourceAdapter(mBizList);
+        ((HeaderViewHolder) holder).rvBizList.setAdapter(adapter);
+        ((HeaderViewHolder) holder).rvBizList.setLayoutManager(new GridLayoutManager(mAnchorActivity,2));
       }
 
 
@@ -194,7 +198,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Bind(R.id.tvAvgRating) TextView tvAvgRating;
     @Bind(R.id.tvRatingCount) TextView tvRatingCount;
     @Bind(R.id.rvBizList) RecyclerView rvBizList;
-    @Bind(R.id.tcvTags) TagCloudView tcvTags;
+    @Bind(R.id.rvTagList) RecyclerView rvTagList;
 
     HeaderViewHolder(View v) {
       super(v);
@@ -255,6 +259,74 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
       @Bind(R.id.sdvImage) SimpleDraweeView sdvImage;
+
+      public ViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+      }
+    }
+  }
+
+
+  public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
+
+    List<String> tags;
+
+    public TagAdapter(List<String> dataSet) {
+      this.tags = dataSet;
+    }
+
+
+    @Override public TagAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new TagAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.item_quchu_detail_matched_tags_item, parent, false));
+    }
+
+    @Override public void onBindViewHolder(TagAdapter.ViewHolder holder, final int position) {
+      holder.tvName.setText(tags.get(position));
+    }
+
+    @Override public int getItemCount() {
+      return null != tags ? tags.size() : 0;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+      @Bind(R.id.tvName) TextView tvName;
+
+      public ViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+      }
+    }
+  }
+
+  public class CommentSourceAdapter extends RecyclerView.Adapter<CommentSourceAdapter.ViewHolder> {
+
+    List<DetailModel.BizInfoModel> bizList;
+
+    public CommentSourceAdapter(List<DetailModel.BizInfoModel> dataSet) {
+      this.bizList = dataSet;
+    }
+
+
+    @Override public CommentSourceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new CommentSourceAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.item_comment_header_data_source, parent, false));
+    }
+
+    @Override public void onBindViewHolder(CommentSourceAdapter.ViewHolder holder, final int position) {
+      holder.tvFrom.setText(bizList.get(position).getSourceName()+" : "+ bizList.get(position).getScore()+" 分");
+      holder.ivFrom.setImageURI(Uri.parse(bizList.get(position).getSourceImgUrl()));
+
+    }
+
+    @Override public int getItemCount() {
+      return null != bizList ? bizList.size() : 0;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+      @Bind(R.id.tvFrom) TextView tvFrom;
+      @Bind(R.id.ivFrom) SimpleDraweeView ivFrom;
 
       public ViewHolder(View itemView) {
         super(itemView);

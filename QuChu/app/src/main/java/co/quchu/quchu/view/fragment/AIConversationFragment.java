@@ -22,7 +22,6 @@ import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
-import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
