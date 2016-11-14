@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -81,15 +82,16 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       ((HeaderViewHolder) holder).tvRatingCount.setText(String.valueOf("全网"+mRatingCount+"人评价过"));
 
       if (null!=mTagsList){
+        Toast.makeText(mAnchorActivity,mTagsList.size()+"||",Toast.LENGTH_SHORT).show();
         TagAdapter adapter = new TagAdapter(mTagsList);
         ((HeaderViewHolder) holder).rvTagList.setAdapter(adapter);
-        ((HeaderViewHolder) holder).rvTagList.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
+        ((HeaderViewHolder) holder).rvTagList.setLayoutManager(new GridLayoutManager(mAnchorActivity,4,GridLayoutManager.VERTICAL,false));
       }
 
       if (null!=mBizList){
         CommentSourceAdapter adapter = new CommentSourceAdapter(mBizList);
         ((HeaderViewHolder) holder).rvBizList.setAdapter(adapter);
-        ((HeaderViewHolder) holder).rvBizList.setLayoutManager(new GridLayoutManager(mAnchorActivity,2));
+        ((HeaderViewHolder) holder).rvBizList.setLayoutManager(new GridLayoutManager(mAnchorActivity,2,GridLayoutManager.VERTICAL,false));
       }
 
 

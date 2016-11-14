@@ -145,4 +145,5 @@ public class PhotoViewActivity extends BaseActivity {
             return photoDraweeView;
         }
     }
+
 }

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/standard_color_white"
     >
@@ -94,7 +93,7 @@
   <View
       android:layout_marginTop="@dimen/base_margin"
       android:layout_marginBottom="@dimen/base_margin"
-      android:layout_height="20dp"
+      android:layout_height="@dimen/half_margin"
       android:layout_width="match_parent"
       android:background="@color/colorBackground"
       />
@@ -106,7 +105,6 @@
       android:layout_marginRight="@dimen/base_margin"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
       android:paddingTop="@dimen/quarter_margin"
       />
 
