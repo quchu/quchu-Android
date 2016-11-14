@@ -22,8 +22,6 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
-import java.util.Timer;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -61,15 +59,12 @@ public class PhoneValidationFragment extends Fragment {
 
   @Bind(R.id.errorView)
   ErrorView errorView;
-  private int mSecs = 0;
   private boolean isRunning = false;
   private boolean registed = false;
   public static final String TAG = "PhoneValidationFragment";
   private boolean mEmptyForum = false;
-  private long mRequestTimeStamp = -1;
-  private Timer mCountingTimer;
   private boolean mIsRegistration = true;
-  private boolean mVerifyed = false;
+  private boolean mVerified = false;
   public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
   public static final String BUNDLE_KEY_PHONE_NUMBER = "BUNDLE_KEY_PHONE_NUMBER";
   private String mPhoneNumber = "";
@@ -163,13 +158,13 @@ public class PhoneValidationFragment extends Fragment {
       tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
     }
 
-//    if (!codeSent) {
-//      if (StringUtils.isMobileNO(userName)) {
-//        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-//      } else {
-//        tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
-//      }
-//    }
+    if (!codeSent) {
+      if (StringUtils.isMobileNO(userName)) {
+        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
+      } else {
+        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_gray_fill);
+      }
+    }
   }
 
   private boolean verifyForm(boolean verifyValidCode) {
@@ -202,7 +197,7 @@ public class PhoneValidationFragment extends Fragment {
     public void timeRemaining(int leftSecond) {
       codeSent = true;
       if (tvSendValidCode != null) {
-//        tvSendValidCode.setBackgroundResource(R.color.colorBorder);
+        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_gray_fill);
         tvSendValidCode.setText("(" + leftSecond + ")秒后重新发送");
         tvSendValidCode.setEnabled(false);
       }
@@ -213,7 +208,7 @@ public class PhoneValidationFragment extends Fragment {
       codeSent = false;
       if (tvSendValidCode != null) {
         tvSendValidCode.setText(R.string.send_valid_code);
-//        tvSendValidCode.setBackgroundResource(R.color.colorAccent);
+        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
         tvSendValidCode.setEnabled(true);
       }
     }
@@ -328,9 +323,6 @@ public class PhoneValidationFragment extends Fragment {
         @Override
         public void isUnique(JSONObject msg) {
           isRunning = false;
-          if (mSecs > 0) {
-            return;
-          }
           errorView.showLoading();
 
           UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(), UserLoginPresenter.getCaptcha_regiest, new UserLoginPresenter.UserNameUniqueListener() {
@@ -338,7 +330,7 @@ public class PhoneValidationFragment extends Fragment {
             public void isUnique(JSONObject msg) {
               errorView.hideView();
               startTimer();
-              mVerifyed = true;
+              mVerified = true;
               etValidCode.requestFocus();
             }
 
@@ -363,15 +355,14 @@ public class PhoneValidationFragment extends Fragment {
       });
     } else {
       isRunning = false;
-      if (mSecs > 0) {
-        return;
-      }
       errorView.showLoading();
 
       UserLoginPresenter.decideMobileCanLogin(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
         @Override
         public void isUnique(JSONObject msg) {
-          Toast.makeText(getActivity(), R.string.promote_username_not_existed, Toast.LENGTH_SHORT).show();
+//          Toast.makeText(getActivity(), R.string.promote_username_not_existed, Toast.LENGTH_SHORT).show();
+          tvNext.setText(R.string.promote_username_not_existed);
+          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
           isRunning = false;
           errorView.hideView();
         }
@@ -385,7 +376,7 @@ public class PhoneValidationFragment extends Fragment {
             public void isUnique(JSONObject msg) {
               errorView.hideView();
               startTimer();
-              mVerifyed = true;
+              mVerified = true;
               isRunning = false;
             }
 
@@ -449,13 +440,13 @@ public class PhoneValidationFragment extends Fragment {
         break;
 
       case R.id.tvNext:
-        if (codeSent && verifyForm(true)) {
-          if (mVerifyed) {
+        if (verifyForm(true)) {
+//          if (mVerified) {
             verifySms();
-          } else {
-            tvNext.setText(R.string.promote_verify_fail);
-            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-          }
+//          } else {
+//            tvNext.setText(R.string.promote_verify_fail);
+//            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+//          }
         }
         break;
 

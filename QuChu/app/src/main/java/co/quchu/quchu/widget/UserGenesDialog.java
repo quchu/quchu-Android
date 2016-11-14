@@ -3,6 +3,7 @@ package co.quchu.quchu.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import co.quchu.quchu.R;
 
@@ -19,5 +20,12 @@ public class UserGenesDialog extends Dialog {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.dialog_user_genes);
+
+    findViewById(R.id.close_btn).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        dismiss();
+      }
+    });
   }
 }

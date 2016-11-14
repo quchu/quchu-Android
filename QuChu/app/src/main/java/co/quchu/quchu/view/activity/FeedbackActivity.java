@@ -133,6 +133,11 @@ public class FeedbackActivity extends BaseBehaviorActivity {
 
         @Override
         public void onItemLongClick(final FeedbackModel feedbackModel) {
+          if (!NetUtil.isNetworkConnected(FeedbackActivity.this)) {
+            makeToast(R.string.network_error);
+            return;
+          }
+
           MaterialDialog confirmDialog = null;
           if (feedbackModel.getState().equals("2")) {
             confirmDialog = new MaterialDialog.Builder(FeedbackActivity.this)

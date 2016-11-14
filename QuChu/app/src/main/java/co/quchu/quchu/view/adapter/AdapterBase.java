@@ -163,7 +163,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             loadMoreHold.retryView.setText("");
             loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
-            loadMoreHold.retryView.setText(getNullDataHint());
+            loadMoreHold.retryView.setText(hideFooter() ? "" : getNullDataHint());
             if (data != null && data.size() > 0) {
               loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
             }
@@ -172,10 +172,10 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
         } else {
           if (getFeedback()) {
             loadMoreHold.feedbackEmptyView.setVisibility(View.GONE);
-            loadMoreHold.retryView.setText(getAllDataHint());
+            loadMoreHold.retryView.setText("");
             loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorBackground));
           } else {
-            loadMoreHold.retryView.setText(getAllDataHint());
+            loadMoreHold.retryView.setText(hideFooter() ? "" : getAllDataHint());
             loadMoreHold.footerLayout.setBackgroundColor(mContext.getResources().getColor(getFooterBackgroundColor()));
           }
         }
@@ -190,6 +190,10 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
   }
 
   public boolean getFeedback() {
+    return false;
+  }
+
+  public boolean hideFooter() {
     return false;
   }
 

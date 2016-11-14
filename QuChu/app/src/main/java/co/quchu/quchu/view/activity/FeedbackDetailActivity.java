@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -119,12 +120,14 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
 
               List<FeedbackModel.MsgListBean> msgList = response.getMsgList();
 
+              Collections.reverse(msgList);
+
               if (mFeedbackModel != null) {
                 FeedbackModel.MsgListBean msgListBean = new FeedbackModel.MsgListBean();
                 msgListBean.setContent(mFeedbackModel.getValue());
                 msgListBean.setCreateDate(mFeedbackModel.getCreateDate());
                 msgListBean.setType("0");
-                msgList.add(msgListBean);
+                msgList.add(0, msgListBean);
               }
 
               String userName;

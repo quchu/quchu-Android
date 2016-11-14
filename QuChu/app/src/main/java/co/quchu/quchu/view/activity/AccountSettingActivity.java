@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -114,6 +116,25 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
       @Override
       public void onClick(View v) {
         nickname.setCursorVisible(true);
+      }
+    });
+
+    nickname.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (s.toString().length() == 14) {
+          makeToast("昵称最多可以输入14个字符");
+        }
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+
       }
     });
 

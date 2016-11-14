@@ -38,6 +38,10 @@ public class DropContentView extends LinearLayout {
   private static int mAreaSelectedIndex = 0;
   private static int mSortSelectedIndex = 0;
 
+  //保存选中的 child 下标
+  private static int mChildCategorySelectedIndex = 0;
+  private static int mChildAreaSelectedIndex = 0;
+
   private List<DropBean> mCategoryList = new ArrayList<>();
   private List<DropBean> mAreaList = new ArrayList<>();
   private List<DropBean> mSortList = new ArrayList<>();
@@ -270,17 +274,44 @@ public class DropContentView extends LinearLayout {
     }, 200);
   }
 
+  public void resetCategorySelectedIndex() {
+    mCategorySelectedIndex = 0;
+    mChildCategorySelectedIndex = 0;
+  }
+
+  public void resetAreaSelectedIndex() {
+    mAreaSelectedIndex = 0;
+    mChildAreaSelectedIndex = 0;
+  }
+
+  public void resetSortSelectedIndex() {
+    mSortSelectedIndex = 0;
+  }
+
   /**
    * 获取已经选中 child 的 parent 的值
    */
   public String getSelectedParentValue(int dataType) {
     if (dataType == DropBean.DATA_TYPE_CATEGORY) {
       int categorySelectedIndex = mContentLeftAdapter.getCategorySelectedIndex();
-      return mCategoryList.get(categorySelectedIndex).getText();
+      if (mCategoryList != null && mCategoryList.get(categorySelectedIndex) != null) {
+        return mCategoryList.get(categorySelectedIndex).getText();
+      }
+
+    } else if (dataType == DropBean.DATA_TYPE_AREA) {
+      int areaSelectedIndex = mContentLeftAdapter.getAreaSelectedIndex();
+      if (mAreaList != null && mAreaList.get(areaSelectedIndex) != null) {
+        return mAreaList.get(areaSelectedIndex).getText();
+      }
+
+    } else {
+      int sortSelectedIndex = mContentLeftAdapter.getSortSelectedIndex();
+      if (mSortList != null && mSortList.get(sortSelectedIndex) != null) {
+        return mSortList.get(sortSelectedIndex).getText();
+      }
     }
 
-    int areaSelectedIndex = mContentLeftAdapter.getAreaSelectedIndex();
-    return mAreaList.get(areaSelectedIndex).getText();
+    return "默认分类";
   }
 
   /**
@@ -376,6 +407,10 @@ public class DropContentView extends LinearLayout {
       return mAreaSelectedIndex;
     }
 
+    public int getSortSelectedIndex() {
+      return mSortSelectedIndex;
+    }
+
     private OnDropContentItemClickListener mListener;
 
     public void setOnDropContentItemClickListener(OnDropContentItemClickListener listener) {
@@ -405,9 +440,6 @@ public class DropContentView extends LinearLayout {
     private DropBean categoryDropBean;
     private DropBean areaDropBean;
 
-    private int categoryIndex = 0;
-    private int areaIndex = 0;
-
     private List<DropBean> mChildren;
     private Context mContext;
 
@@ -432,9 +464,9 @@ public class DropContentView extends LinearLayout {
           holder.mContentIv.setVisibility(categoryDropBean.equals(child) ? VISIBLE : GONE);
 
         } else {
-          holder.mContentTv.setTextColor(categoryIndex == position ? mContext.getResources().getColor(R.color.standard_color_yellow)
+          holder.mContentTv.setTextColor(mChildCategorySelectedIndex == position ? mContext.getResources().getColor(R.color.standard_color_yellow)
               : mContext.getResources().getColor(R.color.standard_color_h2_dark));
-          holder.mContentIv.setVisibility(categoryIndex == position ? VISIBLE : GONE);
+          holder.mContentIv.setVisibility(mChildCategorySelectedIndex == position ? VISIBLE : GONE);
         }
 
       } else if (child.getType() == DropBean.DATA_TYPE_AREA) {
@@ -445,9 +477,9 @@ public class DropContentView extends LinearLayout {
           holder.mContentIv.setVisibility(areaDropBean.equals(child) ? VISIBLE : GONE);
 
         } else {
-          holder.mContentTv.setTextColor(areaIndex == position ? mContext.getResources().getColor(R.color.standard_color_yellow)
+          holder.mContentTv.setTextColor(mChildAreaSelectedIndex == position ? mContext.getResources().getColor(R.color.standard_color_yellow)
               : mContext.getResources().getColor(R.color.standard_color_h2_dark));
-          holder.mContentIv.setVisibility(areaIndex == position ? VISIBLE : GONE);
+          holder.mContentIv.setVisibility(mChildAreaSelectedIndex == position ? VISIBLE : GONE);
         }
       }
 

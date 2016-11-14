@@ -66,7 +66,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   private List<SearchSortBean> mSortList;
 
   private String mCategoryZh = "", mInputStr = "", mTagId = "", mAreaId = "", mCircleId = "", mSortType = "";
-  private int mCategoryPosition;
+  private int mCategoryPosition = 0;
 
   public static void launch(Activity activity, SearchCategoryBean categoryBean, String input, int position) {
     Intent intent = new Intent(activity, SearchResultActivity.class);
@@ -201,16 +201,34 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
       @Override
       public void onClickSearch(String inputStr) {
+        resetSearch();
         doSearch(false, inputStr);
       }
 
       @Override
       public void onClickHistory(String history) {
-        queryResult(false);
+        resetSearch();
+        doSearch(false, history);
       }
     });
 
     setInputEditText(TextUtils.isEmpty(mCategoryZh) ? mInputStr : mCategoryZh);
+  }
+
+  /**
+   * 重置搜索
+   */
+  private void resetSearch() {
+    mTagId = "";
+    mAreaId = "";
+    mCircleId = "";
+    mSortType = "";
+    mDropDownMenu.resetAreaSelectedIndex();
+    mDropDownMenu.resetCategorySelectedIndex();
+    mDropDownMenu.resetSortSelectedIndex();
+    mDropDownMenu.setTabText(0, "全部分类");
+    mDropDownMenu.setTabText(2, "全部商圈");
+    mDropDownMenu.setTabText(4, "只能排序");
   }
 
   /**
@@ -334,7 +352,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mCategoryList = response;
-//        mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
+        mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
       }
 
       @Override
@@ -356,7 +374,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mAreaList = response;
-//        mDropDownMenu.setDropArea(mAreaList);
+        mDropDownMenu.setDropArea(mAreaList);
       }
 
       @Override
@@ -378,7 +396,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mSortList = response;
-//        mDropDownMenu.setDropSort(mSortList);
+        mDropDownMenu.setDropSort(mSortList);
       }
 
       @Override

@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.MessageModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.activity.ArticleDetailActivity;
@@ -62,6 +63,10 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
 
   @Override
   public void onRefresh() {
+    if (!NetUtil.isNetworkConnected(getActivity())) {
+      makeToast(R.string.network_error);
+      return;
+    }
     pagesNo = 1;
     MessagePresenter.getSysMessageList(getActivity(), pagesNo, pageLoadListener);
   }

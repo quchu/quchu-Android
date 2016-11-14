@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.quchu.quchu.view.adapter.SceneListAdapter;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -57,6 +56,7 @@ import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.adapter.SceneListAdapter;
 import co.quchu.quchu.view.fragment.AIConversationFragment;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
@@ -242,7 +242,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       mDrawerHeaderView.setUser();
       mDrawerHeaderView.getGenes();
     }
-    setDrawerItemText();
+    showDrawerItemUserCenter();
 
     getUnreadMessage();
 
@@ -266,7 +266,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getGenes();
-    setDrawerItemText();
+    showDrawerItemUserCenter();
 
     mDrawerHeaderView.setOnDrawerHeaderClickListener(new DrawerHeaderView.OnDrawerHeaderClickListener() {
       @Override
@@ -279,11 +279,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
   /**
    * 设置侧滑菜单特定文本
    */
-  private void setDrawerItemText() {
+  private void showDrawerItemUserCenter() {
     if (AppContext.user == null || (AppContext.user != null && AppContext.user.isIsVisitors())) {
-      mDrawerItemUserCenter.setText("个人中心(游客模式)");
+      mDrawerItemUserCenter.setVisibility(View.GONE);
     } else {
-      mDrawerItemUserCenter.setText("个人中心");
+      mDrawerItemUserCenter.setVisibility(View.VISIBLE);
     }
   }
 

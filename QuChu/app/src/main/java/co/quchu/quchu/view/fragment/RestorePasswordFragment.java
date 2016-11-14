@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -53,6 +54,7 @@ public class RestorePasswordFragment extends Fragment {
   @Bind(R.id.ivSwitchVisible)
   ImageView ivSwitchVisible;
   public boolean mDisplayPassword = false;
+  private boolean hasPassword = false;
 
   @Nullable
   @Override
@@ -64,6 +66,32 @@ public class RestorePasswordFragment extends Fragment {
       mVerifyCode = getArguments().getString(BUNDLE_KEY_VERIFY_CODE);
       mUserName = getArguments().getString(BUNDLE_KEY_USERNAME);
     }
+
+    etPassword.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        String str = s.toString().trim();
+        if (TextUtils.isEmpty(str)) {
+          tvNext.setText(R.string.next);
+          tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+          tvNext.setEnabled(false);
+          hasPassword = false;
+        } else {
+          tvNext.setText(R.string.next);
+          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+          tvNext.setEnabled(true);
+          hasPassword = true;
+        }
+      }
+    });
 
     return view;
   }
@@ -94,7 +122,7 @@ public class RestorePasswordFragment extends Fragment {
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivSwitchVisible:
-        showOrHidePssword();
+        showOrHidePassword();
         break;
 
       case R.id.tvNext:
@@ -118,27 +146,8 @@ public class RestorePasswordFragment extends Fragment {
     }
 
     mRequestRunning = true;
-    etPassword.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-      }
 
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-      }
-
-      @Override
-      public void afterTextChanged(Editable s) {
-        if (null == etPassword.getText() || StringUtils.isEmpty(etPassword.getText().toString())) {
-          tvNext.setText(R.string.next);
-          tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
-        } else {
-          tvNext.setText(R.string.next);
-          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-        }
-      }
-    });
-    if (null != etPassword.getText() && StringUtils.isGoodPassword(etPassword.getText().toString())) {
+    if (hasPassword && StringUtils.isGoodPassword(etPassword.getText().toString())) {
       UserLoginPresenter.resetPassword(getActivity(), mUserName, etPassword.getText().toString(), mVerifyCode, new UserLoginPresenter.UserNameUniqueListener() {
         @Override
         public void isUnique(JSONObject msg) {
@@ -176,7 +185,7 @@ public class RestorePasswordFragment extends Fragment {
   /**
    * 显示和隐藏密码
    */
-  private void showOrHidePssword() {
+  private void showOrHidePassword() {
     if (!mDisplayPassword) {
       etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
     } else {

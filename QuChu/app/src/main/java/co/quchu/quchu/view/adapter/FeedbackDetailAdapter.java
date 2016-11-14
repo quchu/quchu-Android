@@ -28,6 +28,11 @@ public class FeedbackDetailAdapter
   private String mIAvatar;
   private String mYAvatar;
 
+  @Override
+  public boolean hideFooter() {
+    return true;
+  }
+
   public FeedbackDetailAdapter(Context context) {
     mContext = context;
   }

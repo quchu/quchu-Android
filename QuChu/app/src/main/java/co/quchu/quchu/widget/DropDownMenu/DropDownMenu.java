@@ -279,6 +279,27 @@ public class DropDownMenu extends LinearLayout {
   }
 
   /**
+   * 重置分类
+   */
+  public void resetCategorySelectedIndex() {
+    mDropContentView.resetCategorySelectedIndex();
+  }
+
+  /**
+   * 重置地区
+   */
+  public void resetAreaSelectedIndex() {
+    mDropContentView.resetAreaSelectedIndex();
+  }
+
+  /**
+   * 重置排序
+   */
+  public void resetSortSelectedIndex() {
+    mDropContentView.resetSortSelectedIndex();
+  }
+
+  /**
    * 获取已经选中 child 的 parent 的值
    */
   public String getSelectedParentValue(int dataType) {

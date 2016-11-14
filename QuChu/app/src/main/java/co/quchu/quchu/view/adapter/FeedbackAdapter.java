@@ -33,6 +33,11 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
   }
 
   @Override
+  public boolean hideFooter() {
+    return true;
+  }
+
+  @Override
   public void onBindView(RecyclerView.ViewHolder viewHolder, int position) {
     FeedbackModel feedbackModel = data.get(position);
 

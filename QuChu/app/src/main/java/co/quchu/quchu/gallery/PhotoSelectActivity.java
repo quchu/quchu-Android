@@ -84,6 +84,7 @@ public class PhotoSelectActivity extends BaseActivity implements View.OnClickLis
                 refreshSelectCount();
                 mPhotoListAdapter.notifyDataSetChanged();
                 mGvPhotoList.setEnabled(true);
+                mTvEmptyView.setText("");
             }
         }
     };

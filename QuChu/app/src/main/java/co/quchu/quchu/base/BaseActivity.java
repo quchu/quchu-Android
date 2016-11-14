@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.ToastManager;
 import co.quchu.quchu.view.activity.LoginActivity;
@@ -79,6 +80,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     LogUtils.e("base activity onCreate  " + getClass().getSimpleName());
 
     toastManager = ToastManager.getInstance(getApplicationContext());
+
+    if (!NetUtil.isNetworkConnected(this)) {
+      makeToast(R.string.network_error);
+    }
   }
 
   protected void makeToast(int resId) {

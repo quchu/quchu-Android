@@ -69,7 +69,7 @@
         android:background="@null"
         android:ellipsize="end"
         android:gravity="right|center_vertical"
-        android:maxLength="20"
+        android:maxLength="14"
         android:minWidth="50dp"
         android:singleLine="true"
         android:textColor="@color/standard_color_h3_dark"
