@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
@@ -203,16 +204,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       }
 
       String distanceStr = "";
-      if (null!=mData.getLatitude() && null!=mData.getLongitude()){
 
-        distanceStr += StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(mData.getLatitude()),Double.valueOf(mData.getLongitude()));
-
+      if (null!=mData.getPrice()){
+        tagsString += " | ¥ "+mData.getPrice();
       }
-      tagsString += " | ¥ "+mData.getPrice()+" | "+distanceStr;
+
+      if (null!=mData.getLatitude() && null!=mData.getLongitude()){
+        distanceStr += StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(mData.getLatitude()),Double.valueOf(mData.getLongitude()));
+        tagsString += " | "+distanceStr;
+      }
 
       ((SimpleInfoViewHolder) holder).tvTags.setText(tagsString);
-
-
 
     } else if (holder instanceof RatingInfoViewHolder) {
 
@@ -248,6 +250,36 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       ((AdditionalInfoViewHolder) holder).ivOrder.setImageResource(StringUtils.isEmpty(mData.getNet())?R.mipmap.ic_noyuding:R.mipmap.ic_yuding);
       ((AdditionalInfoViewHolder) holder).ivQueue.setImageResource(StringUtils.isEmpty(mData.getLineUrl())?R.mipmap.ic_nopaiwei:R.mipmap.ic_paiwei);
       ((AdditionalInfoViewHolder) holder).ivTel.setImageResource(StringUtils.isEmpty(mData.getTel())?R.mipmap.ic_nodianhua:R.mipmap.ic_dianhua);
+
+
+      ((AdditionalInfoViewHolder) holder).ivTel.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
+            new BottomListDialog(mAnchorActivity, mData.getTel().split(" ")).show();
+          }
+        }
+      });
+      ((AdditionalInfoViewHolder) holder).ivDeliver.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          if (null != mData && null != mData.getTakeoutUrl() && !StringUtils.isEmpty(mData.getTakeoutUrl())) {
+            WebViewActivity.enterActivity(mAnchorActivity, mData.getTakeoutUrl(), mData.getName(), false);
+          }
+        }
+      });
+      ((AdditionalInfoViewHolder) holder).ivQueue.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          if (null != mData && null != mData.getLineUrl() && !StringUtils.isEmpty(mData.getLineUrl())) {
+            WebViewActivity.enterActivity(mAnchorActivity, mData.getLineUrl(), mData.getName(), false);
+          }
+        }
+      });
+      ((AdditionalInfoViewHolder) holder).ivOrder.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          if (null != mData && null != mData.getNet() && !StringUtils.isEmpty(mData.getNet())) {
+            WebViewActivity.enterActivity(mAnchorActivity, mData.getNet(), mData.getName(), false);
+          }
+        }
+      });
 
     } else if (holder instanceof MapViewHolder) {
 

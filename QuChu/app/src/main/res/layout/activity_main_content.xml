@@ -58,7 +58,7 @@
             android:layout_height="50dp"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="16dp"
-            android:drawableLeft="@mipmap/ic_location"
+            android:drawableRight="@mipmap/ic_down"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="厦门"
@@ -94,7 +94,7 @@
               android:drawableLeft="@mipmap/ic_pull_menus_search"
               android:drawablePadding="4dp"
               android:gravity="left|center_vertical"
-              android:text="@string/search"
+              android:text="Welcome to quchu free porn"
               android:textColor="@color/standard_color_h3_dark"
               android:textSize="16sp"
               />

@@ -179,9 +179,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
       public void successListener(List<SceneInfoModel> response) {
         mAllSceneList.clear();
         mAllSceneList.addAll(response);
-        mRvScene.setAdapter(new SceneListAdapter(getApplicationContext(),mAllSceneList,4));
+        SceneListAdapter adapter = new SceneListAdapter(getApplicationContext(),mAllSceneList,4);
+        mRvScene.setAdapter(adapter);
         mRvScene.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
-        makeToast("kuah kuha");
+        adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
+          @Override public void onItemClick(SceneInfoModel sceneInfoModel) {
+            SceneDetailActivity.enterActivity(RecommendActivity.this, sceneInfoModel.getSceneId(), sceneInfoModel.getSceneName(), true);
+          }
+        });
+
+
       }
 
       @Override
