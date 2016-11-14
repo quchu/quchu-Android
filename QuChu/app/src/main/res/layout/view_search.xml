@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/standard_color_yellow"
+              android:layout_height="match_parent"
               android:orientation="vertical">
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="@dimen/title_bar_height"
+      android:background="@color/standard_color_yellow"
       android:orientation="horizontal">
 
     <ImageView
@@ -64,5 +64,16 @@
         android:textSize="@dimen/word_subhead_size"/>
 
   </LinearLayout>
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/search_history_rv"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:background="@color/standard_color_white"
+      android:fadingEdge="none"
+      android:overScrollMode="never"
+      android:scrollbars="none"
+      android:visibility="gone"/>
 
 </LinearLayout>

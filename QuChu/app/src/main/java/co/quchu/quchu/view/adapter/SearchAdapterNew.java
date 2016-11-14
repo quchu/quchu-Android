@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
-import co.quchu.quchu.model.SearchKeywordModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -37,13 +36,21 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
   public static final int ITEM_TYPE_CATEGORY = -1;//搜索分类
   public static final int ITEM_TYPE_HISTORY = -2;//搜索历史记录
   public static final int ITEM_TYPE_RESULT = -3;//搜索结果
+  public static final int ITEM_TYPE_FOOTER = -4;
 
   private List<SearchCategoryBean> mCategoryList;
-  private List<SearchKeywordModel> mHistoryList;
+  private List<String> mHistoryList;
   private List<RecommendModel> mResultList;
 
   private boolean mIsCategory;
   private boolean mIsResult;
+
+  private boolean mHasMoreData;//有更多数据
+
+  public void setHasMoreData(boolean hasMoreData) {
+    mHasMoreData = hasMoreData;
+    notifyDataSetChanged();
+  }
 
   public void setCategoryList(List<SearchCategoryBean> categoryList) {
     mIsCategory = true;
@@ -51,7 +58,7 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     notifyDataSetChanged();
   }
 
-  public void setHistoryList(List<SearchKeywordModel> historyList) {
+  public void setHistoryList(List<String> historyList) {
     mHistoryList = historyList;
     notifyDataSetChanged();
   }
@@ -75,6 +82,9 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     } else if (viewType == ITEM_TYPE_RESULT) {
       return new ResultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scene_detail_recommeded, parent, false));
+
+    } else if (viewType == ITEM_TYPE_FOOTER) {
+      return new FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_footer, parent, false));
     }
 
     return new HistoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_history, parent, false));
@@ -108,27 +118,27 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     } else if (viewHolder instanceof HistoryViewHolder) {
       //搜索历史记录
       final HistoryViewHolder holder = (HistoryViewHolder) viewHolder;
-      final SearchKeywordModel keywordModel = mHistoryList.get(position);
-      holder.mHistoryTv.setText(keywordModel.getKeyword());
+      final String keyword = mHistoryList.get(position);
+      holder.mHistoryTv.setText(keyword);
 
-      holder.itemView.setTag(keywordModel);
+      holder.itemView.setTag(keyword);
       holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          SearchKeywordModel keywordModel = (SearchKeywordModel) v.getTag();
-          if (keywordModel != null && mListener != null) {
-            mListener.onClick(-1, keywordModel, ITEM_TYPE_HISTORY);
+          String keyword = (String) v.getTag();
+          if (mListener != null) {
+            mListener.onClickHistory(keyword);
           }
         }
       });
 
-      holder.mHistoryDeleteBtn.setTag(keywordModel);
+      holder.mHistoryDeleteBtn.setTag(keyword);
       holder.mHistoryDeleteBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          SearchKeywordModel keywordModel = (SearchKeywordModel) v.getTag();
-          if (keywordModel != null && mListener != null) {
-            mListener.onDelete(keywordModel, ITEM_TYPE_HISTORY);
+          String keyword = (String) v.getTag();
+          if (mListener != null) {
+            mListener.onDeleteHistory(keyword);
           }
         }
       });
@@ -194,6 +204,10 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
   @Override
   public int getItemViewType(int position) {
     if (mIsResult) {
+      if (!mHasMoreData && position == getItemCount() - 1) {
+        return ITEM_TYPE_FOOTER;
+      }
+
       return ITEM_TYPE_RESULT;
     }
 
@@ -203,6 +217,9 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
   @Override
   public int getItemCount() {
     if (mIsResult) {
+      if (!mHasMoreData) {
+        return mResultList != null ? mResultList.size() + 1 : 0;
+      }
       return mResultList != null ? mResultList.size() : 0;
     }
 
@@ -267,6 +284,13 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
   }
 
+  public class FooterViewHolder extends RecyclerView.ViewHolder {
+
+    public FooterViewHolder(View itemView) {
+      super(itemView);
+    }
+  }
+
   private OnSearchItemClickListener mListener;
 
   public void setOnSearchItemClickListener(OnSearchItemClickListener listener) {
@@ -276,6 +300,8 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
   public interface OnSearchItemClickListener {
     void onClick(int position, Parcelable bean, int itemType);
 
-    void onDelete(Parcelable bean, int itemType);
+    void onClickHistory(String keyword);
+
+    void onDeleteHistory(String keyword);
   }
 }

@@ -5,24 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -40,12 +33,10 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SearchCategoryBean;
-import co.quchu.quchu.model.SearchKeywordModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
-import co.quchu.quchu.presenter.SearchHistoryPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
 import co.quchu.quchu.widget.SearchView;
 import co.quchu.quchu.widget.TagCloudView;
@@ -59,7 +50,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
   @Bind(R.id.search_view) SearchView mSearchView;
   @Bind(R.id.tag_cloud_view) TagCloudView mTagCloudView;
-  @Bind(R.id.history_recycler_view) RecyclerView mHistoryRv;
   @Bind(R.id.search_category_grid_view) GridView mCategoryGridView;
   @Bind(R.id.tag_refresh_btn) TextView mTagRefreshBtn;
 
@@ -67,10 +57,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
   private CategoryGridAdapter mCategoryAdapter;
   private SearchAdapterNew mSearchHistoryAdapter;
-  private InputMethodManager mInputMethodManager;
   private EditText mSearchInputEt;
 
-  private List<SearchKeywordModel> mSearchHistoryList;
+  private List<String> mSearchHistoryList = new ArrayList<>();
   private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
   private List<String> mTags;
   private List<SceneInfoModel> mAllSceneList;
@@ -91,8 +80,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
     initTags();
 
-    initHistory();
-
     initSearchView();
 
     initCategory();
@@ -106,7 +93,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       mTagRefreshBtn.setVisibility(View.VISIBLE);
       for (SceneInfoModel model : mAllSceneList) {
         mTags.add(model.getSceneName());
-
       }
     }
 
@@ -152,50 +138,25 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    * 编辑框
    */
   private void initSearchView() {
-    ImageView backBtn = mSearchView.getSearchBackBtn();
-    TextView searchBtn = mSearchView.getSearchBtn();
-    mSearchInputEt = mSearchView.getSearchInputEt();
-
-    mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    mSearchInputEt.clearFocus();
-    mSearchInputEt.setFocusable(false);
-    mSearchInputEt.setOnTouchListener(new View.OnTouchListener() {
+    mSearchView.setOnSearchViewClickListener(new SearchView.OnSearchViewClickListener() {
       @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        mSearchInputEt.setFocusable(true);
-        mSearchInputEt.setFocusableInTouchMode(true);
-        mSearchInputEt.requestFocus();
-        if (mSearchHistoryList != null && mSearchHistoryList.size() > 0) {
-          mHistoryRv.setVisibility(View.VISIBLE);
-        }
-        return false;
-      }
-    });
-
-    mSearchInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-      @Override
-      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-          doSearch();
-          return true;
-        }
-        return false;
-      }
-    });
-
-    //返回
-    backBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+      public void onClickBack() {
         onBackPressed();
       }
-    });
 
-    //搜索
-    searchBtn.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
-        doSearch();
+      public void onTouchEditText() {
+        mSearchView.showHistory();
+      }
+
+      @Override
+      public void onClickSearch(String inputStr) {
+        doSearch(inputStr);
+      }
+
+      @Override
+      public void onClickHistory(String history) {
+        doSearch(history);
       }
     });
   }
@@ -203,26 +164,11 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   /**
    * 开始搜索
    */
-  private void doSearch() {
+  private void doSearch(String inputStr) {
     if (!NetUtil.isNetworkConnected(this)) {
       makeToast(R.string.network_error);
       return;
     }
-
-    String inputStr = mSearchInputEt.getText().toString().trim();
-
-    if (TextUtils.isEmpty(inputStr)) {
-      makeToast("请输入搜索内容!");
-      return;
-    }
-
-    if (StringUtils.containsEmoji(inputStr)) {
-      makeToast("搜索内容不能含有表情字符!");
-      return;
-    }
-
-    //存入数据库
-    insertHistory(inputStr);
 
     SearchResultActivity.launch(SearchActivityNew.this, null, inputStr, -1);
   }
@@ -239,6 +185,12 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         if (mSearchCategoryList == null) {
           return;
         }
+
+        if (mSearchView.isShowHistory()) {
+          mSearchView.hideHistory();
+        }
+
+        SoftInputUtils.hideSoftInput(SearchActivityNew.this);
 
         SearchCategoryBean categoryBean = mSearchCategoryList.get(position);
         if (categoryBean == null) {
@@ -272,111 +224,65 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       }
     });
 
+    mCategoryGridView.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        if (mSearchView.isShowHistory()) {
+          mSearchView.hideHistory();
+        }
+        return false;
+      }
+    });
+
     querySearchCategory();
   }
 
-  /**
-   * 搜索历史记录
-   */
-  private void initHistory() {
-    mHistoryRv.setLayoutManager(new LinearLayoutManager(this));
-    mSearchHistoryAdapter = new SearchAdapterNew();
-    mHistoryRv.setAdapter(mSearchHistoryAdapter);
-    mSearchHistoryAdapter.setOnSearchItemClickListener(onItemClickListener);
-
-    queryHistory();
-  }
-
-  private SearchAdapterNew.OnSearchItemClickListener onItemClickListener = new SearchAdapterNew.OnSearchItemClickListener() {
-    @Override
-    public void onClick(int position, Parcelable bean, int itemType) {
-      if (itemType == SearchAdapterNew.ITEM_TYPE_CATEGORY) {
-
-        //统计
-        switch (position) {
-          case 0:
-            UMEvent("food_c");
-            break;
-          case 1:
-            UMEvent("hotel_c");
-            break;
-          case 2:
-            UMEvent("entertainment_c");
-            break;
-          case 3:
-            UMEvent("relaxation_c");
-            break;
-          case 4:
-            UMEvent("shopping_c");
-            break;
-          case 5:
-            UMEvent("event_c");
-            break;
-        }
-
-        //启动搜索结果界面
-        SearchCategoryBean categoryBean = (SearchCategoryBean) bean;
-        if (categoryBean != null) {
-
-          SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "", position + 1);
-        }
-
-      } else if (itemType == SearchAdapterNew.ITEM_TYPE_HISTORY) {
-        SearchKeywordModel keywordModel = (SearchKeywordModel) bean;
-        if (keywordModel != null) {
-          setInputEditText(keywordModel.getKeyword());
-        }
-      }
-    }
-
-    @Override
-    public void onDelete(Parcelable bean, int itemType) {
-      if (itemType == SearchAdapterNew.ITEM_TYPE_HISTORY) {
-        SearchKeywordModel keywordModel = (SearchKeywordModel) bean;
-        deleteHistory(keywordModel);
-      }
-    }
-  };
-
-  /**
-   * 设置输入框的内容
-   */
-  private void setInputEditText(String input) {
-    mSearchInputEt.setText("");
-    mSearchInputEt.setText(input);
-    mSearchInputEt.setSelection(input.length());
-  }
-
-  /**
-   * 获取历史记录
-   */
-  private void queryHistory() {
-    mSearchHistoryList = SearchHistoryPresenter.getHistoryKeywords(this);
-    mSearchHistoryAdapter.setHistoryList(mSearchHistoryList);
-  }
-
-  private void insertHistory(String history) {
-    if (!TextUtils.isEmpty(history)) {
-      SearchHistoryPresenter.insertKeyword(this, history);
-    }
-  }
-
-  private void deleteHistory(SearchKeywordModel keywordModel) {
-    if (keywordModel == null) {
-      return;
-    }
-
-    if (mSearchHistoryList.contains(keywordModel)) {
-      mSearchHistoryList.remove(keywordModel);
-      mSearchHistoryAdapter.setHistoryList(mSearchHistoryList);
-    }
-
-    if (mSearchCategoryList.size() == 0 && mHistoryRv.getVisibility() == View.VISIBLE) {
-      mHistoryRv.setVisibility(View.GONE);
-    }
-
-    SearchHistoryPresenter.deleteIfExisted(SearchActivityNew.this, keywordModel.getKeyword());
-  }
+//  private SearchAdapterNew.OnSearchItemClickListener onItemClickListener = new SearchAdapterNew.OnSearchItemClickListener() {
+//    @Override
+//    public void onClick(int position, Parcelable bean, int itemType) {
+//      if (itemType == SearchAdapterNew.ITEM_TYPE_CATEGORY) {
+//
+//        //统计
+//        switch (position) {
+//          case 0:
+//            UMEvent("food_c");
+//            break;
+//          case 1:
+//            UMEvent("hotel_c");
+//            break;
+//          case 2:
+//            UMEvent("entertainment_c");
+//            break;
+//          case 3:
+//            UMEvent("relaxation_c");
+//            break;
+//          case 4:
+//            UMEvent("shopping_c");
+//            break;
+//          case 5:
+//            UMEvent("event_c");
+//            break;
+//        }
+//
+//        //启动搜索结果界面
+//        SearchCategoryBean categoryBean = (SearchCategoryBean) bean;
+//        if (categoryBean != null) {
+//
+//          SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "", position + 1);
+//        }
+//      }
+//    }
+//
+//    @Override
+//    public void onClickHistory(String keyword) {
+//      //空实现
+//    }
+//
+//    @Override
+//    public void onDeleteHistory(String keyword) {
+//     //空实现
+//    }
+//  };
 
   /**
    * 获取搜索分类
@@ -418,8 +324,10 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 //  }
   @Override
   public void onBackPressed() {
-    if (mHistoryRv.getVisibility() == View.VISIBLE) {
-      mHistoryRv.setVisibility(View.GONE);
+    SoftInputUtils.hideSoftInput(this);
+
+    if (mSearchView.isShowHistory()) {
+      mSearchView.hideHistory();
       return;
     }
 

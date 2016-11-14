@@ -10,12 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -36,7 +32,6 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
 import co.quchu.quchu.widget.DropDownMenu.DropContentView;
 import co.quchu.quchu.widget.DropDownMenu.DropDownMenu;
@@ -59,7 +54,6 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   @Bind(R.id.search_no_data_tv) TextView mSearchNoDataTv;
   @Bind(R.id.search_refresh_layout) SwipeRefreshLayout mSearchRefreshLayout;
 
-  private EditText mSearchInputEt;
   private SearchAdapterNew mSearchAdapter;
 
   private int mCurrentPageNo = 1;
@@ -98,9 +92,9 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
     initRefreshLayout();
 
-    initSearchView();
-
     initDropDownMenu();
+
+    initSearchView();
 
     initRecyclerView();
 
@@ -146,6 +140,16 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
       }
     });
+
+    mSearchResultRv.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        SoftInputUtils.hideSoftInput(SearchResultActivity.this);
+
+        mSearchView.hideHistory();
+        return false;
+      }
+    });
   }
 
   /**
@@ -169,88 +173,60 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     }
 
     @Override
-    public void onDelete(Parcelable bean, int itemType) {
+    public void onClickHistory(String keyword) {
+      //空实现
+    }
 
+    @Override
+    public void onDeleteHistory(String keyword) {
+      //空实现
     }
   };
 
   private void initSearchView() {
-    ImageView backBtn = mSearchView.getSearchBackBtn();
-    TextView searchBtn = mSearchView.getSearchBtn();
-    mSearchInputEt = mSearchView.getSearchInputEt();
-
-    mSearchInputEt.clearFocus();
-    mSearchInputEt.setFocusable(false);
-    mSearchInputEt.setOnTouchListener(new View.OnTouchListener() {
+    mSearchView.setOnSearchViewClickListener(new SearchView.OnSearchViewClickListener() {
       @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        mSearchInputEt.setFocusable(true);
-        mSearchInputEt.setFocusableInTouchMode(true);
-        mSearchInputEt.requestFocus();
-        return false;
+      public void onClickBack() {
+        onBackPressed();
       }
-    });
 
-    mSearchInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
       @Override
-      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-          doSearch(false);
-          return true;
+      public void onTouchEditText() {
+        if (mDropDownMenu != null && mDropDownMenu.isShowing()) {
+          mDropDownMenu.closeMenu();
         }
-        return false;
+
+        mSearchView.showHistory();
+      }
+
+      @Override
+      public void onClickSearch(String inputStr) {
+        doSearch(false, inputStr);
+      }
+
+      @Override
+      public void onClickHistory(String history) {
+        queryResult(false);
       }
     });
 
     setInputEditText(TextUtils.isEmpty(mCategoryZh) ? mInputStr : mCategoryZh);
-
-    //返回
-    backBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onBackPressed();
-      }
-    });
-
-    //搜索
-    searchBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        doSearch(false);
-      }
-    });
   }
 
   /**
    * 设置输入框的内容
    */
   private void setInputEditText(String input) {
-    mSearchInputEt.setText("");
-    mSearchInputEt.setText(input);
-    mSearchInputEt.setSelection(input.length());
+    mSearchView.setInputEditText(input);
   }
 
   /**
    * 搜索
    */
-  private void doSearch(boolean isLoadMore) {
-    String inputStr = mSearchInputEt.getText().toString().trim();
-
-    if (TextUtils.isEmpty(inputStr)) {
-      makeToast("请输入搜索内容!");
-      return;
-    }
-
-    if (StringUtils.containsEmoji(inputStr)) {
-      makeToast("搜索内容不能含有表情字符!");
-      return;
-    }
-
+  private void doSearch(boolean isLoadMore, String inputStr) {
     if (!inputStr.equals(mInputStr)) {
       mInputStr = inputStr;
     }
-
-    SoftInputUtils.hideSoftInput(this);
 
     if (mDropDownMenu != null && mDropDownMenu.isShowing()) {
       mDropDownMenu.closeMenu();
@@ -306,6 +282,8 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         } else {
           mSearchAdapter.addMoreResultList(data);
         }
+
+        mSearchAdapter.setHasMoreData(mHasMoreData);
 
         if (!isLoadMore) {
           mSearchResultRv.smoothScrollToPosition(0);
@@ -428,6 +406,9 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     mDropDownMenu.setOnDropTabClickListener(new DropDownMenu.OnDropTabClickListener() {
       @Override
       public void onTabSelected(int tabPosition) {
+
+        SoftInputUtils.hideSoftInput(SearchResultActivity.this);
+
         switch (tabPosition) {
           case 0:
 //            if (mCategoryList != null && mCategoryList.size() > 0) {
@@ -517,6 +498,13 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
   @Override
   public void onBackPressed() {
+    SoftInputUtils.hideSoftInput(this);
+
+    if (mSearchView.isShowHistory()) {
+      mSearchView.hideHistory();
+      return;
+    }
+
     if (mDropDownMenu.isShowing()) {
       mDropDownMenu.closeMenu();
       return;

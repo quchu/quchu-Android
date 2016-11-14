@@ -45,4 +45,11 @@ public class SoftInputUtils {
     }, 200);
   }
 
+  /**
+   *
+   */
+  public static void isSoftInputActive(Context context) {
+
+  }
+
 }

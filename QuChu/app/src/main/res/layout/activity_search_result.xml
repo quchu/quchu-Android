@@ -5,24 +5,16 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-  <co.quchu.quchu.widget.SearchView
-      android:id="@+id/search_view"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-
   <android.support.v4.widget.SwipeRefreshLayout
       android:id="@+id/search_refresh_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/search_view"
-      android:layout_marginTop="@dimen/search_drop_tab_height">
+      android:layout_marginTop="104dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/search_view"
-        android:layout_marginTop="@dimen/search_drop_tab_height"/>
+        android:layout_height="match_parent"/>
 
   </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -31,9 +23,8 @@
       style="@style/TextView.H2"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/search_view"
       android:layout_centerInParent="true"
-      android:layout_marginTop="@dimen/search_drop_tab_height"
+      android:layout_marginTop="@dimen/title_bar_height"
       android:background="@color/colorBackground"
       android:gravity="center"
       android:text="没有该生物"
@@ -43,7 +34,7 @@
       android:id="@+id/drop_down_menu"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/search_view"
+      android:layout_marginTop="@dimen/title_bar_height"
       android:background="@color/transparent"
       app:dddividerColor="@color/colorDivider"
       app:ddmenuSelectedIcon="@mipmap/ic_down"
@@ -52,5 +43,10 @@
       app:ddtextSelectedColor="@color/standard_color_yellow"
       app:ddtextUnselectedColor="@color/standard_color_h2_dark"
       app:ddunderlineColor="@color/colorDivider"/>
+
+  <co.quchu.quchu.widget.SearchView
+      android:id="@+id/search_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
 
 </RelativeLayout>
