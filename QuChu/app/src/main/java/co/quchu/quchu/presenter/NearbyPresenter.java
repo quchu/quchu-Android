@@ -3,6 +3,7 @@ package co.quchu.quchu.presenter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
+import co.quchu.quchu.model.PagerModel;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -38,61 +39,27 @@ public class NearbyPresenter {
     public static final int TYPE_CIRCLE = 0;
 
 
-    public static void getQuchuListViaTagId(Context context,int tagId,int cityId,String lat,String lon,final getNearbyDataListener listener){
-        String url = String.format(NetApi.getQuchuListViaTagId,tagId, cityId, lat, lon);
-        NetService.post(context, url, null,new IRequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                if (response != null && response.has("result") && response.has("pageCount")) {
-                    int maxPageNo = -1;
-                    Gson gson = new Gson();
-                    List<NearbyItemModel> nearbyItemModels = null;
-                    try {
-                        maxPageNo = response.getInt("pageCount");
-                        nearbyItemModels = gson.fromJson(response.getString("result"), new TypeToken<List<NearbyItemModel>>() {
-                        }.getType());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    listener.getNearbyData(nearbyItemModels, maxPageNo);
-                }
-            }
-
-            @Override
-            public boolean onError(String error) {
-                DialogUtil.dismissProgess();
-                return false;
-            }
-        });
-
-    }
-
-    public static void getGuessWhatYouLike(Context context,int tagId,int type,String lat,String lon,final getNearbyDataListener listener){
+    public static void getQuchuListViaTagId(Context context,int type,int tagId,int cityId,String lat,String lon,final CommonListener<PagerModel> listener){
         HashMap<String,String> params = new HashMap<>();
-        if (type==TYPE_CIRCLE){
-            params.put("areaId",String.valueOf(tagId));
+        String url;
+        if (type==-1){
+            url = String.format(NetApi.getQuchuListViaTagId,tagId, cityId, lat, lon);
         }else{
-            params.put("circleId",String.valueOf(tagId));
+            if (type==TYPE_CIRCLE){
+                params.put("areaId",String.valueOf(tagId));
+                url = NetApi.getPlaceByAreaId;
+            }else{
+                params.put("circleId",String.valueOf(tagId));
+                url = NetApi.getPlaceByCircleId;
+            }
+            params.put("latitude",lat);
+            params.put("longitude",lon);
         }
-        params.put("latitude",lat);
-        params.put("longitude",lon);
-        NetService.get(context,type==0?NetApi.getPlaceByAreaId:NetApi.getPlaceByCircleId,params,new IRequestListener(){
-
+        NetService.get(context, url, params,new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                if (response != null && response.has("result") && response.has("pageCount")) {
-                    int maxPageNo = -1;
-                    Gson gson = new Gson();
-                    List<NearbyItemModel> nearbyItemModels = null;
-                    try {
-                        maxPageNo = response.getInt("pageCount");
-                        nearbyItemModels = gson.fromJson(response.getString("result"), new TypeToken<List<NearbyItemModel>>() {
-                        }.getType());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    listener.getNearbyData(nearbyItemModels, maxPageNo);
-                }
+                PagerModel<NearbyItemModel> sceneModels = new Gson().fromJson(response.toString(), new TypeToken<PagerModel<NearbyItemModel>>() {}.getType());
+                listener.successListener(sceneModels);
             }
 
             @Override
@@ -103,6 +70,8 @@ public class NearbyPresenter {
         });
 
     }
+
+
 
     public static void getNearbyData(Context context, String recommendPlaceIds, String categoryTagIds, int isFirst, int placeId, int cityId, double latitude, double longitude, int pageNo, final getNearbyDataListener listener) {
         String url = String.format(NetApi.getNearby, cityId, String.valueOf(latitude), String.valueOf(longitude), pageNo, recommendPlaceIds, categoryTagIds, isFirst, placeId);

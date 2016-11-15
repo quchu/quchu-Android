@@ -7,6 +7,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.view.View;
+import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.CommentModel;
+import co.quchu.quchu.model.PagerModel;
+import co.quchu.quchu.presenter.CommentsPresenter;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.view.adapter.CommentAdapter;
+import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
+import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -31,19 +40,25 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
 public class QuchuListSpecifyTagActivity extends BaseActivity {
 
 
-    @Override
-    protected String getPageNameCN() {
-        return getString(R.string.pname_specify_tags);
-    }
-
-    private int mTagId = 0;
-    private int mDataType = -1;
-    private String mTagName;
-    private String mQuchuName;
     public static String BUNDLE_KEY_TAG_ID = "BUNDLE_KEY_TAG_ID";
     public static String BUNDLE_KEY_TAG_NAME = "BUNDLE_KEY_TAG_NAME";
     public static String BUNDLE_KEY_TAG_QUCHU_NAME = "BUNDLE_KEY_TAG_QUCHU_NAME";
     public static String BUNDLE_KEY_DATA_TYPE = "BUNDLE_KEY_DATA_TYPE";
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_specify_tags);
+    }
+    private int mTagId = 0;
+    private int mDataType = -1;
+    private String mTagName;
+
+    private String mQuchuName;
+    private int mMaxPageNo = -1;
+    private int mPageNo = 1;
+    private boolean mActivityStop = false;
+
+    private EndlessRecyclerOnScrollListener mLoadingListener;
 
     @Bind(R.id.rv)
     RecyclerView mRecyclerView;
@@ -51,6 +66,7 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
     SwipeRefreshLayout mSwipeRefreshLayout;
     NearbyAdapter mAdapter;
     private List<NearbyItemModel> mData = new ArrayList<>();
+
 
     @Override
     protected int activitySetup() {
@@ -90,52 +106,100 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
-        //mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                getData();
+                getData(false,true);
             }
         });
 
+        mLoadingListener = new EndlessRecyclerOnScrollListener( mRecyclerView.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                getData(false, true);
+            }
+        };
+        mRecyclerView.addOnScrollListener(mLoadingListener);
+
+        DialogUtil.showProgess(QuchuListSpecifyTagActivity.this, R.string.loading_dialog_text);
+        getData(true, false);
     }
 
-    private void getData() {
-        if (mDataType==-1){
-            NearbyPresenter.getQuchuListViaTagId(getApplicationContext(), mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
-                new NearbyPresenter.getNearbyDataListener() {
-                    @Override
-                    public void getNearbyData(List<NearbyItemModel> model, int i) {
-                        mData.clear();
-                        mData.addAll(model);
-                        mAdapter.notifyDataSetChanged();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                });
-        }else {
 
-            NearbyPresenter.getGuessWhatYouLike(getApplicationContext(), mTagId, mDataType, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
-                new NearbyPresenter.getNearbyDataListener() {
-                    @Override
-                    public void getNearbyData(List<NearbyItemModel> model, int i) {
-                        mData.clear();
-                        mData.addAll(model);
-                        mAdapter.notifyDataSetChanged();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                });
+
+    private void getData(final boolean firstLoad, final boolean loadMore) {
+        if (firstLoad) {
+            mData.clear();
+            mMaxPageNo = -1;
+            mPageNo = 1;
         }
-    }
 
+        if (mMaxPageNo != -1 && mPageNo >= mMaxPageNo && loadMore) {
+            mAdapter.showPageEnd(true);
+            return;
+        }
+
+        if (loadMore) {
+            mPageNo += 1;
+        }
+
+        if (mActivityStop){
+            return;
+        }
+        DialogUtil.showProgess(QuchuListSpecifyTagActivity.this, R.string.loading_dialog_text);
+
+
+        NearbyPresenter.getQuchuListViaTagId(getApplicationContext(),mDataType, mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()),
+            String.valueOf(SPUtils.getLongitude()), new CommonListener<PagerModel>() {
+                @Override public void successListener(PagerModel response) {
+                    DialogUtil.dismissProgessDirectly();
+                    if (mMaxPageNo == -1) {
+                        mMaxPageNo = response.getPageCount();
+                    }
+                    if (null!=mAdapter && !loadMore){
+                        mAdapter.showPageEnd(false);
+                    }
+
+                    mAdapter.notifyDataSetChanged();
+
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    mLoadingListener.loadingComplete();
+                }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                    DialogUtil.dismissProgessDirectly();
+                    if (!loadMore) {
+                        //errorView.showViewDefault(new View.OnClickListener() {
+                        //    @Override
+                        //    public void onClick(View v) {
+                        //        DialogUtil.showProgess(getActivity(), "加载中");
+                        //        getData(true, false);
+                        //    }
+                        //});
+                    }
+                    if (mSwipeRefreshLayout.isRefreshing()) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                    mLoadingListener.loadingComplete();
+                }
+            });
+
+
+
+    }
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        mActivityStop = false;
+
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+        mActivityStop = true;
         super.onStop();
     }
 

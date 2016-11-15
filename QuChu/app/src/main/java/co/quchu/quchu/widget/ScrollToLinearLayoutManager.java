@@ -23,16 +23,14 @@ public class ScrollToLinearLayoutManager extends LinearLayoutManager {
   @Override public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state,
       final int position) {
 
-    final int factor;
+    final float factor;
 
     if(recyclerView.getChildCount() >= 30 && position <=10){
-      factor = 50;
-    }
-    else if (recyclerView.getChildCount()>=20 && position<=5){
-      factor = 10;
+      factor = 0.5f;
     }else{
       factor = 1;
     }
+
 
     LinearSmoothScroller smoothScroller = new LinearSmoothScroller(mContext) {
 
@@ -47,7 +45,7 @@ public class ScrollToLinearLayoutManager extends LinearLayoutManager {
       @Override protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
 
 
-        return MILLISECONDS_PER_INCH / factor / displayMetrics.densityDpi;
+        return (MILLISECONDS_PER_INCH * factor)/ displayMetrics.densityDpi;
       }
     };
 

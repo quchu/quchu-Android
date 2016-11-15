@@ -303,10 +303,16 @@ public class AIConversationFragment extends BaseFragment {
             if (starter) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             } else {
-              //断开网络情况
-              //mConversation.remove(mConversation.size()-1);
-              //mAdapter.notifyItemRemoved(mConversation.size()-1);
-              getNext(response.getAnswerPramms().get(0), response.getFlash());
+
+              if (mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.OPTION){
+                AIConversationModel modelOption = new AIConversationModel();
+                modelOption.setAnswerPramms(response.getAnswerPramms());
+                modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
+                modelOption.setFlash(response.getFlash());
+                modelOption.setType("0");
+                addModel(modelOption);
+              }
+
             }
             mNetworkBusy = false;
           }
