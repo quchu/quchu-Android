@@ -145,12 +145,12 @@ public class PolygonProgressView extends View {
     mPaintCircle.setStyle(Paint.Style.STROKE);
 
     mPaintNodes = new Paint(mPaintCircle);
-    mPaintNodes.setColor(Color.parseColor("#ffd102"));
+    mPaintNodes.setColor(Color.parseColor("#ffdf4e"));
     mPaintNodes.setStrokeWidth(2);
     mPaintNodes.setStyle(Paint.Style.FILL);
 
     mPaintArcs = new Paint(mPaintCircle);
-    mPaintArcs.setColor(Color.parseColor("#ffd102"));
+    mPaintArcs.setColor(Color.parseColor("#ffdf4e"));
     mPaintArcs.setStrokeCap(Paint.Cap.SQUARE);
     mPaintArcs.setStrokeWidth(5);
 

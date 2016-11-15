@@ -35,7 +35,7 @@
   //主题黄
   <color name="standard_color_yellow">#ffdf4e</color>
   //标签黄
-  <color name="standard_color_yellow_label">#ffd102</color>
+  <color name="standard_color_yellow_label">#ffdf4e</color>
   <color name="standard_color_h0_dark">#111111</color>
   //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
   <color name="standard_color_h1_dark">#333333</color>
