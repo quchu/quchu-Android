@@ -174,61 +174,6 @@ public class AccountSettingPresenter {
     }
 
 
-    public static ArrayList<Integer> getQAvatar() {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.add(R.mipmap.avatar_1);
-        arrayList.add(R.mipmap.avatar_2);
-        arrayList.add(R.mipmap.avatar_3);
-        arrayList.add(R.mipmap.avatar_4);
-        arrayList.add(R.mipmap.avatar_5);
-        arrayList.add(R.mipmap.avatar_6);
-        arrayList.add(R.mipmap.avatar_7);
-        arrayList.add(R.mipmap.avatar_8);
-        arrayList.add(R.mipmap.avatar_9);
-        arrayList.add(R.mipmap.avatar_10);
-        arrayList.add(R.mipmap.avatar_11);
-        arrayList.add(R.mipmap.avatar_12);
-        arrayList.add(R.mipmap.avatar_13);
-        arrayList.add(R.mipmap.avatar_14);
-        arrayList.add(R.mipmap.avatar_15);
-        arrayList.add(R.mipmap.avatar_16);
-        arrayList.add(R.mipmap.avatar_17);
-        arrayList.add(R.mipmap.avatar_18);
-        arrayList.add(R.mipmap.avatar_19);
-        arrayList.add(R.mipmap.avatar_20);
-        arrayList.add(R.mipmap.avatar_21);
-        arrayList.add(R.mipmap.avatar_22);
-        arrayList.add(R.mipmap.avatar_23);
-        arrayList.add(R.mipmap.avatar_24);
-        arrayList.add(R.mipmap.avatar_25);
-        arrayList.add(R.mipmap.avatar_26);
-        arrayList.add(R.mipmap.avatar_27);
-        arrayList.add(R.mipmap.avatar_28);
-        arrayList.add(R.mipmap.avatar_29);
-        arrayList.add(R.mipmap.avatar_30);
-        arrayList.add(R.mipmap.avatar_31);
-        arrayList.add(R.mipmap.avatar_32);
-        arrayList.add(R.mipmap.avatar_33);
-        arrayList.add(R.mipmap.avatar_34);
-        arrayList.add(R.mipmap.avatar_35);
-        arrayList.add(R.mipmap.avatar_36);
-        arrayList.add(R.mipmap.avatar_37);
-        arrayList.add(R.mipmap.avatar_38);
-        arrayList.add(R.mipmap.avatar_39);
-        arrayList.add(R.mipmap.avatar_40);
-        arrayList.add(R.mipmap.avatar_41);
-        arrayList.add(R.mipmap.avatar_42);
-        arrayList.add(R.mipmap.avatar_43);
-        arrayList.add(R.mipmap.avatar_44);
-        arrayList.add(R.mipmap.avatar_45);
-        arrayList.add(R.mipmap.avatar_46);
-        arrayList.add(R.mipmap.avatar_47);
-        arrayList.add(R.mipmap.avatar_48);
-        arrayList.add(R.mipmap.avatar_49);
-        arrayList.add(R.mipmap.avatar_50);
-        return arrayList;
-    }
-
 
     public static void getQiNiuToken(Context mContext, final Bitmap bitmapA, final UploadUserPhotoListener listener) {
         NetService.get(mContext, NetApi.getQiniuToken, new IRequestListener() {

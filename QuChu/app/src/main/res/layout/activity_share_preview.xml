@@ -51,7 +51,7 @@
                     android:layout_height="80dp"
                     android:layout_marginLeft="@dimen/base_margin"
                     android:layout_marginTop="@dimen/base_margin"
-                    fresco:placeholderImage="@mipmap/avatar_2"
+                    fresco:placeholderImage="@color/translucent_dark"
                     fresco:roundAsCircle="true" />
 
                 <TextView

@@ -10,6 +10,16 @@ public class AIConversationModel {
   private String answer;
   private String flash;
   private String type;
+
+  public long getTimeStamp() {
+    return timeStamp;
+  }
+
+  public void setTimeStamp(long timeStamp) {
+    this.timeStamp = timeStamp;
+  }
+
+  private long timeStamp;
   private List<String> answerPramms;
   private List<DetailModel> placeList;
 
@@ -64,7 +74,7 @@ public class AIConversationModel {
   }
 
   public enum EnumDataType {
-    QUESTION, ANSWER, OPTION,GALLERY, NO_NETWORK;
+    QUESTION, ANSWER, OPTION,GALLERY, NO_NETWORK
   }
 
   @Override public String toString() {

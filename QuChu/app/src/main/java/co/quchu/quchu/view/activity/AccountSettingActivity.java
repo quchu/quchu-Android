@@ -206,14 +206,15 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
     @Override
     public void selectedQuPhtot() {
-      QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
-      qAvatarDIalogFg.init(AccountSettingPresenter.getQAvatar(), new QAvatarSettingDialogFg.OnItenSelected() {
-        @Override
-        public void itemSelected(int imageId) {
-          updateAvatar(imageId);
-        }
-      });
-      qAvatarDIalogFg.show(getSupportFragmentManager(), "qAvatar");
+      //TODO
+      //QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
+      //qAvatarDIalogFg.init(AccountSettingPresenter.getQAvatar(), new QAvatarSettingDialogFg.OnItenSelected() {
+      //  @Override
+      //  public void itemSelected(int imageId) {
+      //    updateAvatar(imageId);
+      //  }
+      //});
+      //qAvatarDIalogFg.show(getSupportFragmentManager(), "qAvatar");
 
     }
   };

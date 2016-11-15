@@ -160,17 +160,15 @@ public class AIConversationFragment extends BaseFragment {
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(System.currentTimeMillis());
 
-    AIConversationPresenter.getMessages(getActivity());
-
     if (calendar.get(Calendar.HOUR_OF_DAY)>=4) {
       //TODO delete < current date
-
       calendar.set(Calendar.HOUR_OF_DAY,0);
       calendar.set(Calendar.MINUTE,0);
       calendar.set(Calendar.SECOND,0);
 
       AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
     }
+
   }
 
   private void addModel(AIConversationModel model) {
