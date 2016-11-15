@@ -1,9 +1,11 @@
 package co.quchu.quchu.widget;
 
 import android.animation.Animator;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import co.quchu.quchu.R;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 
 /**
@@ -77,6 +79,17 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             @Override public void onAnimationRepeat(Animator animation) {}
           })
           .start();
+
+      if (holder instanceof AIConversationAdapter.GalleryViewHolder){
+        ViewPager v = (ViewPager) ((AIConversationAdapter.GalleryViewHolder)holder).itemView.findViewById(R.id.vpPlace);
+        if (null!=v && v.getChildCount()>=2){
+          v.getChildAt(1).setAlpha(0);
+          v.getChildAt(1).animate().alpha(1).setStartDelay(600).setDuration(300).start();
+
+        }
+
+      }
+
     } else if (holder instanceof AIConversationAdapter.AnswerViewHolder
         || holder instanceof AIConversationAdapter.OptionViewHolder) {
       holder.itemView.setTranslationX(holderWidth);
