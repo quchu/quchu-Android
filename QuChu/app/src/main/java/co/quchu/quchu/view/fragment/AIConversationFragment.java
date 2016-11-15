@@ -105,7 +105,7 @@ public class AIConversationFragment extends BaseFragment {
                 AIConversationPresenter.insertMessage(getActivity(),answerModel);
                 mConversation.add(answerModel);
                 mAdapter.notifyItemInserted(mConversation.size() - 1);
-                scrollToBottom();
+                //scrollToBottom();
                 getNext(answer, additionalShit);
               }
             }, CONVERSATION_REQUEST_DELAY);
@@ -255,6 +255,7 @@ public class AIConversationFragment extends BaseFragment {
               @Override public void successListener(AIConversationModel response) {
                 if (mNetworkInterrupted) {
                   mNetworkInterrupted = false;
+                  mAdapter.updateNoNetwork(false);
                 }
                 addModel(response);
 
@@ -264,7 +265,6 @@ public class AIConversationFragment extends BaseFragment {
                   mXiaoQFab.endLoading();
                 }
                 mNetworkBusy = false;
-
               }
 
               @Override public void errorListener(VolleyError error, String exception, String msg) {
@@ -294,8 +294,10 @@ public class AIConversationFragment extends BaseFragment {
     AIConversationPresenter.startConversation(getActivity(), starter,
         new CommonListener<AIConversationModel>() {
           @Override public void successListener(AIConversationModel response) {
+
             if (mNetworkInterrupted) {
               mNetworkInterrupted = false;
+              mAdapter.updateNoNetwork(false);
             }
             if (!TextUtils.isEmpty(response.getAnswer())) {
               addModel(response);
