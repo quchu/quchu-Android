@@ -2,6 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
   <corners android:radius="3dp"/>
-  <solid android:color="@color/standard_color_yellow_label"/>
+  <solid android:color="@color/standard_color_yellow"/>
 
 </shape>

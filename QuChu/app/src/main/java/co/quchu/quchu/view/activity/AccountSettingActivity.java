@@ -110,7 +110,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
     avatarImg.setImageURI(Uri.parse(user.getPhoto()));
     nickname.setText(user.getFullname());
-    nickname.setSelection(user.getFullname().length());
+//    nickname.setSelection(user.getFullname().length());
     nickname.setCursorVisible(false);
     nickname.setOnClickListener(new View.OnClickListener() {
       @Override

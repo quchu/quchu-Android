@@ -65,6 +65,7 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
   public void onRefresh() {
     if (!NetUtil.isNetworkConnected(getActivity())) {
       makeToast(R.string.network_error);
+      mRefreshLayout.setRefreshing(false);
       return;
     }
     pagesNo = 1;
@@ -106,17 +107,21 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
         @Override
         public void onClick(View v) {
           mRefreshLayout.setRefreshing(false);
-          MessagePresenter.getMessageList(getActivity(), pageNo, pageLoadListener);
+          MessagePresenter.getSysMessageList(getActivity(), pageNo, pageLoadListener);
         }
       });
-
     }
   };
 
   private AdapterBase.OnLoadmoreListener loadMoreListener = new AdapterBase.OnLoadmoreListener() {
     @Override
     public void onLoadmore() {
-      MessagePresenter.getMessageList(getActivity(), pagesNo + 1, pageLoadListener);
+      if (!NetUtil.isNetworkConnected(getActivity())) {
+        makeToast(R.string.network_error);
+        return;
+      }
+
+      MessagePresenter.getSysMessageList(getActivity(), pagesNo + 1, pageLoadListener);
     }
   };
 

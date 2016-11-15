@@ -228,7 +228,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     mDropDownMenu.resetSortSelectedIndex();
     mDropDownMenu.setTabText(0, "全部分类");
     mDropDownMenu.setTabText(2, "全部商圈");
-    mDropDownMenu.setTabText(4, "只能排序");
+    mDropDownMenu.setTabText(4, "智能排序");
   }
 
   /**

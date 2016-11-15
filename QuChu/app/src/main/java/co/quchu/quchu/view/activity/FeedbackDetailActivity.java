@@ -23,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FeedbackModel;
@@ -130,18 +129,18 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
                 msgList.add(0, msgListBean);
               }
 
-              String userName;
-              if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-                userName = AppContext.user.getFullname();
-              } else {
-                userName = "未知生物";
-              }
+//              String userName;
+//              if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
+//                userName = AppContext.user.getFullname();
+//              } else {
+//                userName = "未知生物";
+//              }
 
               for (int i = 0; i < msgList.size(); i++) {
                 FeedbackModel.MsgListBean bean = msgList.get(i);
 
                 if (bean.getType().equals("0")) {
-                  bean.setUserName(userName);
+                  bean.setUserName("你");
 
                 } else {
                   bean.setUserName("Felix");

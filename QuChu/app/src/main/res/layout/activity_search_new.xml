@@ -3,7 +3,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/standard_color_yellow"
+                android:background="@color/standard_color_yellow_label"
                 android:orientation="vertical">
 
   <LinearLayout
@@ -31,10 +31,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/base_margin"
-        android:drawableRight="@mipmap/ic_baocuo"
+        android:layout_marginTop="@dimen/base_margin"
+        android:drawableLeft="@mipmap/ic_huanyipi"
+        android:drawablePadding="5dp"
         android:gravity="center"
         android:text="换一批"
-        android:textColor="@color/standard_color_h2_dark"
+        android:textColor="@color/standard_color_h1_dark"
         android:textSize="12sp"
         android:visibility="gone"/>
 
