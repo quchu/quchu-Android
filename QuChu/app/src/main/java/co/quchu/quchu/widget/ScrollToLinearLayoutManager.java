@@ -25,11 +25,7 @@ public class ScrollToLinearLayoutManager extends LinearLayoutManager {
 
     final float factor;
 
-    if(recyclerView.getChildCount() >= 30 && position <=10){
-      factor = 0.5f;
-    }else{
-      factor = 1;
-    }
+    factor = 1;
 
 
     LinearSmoothScroller smoothScroller = new LinearSmoothScroller(mContext) {

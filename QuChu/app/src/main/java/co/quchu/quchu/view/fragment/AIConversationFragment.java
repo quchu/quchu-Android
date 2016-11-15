@@ -311,6 +311,7 @@ public class AIConversationFragment extends BaseFragment {
                 modelOption.setFlash(response.getFlash());
                 modelOption.setType("0");
                 addModel(modelOption);
+                mXiaoQFab.endLoading();
               }
 
             }

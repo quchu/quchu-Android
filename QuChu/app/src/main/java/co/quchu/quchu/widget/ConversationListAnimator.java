@@ -84,7 +84,8 @@ public class ConversationListAnimator extends DefaultItemAnimator {
         ViewPager v = (ViewPager) ((AIConversationAdapter.GalleryViewHolder)holder).itemView.findViewById(R.id.vpPlace);
         if (null!=v && v.getChildCount()>=2){
           v.getChildAt(1).setAlpha(0);
-          v.getChildAt(1).animate().alpha(1).setStartDelay(600).setDuration(300).start();
+          v.getChildAt(1).setTranslationX(-v.getWidth()/4);
+          v.getChildAt(1).animate().alpha(1).translationX(0).setStartDelay(600).setDuration(300).start();
 
         }
 
