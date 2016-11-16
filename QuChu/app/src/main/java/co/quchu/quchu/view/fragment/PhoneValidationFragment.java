@@ -40,25 +40,16 @@ import co.quchu.quchu.widget.ErrorView;
  */
 public class PhoneValidationFragment extends Fragment {
 
-  @Bind(R.id.etUsername)
-  EditText etUsername;
-  @Bind(R.id.ivIconClear)
-  ImageView ivIconClear;
-  @Bind(R.id.rlUserNameField)
-  RelativeLayout rlUserNameField;
-  @Bind(R.id.etValidCode)
-  EditText etValidCode;
-  @Bind(R.id.tvSendValidCode)
-  TextView tvSendValidCode;
-  @Bind(R.id.rlValidCode)
-  RelativeLayout rlValidCode;
-  @Bind(R.id.tvNext)
-  TextView tvNext;
-  @Bind(R.id.tvLoginViaThisNumber)
-  TextView tvLoginViaThisNumber;
+  @Bind(R.id.etUsername) EditText etUsername;
+  @Bind(R.id.ivIconClear) ImageView ivIconClear;
+  @Bind(R.id.rlUserNameField) RelativeLayout rlUserNameField;
+  @Bind(R.id.etValidCode) EditText etValidCode;
+  @Bind(R.id.tvSendValidCode) TextView tvSendValidCode;
+  @Bind(R.id.rlValidCode) RelativeLayout rlValidCode;
+  @Bind(R.id.tvNext) TextView tvNext;
+  @Bind(R.id.tvLoginViaThisNumber) TextView tvLoginViaThisNumber;
+  @Bind(R.id.errorView) ErrorView errorView;
 
-  @Bind(R.id.errorView)
-  ErrorView errorView;
   private boolean isRunning = false;
   private boolean registed = false;
   public static final String TAG = "PhoneValidationFragment";
@@ -152,10 +143,12 @@ public class PhoneValidationFragment extends Fragment {
       tvNext.setText(R.string.next);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       mEmptyForum = false;
+      tvNext.setClickable(true);
     } else {
       mEmptyForum = true;
       tvNext.setText(R.string.next);
       tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvNext.setClickable(false);
     }
 
     if (!codeSent) {
@@ -174,16 +167,20 @@ public class PhoneValidationFragment extends Fragment {
     if (TextUtils.isEmpty(userName)) {
       tvNext.setText(R.string.promote_empty_phone);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvNext.setClickable(false);
     } else if (!StringUtils.isMobileNO(userName)) {
       tvNext.setText(R.string.promote_invalid_phone_number);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvNext.setClickable(false);
     } else if (verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       status = true;
+      tvNext.setClickable(true);
     } else if (!verifyValidCode) {
       status = true;
     } else {
       tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvNext.setClickable(false);
     }
     return status;
   }
@@ -277,6 +274,7 @@ public class PhoneValidationFragment extends Fragment {
         isVerifying = false;
         tvNext.setText("验证码错误");
         tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+        tvNext.setClickable(false);
       }
     });
   }
@@ -351,6 +349,7 @@ public class PhoneValidationFragment extends Fragment {
           tvLoginViaThisNumber.setVisibility(View.VISIBLE);
           tvNext.setText(R.string.promote_duplicate_username);
           tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+          tvNext.setClickable(false);
         }
       });
     } else {
@@ -363,6 +362,7 @@ public class PhoneValidationFragment extends Fragment {
 //          Toast.makeText(getActivity(), R.string.promote_username_not_existed, Toast.LENGTH_SHORT).show();
           tvNext.setText(R.string.promote_username_not_existed);
           tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+          tvNext.setClickable(false);
           isRunning = false;
           errorView.hideView();
         }
@@ -442,7 +442,7 @@ public class PhoneValidationFragment extends Fragment {
       case R.id.tvNext:
         if (verifyForm(true)) {
 //          if (mVerified) {
-            verifySms();
+          verifySms();
 //          } else {
 //            tvNext.setText(R.string.promote_verify_fail);
 //            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
@@ -451,7 +451,7 @@ public class PhoneValidationFragment extends Fragment {
         break;
 
       case R.id.backgroundLayout:
-        ((LoginActivity)getActivity()).hideSoftware();
+        ((LoginActivity) getActivity()).hideSoftware();
         break;
     }
   }

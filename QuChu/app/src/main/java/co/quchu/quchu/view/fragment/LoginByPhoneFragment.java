@@ -133,19 +133,24 @@ public class LoginByPhoneFragment extends Fragment
     if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvLoginViaPhone.setClickable(false);
     } else if (!StringUtils.isMobileNO(userName)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_username);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvLoginViaPhone.setClickable(false);
     } else if (!StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_password);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvLoginViaPhone.setClickable(false);
     } else if (StringUtils.isMobileNO(userName) && StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       tvLoginViaPhone.setText(R.string.login);
       status = true;
+      tvLoginViaPhone.setClickable(true);
     } else {
       tvLoginViaPhone.setText(R.string.login);
       tvLoginViaPhone.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvLoginViaPhone.setClickable(false);
     }
     return status;
   }
@@ -163,10 +168,12 @@ public class LoginByPhoneFragment extends Fragment
       mEmptyForum = false;
       tvLoginViaPhone.setText(R.string.login);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      tvLoginViaPhone.setClickable(true);
     } else {
       mEmptyForum = true;
       tvLoginViaPhone.setText(R.string.login);
       tvLoginViaPhone.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvLoginViaPhone.setClickable(false);
     }
   }
 
@@ -255,6 +262,7 @@ public class LoginByPhoneFragment extends Fragment
             if (object.has("msg") && !object.isNull("msg")) {
               tvLoginViaPhone.setText(object.get("msg").toString());
               tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+              tvLoginViaPhone.setClickable(false);
             }
             //TODO
           } catch (JSONException e) {

@@ -44,12 +44,14 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.PolygonProgressView;
 import co.quchu.quchu.widget.UserGenesDialog;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static co.quchu.quchu.base.AppContext.user;
 
 /**
  * Created by mwb on 16/8/22.
@@ -83,8 +85,8 @@ public class MeAvatarFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
-    if (null != AppContext.user) {
-      userAvatar = AppContext.user.getPhoto();
+    if (null != user) {
+      userAvatar = user.getPhoto();
     }
 
     getGenes();
@@ -147,10 +149,22 @@ public class MeAvatarFragment extends BaseFragment {
         polygonProgressView.animateProgress();
 
         final long before = System.currentTimeMillis();
-        if (null == AppContext.user) {
+        if (null == user) {
           return;
         }
-        Uri uri = Uri.parse(AppContext.user.getPhoto());
+
+        String avatar = AppContext.user.getPhoto();
+        Uri uri;
+        if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
+          uri = Uri.parse(user.getPhoto());
+        } else {
+          int resId = QuChuHelper.getUserAvatar(SPUtils.getUserMark());
+          if (resId != -1) {
+            uri = new Uri.Builder().scheme("res").path(String.valueOf(resId)).build();
+          } else {
+            uri = Uri.parse(user.getPhoto());
+          }
+        }
 
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
           @Override
@@ -220,15 +234,15 @@ public class MeAvatarFragment extends BaseFragment {
     super.onResume();
 
     //更换了头像
-    if (AppContext.user != null && !userAvatar.equals(AppContext.user.getPhoto())) {
-      userAvatar = AppContext.user.getPhoto();
-      ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+    if (user != null && !userAvatar.equals(user.getPhoto())) {
+      userAvatar = user.getPhoto();
+      ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(user.getPhoto()));
     }
   }
 
   private void resetLabels() {
-    if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-      userNameTv.setText(AppContext.user.getFullname());
+    if (user != null && !user.isIsVisitors()) {
+      userNameTv.setText(user.getFullname());
     } else {
       userNameTv.setText("未知生物");
     }
@@ -240,48 +254,6 @@ public class MeAvatarFragment extends BaseFragment {
       userMarkLayout.setVisibility(VISIBLE);
       userMarkTv.setText(userMark);
     }
-
-//    if (userMark != null) {
-//      userMarkLayout.setVisibility(View.VISIBLE);
-//
-//      if (null != genes) {
-//        int genesCounter = 0;
-//        for (int i = 0; i < genes.size(); i++) {
-//          genesCounter += genes.get(i).getWeight();
-//        }
-//
-//        userMarkTv.setText(genesCounter > 0 ? userMark : "新生宝宝");
-//
-//      } else {
-//        userMarkTv.setText("新生宝宝");
-//      }
-//
-//      switch (userMark) {
-//        case "小食神":
-//          userMarkImg.setImageResource(R.mipmap.ic_chihuo_ahsy);
-//          break;
-//
-//        case "艺术家":
-//          userMarkImg.setImageResource(R.mipmap.ic_wenyi_ahsy);
-//          break;
-//
-//        case "外交官":
-//          userMarkImg.setImageResource(R.mipmap.ic_shejiao_ahsy);
-//          break;
-//
-//        case "时尚精":
-//          userMarkImg.setImageResource(R.mipmap.ic_shishang_ahsy);
-//          break;
-//
-//        case "大财阀":
-//          userMarkImg.setImageResource(R.mipmap.ic_tuhao_ahsy);
-//          break;
-//
-//        case "玩乐咖":
-//          userMarkImg.setImageResource(R.mipmap.ic_haoqi_ahsy);
-//          break;
-//      }
-//    }
   }
 
   @Override
@@ -295,9 +267,9 @@ public class MeAvatarFragment extends BaseFragment {
     switch (event.getFlag()) {
       case EventFlags.EVENT_USER_LOGIN_SUCCESS:
         //头像
-        if (AppContext.user != null) {
-          userAvatar = AppContext.user.getPhoto();
-          ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        if (user != null) {
+          userAvatar = user.getPhoto();
+          ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(user.getPhoto()));
         }
         break;
 
@@ -308,6 +280,17 @@ public class MeAvatarFragment extends BaseFragment {
       case EventFlags.EVENT_USER_INFO_UPDATE:
         //姓名
         if (AppContext.user != null) {
+          String avatar = AppContext.user.getPhoto();
+          if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
+            headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+          } else {
+            int resId = QuChuHelper.getUserAvatar(SPUtils.getUserMark());
+            if (resId != -1) {
+              headImage.getHierarchy().setPlaceholderImage(resId);
+            } else {
+              headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+            }
+          }
           userNameTv.setText(AppContext.user.getFullname());
         }
         break;

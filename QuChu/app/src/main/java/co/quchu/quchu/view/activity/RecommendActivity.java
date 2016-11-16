@@ -179,11 +179,12 @@ public class RecommendActivity extends BaseBehaviorActivity {
       public void successListener(List<SceneInfoModel> response) {
         mAllSceneList.clear();
         mAllSceneList.addAll(response);
-        SceneListAdapter adapter = new SceneListAdapter(getApplicationContext(),mAllSceneList,4);
+        SceneListAdapter adapter = new SceneListAdapter(getApplicationContext(), mAllSceneList, 4);
         mRvScene.setAdapter(adapter);
-        mRvScene.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
+        mRvScene.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
         adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
-          @Override public void onItemClick(SceneInfoModel sceneInfoModel) {
+          @Override
+          public void onItemClick(SceneInfoModel sceneInfoModel) {
             SceneDetailActivity.enterActivity(RecommendActivity.this, sceneInfoModel.getSceneId(), sceneInfoModel.getSceneName(), true);
           }
         });
@@ -433,9 +434,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case R.id.ivSearch:
       case R.id.vSearchBar://搜索
-        if (mAllSceneList != null && mAllSceneList.size() > 0) {
-          SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
-        }
+        SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
         break;
 
       case R.id.ivSwitchCity:
@@ -598,6 +597,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         //用户信息更新
         if (mDrawerHeaderView != null) {
           mDrawerHeaderView.setUser();
+          mDrawerHeaderView.getGenes();
         }
         break;
     }

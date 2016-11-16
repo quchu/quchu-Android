@@ -148,17 +148,20 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
     if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvLoginViaPhone.setClickable(false);
       return false;
     }
 
     if (!StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_password);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvLoginViaPhone.setClickable(false);
       return false;
     }
 
     tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
     tvLoginViaPhone.setText(R.string.next);
+    tvLoginViaPhone.setClickable(true);
 
     return true;
   }
@@ -189,9 +192,11 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
       tvLoginViaPhone.setText(R.string.next);
       mEmptyForum = false;
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      tvLoginViaPhone.setClickable(true);
     } else {
       tvLoginViaPhone.setText(R.string.next);
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvLoginViaPhone.setClickable(true);
     }
   }
 

@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,6 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.gallery.CoreConfig;
 import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.gallery.FunctionConfig;
@@ -52,6 +52,7 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -62,15 +63,14 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class AccountSettingActivity extends BaseBehaviorActivity implements View.OnClickListener {
 
-  @Bind(R.id.avatarImg)
-  SimpleDraweeView avatarImg;
-  @Bind(R.id.nickname)
-  EditText nickname;
-  @Bind(R.id.radioGroup)
-  RadioGroup radioGroup;
+  @Bind(R.id.avatarImg) SimpleDraweeView avatarImg;
+  @Bind(R.id.nickname) EditText nickname;
+  @Bind(R.id.male_cb) CheckBox mMaleCb;
+  @Bind(R.id.female_cb) CheckBox mFemaleCb;
 
   private boolean mProfileModified = false;
   private String mLocationStr;
+  private String gender = "";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,17 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
     mLocationStr = user.getLocation();
 
-    avatarImg.setImageURI(Uri.parse(user.getPhoto()));
+    String avatar = user.getPhoto();
+    if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
+      avatarImg.setImageURI(Uri.parse(user.getPhoto()));
+    } else {
+      int imgResId = QuChuHelper.getUserAvatar(SPUtils.getUserMark());
+      if (imgResId != -1) {
+        avatarImg.getHierarchy().setPlaceholderImage(imgResId);
+      } else {
+        avatarImg.setImageURI(Uri.parse(user.getPhoto()));
+      }
+    }
     nickname.setText(user.getFullname());
 //    nickname.setSelection(user.getFullname().length());
     nickname.setCursorVisible(false);
@@ -138,58 +148,67 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
       }
     });
 
-    if ("未知".equals(user.getGender())) {
-      radioGroup.clearCheck();
-    } else {
-      if ("男".equals(user.getGender())) {
-        radioGroup.check(R.id.male);
-      } else {
-        radioGroup.check(R.id.female);
-      }
+    if ("男".equals(user.getGender())) {
+      mMaleCb.setChecked(true);
+      mMaleCb.setClickable(false);
+      mFemaleCb.setChecked(false);
+      mFemaleCb.setClickable(true);
+      gender = "男";
+    } else if ("女".equals(user.getGender())) {
+      mFemaleCb.setChecked(true);
+      mFemaleCb.setClickable(false);
+      mMaleCb.setChecked(false);
+      mMaleCb.setClickable(true);
+      gender = "女";
     }
   }
 
   @Override
   public void onBackPressed() {
-    boolean userNameChanged;
-    userNameChanged = !nickname.getText().toString().equals(AppContext.user.getFullname());
-    boolean userGenderChanged;
-
-    String gender = radioGroup.getCheckedRadioButtonId() == R.id.male ? "男" : "女";
-
-    userGenderChanged = !AppContext.user.getGender().equals(gender);
+    boolean userNameChanged = !nickname.getText().toString().equals(AppContext.user.getFullname());
+    boolean userGenderChanged = !AppContext.user.getGender().equals(gender);
 
     if (mProfileModified || userNameChanged || userGenderChanged) {
       new MaterialDialog.Builder(AccountSettingActivity.this)
-          .content("当前修改尚未保存,退出会导致资料丢失,是否保存?")
-          .positiveText("先保存")
+          .content("当前修改尚未保存,退出会导致资料丢失,确定退出吗?")
+          .positiveText("确定")
           .negativeText(R.string.cancel)
           .cancelable(false)
           .onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-              saveUserChange();
-            }
-          })
-          .onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//              saveUserChange();
               AccountSettingActivity.this.finish();
             }
-          })
-          .show();
+          }).show();
     } else {
       super.onBackPressed();
     }
   }
 
-  @OnClick({R.id.editHeadImage})
+  @OnClick({R.id.editHeadImage, R.id.male_cb, R.id.female_cb})
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.editHeadImage://编辑头像
         ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
         photoDialogFg.setOnOriginListener(listener);
         photoDialogFg.show(getSupportFragmentManager(), "photo");
+        break;
+
+      case R.id.male_cb:
+        mMaleCb.setChecked(true);
+        mMaleCb.setClickable(false);
+        mFemaleCb.setChecked(false);
+        mFemaleCb.setClickable(true);
+        gender = "男";
+        break;
+
+      case R.id.female_cb:
+        mFemaleCb.setChecked(true);
+        mFemaleCb.setClickable(false);
+        mMaleCb.setChecked(false);
+        mMaleCb.setClickable(true);
+        gender = "女";
         break;
     }
   }
@@ -198,14 +217,14 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
   public ASUserPhotoDialogFg.UserPhotoOriginSelectedListener listener = new ASUserPhotoDialogFg.UserPhotoOriginSelectedListener() {
 
     @Override
-    public void selectedAblum() {
+    public void selectedAlbum() {
       initGralley();
       int REQUEST_CODE_GALLERY = 0x01;
       GalleryFinal.openGallerySingle(AccountSettingActivity.this, REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
     }
 
     @Override
-    public void selectedQuPhtot() {
+    public void selectedQuPhoto() {
       //TODO
       //QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
       //qAvatarDIalogFg.init(AccountSettingPresenter.getQAvatar(), new QAvatarSettingDialogFg.OnItenSelected() {
@@ -304,8 +323,8 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
   }
 
   public void putUserInfo(String photoUrl) {
-    AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
-        newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.male ? "男" : "女", mLocationStr, new AccountSettingPresenter.UploadUserPhotoListener() {
+    AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this, newUserNickName, photoUrl,
+        gender, mLocationStr, new AccountSettingPresenter.UploadUserPhotoListener() {
           @Override
           public void onSuccess(String photoUrl) {
             refreshUserInfo();
@@ -324,6 +343,8 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
     NetService.get(this, NetApi.getMyUserInfo, new IRequestListener() {
       @Override
       public void onSuccess(JSONObject response) {
+        LogUtils.e("-----mwb", "更新成功");
+
         UserInfoHelper.saveUserInfo(response);
         Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
         DialogUtil.dismissProgess();

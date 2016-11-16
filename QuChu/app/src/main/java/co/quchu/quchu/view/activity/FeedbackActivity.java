@@ -133,11 +133,6 @@ public class FeedbackActivity extends BaseBehaviorActivity {
 
         @Override
         public void onItemLongClick(final FeedbackModel feedbackModel) {
-          if (!NetUtil.isNetworkConnected(FeedbackActivity.this)) {
-            makeToast(R.string.network_error);
-            return;
-          }
-
           MaterialDialog confirmDialog = null;
           if (feedbackModel.getState().equals("2")) {
             confirmDialog = new MaterialDialog.Builder(FeedbackActivity.this)
@@ -158,6 +153,11 @@ public class FeedbackActivity extends BaseBehaviorActivity {
           confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+              if (!NetUtil.isNetworkConnected(FeedbackActivity.this)) {
+                makeToast(R.string.network_error);
+                return;
+              }
+
               FeedbackPresenter.deleteFeedback(FeedbackActivity.this, String.valueOf(feedbackModel.getFeedbackId()), new CommonListener() {
                 @Override
                 public void successListener(Object response) {

@@ -82,12 +82,12 @@ public class RestorePasswordFragment extends Fragment {
         if (TextUtils.isEmpty(str)) {
           tvNext.setText(R.string.next);
           tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
-          tvNext.setEnabled(false);
+          tvNext.setClickable(false);
           hasPassword = false;
         } else {
           tvNext.setText(R.string.next);
           tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-          tvNext.setEnabled(true);
+          tvNext.setClickable(true);
           hasPassword = true;
         }
       }
@@ -179,6 +179,7 @@ public class RestorePasswordFragment extends Fragment {
       mRequestRunning = false;
       tvNext.setText(R.string.hint_new_password);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvNext.setClickable(false);
     }
   }
 

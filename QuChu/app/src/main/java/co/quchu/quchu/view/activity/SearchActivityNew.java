@@ -35,6 +35,7 @@ import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
@@ -78,6 +79,10 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
     mAllSceneList = (List<SceneInfoModel>) getIntent().getSerializableExtra(INTENT_KEY_ALL_SCENE_LIST);
 
+    if (mAllSceneList == null) {
+      getSceneList();
+    }
+
     initTags();
 
     initSearchView();
@@ -85,6 +90,25 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     initCategory();
 
 //    getNetArticleKeyword();
+  }
+
+  /**
+   * 获得场景列表
+   */
+  private void getSceneList() {
+    RecommendPresenter.getSceneList(this, new CommonListener<List<SceneInfoModel>>() {
+      @Override
+      public void successListener(List<SceneInfoModel> response) {
+        mAllSceneList.clear();
+        mAllSceneList.addAll(response);
+
+        initTags();
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+      }
+    });
   }
 
   private void initTags() {

@@ -23,6 +23,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
+import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -39,6 +40,7 @@ public class DrawerHeaderView extends LinearLayout {
   @Bind(R.id.drawerUserLayout) LinearLayout mDrawerUserLayout;
 
   private List<MyGeneModel.GenesEntity> mGenes;
+  private boolean hasAvatar;
 
   public DrawerHeaderView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -50,13 +52,17 @@ public class DrawerHeaderView extends LinearLayout {
   public void setUser() {
     if (AppContext.user == null || (AppContext.user != null && AppContext.user.isIsVisitors())) {
       mDrawerLoginLayout.setVisibility(VISIBLE);
-      mDrawerUserLayout.setVisibility(GONE);
+      mDrawerUserLayout.setVisibility(INVISIBLE);
     } else {
       mDrawerLoginLayout.setVisibility(GONE);
       mDrawerUserLayout.setVisibility(VISIBLE);
 
       mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
-      mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+      String avatar = AppContext.user.getPhoto();
+      if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
+        hasAvatar = true;
+        mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+      }
       mDrawerHeaderGenderImg.setImageURI(Uri.parse(
           "res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male
               : R.mipmap.ic_female)));
@@ -65,7 +71,7 @@ public class DrawerHeaderView extends LinearLayout {
 
   private void setMark(String mark) {
     if (TextUtils.isEmpty(SPUtils.getUserMark())) {
-      mDrawerHeaderMarkTv.setVisibility(GONE);
+      mDrawerHeaderMarkTv.setVisibility(INVISIBLE);
     } else {
       mDrawerHeaderMarkTv.setVisibility(VISIBLE);
       mDrawerHeaderMarkTv.setText(SPUtils.getUserMark());
@@ -105,6 +111,16 @@ public class DrawerHeaderView extends LinearLayout {
     String mark = genes.get(index).getMark();
     SPUtils.setUserMark(mark);
     setMark(mark);
+
+    //设置趣基因头像
+    if (!hasAvatar) {
+      int imgResId = QuChuHelper.getUserAvatar(mark);
+      if (imgResId != -1) {
+        mDrawerHeaderAvatarImg.getHierarchy().setPlaceholderImage(imgResId);
+      } else {
+        mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+      }
+    }
   }
 
   private OnDrawerHeaderClickListener mListener;

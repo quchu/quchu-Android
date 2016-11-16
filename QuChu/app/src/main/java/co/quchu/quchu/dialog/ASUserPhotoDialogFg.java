@@ -83,10 +83,10 @@ public class ASUserPhotoDialogFg extends DialogFragment implements View.OnClickL
             case R.id.select_cancle:
                 break;
             case R.id.select_photo:
-                listener.selectedAblum();
+                listener.selectedAlbum();
                 break;
             case R.id.select_qutouxiang:
-                listener.selectedQuPhtot();
+                listener.selectedQuPhoto();
                 break;
         }
         dismiss();
@@ -94,9 +94,9 @@ public class ASUserPhotoDialogFg extends DialogFragment implements View.OnClickL
 
     public interface UserPhotoOriginSelectedListener {
 
-        void selectedAblum();
+        void selectedAlbum();
 
-        void selectedQuPhtot();
+        void selectedQuPhoto();
     }
 
 

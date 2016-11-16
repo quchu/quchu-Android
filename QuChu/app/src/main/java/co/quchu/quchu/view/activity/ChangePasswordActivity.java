@@ -78,24 +78,28 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
     if (TextUtils.isEmpty(originPassword)) {
       tvSubmit.setText("请输入当前密码");
       tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvSubmit.setClickable(false);
       return;
     }
 
     if (TextUtils.isEmpty(newPassword)) {
       tvSubmit.setText("请输入新密码");
       tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvSubmit.setClickable(false);
       return;
     }
 
     if (newPassword.length() < 6 || newPassword.length() > 12) {
       tvSubmit.setText("密码为6-12位字母或者数字");
       tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvSubmit.setClickable(false);
       return;
     }
 
     if (originPassword.equals(newPassword)) {
       tvSubmit.setText("新旧密码不能相同");
       tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvSubmit.setClickable(false);
       return;
     }
 
@@ -113,6 +117,7 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
         if (!result) {
           tvSubmit.setText(msg);
           tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+          tvSubmit.setClickable(false);
         } else {
           makeToast("密码修改成功");
           finish();
@@ -163,11 +168,13 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
     if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(originPassword)) {
       tvSubmit.setText("提交");
       tvSubmit.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvSubmit.setClickable(false);
       return;
     }
 
     tvSubmit.setText("提交");
     tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+    tvSubmit.setClickable(true);
   }
 
   @Override
