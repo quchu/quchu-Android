@@ -33,8 +33,8 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
-import co.quchu.quchu.widget.DropDownMenu.DropContentView;
-import co.quchu.quchu.widget.DropDownMenu.DropDownMenu;
+import co.quchu.quchu.widget.DropDownMenu.MDropBean;
+import co.quchu.quchu.widget.DropDownMenu.MDropDownMenu;
 import co.quchu.quchu.widget.SearchView;
 
 /**
@@ -49,10 +49,10 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   private static final String INTENT_KEY_CATEGORY_POSITION = "intent_key_category_position";
 
   @Bind(R.id.search_view) SearchView mSearchView;
-  @Bind(R.id.drop_down_menu) DropDownMenu mDropDownMenu;
   @Bind(R.id.recycler_view) RecyclerView mSearchResultRv;
   @Bind(R.id.search_no_data_tv) TextView mSearchNoDataTv;
   @Bind(R.id.search_refresh_layout) SwipeRefreshLayout mSearchRefreshLayout;
+  @Bind(R.id.search_drop_down_menu) MDropDownMenu mDropDownMenu;
 
   private SearchAdapterNew mSearchAdapter;
 
@@ -79,7 +79,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_search_result);
+    setContentView(R.layout.activity_search_result_new);
     ButterKnife.bind(this);
 
     mInputStr = getIntent().getStringExtra(INTENT_KEY_SEARCH_INPUT);
@@ -202,12 +202,14 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       @Override
       public void onClickSearch(String inputStr) {
         resetSearch();
+
         doSearch(false, inputStr);
       }
 
       @Override
       public void onClickHistory(String history) {
         resetSearch();
+
         doSearch(false, history);
       }
     });
@@ -215,20 +217,12 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     setInputEditText(TextUtils.isEmpty(mCategoryZh) ? mInputStr : mCategoryZh);
   }
 
-  /**
-   * 重置搜索
-   */
   private void resetSearch() {
     mTagId = "";
     mAreaId = "";
     mCircleId = "";
     mSortType = "";
-    mDropDownMenu.resetAreaSelectedIndex();
-    mDropDownMenu.resetCategorySelectedIndex();
-    mDropDownMenu.resetSortSelectedIndex();
-    mDropDownMenu.setTabText(0, "全部分类");
-    mDropDownMenu.setTabText(2, "全部商圈");
-    mDropDownMenu.setTabText(4, "智能排序");
+    mDropDownMenu.reset();
   }
 
   /**
@@ -352,7 +346,6 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mCategoryList = response;
-        mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
       }
 
       @Override
@@ -374,7 +367,6 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mAreaList = response;
-        mDropDownMenu.setDropArea(mAreaList);
       }
 
       @Override
@@ -396,7 +388,6 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mSortList = response;
-        mDropDownMenu.setDropSort(mSortList);
       }
 
       @Override
@@ -407,12 +398,6 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   }
 
   private void initDropDownMenu() {
-    List<String> tabs = new ArrayList<>();
-    tabs.add("全部分类");
-    tabs.add("全部商圈");
-    tabs.add("智能排序");
-    mDropDownMenu.addTab(tabs);
-
     if (!TextUtils.isEmpty(mCategoryZh)) {
       mDropDownMenu.setTabText(0, mCategoryZh);
     }
@@ -421,97 +406,93 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     queryAreaList();
     querySortTypeList();
 
-    mDropDownMenu.setOnDropTabClickListener(new DropDownMenu.OnDropTabClickListener() {
+    mDropDownMenu.setOnDropDownMenuClickListener(new MDropDownMenu.OnDropDownMenuClickListener() {
       @Override
-      public void onTabSelected(int tabPosition) {
-
-        SoftInputUtils.hideSoftInput(SearchResultActivity.this);
-
-        switch (tabPosition) {
+      public void onTabSelected(int tabIndex) {
+        switch (tabIndex) {
           case 0:
-//            if (mCategoryList != null && mCategoryList.size() > 0) {
             mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
-//            } else {
-//              queryGroupTags();
-//            }
+            break;
+
+          case 1:
+            mDropDownMenu.setDropArea(mAreaList);
             break;
 
           case 2:
-//            if (mAreaList != null && mAreaList.size() > 0) {
-            mDropDownMenu.setDropArea(mAreaList);
-//            } else {
-//              queryAreaList();
-//            }
-            break;
-
-          case 4:
-//            if (mSortList != null && mSortList.size() > 0) {
             mDropDownMenu.setDropSort(mSortList);
-//            } else {
-//              querySortTypeList();
-//            }
             break;
         }
       }
 
       @Override
-      public void onItemSelected(DropContentView.DropBean parent, DropContentView.DropBean child) {
-        if (parent != null) {
-          if (parent.getType() == DropContentView.DropBean.DATA_TYPE_CATEGORY) {
-            mInputStr = "";
-
-          } else if (parent.getType() == DropContentView.DropBean.DATA_TYPE_AREA) {
-            if (parent.getText().substring(0, 2).equals("全部")) {
-              mAreaId = "";
-            } else {
-              mAreaId = parent.getId();
-            }
-
-          } else if (parent.getType() == DropContentView.DropBean.DATA_TYPE_SORT) {
-            mSortType = parent.getId();
-            mDropDownMenu.setTabText(parent.getText());
-            mDropDownMenu.closeMenu();
-            queryResult(false);
-          }
-
-        } else if (child != null) {
-          if (child.getType() == DropContentView.DropBean.DATA_TYPE_CATEGORY) {
-
-            mInputStr = "";
-
-            if (child.getText().substring(0, 2).equals("全部")) {
-              String selectedParentValue = mDropDownMenu.getSelectedParentValue(DropContentView.DropBean.DATA_TYPE_CATEGORY);
-              String selectedParentId = mDropDownMenu.getSelectedParentId(DropContentView.DropBean.DATA_TYPE_CATEGORY);
-              mTagId = selectedParentId;
-              setInputEditText(selectedParentValue.equals("全部") ? selectedParentValue + "分类" : selectedParentValue);
-              mDropDownMenu.setTabText(selectedParentValue.equals("全部") ? selectedParentValue + "分类" : selectedParentValue);
-            } else {
-              mTagId = child.getId();
-              setInputEditText(child.getText());
-            }
-
-          } else if (child.getType() == DropContentView.DropBean.DATA_TYPE_AREA) {
-
-            if (child.getText().substring(0, 2).equals("全部")) {
-              String selectedParentValue = mDropDownMenu.getSelectedParentValue(DropContentView.DropBean.DATA_TYPE_AREA);
-              String selectedParentId = mDropDownMenu.getSelectedParentId(DropContentView.DropBean.DATA_TYPE_AREA);
-              mAreaId = selectedParentId;
-              mCircleId = "";
-              mDropDownMenu.setTabText(selectedParentValue);
-              setInputEditText(selectedParentValue);
-
-            } else {
-              mCircleId = child.getId();
-              mDropDownMenu.setTabText(child.getText());
-              setInputEditText(child.getText());
-            }
-          }
-
-          mDropDownMenu.closeMenu();
-          queryResult(false);
-        }
+      public void onItemSelected(MDropBean parent, MDropBean child) {
+        setSearchParams(parent, child);
       }
     });
+  }
+
+  /**
+   * 设置搜索参数
+   *
+   * @param parent selected parent
+   * @param child  selected child
+   */
+  private void setSearchParams(MDropBean parent, MDropBean child) {
+    if (parent != null) {
+      if (parent.getType() == MDropBean.DATA_TYPE_CATEGORY) {
+        mInputStr = "";
+
+      } else if (parent.getType() == MDropBean.DATA_TYPE_AREA) {
+        if (parent.getText().substring(0, 2).equals("全部")) {
+          mAreaId = "";
+        } else {
+          mAreaId = parent.getId();
+        }
+
+      } else if (parent.getType() == MDropBean.DATA_TYPE_SORT) {
+        mSortType = parent.getId();
+        mDropDownMenu.setTabText(parent.getText());
+        mDropDownMenu.closeMenu();
+        queryResult(false);
+      }
+
+    } else if (child != null) {
+      if (child.getType() == MDropBean.DATA_TYPE_CATEGORY) {
+
+        mInputStr = "";
+
+        String selectedParentValue = mDropDownMenu.getSelectedParentValue(MDropBean.DATA_TYPE_CATEGORY);
+        if (child.getText().substring(0, 2).equals("全部")) {
+          String selectedParentId = mDropDownMenu.getSelectedParentId(MDropBean.DATA_TYPE_CATEGORY);
+          mTagId = selectedParentId;
+          setInputEditText(selectedParentValue);
+          mDropDownMenu.setTabText(selectedParentValue);
+        } else {
+          mTagId = child.getId();
+          setInputEditText(child.getText());
+        }
+        mDropDownMenu.setTabText(0, selectedParentValue);
+
+      } else if (child.getType() == MDropBean.DATA_TYPE_AREA) {
+
+        if (child.getText().substring(0, 2).equals("全部")) {
+          String selectedParentValue = mDropDownMenu.getSelectedParentValue(MDropBean.DATA_TYPE_AREA);
+          String selectedParentId = mDropDownMenu.getSelectedParentId(MDropBean.DATA_TYPE_AREA);
+          mAreaId = selectedParentId;
+          mCircleId = "";
+          mDropDownMenu.setTabText(selectedParentValue);
+          setInputEditText(selectedParentValue);
+
+        } else {
+          mCircleId = child.getId();
+          mDropDownMenu.setTabText(child.getText());
+          setInputEditText(child.getText());
+        }
+      }
+
+      mDropDownMenu.closeMenu();
+      queryResult(false);
+    }
   }
 
   @Override

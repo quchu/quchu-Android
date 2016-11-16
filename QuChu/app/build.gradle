@@ -142,8 +142,10 @@ dependencies {
     compile "com.android.support:design:${supportVersion()}"
     compile "com.android.support:recyclerview-v7:${supportVersion()}"
     compile "com.android.support:support-v4:${supportVersion()}"
-    compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.zhuge.analysis:zhugeio:latest.integration'
+//    compile 'com.umeng.analytics:analytics:latest.integration'
+//    compile 'com.zhuge.analysis:zhugeio:latest.integration'
+    compile 'com.umeng.analytics:analytics:6.0.3'
+    compile 'com.zhuge.analysis:zhugeio:2.3.2'
 
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
     compile files('libs/libammsdk.jar')
