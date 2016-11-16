@@ -123,6 +123,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
+    EventBus.getDefault().register(this);
 
     initPush();
 
@@ -595,6 +596,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case EventFlags.EVENT_USER_INFO_UPDATE:
         //用户信息更新
+        makeToast("EVENT_USER_INFO_UPDATE "+(mDrawerHeaderView != null));
         if (mDrawerHeaderView != null) {
           mDrawerHeaderView.setUser();
           mDrawerHeaderView.getGenes();
@@ -603,21 +605,12 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
   }
 
-  @Override
-  protected void onStart() {
-    super.onStart();
-    EventBus.getDefault().register(this);
-  }
-
-  @Override
-  protected void onStop() {
-    EventBus.getDefault().unregister(this);
-    super.onStop();
-  }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
+    EventBus.getDefault().unregister(this);
+
     ButterKnife.unbind(this);
   }
 

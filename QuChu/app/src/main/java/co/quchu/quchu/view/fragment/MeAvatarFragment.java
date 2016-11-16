@@ -80,6 +80,7 @@ public class MeAvatarFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
+    EventBus.getDefault().register(this);
     View view = inflater.inflate(R.layout.fragment_me_avatar, container, false);
     ButterKnife.bind(this, view);
 
@@ -220,14 +221,11 @@ public class MeAvatarFragment extends BaseFragment {
   @Override
   public void onDestroyView() {
     super.onDestroyView();
+    EventBus.getDefault().unregister(this);
     ButterKnife.unbind(this);
   }
 
-  @Override
-  public void onStart() {
-    super.onStart();
-    EventBus.getDefault().register(this);
-  }
+
 
   @Override
   public void onResume() {
@@ -254,12 +252,6 @@ public class MeAvatarFragment extends BaseFragment {
       userMarkLayout.setVisibility(VISIBLE);
       userMarkTv.setText(userMark);
     }
-  }
-
-  @Override
-  public void onStop() {
-    EventBus.getDefault().unregister(this);
-    super.onStop();
   }
 
   @Subscribe
