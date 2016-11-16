@@ -94,7 +94,7 @@
               android:drawableLeft="@mipmap/ic_pull_menus_search"
               android:drawablePadding="4dp"
               android:gravity="left|center_vertical"
-              android:text="Welcome to quchu free porn"
+              android:text="Welcome To A.I Research Lab"
               android:textColor="@color/colorHint"
               android:textSize="13sp"
               />
