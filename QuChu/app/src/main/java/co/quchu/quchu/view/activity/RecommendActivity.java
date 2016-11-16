@@ -596,7 +596,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case EventFlags.EVENT_USER_INFO_UPDATE:
         //用户信息更新
-        makeToast("EVENT_USER_INFO_UPDATE "+(mDrawerHeaderView != null));
         if (mDrawerHeaderView != null) {
           mDrawerHeaderView.setUser();
           mDrawerHeaderView.getGenes();

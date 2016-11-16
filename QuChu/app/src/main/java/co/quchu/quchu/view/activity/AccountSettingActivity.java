@@ -343,8 +343,6 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
     NetService.get(this, NetApi.getMyUserInfo, new IRequestListener() {
       @Override
       public void onSuccess(JSONObject response) {
-        LogUtils.e("-----mwb", "更新成功");
-
         UserInfoHelper.saveUserInfo(response);
         Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
         DialogUtil.dismissProgess();
@@ -360,7 +358,6 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
       }
     });
   }
-
 
   public void updateAvatar(String avatarUrl) {
     mProfileModified = true;

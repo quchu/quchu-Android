@@ -24,6 +24,7 @@ import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MessageAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 import static android.R.attr.id;
 
@@ -36,6 +37,7 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
 
   @Bind(R.id.messages_rv) RecyclerView mRecyclerView;
   @Bind(R.id.message_refresh_layout) SwipeRefreshLayout mRefreshLayout;
+  @Bind(R.id.message_error_view) ErrorView mErrorView;
 
   private int pagesNo = 1;
   private MessageAdapter mAdapter;
@@ -47,6 +49,19 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
     ButterKnife.bind(this, view);
 
     initViews();
+
+    if (!NetUtil.isNetworkConnected(getActivity())) {
+      mErrorView.showViewDefault(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if (!NetUtil.isNetworkConnected(getActivity())) {
+            makeToast(R.string.network_error);
+            return;
+          }
+          MessagePresenter.getSysMessageList(getActivity(), pagesNo, pageLoadListener);
+        }
+      });
+    }
 
     return view;
   }
@@ -77,6 +92,8 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
     public void initData(MessageModel data) {
       mAdapter.initData(data.getResult());
       mRefreshLayout.setRefreshing(false);
+
+      mErrorView.hideView();
     }
 
     @Override
@@ -93,6 +110,8 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
         mRefreshLayout.setRefreshing(false);
       }
       mAdapter.setLoadMoreEnable(false);
+
+      mErrorView.hideView();
     }
 
     @Override

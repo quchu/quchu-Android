@@ -24,6 +24,7 @@ import co.quchu.quchu.view.activity.MyFootprintDetailActivity;
 import co.quchu.quchu.view.activity.UserCenterActivityNew;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MessageCenterAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * 通知
@@ -34,6 +35,7 @@ public class NoticeFragment extends BaseFragment {
 
   @Bind(R.id.messages_rv) RecyclerView messagesRv;
   @Bind(R.id.refreshLayout) SwipeRefreshLayout refreshLayout;
+  @Bind(R.id.message_error_view) ErrorView mErrorView;
   private MessageCenterAdapter adapter;
   private int pagesNo = 1;
 
@@ -50,6 +52,19 @@ public class NoticeFragment extends BaseFragment {
     MessagePresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
     adapter.setItemClickListener(onItemClickListener);
     refreshLayout.setOnRefreshListener(onRefreshListener);
+
+    if (!NetUtil.isNetworkConnected(getActivity())) {
+      mErrorView.showViewDefault(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if (!NetUtil.isNetworkConnected(getActivity())) {
+            makeToast(R.string.network_error);
+            return;
+          }
+          MessagePresenter.getMessageList(getActivity(), pagesNo, pageLoadListener);
+        }
+      });
+    }
 
     return view;
   }
@@ -77,6 +92,8 @@ public class NoticeFragment extends BaseFragment {
     public void initData(MessageModel data) {
       adapter.initData(data.getResult());
       refreshLayout.setRefreshing(false);
+
+      mErrorView.hideView();
     }
 
     @Override
@@ -93,6 +110,8 @@ public class NoticeFragment extends BaseFragment {
         refreshLayout.setRefreshing(false);
       }
       adapter.setLoadMoreEnable(false);
+
+      mErrorView.hideView();
     }
 
     @Override
