@@ -8,14 +8,11 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -24,6 +21,8 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.ImageModel;
@@ -84,14 +83,14 @@ public class PhotoViewActivity extends BaseActivity {
             @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override public void onPageSelected(int position) {
-                mTvIndicator.setText((position+1)+" of "+(mPhotoList.size()+1));
+                mTvIndicator.setText((position+1)+" of "+(mPhotoList.size()));
             }
 
             @Override public void onPageScrollStateChanged(int state) {}
         });
 
         if (mIndex!=-1 && mIndex< mPhotoList.size()){
-            mTvIndicator.setText("1 of "+(mPhotoList.size()+1));
+            mTvIndicator.setText("1 of "+(mPhotoList.size()));
             viewPager.setCurrentItem(mIndex);
         }
     }

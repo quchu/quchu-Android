@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".view.activity.QuchuDetailsActivity"
-    >
-
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                tools:context=".view.activity.QuchuDetailsActivity">
 
   <include
-      layout="@layout/cp_enhanced_toolbar"
-      />
-
+      layout="@layout/cp_enhanced_toolbar"/>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/appbar"
       android:layout_above="@+id/detail_bottom_group_ll"
+      android:layout_below="@+id/appbar"
       android:orientation="vertical"
       >
 
@@ -31,24 +27,22 @@
         android:scrollbars="none"
         />
 
-
-
   </LinearLayout>
 
   <FrameLayout
       android:id="@+id/flContainer"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/appbar"
       android:layout_above="@+id/detail_bottom_group_ll"
+      android:layout_below="@+id/appbar"
       android:visibility="invisible"/>
 
   <LinearLayout
       android:id="@+id/detail_bottom_group_ll"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@color/standard_color_white"
       android:layout_alignParentBottom="true"
+      android:background="@color/standard_color_white"
       android:orientation="vertical"
       >
 
@@ -64,11 +58,11 @@
         android:orientation="horizontal"
         >
 
-
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:gravity="center_vertical"
           android:orientation="horizontal"
           >
 
@@ -81,6 +75,10 @@
             android:src="@mipmap/ic_pingjia"
             />
 
+        <View
+            android:layout_width="1px"
+            android:layout_height="20dp"
+            android:background="@color/colorDivider"/>
 
         <ImageView
             android:id="@+id/ivShare"
@@ -91,6 +89,11 @@
             android:src="@mipmap/ic_share"
             />
 
+        <View
+            android:layout_width="1px"
+            android:layout_height="20dp"
+            android:background="@color/colorDivider"/>
+
         <ImageView
             android:id="@+id/ivPreOrder"
             android:layout_width="match_parent"
@@ -99,17 +102,19 @@
             android:padding="@dimen/base_margin"
             android:src="@mipmap/ic_yuyue"
             />
+
       </LinearLayout>
 
       <LinearLayout
           android:id="@+id/llFavorite"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_weight="1"
           android:layout_margin="8dp"
+          android:layout_weight="1"
           android:background="@drawable/shape_lineframe_gray_fill"
           android:gravity="center"
           >
+
         <TextView
             android:id="@+id/tvFavorite"
             android:layout_width="wrap_content"
@@ -118,10 +123,10 @@
             android:textColor="@color/standard_color_h3_dark"
             />
       </LinearLayout>
+
     </LinearLayout>
 
   </LinearLayout>
-
 
   <co.quchu.quchu.widget.ErrorView
       android:id="@+id/errorView"
@@ -129,5 +134,6 @@
       android:layout_height="match_parent"
       android:visibility="gone"
       />
+
 </RelativeLayout>
 

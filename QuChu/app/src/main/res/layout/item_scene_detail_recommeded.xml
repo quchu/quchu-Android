@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/standard_color_white"
-    android:clickable="false"
-    android:fitsSystemWindows="true"
-    >
-
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/standard_color_white"
+              android:clickable="false"
+              android:fitsSystemWindows="true">
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -37,14 +35,12 @@
           card_view:failureImageScaleType="center"
           card_view:placeholderImage="@mipmap/ic_image_empty"
           card_view:placeholderImageScaleType="center"
-
           card_view:roundBottomLeft="false"
           card_view:roundBottomRight="false"
           card_view:roundTopLeft="true"
           card_view:roundTopRight="true"
           card_view:viewAspectRatio="1.7"
           />
-
 
       <LinearLayout
           android:id="@+id/llHighLight"
@@ -72,7 +68,6 @@
             />
       </LinearLayout>
 
-
       <ImageView
           android:id="@+id/ivFavorite"
           android:layout_width="wrap_content"
@@ -84,23 +79,45 @@
           android:scaleType="center"
           android:src="@mipmap/ic_weishoucang"
           />
+
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sdvCover"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         android:layout_marginTop="@dimen/half_margin"
-        android:text="title"
-        android:textStyle="bold"
-        style="@style/TextView.H1"
-        />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
+      <View
+          android:layout_width="2dp"
+          android:layout_height="10dp"
+          android:background="@color/standard_color_yellow"/>
 
+      <TextView
+          android:id="@+id/tvTitle"
+          style="@style/TextView.H1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="5dp"
+          android:singleLine="true"
+          android:text="title"/>
 
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvDescribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="@dimen/standard_text_size_h4"
+        tools:text="一句话描述"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,71 +125,71 @@
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         android:layout_marginTop="@dimen/half_margin"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/half_margin"
-        android:gravity="center_vertical"
         >
 
       <TextView
           android:id="@+id/tvCircleName"
+          style="@style/TextView.H3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/standard_text_size_h4"
           tools:text="1111"
-          style="@style/TextView.H3"
-          android:textColor="@color/standard_color_h2_dark"
           />
 
       <View
           android:id="@+id/vDivider1"
-          android:background="@color/standard_color_h2_dark"
           android:layout_width="1px"
+          android:layout_height="@dimen/half_margin"
           android:layout_marginLeft="@dimen/quarter_margin"
           android:layout_marginRight="@dimen/quarter_margin"
-          android:layout_height="@dimen/half_margin"
+          android:background="@color/standard_color_h3_dark"
           />
 
       <TextView
           android:id="@+id/tvDistance"
+          style="@style/TextView.H3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginLeft="@dimen/quarter_margin"
           android:layout_marginRight="@dimen/quarter_margin"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/standard_text_size_h4"
           tools:text="1111"
-          style="@style/TextView.H3"
-          android:textColor="@color/standard_color_h2_dark"
-
           />
+
       <View
           android:id="@+id/vDivider2"
-          android:background="@color/standard_color_h2_dark"
           android:layout_width="1px"
+          android:layout_height="@dimen/half_margin"
           android:layout_marginLeft="@dimen/quarter_margin"
           android:layout_marginRight="@dimen/quarter_margin"
-          android:layout_height="@dimen/half_margin"
+          android:background="@color/standard_color_h3_dark"
           />
 
       <TextView
           android:id="@+id/tvPrice"
+          style="@style/TextView.H3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_toRightOf="@+id/tvDistance"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/standard_text_size_h4"
           tools:text="1111"
-          style="@style/TextView.H3"
-          android:textColor="@color/standard_color_h2_dark"
-
           />
+
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/colorBorder"
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
+        android:background="@color/colorBorder"
         />
 
     <LinearLayout
@@ -185,7 +202,6 @@
         android:paddingBottom="@dimen/base_margin"
         >
 
-
       <TextView
           android:id="@+id/recommend_tag1"
           android:layout_width="wrap_content"
@@ -196,7 +212,7 @@
           android:paddingRight="@dimen/half_margin"
           android:paddingTop="2dp"
           android:text="标签1"
-          android:textColor="@color/standard_color_h2_dark"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/standard_text_size_h4"
           />
 
@@ -210,7 +226,7 @@
           android:paddingLeft="@dimen/half_margin"
           android:paddingRight="@dimen/half_margin"
           android:paddingTop="2dp"
-          android:textColor="@color/standard_color_h2_dark"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/standard_text_size_h4"
           android:visibility="gone"
           />
@@ -225,11 +241,13 @@
           android:paddingLeft="@dimen/half_margin"
           android:paddingRight="@dimen/half_margin"
           android:paddingTop="2dp"
-          android:textColor="@color/standard_color_h2_dark"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/standard_text_size_h4"
           android:visibility="gone"
           />
 
     </LinearLayout>
+
   </LinearLayout>
+
 </LinearLayout>
