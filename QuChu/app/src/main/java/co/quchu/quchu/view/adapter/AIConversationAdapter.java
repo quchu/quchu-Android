@@ -141,11 +141,11 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         case TYPE_GALLERY_OPTION:
           if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
-            //Point screen = new Point();
-            //mAnchor.getWindowManager().getDefaultDisplay().getSize(screen);
-            //float startOffset = (float)(80)/(float)(screen.x - 2*80);
-            //
-            //((GalleryViewHolder)holder).vpPlace.setPageTransformer(false, new CardsPagerTransformerBasic(0, 0, 0.8f, startOffset));
+            Point screen = new Point();
+            mAnchor.getWindowManager().getDefaultDisplay().getSize(screen);
+            float startOffset = (float)(80)/(float)(screen.x - 2*80);
+
+            ((GalleryViewHolder)holder).vpPlace.setPageTransformer(false, new CardsPagerTransformerBasic(0, 0, 0.9f, startOffset));
             ((GalleryViewHolder) holder).vpPlace.setAdapter(new PlaceVPAdapter(q.getPlaceList()));
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);
 

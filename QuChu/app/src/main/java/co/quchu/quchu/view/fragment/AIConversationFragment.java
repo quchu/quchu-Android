@@ -25,6 +25,7 @@ import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
+import co.quchu.quchu.widget.DynamicItemDecoration;
 import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
@@ -62,9 +63,21 @@ public class AIConversationFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
 
+
+
     View v = inflater.inflate(R.layout.fragment_ai_conversation, container, false);
 
     ButterKnife.bind(this, v);
+
+    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+      }
+
+      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+      }
+    });
 
     mScreenHeight = ScreenUtils.getScreenHeight(getActivity());
 
@@ -77,7 +90,20 @@ public class AIConversationFragment extends BaseFragment {
           }
         });
 
+    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+      }
+
+      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+        System.out.println(dx+"|"+dy);
+
+
+      }
+    });
     mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
+    mRecyclerView.addItemDecoration(new DynamicItemDecoration());
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
     mAdapter = new AIConversationAdapter(getActivity(), mConversation,
         new AIConversationAdapter.OnInteractiveClick() {

@@ -48,15 +48,45 @@ import co.quchu.quchu.widget.TagCloudView;
  */
 public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+  /**
+   * 趣处图片信息
+   */
   protected static final int LAYOUT_TYPE_INTRO_IMAGE = 0x0001;
+  /***
+   * 趣处名,价格,描述等
+   */
   protected static final int LAYOUT_TYPE_SIMPLE_INFO = 0x0002;
+  /**
+   * 评价信息
+   */
   protected static final int LAYOUT_TYPE_RATING_INFO = 0x0003;
+  /**
+   * 活动信息
+   */
   protected static final int LAYOUT_TYPE_PARTY_INFO = 0x00031;
+  /**
+   * 外卖,排号等信息
+   */
   protected static final int LAYOUT_TYPE_ADDITIONAL_INFO = 0x0004;
+  /**
+   * 地图
+   */
   protected static final int LAYOUT_TYPE_MAP_INFO = 0x0005;
+  /**
+   * 文章
+   */
   protected static final int LAYOUT_TYPE_ARTICLE = 0x0006;
+  /**
+   * 评论信息
+   */
   protected static final int LAYOUT_TYPE_COMMENT = 0x0007;
+  /**
+   * 匹配标签
+   */
   protected static final int LAYOUT_TYPE_MATCHED_TAGS = 0x008;
+  /**
+   * 附近趣处信息
+   */
   protected static final int LAYOUT_TYPE_NEARBY = 0x009;
 
   private LayoutInflater mLayoutInflater;
@@ -64,12 +94,18 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private DetailModel mData;
   private List<ImageModel> mImageSet = new ArrayList<>();
 
+  /**
+   * 标准趣处的固定类型
+   */
   protected static final int VIEW_TYPES[] = new int[] {
       LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_RATING_INFO,
       LAYOUT_TYPE_ADDITIONAL_INFO,  LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT,
       LAYOUT_TYPE_MATCHED_TAGS
   };
 
+  /**
+   * 活动趣处的固定类型
+   */
   protected static final int VIEW_TYPES_PARTY[] = new int[] {
       LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_PARTY_INFO,
       LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT, LAYOUT_TYPE_MATCHED_TAGS
@@ -92,6 +128,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
+  /**
+   * 返回 标准趣处或活动趣处的固定子数量
+   * 真实数量需要加上 附近趣处的数量
+   * @return
+   */
   private int getBasicChildCount() {
     if (mData == null) {
       return 0;
@@ -510,7 +551,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     return count;
   }
 
-  // INTRO_IMAGE , SIMPLE_INFO , RATING_INFO , PARTY_INFO , ADDITIONAL_INFO
 
   public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.vpGallery) ViewPager vpGallery;
@@ -567,8 +607,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       ButterKnife.bind(this, view);
     }
   }
-
-  // MAP_INFO , ARTICLE , COMMENT , MATCHED_TAGS , NEARBY
 
   public static class MapViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.ivMap) SimpleDraweeView ivMap;

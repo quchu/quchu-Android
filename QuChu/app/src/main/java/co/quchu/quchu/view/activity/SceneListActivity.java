@@ -52,7 +52,7 @@ public class SceneListActivity extends BaseBehaviorActivity {
   }
 
   private void initRecyclerView() {
-    mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+    mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     SceneListAdapter adapter = new SceneListAdapter(this, mSceneList);
     adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
       @Override
@@ -61,7 +61,7 @@ public class SceneListActivity extends BaseBehaviorActivity {
       }
     });
     mRecyclerView.setAdapter(adapter);
-    mRecyclerView.addItemDecoration(new SpacesItemDecoration(40, 4));
+    mRecyclerView.addItemDecoration(new SpacesItemDecoration(40, 3));
   }
 
   @Override
