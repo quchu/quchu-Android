@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,7 +32,6 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.widget.SpacesItemDecoration;
 
 /**
  * 选择城市
@@ -87,7 +87,7 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
       @Override
       public int getSpanSize(int position) {
         if (mCityList != null) {
-          if (mCityList.get(position).getGroup() == 1 || mCityList.get(position).getGroup() == 0) {
+          if (mCityList.get(position).isGroupHeader()) {
             return 3;
           }
         }
@@ -95,7 +95,7 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
       }
     });
     mRecyclerView.setLayoutManager(layoutManager);
-    mRecyclerView.addItemDecoration(new SpacesItemDecoration(20, 3));
+//    mRecyclerView.addItemDecoration(new SpacesItemDecoration(32, 3));
     LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(mCityList, this, new LocationSelectedAdapter.OnItemSelectedListener() {
       @Override
       public void onSelected(String cityName, int cityId) {
@@ -123,8 +123,8 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
       List<Integer> indexList = new ArrayList<>();
       if (allCityList != null && allCityList.size() > 0) {
         CityModel cityModel = new CityModel();
-        cityModel.setGroup(1);
-        cityModel.setCvalue("国内");
+        cityModel.setGroupHeader(true);
+        cityModel.setCvalue("国内城市");
         mCityList.add(cityModel);
         for (int i = 0; i < allCityList.size(); i++) {
           CityModel model = allCityList.get(i);
@@ -138,8 +138,8 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
         //国外城市
         if (indexList.size() > 0) {
           cityModel = new CityModel();
-          cityModel.setGroup(0);
-          cityModel.setCvalue("国外");
+          cityModel.setGroupHeader(true);
+          cityModel.setCvalue("国外城市");
           mCityList.add(cityModel);
 
           for (Integer index : indexList) {
@@ -226,5 +226,23 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
   @Override
   public int getUserBehaviorPageId() {
     return 0;
+  }
+
+  public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+
+    private int mSpace;
+
+    public SpaceItemDecoration(int space) {
+      mSpace = space;
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//      super.getItemOffsets(outRect, view, parent, state);
+
+      GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
+      int position = parent.getChildAdapterPosition(view);
+
+    }
   }
 }

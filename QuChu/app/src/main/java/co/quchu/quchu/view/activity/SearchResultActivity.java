@@ -101,6 +101,13 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     queryResult(false);
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    mSearchView.queryHistory();
+  }
+
   private void initRefreshLayout() {
     mSearchRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
