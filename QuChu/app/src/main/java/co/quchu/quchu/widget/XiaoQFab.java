@@ -121,6 +121,29 @@ public class XiaoQFab extends FloatingActionButton {
           (revert?360:-360)  * mAnimationProgress[0], (revert?360:-360)  * mAnimationProgress[0], false, paint);
       //canvas.restore();
     }
+
+
+    //float width = getWidth()/2.5f;
+    //float indicatorDiameter = width/2.5f;
+    //
+    //float whiteDotsSize = indicatorDiameter/5;
+    //float radius = indicatorDiameter/2;
+    //
+    //Paint paintIndicator = new Paint();
+    //paintIndicator.setColor(Color.RED);
+    //paintIndicator.setStyle(Paint.Style.FILL);
+    //paintIndicator.setAntiAlias(true);
+    //float offset = getWidth()-width;
+    //canvas.drawRect(offset+radius,indicatorDiameter,getWidth()-radius,indicatorDiameter+indicatorDiameter,paintIndicator);
+    //canvas.drawCircle(offset+radius,radius+indicatorDiameter,radius,paintIndicator);
+    //canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,radius,paintIndicator);
+    //
+    //Paint paintIndicatorWhite = new Paint(paintIndicator);
+    //paintIndicatorWhite.setColor(Color.WHITE);
+    //canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+    //canvas.drawCircle(offset+radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+    //canvas.drawCircle(offset+(width/2),radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+
   }
 
 

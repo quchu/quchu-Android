@@ -183,7 +183,7 @@ public class AIConversationFragment extends BaseFragment {
       scrollToBottom();
     }
 
-    if (Integer.valueOf(model.getType()) == 0 && model.getAnswerPramms().size() > 0) {
+    if ((Integer.valueOf(model.getType()) == 0 && model.getAnswerPramms().size() > 0)||Integer.valueOf(model.getType())==2) {
 
 
       final AIConversationModel modelOption = new AIConversationModel();

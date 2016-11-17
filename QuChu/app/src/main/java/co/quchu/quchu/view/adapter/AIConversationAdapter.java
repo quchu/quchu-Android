@@ -2,6 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.widget.CardsPagerTransformerBasic;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -129,10 +131,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
           break;
         case TYPE_OPTION:
-
-
           ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
-          TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash());
+          TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash(),null!=q.getType()? Integer.valueOf(q.getType()):0);
           ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
           ((OptionViewHolder) holder).rvOption.setLayoutManager(
               new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
@@ -141,6 +141,11 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         case TYPE_GALLERY_OPTION:
           if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
+            //Point screen = new Point();
+            //mAnchor.getWindowManager().getDefaultDisplay().getSize(screen);
+            //float startOffset = (float)(80)/(float)(screen.x - 2*80);
+            //
+            //((GalleryViewHolder)holder).vpPlace.setPageTransformer(false, new CardsPagerTransformerBasic(0, 0, 0.8f, startOffset));
             ((GalleryViewHolder) holder).vpPlace.setAdapter(new PlaceVPAdapter(q.getPlaceList()));
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);
 
@@ -259,11 +264,13 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   private class TextOptionAdapter extends RecyclerView.Adapter<TextOptionViewHolder> {
 
     private List<String> options;
+    private int type;//type=2 服务器出错
     private String additionalShit;
 
-    public TextOptionAdapter(List<String> options, String additional) {
+    public TextOptionAdapter(List<String> options, String additional,int type) {
       this.options = options;
       this.additionalShit = additional;
+      this.type = type;
     }
 
     @Override public TextOptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -271,15 +278,26 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           .inflate(R.layout.item_ai_conversation_txt_opt, parent, false));
     }
 
-    @Override public void onBindViewHolder(TextOptionViewHolder holder, int position) {
+    @Override public void onBindViewHolder(TextOptionViewHolder holder, final int position) {
       String s = Character.toString ((char) (65+position));
       final String answer = String.valueOf(options.get(position));
       holder.tvOption.setText(s+": "+answer);
       holder.tvOption.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-          mOnInteractiveListener.onAnswer(answer, additionalShit);
+          if (type==2){
+            if (position==0){
+              mOnInteractiveListener.onRetry();
+            }else{
+              mOnInteractiveListener.onSearch();
+            }
+          }else{
+            mOnInteractiveListener.onAnswer(answer, additionalShit);
+          }
         }
       });
+
+
+
     }
 
     @Override public int getItemCount() {

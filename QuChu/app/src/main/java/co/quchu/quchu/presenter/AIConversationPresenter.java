@@ -118,7 +118,7 @@ public class AIConversationPresenter {
 
     contentValues.put("timeStamp", System.currentTimeMillis());
     long id = DatabaseHelper.getInstance(context)
-        .getReadableDatabase()
+        .getWritableDatabase()
         .insert(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, null, contentValues);
     DatabaseHelper.closeIfOpend(context);
     return id;
@@ -131,7 +131,7 @@ public class AIConversationPresenter {
     //dataType,chatContent,placeList,options,timeStamp
     List<AIConversationModel> dataSet = new ArrayList<>();
     Cursor c = DatabaseHelper.getInstance(context)
-        .getReadableDatabase()
+        .getWritableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,
             new String[] { "dataType", "chatContent", "placeList", "timeStamp" }, null,
             null, null, null, "timeStamp asc");
@@ -177,7 +177,7 @@ public class AIConversationPresenter {
    */
   public static boolean delOptionMessages(Context context) {
 
-    Cursor c = DatabaseHelper.getInstance(context).getReadableDatabase().rawQuery("select id,dataType from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" order by timeStamp desc limit 1",null);
+    Cursor c = DatabaseHelper.getInstance(context).getWritableDatabase().rawQuery("select id,dataType from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" order by timeStamp desc limit 1",null);
 
     if (c.moveToNext()) {
       int id = c.getInt(0);
@@ -186,7 +186,7 @@ public class AIConversationPresenter {
 
       if (type  == 3){
         return DatabaseHelper.getInstance(context)
-            .getReadableDatabase()
+            .getWritableDatabase()
             .delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, "id=?",
                 new String[] { String.valueOf(id) }) > 0;
       }else{
@@ -202,7 +202,7 @@ public class AIConversationPresenter {
    */
   public static boolean delMessages(Context context) {
     boolean delSuccess = DatabaseHelper.getInstance(context)
-        .getReadableDatabase()
+        .getWritableDatabase()
         .delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, null, null) > 0;
     DatabaseHelper.closeIfOpend(context);
     return delSuccess;
@@ -212,11 +212,13 @@ public class AIConversationPresenter {
    * 删除小于日期前的
    */
   public static void delMessagesBefore(Context context,long date) {
-    DatabaseHelper.getInstance(context).getReadableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," timeStamp < "+ date,null);
-    Cursor topOne = DatabaseHelper.getInstance(context).getReadableDatabase().rawQuery("select id from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" where dataType = 1 order by timeStamp asc limit 1",null);
+
+
+    DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," timeStamp < "+ date,null);
+    Cursor topOne = DatabaseHelper.getInstance(context).getWritableDatabase().rawQuery("select id from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" where dataType = 1 order by timeStamp asc limit 1",null);
     if (topOne.moveToNext()){
       int id = topOne.getInt(0);
-      DatabaseHelper.getInstance(context).getReadableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," id < "+ id,null);
+      DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," id < "+ id,null);
     }
     topOne.close();
     DatabaseHelper.closeIfOpend(context);
@@ -228,7 +230,7 @@ public class AIConversationPresenter {
   public static int getMessageSize(Context context) {
     int count = 0;
     Cursor c = DatabaseHelper.getInstance(context)
-        .getReadableDatabase()
+        .getWritableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION, null, null, null, null, null, null);
     if (null != c) {
       count = c.getCount();

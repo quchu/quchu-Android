@@ -63,7 +63,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    if (oldVersion == 1) {
+
+    if (newVersion > oldVersion) {
       db.execSQL(SQL_CREATE_TABLE_USER_SEARCH_HISTORY);
       db.execSQL(SQL_CREATE_TABLE_SYSTEM_MSG);
       db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
