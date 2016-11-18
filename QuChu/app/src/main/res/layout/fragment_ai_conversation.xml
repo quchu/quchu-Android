@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/rv"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    />
+    >
+
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/rv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/rvOptions"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:orientation="horizontal"/>
+
+  <TextView
+      android:id="@+id/tvOption"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="4dp"
+      android:background="@drawable/shape_ai_txt_opt"
+      android:paddingLeft="12dp"
+      android:paddingRight="12dp"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:textSize="12sp"
+      android:visibility="invisible"
+      android:text="Question Number 1"
+      />
+</RelativeLayout>

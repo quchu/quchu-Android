@@ -131,11 +131,13 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
           break;
         case TYPE_OPTION:
+
           ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
-          TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash(),null!=q.getType()? Integer.valueOf(q.getType()):0);
+          TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash(),null!=q.getType()? Integer.valueOf(q.getType()):0,mOnInteractiveListener);
           ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
           ((OptionViewHolder) holder).rvOption.setLayoutManager(
               new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
+          holder.itemView.setVisibility(View.INVISIBLE);
 
           break;
 
@@ -261,59 +263,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
   }
 
-  private class TextOptionAdapter extends RecyclerView.Adapter<TextOptionViewHolder> {
 
-    private List<String> options;
-    private int type;//type=2 服务器出错
-    private String additionalShit;
-
-    public TextOptionAdapter(List<String> options, String additional,int type) {
-      this.options = options;
-      this.additionalShit = additional;
-      this.type = type;
-    }
-
-    @Override public TextOptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return new TextOptionViewHolder(LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.item_ai_conversation_txt_opt, parent, false));
-    }
-
-    @Override public void onBindViewHolder(TextOptionViewHolder holder, final int position) {
-      String s = Character.toString ((char) (65+position));
-      final String answer = String.valueOf(options.get(position));
-      holder.tvOption.setText(s+": "+answer);
-      holder.tvOption.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          if (type==2){
-            if (position==0){
-              mOnInteractiveListener.onRetry();
-            }else{
-              mOnInteractiveListener.onSearch();
-            }
-          }else{
-            mOnInteractiveListener.onAnswer(answer, additionalShit);
-          }
-        }
-      });
-
-
-
-    }
-
-    @Override public int getItemCount() {
-      return null != options ? options.size() : 0;
-    }
-  }
-
-  public class TextOptionViewHolder extends RecyclerView.ViewHolder {
-
-    @Bind(R.id.tvOption) TextView tvOption;
-
-    public TextOptionViewHolder(View itemView) {
-      super(itemView);
-      ButterKnife.bind(this, itemView);
-    }
-  }
 
   public class PlaceVPAdapter extends PagerAdapter {
 

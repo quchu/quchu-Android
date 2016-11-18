@@ -18,6 +18,24 @@ public class SceneInfoModel implements Serializable{
     private int sceneId;
     private String en;
     private String iconUrl;
+    private String iconUrlBig;
+    private String iconUrlSmall;
+
+    public String getIconUrlBig() {
+        return iconUrlBig;
+    }
+
+    public void setIconUrlBig(String iconUrlBig) {
+        this.iconUrlBig = iconUrlBig;
+    }
+
+    public String getIconUrlSmall() {
+        return iconUrlSmall;
+    }
+
+    public void setIconUrlSmall(String iconUrlSmall) {
+        this.iconUrlSmall = iconUrlSmall;
+    }
 
     public String getIconUrl() {
         return iconUrl;

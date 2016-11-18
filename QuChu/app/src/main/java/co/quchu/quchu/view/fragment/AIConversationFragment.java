@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -24,6 +29,7 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
+import co.quchu.quchu.view.adapter.TextOptionAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
 import co.quchu.quchu.widget.DynamicItemDecoration;
 import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
@@ -39,7 +45,8 @@ import org.greenrobot.eventbus.Subscribe;
  * Created by Nico on 16/11/3.
  */
 
-public class AIConversationFragment extends BaseFragment {
+public class AIConversationFragment extends BaseFragment
+    implements AIConversationAdapter.OnInteractiveClick {
 
   private AIConversationAdapter mAdapter;
   private List<AIConversationModel> mConversation = new ArrayList<>();
@@ -48,16 +55,68 @@ public class AIConversationFragment extends BaseFragment {
 
   private int mScreenHeight;
   private int mAppbarOffSet;
-  //是否断开网络
-  private boolean mNetworkInterrupted = false;
-  @Bind(R.id.rv) RecyclerView mRecyclerView;
   private XiaoQFab mXiaoQFab;
   private boolean mNetworkBusy = false;
   private List<AIConversationModel> history;
+  private boolean mHideAnimRunning = false;
+  private boolean mShowAnimRunning = false;
+
+  //是否断开网络
+  private boolean mNetworkInterrupted = false;
+
+
+  @Bind(R.id.rv) RecyclerView mRecyclerView;
+  @Bind(R.id.rvOptions) RecyclerView rvOptions;
+  @Bind(R.id.tvOption) TextView mTvOption;
 
   @Override protected String getPageNameCN() {
     return null;
   }
+
+
+
+  private void hideOptions(){
+    rvOptions.animate().translationY(rvOptions.getHeight()).setDuration(200).start();
+    new Handler().postDelayed(new Runnable() {
+      @Override public void run() {
+        mHideAnimRunning = false;
+      }
+    },200);
+  }
+
+  private void showOptions(){
+    rvOptions.animate().translationY(0).setDuration(200).start();
+    new Handler().postDelayed(new Runnable() {
+      @Override public void run() {
+        mShowAnimRunning = false;
+      }
+    },200);
+  }
+
+  private void resetOptions(List<String>list,String addition,int type){
+    TextOptionAdapter textOptionAdapter = new TextOptionAdapter(list, addition, type, this);
+    boolean vertical = false;
+    boolean singleAnswer = list.size()==1?true:false;
+    for (int i = 0; i < list.size(); i++) {
+
+      if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.8){
+        makeToast(String.valueOf(mTvOption.getWidth()));
+        vertical = true;
+      }
+    }
+
+    rvOptions.setAdapter(textOptionAdapter);
+
+    if (vertical||singleAnswer){
+      textOptionAdapter.updateGravity(vertical);
+      rvOptions.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+    }else{
+      textOptionAdapter.updateGravity(vertical);
+      rvOptions.setLayoutManager(new GridLayoutManager(getActivity(),2,LinearLayoutManager.VERTICAL,false));
+    }
+    showOptions();
+  }
+
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,16 +127,6 @@ public class AIConversationFragment extends BaseFragment {
     View v = inflater.inflate(R.layout.fragment_ai_conversation, container, false);
 
     ButterKnife.bind(this, v);
-
-    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
-      }
-
-      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-      }
-    });
 
     mScreenHeight = ScreenUtils.getScreenHeight(getActivity());
 
@@ -97,54 +146,32 @@ public class AIConversationFragment extends BaseFragment {
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-        System.out.println(dx+"|"+dy);
+        int visibleItemCount = mRecyclerView.getLayoutManager().getChildCount();
+        int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
+        int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
+          if (pastVisibleItems + visibleItemCount >= totalItemCount-1) {
+            //End of list
+            if (!mShowAnimRunning){
+              mShowAnimRunning = true;
+              showOptions();
+            }
+          }else{
+            if (!mHideAnimRunning){
+              mHideAnimRunning = true;
+              hideOptions();
+            }
+          }
+        }
 
-      }
     });
+
+
     mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
     mRecyclerView.addItemDecoration(new DynamicItemDecoration());
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
     mAdapter = new AIConversationAdapter(getActivity(), mConversation,
-        new AIConversationAdapter.OnInteractiveClick() {
-          @Override public void onAnswer(final String answer, final String additionalShit) {
-
-            if (!NetUtil.isNetworkConnected(getActivity())) {
-              makeToast(R.string.network_error);
-              return;
-            }
-
-            if (mNetworkBusy){
-              return;
-            }
-
-            int position = mConversation.size() - 1;
-            mConversation.get(position).getAnswerPramms().clear();
-            AIConversationPresenter.delOptionMessages(getActivity());
-            mAdapter.notifyItemChanged(position);
-
-            mRecyclerView.postDelayed(new Runnable() {
-              @Override public void run() {
-                AIConversationModel answerModel = new AIConversationModel();
-                answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
-                answerModel.setAnswer(answer);
-                AIConversationPresenter.insertMessage(getActivity(),answerModel);
-                mConversation.add(answerModel);
-                mAdapter.notifyItemInserted(mConversation.size() - 1);
-                //scrollToBottom();
-                getNext(answer, additionalShit);
-              }
-            }, CONVERSATION_REQUEST_DELAY);
-          }
-
-          @Override public void onRetry() {
-            startConversation(false);
-          }
-
-          @Override public void onSearch() {
-            startActivity(new Intent(getActivity(), SearchActivityNew.class));
-          }
-        });
+        this);
     mRecyclerView.setAdapter(mAdapter);
 
     mXiaoQFab = (XiaoQFab) getActivity().findViewById(R.id.fab);
@@ -216,6 +243,8 @@ public class AIConversationFragment extends BaseFragment {
       modelOption.setAnswerPramms(model.getAnswerPramms());
       modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
       modelOption.setFlash(model.getFlash());
+
+      resetOptions(modelOption.getAnswerPramms(),modelOption.getFlash(),null!=modelOption.getType()? Integer.valueOf(modelOption.getType()):0);
 
       final AIConversationModel galleryModel = new AIConversationModel();
       galleryModel.setPlaceList(model.getPlaceList());
@@ -379,4 +408,50 @@ public class AIConversationFragment extends BaseFragment {
         break;
     }
   }
+
+  @Override public void onAnswer(final String answer, final String additionalShit) {
+
+
+    if (!NetUtil.isNetworkConnected(getActivity())) {
+      makeToast(R.string.network_error);
+      return;
+    }
+
+    if (mNetworkBusy){
+      return;
+    }
+
+    hideOptions();
+
+    int position = mConversation.size() - 1;
+    mConversation.get(position).getAnswerPramms().clear();
+    AIConversationPresenter.delOptionMessages(getActivity());
+    mAdapter.notifyItemChanged(position);
+
+    mRecyclerView.postDelayed(new Runnable() {
+      @Override public void run() {
+        AIConversationModel answerModel = new AIConversationModel();
+        answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
+        answerModel.setAnswer(answer);
+        AIConversationPresenter.insertMessage(getActivity(),answerModel);
+        mConversation.add(answerModel);
+        mAdapter.notifyItemInserted(mConversation.size() - 1);
+        //scrollToBottom();
+        getNext(answer, additionalShit);
+      }
+    }, CONVERSATION_REQUEST_DELAY);
+  }
+
+  @Override public void onRetry() {
+    startConversation(false);
+    hideOptions();
+  }
+
+  @Override public void onSearch() {
+    startActivity(new Intent(getActivity(), SearchActivityNew.class));
+    hideOptions();
+  }
+
+
+
 }
