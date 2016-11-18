@@ -2,6 +2,7 @@ package co.quchu.quchu.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -39,6 +40,9 @@ public class DrawerItemView extends LinearLayout {
       }
 
       if (imageResId != -1) {
+        Drawable drawable = context.getResources().getDrawable(imageResId);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        mDrawerTitleTv.setCompoundDrawables(drawable, null, null, null);
         mDrawerItemImg.setImageResource(imageResId);
       }
     }

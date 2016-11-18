@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.view.ViewPager;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -16,7 +17,6 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.view.fragment.MessageFragment;
 import co.quchu.quchu.view.fragment.NoticeFragment;
-import co.quchu.quchu.widget.NoScrollViewPager;
 
 /**
  * 消息中心
@@ -26,7 +26,7 @@ import co.quchu.quchu.widget.NoScrollViewPager;
 public class MessageCenterActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.message_center_tab_layout) TabLayout mTabLayout;
-  @Bind(R.id.message_center_viewpager) NoScrollViewPager mViewpager;
+  @Bind(R.id.message_center_viewpager) ViewPager mViewpager;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {

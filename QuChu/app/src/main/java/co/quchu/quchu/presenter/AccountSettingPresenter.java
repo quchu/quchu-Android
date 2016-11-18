@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +19,6 @@ import com.qiniu.android.storage.UploadOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,8 +148,12 @@ public class AccountSettingPresenter {
         }else{
             params.put("user.gander", "A");
         }
-        params.put("user.location", userLocation);
-        params.put("user.photo", userPhoto);
+        if (userLocation != null) {
+            params.put("user.location", userLocation);
+        }
+        if (!TextUtils.isEmpty(userPhoto)) {
+            params.put("user.photo", userPhoto);
+        }
 //        params.put("user.password", TextUtils.isEmpty(userPw) ? "" : MD5.hexdigest(userPw));
 //        params.put("user.restpsw", TextUtils.isEmpty(userRePw) ? "" : MD5.hexdigest(userRePw));
 

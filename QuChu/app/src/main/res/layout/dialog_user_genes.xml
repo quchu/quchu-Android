@@ -42,7 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/base_margin"
-        android:src="@mipmap/ic_launcher"/>
+        android:padding="@dimen/half_margin"
+        android:src="@mipmap/ic_wodecancel"/>
 
   </LinearLayout>
 

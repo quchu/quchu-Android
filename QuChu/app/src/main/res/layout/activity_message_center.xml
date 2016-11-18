@@ -20,7 +20,7 @@
       app:tabSelectedTextColor="@color/standard_color_h1_dark"
       app:tabTextColor="@color/standard_color_h3_dark"/>
 
-  <co.quchu.quchu.widget.NoScrollViewPager
+  <android.support.v4.view.ViewPager
       android:id="@+id/message_center_viewpager"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

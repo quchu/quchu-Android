@@ -37,27 +37,27 @@ public class UserMarkDialog extends Dialog {
 
     switch (mMark) {
       case "小食神":
-        imageView.setImageResource(R.mipmap.ic_chihuo_dialog);
+        imageView.setImageResource(R.mipmap.ic_chihuo_main);
         break;
 
       case "艺术家":
-        imageView.setImageResource(R.mipmap.ic_yishu_dialog);
+        imageView.setImageResource(R.mipmap.ic_wenyi_main);
         break;
 
       case "外交官":
-        imageView.setImageResource(R.mipmap.ic_shejiao_dialog);
+        imageView.setImageResource(R.mipmap.ic_shejiao_main);
         break;
 
       case "时尚精":
-        imageView.setImageResource(R.mipmap.ic_shishang_dialog);
+        imageView.setImageResource(R.mipmap.ic_shishang_main);
         break;
 
       case "大财阀":
-        imageView.setImageResource(R.mipmap.ic_tuhao_dialog);
+        imageView.setImageResource(R.mipmap.ic_tuhao_main);
         break;
 
       case "玩乐咖":
-        imageView.setImageResource(R.mipmap.ic_haoqi_dialog);
+        imageView.setImageResource(R.mipmap.ic_haoqi_main);
         break;
     }
 

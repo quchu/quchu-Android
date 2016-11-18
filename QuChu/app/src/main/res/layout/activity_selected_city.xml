@@ -9,6 +9,11 @@
 
   <include layout="@layout/cp_enhanced_toolbar"/>
 
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:background="@color/colorDivider"/>
+
   <TextView
       android:id="@+id/location_tv"
       android:layout_width="match_parent"
@@ -20,6 +25,12 @@
       android:textSize="14sp"
       android:visibility="gone"
       tools:text="您当前所在的城市:厦门"/>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:layout_marginTop="@dimen/base_margin"
+      android:background="@color/colorDivider"/>
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/city_recycler_view"

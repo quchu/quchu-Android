@@ -14,7 +14,7 @@
       android:layout_height="wrap_content"
       android:gravity="center_horizontal"
       android:orientation="vertical"
-      android:paddingBottom="15dp"
+      android:paddingBottom="25dp"
       android:paddingTop="50dp"
       android:visibility="visible">
 
@@ -99,14 +99,18 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerHorizontal="true"
-          android:text="QUCHU"/>
+          android:text="QUCHU"
+          android:textColor="@color/standard_color_h0_dark"
+          android:textSize="48sp"
+          android:textStyle="bold"/>
 
       <TextView
           android:id="@+id/drawerAppDescribeTv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/half_margin"
-          android:text="A.I.RESEARCHLAB"/>
+          android:text="A.I.RESEARCHLAB"
+          android:textColor="@color/standard_color_h0_dark"
+          android:textSize="18sp"/>
 
       <TextView
           android:id="@+id/drawerLoginBtn"
@@ -114,10 +118,10 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/base_margin"
           android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
-          android:paddingBottom="8dp"
-          android:paddingLeft="50dp"
-          android:paddingRight="50dp"
-          android:paddingTop="8dp"
+          android:paddingBottom="10dp"
+          android:paddingLeft="40dp"
+          android:paddingRight="40dp"
+          android:paddingTop="10dp"
           android:text="登录/注册"
           android:textColor="@color/standard_color_h1_dark"
           android:textSize="14sp"/>

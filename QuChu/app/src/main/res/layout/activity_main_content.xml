@@ -153,6 +153,7 @@
             android:id="@+id/ivAllScene"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:layout_marginRight="8dp"
             android:scaleType="center"
             android:src="@mipmap/ic_suoyouchangjing"
             />
@@ -161,7 +162,6 @@
             android:id="@+id/ivSwitchCity"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:layout_marginRight="8dp"
             android:scaleType="center"
             android:src="@mipmap/ic_location"
             />
