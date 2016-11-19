@@ -185,12 +185,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
         mRvScene.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
         adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
           @Override
-          public void onItemClick(SceneInfoModel sceneInfoModel) {
+          public void onItemClick(SceneInfoModel sceneInfoModel, int position) {
+            if (position == 3) {
+              SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
+              return;
+            }
+
             SceneDetailActivity.enterActivity(RecommendActivity.this, sceneInfoModel.getSceneId(), sceneInfoModel.getSceneName(), true);
           }
         });
-
-
       }
 
       @Override

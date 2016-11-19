@@ -61,7 +61,7 @@
               android:layout_centerHorizontal="true"
               android:layout_marginBottom="30dp"
               android:layout_marginTop="15dp"
-              android:src="@mipmap/ic_xiaoq_logo"/>
+              android:src="@mipmap/ic_search_xiahua"/>
 
         </RelativeLayout>
 

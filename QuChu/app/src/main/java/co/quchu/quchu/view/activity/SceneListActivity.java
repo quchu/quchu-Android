@@ -56,7 +56,7 @@ public class SceneListActivity extends BaseBehaviorActivity {
     SceneListAdapter adapter = new SceneListAdapter(this, mSceneList);
     adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
       @Override
-      public void onItemClick(SceneInfoModel sceneInfoModel) {
+      public void onItemClick(SceneInfoModel sceneInfoModel, int position) {
         SceneDetailActivity.enterActivity(SceneListActivity.this, sceneInfoModel.getSceneId(), sceneInfoModel.getSceneName(), true);
       }
     });
