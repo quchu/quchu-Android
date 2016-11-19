@@ -205,7 +205,7 @@ public class MDropDownMenu extends LinearLayout {
       mContentLayout.setVisibility(View.VISIBLE);
       mContentLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
       mMaskLayout.setVisibility(View.VISIBLE);
-      mMaskLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
+      mMaskLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
 
     } else {
       //上一次点击的 Tab 状态还原
@@ -229,7 +229,7 @@ public class MDropDownMenu extends LinearLayout {
       mContentLayout.setVisibility(GONE);
       mContentLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_out));
       mMaskLayout.setVisibility(GONE);
-      mMaskLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_out));
+      mMaskLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_out));
       mCurrentTabIndex = -1;
     }
   }
