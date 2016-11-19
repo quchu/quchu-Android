@@ -44,8 +44,10 @@ public class NearbyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void showPageEnd(boolean bl) {
-        mShowingNoData = bl;
-        notifyDataSetChanged();
+        if (null!=mData&&mData.size()>0){
+            mShowingNoData = bl;
+            notifyDataSetChanged();
+        }
     }
     public NearbyAdapter(List<NearbyItemModel> pData, OnItemClickListener pListener) {
         mData = pData;

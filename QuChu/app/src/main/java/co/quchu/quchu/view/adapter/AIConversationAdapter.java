@@ -18,8 +18,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.widget.CardsPagerTransformerBasic;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -130,7 +130,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           break;
         case TYPE_OPTION:
 
-
+          holder.itemView.setVisibility(View.INVISIBLE);
           ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
           TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash());
           ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
@@ -143,6 +143,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
             ((GalleryViewHolder) holder).vpPlace.setAdapter(new PlaceVPAdapter(q.getPlaceList()));
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);
+            ((GalleryViewHolder) holder).vpPlace.setPageTransformer(false,new CardsPagerTransformerBasic(0,0,.9f,0));
 
             ((GalleryViewHolder) holder).vpPlace.setClipToPadding(false);
             ((GalleryViewHolder) holder).vpPlace.setPadding(80, 0, 80, 20);

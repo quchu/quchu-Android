@@ -153,15 +153,16 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
             String.valueOf(SPUtils.getLongitude()), new CommonListener<PagerModel>() {
                 @Override public void successListener(PagerModel response) {
                     DialogUtil.dismissProgessDirectly();
+                    System.out.println(response.getResult().size()+" |||");
+                    mData.addAll(response.getResult());
                     if (mMaxPageNo == -1) {
                         mMaxPageNo = response.getPageCount();
                     }
                     if (null!=mAdapter && !loadMore){
                         mAdapter.showPageEnd(false);
+                    }else{
+                        mAdapter.notifyDataSetChanged();
                     }
-
-                    mAdapter.notifyDataSetChanged();
-
                     mSwipeRefreshLayout.setRefreshing(false);
                     mLoadingListener.loadingComplete();
                 }

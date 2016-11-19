@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -67,6 +68,7 @@ public class AIConversationFragment extends BaseFragment
 
   @Bind(R.id.rv) RecyclerView mRecyclerView;
   @Bind(R.id.rvOptions) RecyclerView rvOptions;
+  @Bind(R.id.llOptions) View llOptions;
   @Bind(R.id.tvOption) TextView mTvOption;
 
   @Override protected String getPageNameCN() {
@@ -76,7 +78,7 @@ public class AIConversationFragment extends BaseFragment
 
 
   private void hideOptions(){
-    rvOptions.animate().translationY(rvOptions.getHeight()).setDuration(200).start();
+    llOptions.animate().translationY(llOptions.getHeight()).setDuration(200).start();
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
         mHideAnimRunning = false;
@@ -85,44 +87,58 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void showOptions(){
-    rvOptions.animate().translationY(0).setDuration(200).start();
-    new Handler().postDelayed(new Runnable() {
-      @Override public void run() {
-        mShowAnimRunning = false;
-      }
-    },200);
+
+    if (mConversation.get(mConversation.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION &&!mShowAnimRunning){
+      mShowAnimRunning = true;
+      llOptions.animate().translationY(0).setDuration(200).setInterpolator(new OvershootInterpolator(2f)).start();
+      new Handler().postDelayed(new Runnable() {
+        @Override public void run() {
+          mShowAnimRunning = false;
+        }
+      },200);
+
+    }
   }
 
-  private void resetOptions(List<String>list,String addition,int type){
-    TextOptionAdapter textOptionAdapter = new TextOptionAdapter(list, addition, type, this);
-    boolean vertical = false;
-    boolean singleAnswer = list.size()==1?true:false;
-    for (int i = 0; i < list.size(); i++) {
+  private void resetOptions(final List<String>list,final String addition,final int type){
 
-      if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.8){
-        makeToast(String.valueOf(mTvOption.getWidth()));
-        vertical = true;
+    if (mConversation.size()<=3){
+      ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
+    }
+
+
+    new Handler().postDelayed(new Runnable() {
+      @Override public void run() {
+        TextOptionAdapter textOptionAdapter = new TextOptionAdapter(list, addition, type, AIConversationFragment.this);
+        boolean vertical = false;
+        boolean singleAnswer = list.size()==1?true:false;
+        for (int i = 0; i < list.size(); i++) {
+
+          if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.75){
+            makeToast(String.valueOf(mTvOption.getWidth()));
+            vertical = true;
+          }
+        }
+
+        rvOptions.setAdapter(textOptionAdapter);
+        rvOptions.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+
+        if (vertical||singleAnswer){
+          textOptionAdapter.updateGravity(vertical);
+          rvOptions.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        }else{
+          textOptionAdapter.updateGravity(vertical);
+          rvOptions.setLayoutManager(new GridLayoutManager(getActivity(),2,LinearLayoutManager.VERTICAL,false));
+        }
       }
-    }
+    },0);
 
-    rvOptions.setAdapter(textOptionAdapter);
-
-    if (vertical||singleAnswer){
-      textOptionAdapter.updateGravity(vertical);
-      rvOptions.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-    }else{
-      textOptionAdapter.updateGravity(vertical);
-      rvOptions.setLayoutManager(new GridLayoutManager(getActivity(),2,LinearLayoutManager.VERTICAL,false));
-    }
-    showOptions();
   }
 
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-
-
 
     View v = inflater.inflate(R.layout.fragment_ai_conversation, container, false);
 
@@ -146,16 +162,16 @@ public class AIConversationFragment extends BaseFragment
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+        if (mConversation==null||mConversation.size()<1){
+          return;
+        }
         int visibleItemCount = mRecyclerView.getLayoutManager().getChildCount();
         int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
         int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
           if (pastVisibleItems + visibleItemCount >= totalItemCount-1) {
             //End of list
-            if (!mShowAnimRunning){
-              mShowAnimRunning = true;
               showOptions();
-            }
           }else{
             if (!mHideAnimRunning){
               mHideAnimRunning = true;
@@ -205,6 +221,7 @@ public class AIConversationFragment extends BaseFragment
       }
     },1500);
     return v;
+
   }
 
 
@@ -214,7 +231,6 @@ public class AIConversationFragment extends BaseFragment
     calendar.setTimeInMillis(System.currentTimeMillis());
 
     if (calendar.get(Calendar.HOUR_OF_DAY)>=4) {
-      //TODO delete < current date
       calendar.set(Calendar.HOUR_OF_DAY,0);
       calendar.set(Calendar.MINUTE,0);
       calendar.set(Calendar.SECOND,0);
@@ -244,7 +260,6 @@ public class AIConversationFragment extends BaseFragment
       modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
       modelOption.setFlash(model.getFlash());
 
-      resetOptions(modelOption.getAnswerPramms(),modelOption.getFlash(),null!=modelOption.getType()? Integer.valueOf(modelOption.getType()):0);
 
       final AIConversationModel galleryModel = new AIConversationModel();
       galleryModel.setPlaceList(model.getPlaceList());
@@ -271,6 +286,8 @@ public class AIConversationFragment extends BaseFragment
         }
       }, CONVERSATION_ANSWER_DELAY);
       scrollToBottom();
+      resetOptions(modelOption.getAnswerPramms(),modelOption.getFlash(),null!=modelOption.getType()? Integer.valueOf(modelOption.getType()):0);
+
     }
   }
 
@@ -286,10 +303,14 @@ public class AIConversationFragment extends BaseFragment
         }
       }
     }, 50);
+    mRecyclerView.postDelayed(new Runnable() {
+      @Override public void run() {
+        showOptions();
+      }
+    },100);
   }
 
   private void getNext(final String question, final String flash) {
-
     if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
       mAdapter.updateNoNetwork(true);
@@ -421,8 +442,8 @@ public class AIConversationFragment extends BaseFragment
       return;
     }
 
-    hideOptions();
 
+    hideOptions();
     int position = mConversation.size() - 1;
     mConversation.get(position).getAnswerPramms().clear();
     AIConversationPresenter.delOptionMessages(getActivity());
@@ -445,11 +466,11 @@ public class AIConversationFragment extends BaseFragment
   @Override public void onRetry() {
     startConversation(false);
     hideOptions();
+
   }
 
   @Override public void onSearch() {
     startActivity(new Intent(getActivity(), SearchActivityNew.class));
-    hideOptions();
   }
 
 

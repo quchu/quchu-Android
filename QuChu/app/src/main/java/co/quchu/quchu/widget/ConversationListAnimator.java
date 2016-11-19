@@ -59,24 +59,6 @@ public class ConversationListAnimator extends DefaultItemAnimator {
     int holderWidth = holder.itemView.getWidth();
     if (holder instanceof AIConversationAdapter.QuestionViewHolder) {
 
-      //if (holder instanceof AIConversationAdapter.GalleryViewHolder){
-      //  ViewPager v = (ViewPager) ((AIConversationAdapter.GalleryViewHolder)holder).itemView.findViewById(R.id.vpPlace);
-      //
-      //  if (null!=v && v.getChildCount()>=2){
-      //    v.getChildAt(0).setAlpha(0);
-      //    v.getChildAt(1).setAlpha(0);
-      //    v.getChildAt(1).setTranslationX(-v.getWidth());
-      //    v.getChildAt(1).animate().alpha(1).translationX(0).setDuration(300).start();
-      //    v.getChildAt(0).animate().alpha(1).setDuration(200).start();
-      //
-      //  }else{
-      //
-      //  }
-      //
-      //  dispatchAddFinished(holder);
-      //
-      //}
-      //else {
 
         holder.itemView.setTranslationX(-holderWidth);
         holder.itemView.animate()
@@ -100,8 +82,7 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             .start();
       //}
 
-    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder
-        || holder instanceof AIConversationAdapter.OptionViewHolder
+    } else if (holder instanceof AIConversationAdapter.OptionViewHolder
         || holder instanceof AIConversationAdapter.GalleryViewHolder) {
       holder.itemView.setTranslationX(holderWidth);
       holder.itemView.animate()
@@ -123,6 +104,9 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             @Override public void onAnimationRepeat(Animator animation) {}
           })
           .start();
+    } else if(holder instanceof AIConversationAdapter.AnswerViewHolder){
+      dispatchAddStarting(holder);
+      dispatchAddFinished(holder);
     }
     return true;
   }

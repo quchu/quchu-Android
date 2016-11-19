@@ -82,6 +82,7 @@ public class AIConversationModel {
         "answer='" + answer + '\'' +
         ", flash='" + flash + '\'' +
         ", type='" + type + '\'' +
+        ", timeStamp=" + timeStamp +
         ", answerPramms=" + answerPramms +
         ", placeList=" + placeList +
         ", dataType=" + dataType +

@@ -14,7 +14,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
-      android:background="@drawable/shape_ai_txt_opt"
+      android:background="@mipmap/bg_conversation_yellow"
       android:paddingLeft="12dp"
       android:paddingRight="12dp"
       android:paddingTop="10dp"
