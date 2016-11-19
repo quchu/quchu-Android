@@ -41,6 +41,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
@@ -52,7 +53,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
-import co.quchu.quchu.test.TestListActivity;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -496,9 +496,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemShareApp://分享 App
-        startActivity(TestListActivity.class);
-//        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("", "", "");
-//        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
+        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("", "", "");
+        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
         break;
     }
   }
