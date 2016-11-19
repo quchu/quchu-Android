@@ -36,7 +36,6 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteQuchuAdapter;
-import co.quchu.quchu.widget.DividerItemDecoration;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -91,7 +90,7 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
     adapter = new FavoriteQuchuAdapter(mIsMe);
     adapter.setLoadmoreListener(this);
     adapter.setItemClickListener(this);
-    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+//    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
     recyclerView.setAdapter(adapter);
 
     if (mIsMe) {

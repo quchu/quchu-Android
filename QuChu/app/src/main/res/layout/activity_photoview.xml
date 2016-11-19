@@ -16,14 +16,17 @@
       android:layout_height="40dp"
       android:layout_alignParentBottom="true"
       android:layout_gravity="bottom"
-      android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      android:visibility="gone"/>
 
   <TextView
       android:id="@+id/tvIndicator"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
       android:layout_gravity="bottom|left"
-      android:layout_marginBottom="24dp"
+      android:layout_marginBottom="@dimen/base_margin"
       android:layout_marginLeft="@dimen/base_margin"
       android:paddingBottom="@dimen/quarter_margin"
       android:paddingLeft="@dimen/base_margin"
@@ -31,7 +34,6 @@
       android:paddingTop="@dimen/quarter_margin"
       android:textColor="@color/standard_color_white"
       android:textSize="13sp"
-      android:visibility="gone"
       tools:text="1 of 6"/>
 
   <LinearLayout
@@ -39,12 +41,11 @@
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
       android:layout_alignParentRight="true"
-      android:layout_marginBottom="@dimen/base_margin"
+      android:layout_marginBottom="@dimen/half_margin"
       android:layout_marginRight="@dimen/base_margin"
       android:layout_marginTop="56dp"
       android:gravity="center_horizontal"
       android:orientation="vertical"
-      android:paddingBottom="@dimen/quarter_margin"
       android:paddingLeft="@dimen/base_margin"
       android:paddingRight="@dimen/base_margin"
       android:paddingTop="@dimen/quarter_margin">

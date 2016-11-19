@@ -148,6 +148,7 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
       ResultViewHolder holder = (ResultViewHolder) viewHolder;
       RecommendModel model = mResultList.get(position);
 
+      holder.mTvDescribe.setText(model.getDescribe());
       if (null != model.getCover()) {
         holder.mSdvCover.setImageURI(Uri.parse(model.getCover()));
       }
@@ -277,6 +278,7 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Bind(R.id.recommend_tag2) TextView mRecommendTag2;
     @Bind(R.id.recommend_tag3) TextView mRecommendTag3;
     @Bind(R.id.tags) LinearLayout mTags;
+    @Bind(R.id.tvDescribe) TextView mTvDescribe;
 
     public ResultViewHolder(View itemView) {
       super(itemView);

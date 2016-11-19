@@ -24,7 +24,7 @@
       android:layout_marginBottom="@dimen/base_margin"
       android:layout_marginLeft="70dp"
       android:layout_marginRight="70dp"
-      android:layout_marginTop="60dp"
+      android:layout_marginTop="75dp"
       android:orientation="horizontal">
 
     <LinearLayout

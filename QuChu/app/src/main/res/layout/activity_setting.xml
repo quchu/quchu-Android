@@ -11,8 +11,8 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginTop="@dimen/base_margin"
       android:text="智能助手设置"
       android:textColor="@color/standard_color_h3_dark"
       android:textSize="13sp"
@@ -32,8 +32,8 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="15dp"
-      android:layout_marginTop="15dp"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginTop="@dimen/base_margin"
       android:text="系统设置"
       android:textColor="@color/standard_color_h3_dark"
       android:textSize="13sp"
@@ -54,7 +54,9 @@
       app:stShowSwitchBtn="true"
       app:stText="消息推送"/>
 
-  <View style="@style/HorizontalDivider"/>
+  <View
+      style="@style/HorizontalDivider"
+      android:layout_marginLeft="@dimen/base_margin"/>
 
   <co.quchu.quchu.widget.SettingItemView
       android:id="@+id/setting_item_about"
@@ -62,7 +64,9 @@
       android:layout_height="wrap_content"
       app:stText="关于趣处"/>
 
-  <View style="@style/HorizontalDivider"/>
+  <View
+      style="@style/HorizontalDivider"
+      android:layout_marginLeft="@dimen/base_margin"/>
 
   <co.quchu.quchu.widget.SettingItemView
       android:id="@+id/setting_item_business"
@@ -70,6 +74,8 @@
       android:layout_height="wrap_content"
       app:stText="商务合作"/>
 
-  <View style="@style/HorizontalDivider"/>
+  <View
+      style="@style/HorizontalDivider"
+      android:layout_marginLeft="@dimen/base_margin"/>
 
 </LinearLayout>

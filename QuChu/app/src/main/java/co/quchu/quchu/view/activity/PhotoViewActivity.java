@@ -46,7 +46,6 @@ public class PhotoViewActivity extends BaseActivity {
   @Bind(R.id.tvSource) TextView mTvSource;
   @Bind(R.id.ivShowSource) ImageView mIvShowSource;
 
-
   public static void enterActivity(Activity from, int position, List<ImageModel> imageSet) {
     Intent intent = new Intent(from, PhotoViewActivity.class);
     intent.putExtra(BUNDLE_KEY_PHOTO_LIST_INDEX, position);
@@ -77,6 +76,10 @@ public class PhotoViewActivity extends BaseActivity {
       @Override
       public void onPageSelected(int position) {
         mTvIndicator.setText((position + 1) + " of " + (mPhotoList.size()));
+        if (mTvSource.getVisibility() == View.VISIBLE) {
+          mTvSource.setVisibility(View.GONE);
+          mIvShowSource.setVisibility(View.VISIBLE);
+        }
       }
 
       @Override
@@ -114,9 +117,7 @@ public class PhotoViewActivity extends BaseActivity {
     }
   }
 
-
   public class DraweePagerAdapter extends PagerAdapter {
-
 
     @Override
     public int getCount() {

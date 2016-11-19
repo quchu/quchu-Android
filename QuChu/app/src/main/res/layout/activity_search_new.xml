@@ -73,6 +73,8 @@
             android:listSelector="@color/transparent"
             android:numColumns="3"
             android:overScrollMode="never"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
             android:paddingTop="50dp"
             android:scrollbars="none"
             android:verticalSpacing="30dp"/>
