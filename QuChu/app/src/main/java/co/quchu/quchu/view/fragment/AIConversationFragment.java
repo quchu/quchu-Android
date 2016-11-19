@@ -47,7 +47,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 
 public class AIConversationFragment extends BaseFragment
-    implements AIConversationAdapter.OnInteractiveClick {
+    implements TextOptionAdapter.OnInteractiveClick {
 
   private AIConversationAdapter mAdapter;
   private List<AIConversationModel> mConversation = new ArrayList<>();
@@ -76,6 +76,33 @@ public class AIConversationFragment extends BaseFragment
   }
 
 
+
+  private void hideAndUpdate(int selected){
+    int index = rvOptions.getChildCount()==1?0:selected;
+    final TextView selectedTarget = (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
+
+    int[] answerLocation = new int[2];
+    int[] targetLocation = new int[2];
+    selectedTarget.getLocationInWindow(answerLocation);
+
+    mRecyclerView.getChildAt(mRecyclerView.getChildCount()-2).getLocationInWindow(targetLocation);
+    System.out.println(answerLocation[1]+" | "+targetLocation[1]);
+
+    float translationY = targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
+    float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
+
+    int duration = 450;
+    selectedTarget.animate().translationY(translationY).translationX(translationX).alpha(.3f).setDuration(duration).start();
+    llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
+
+    if (rvOptions.getChildCount()>1){
+      View disappearView = rvOptions.getChildAt(index ==0?1:0);
+      disappearView.animate().alpha(0).setDuration(duration).start();
+    }
+
+    //rvOptions.getAdapter().notifyItemRemoved(selected==1?0:1);
+
+  }
 
   private void hideOptions(){
     llOptions.animate().translationY(llOptions.getHeight()).setDuration(200).start();
@@ -115,7 +142,6 @@ public class AIConversationFragment extends BaseFragment
         for (int i = 0; i < list.size(); i++) {
 
           if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.75){
-            makeToast(String.valueOf(mTvOption.getWidth()));
             vertical = true;
           }
         }
@@ -430,8 +456,7 @@ public class AIConversationFragment extends BaseFragment
     }
   }
 
-  @Override public void onAnswer(final String answer, final String additionalShit) {
-
+  @Override public void onAnswer(final String answer, final String additionalShit,final int index) {
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
       makeToast(R.string.network_error);
@@ -442,8 +467,7 @@ public class AIConversationFragment extends BaseFragment
       return;
     }
 
-
-    hideOptions();
+    hideAndUpdate(index);
     int position = mConversation.size() - 1;
     mConversation.get(position).getAnswerPramms().clear();
     AIConversationPresenter.delOptionMessages(getActivity());

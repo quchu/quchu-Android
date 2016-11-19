@@ -105,8 +105,26 @@ public class ConversationListAnimator extends DefaultItemAnimator {
           })
           .start();
     } else if(holder instanceof AIConversationAdapter.AnswerViewHolder){
-      dispatchAddStarting(holder);
-      dispatchAddFinished(holder);
+      holder.itemView.setAlpha(.3f);
+      holder.itemView.animate()
+          .alpha(1)
+          .setInterpolator(new AccelerateDecelerateInterpolator())
+          .setDuration(500)
+          .setStartDelay(100)
+          .setListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animation) {
+              dispatchAddStarting(holder);
+            }
+
+            @Override public void onAnimationEnd(Animator animation) {
+              dispatchAddFinished(holder);
+            }
+
+            @Override public void onAnimationCancel(Animator animation) {}
+
+            @Override public void onAnimationRepeat(Animator animation) {}
+          })
+          .start();
     }
     return true;
   }

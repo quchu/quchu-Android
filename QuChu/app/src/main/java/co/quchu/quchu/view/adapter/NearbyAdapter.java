@@ -68,23 +68,26 @@ public class NearbyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
        if (holder instanceof NearbyAdapter.ViewHolder){
-           ((ViewHolder)holder).name.setText(mData.get(position).getName());
-           ((ViewHolder)holder).simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
-           List<String> tags = new ArrayList<>();
-           for (int i = 0; i < Math.min(mData.get(position).getTags().size(),3); i++) {
-               tags.add(" "+mData.get(position).getTags().get(i).getZh()+" ");
-           }
-           ((ViewHolder)holder).tag.setTags(tags);
-           ((ViewHolder)holder).tvAddress.setText(mData.get(position).getAddress());
-           ((ViewHolder)holder).tvAddress.setVisibility(View.VISIBLE);
-           holder.itemView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   if (null != mListener) {
-                       mListener.onClick(position);
-                   }
+           if (position<mData.size()){
+               ((ViewHolder)holder).name.setText(mData.get(position).getName());
+               ((ViewHolder)holder).simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
+               List<String> tags = new ArrayList<>();
+               for (int i = 0; i < Math.min(mData.get(position).getTags().size(),3); i++) {
+                   tags.add(" "+mData.get(position).getTags().get(i).getZh()+" ");
                }
-           });
+               ((ViewHolder)holder).tag.setTags(tags);
+               ((ViewHolder)holder).tvAddress.setText(mData.get(position).getAddress());
+               ((ViewHolder)holder).tvAddress.setVisibility(View.VISIBLE);
+               holder.itemView.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       if (null != mListener) {
+                           mListener.onClick(position);
+                       }
+                   }
+               });
+           }
+
        }
     }
 

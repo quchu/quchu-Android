@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clipChildren="false"
     >
 
 
@@ -16,13 +17,14 @@
   <LinearLayout
       android:id="@+id/llOptions"
       android:layout_alignParentBottom="true"
-
+      android:clipChildren="false"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOptions"
+        android:clipChildren="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"/>

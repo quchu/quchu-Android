@@ -21,10 +21,10 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
   private List<String> options;
   private int type;//type=2 服务器出错
   private String additionalShit;
-  private AIConversationAdapter.OnInteractiveClick mOnInteractiveListener;
+  private OnInteractiveClick mOnInteractiveListener;
   private boolean mVertical = false;
 
-  public TextOptionAdapter(List<String> options, String additional,int type,AIConversationAdapter.OnInteractiveClick listener) {
+  public TextOptionAdapter(List<String> options, String additional,int type,OnInteractiveClick listener) {
     this.options = options;
     this.additionalShit = additional;
     this.type = type;
@@ -53,7 +53,7 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
             mOnInteractiveListener.onSearch();
           }
         }else{
-          mOnInteractiveListener.onAnswer(answer, additionalShit);
+          mOnInteractiveListener.onAnswer(answer, additionalShit,position);
         }
       }
     });
@@ -86,6 +86,12 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
       super(itemView);
       ButterKnife.bind(this, itemView);
     }
+  }
+
+  public interface OnInteractiveClick {
+    void onAnswer(String answer, String additionalShit,int index);
+    void onRetry();
+    void onSearch();
   }
 
 }

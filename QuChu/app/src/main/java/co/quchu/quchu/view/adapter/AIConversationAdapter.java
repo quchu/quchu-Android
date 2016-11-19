@@ -38,7 +38,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   private Activity mAnchor;
   private List<AIConversationModel> mDataSet;
-  private OnInteractiveClick mOnInteractiveListener;
+  private co.quchu.quchu.view.adapter.TextOptionAdapter.OnInteractiveClick mOnInteractiveListener;
 
   public void updateNoNetwork(boolean noNetWork) {
     if (noNetWork){
@@ -68,14 +68,9 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   }
 
-  public interface OnInteractiveClick {
-    void onAnswer(String answer, String additionalShit);
-    void onRetry();
-    void onSearch();
-  }
 
   public AIConversationAdapter(Activity context, List<AIConversationModel> data,
-      OnInteractiveClick onAnswerListener) {
+      co.quchu.quchu.view.adapter.TextOptionAdapter.OnInteractiveClick onAnswerListener) {
     this.mAnchor = context;
     this.mDataSet = data;
     this.mOnInteractiveListener = onAnswerListener;
@@ -123,10 +118,13 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           }
 
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
+          holder.itemView.setTag("| 1");
           break;
         case TYPE_ANSWER:
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
           ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+          holder.itemView.setTag("| 2");
+
           break;
         case TYPE_OPTION:
 
@@ -136,6 +134,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
           ((OptionViewHolder) holder).rvOption.setLayoutManager(
               new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
+          holder.itemView.setTag("| 3");
 
           break;
 
@@ -151,6 +150,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           } else {
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.GONE);
           }
+          holder.itemView.setTag("| 4");
 
           break;
         case TYPE_NO_NETWORK:
@@ -169,7 +169,11 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
               }
             }
           });
+          holder.itemView.setTag("| 5");
 
+          break;
+        default :
+          holder.itemView.setTag("| 6");
           break;
       }
     }
@@ -272,13 +276,13 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           .inflate(R.layout.item_ai_conversation_txt_opt, parent, false));
     }
 
-    @Override public void onBindViewHolder(TextOptionViewHolder holder, int position) {
+    @Override public void onBindViewHolder(TextOptionViewHolder holder, final int position) {
       String s = Character.toString ((char) (65+position));
       final String answer = String.valueOf(options.get(position));
       holder.tvOption.setText(s+": "+answer);
       holder.tvOption.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-          mOnInteractiveListener.onAnswer(answer, additionalShit);
+          mOnInteractiveListener.onAnswer(answer, additionalShit,position);
         }
       });
     }
@@ -346,15 +350,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           mAnchor.startActivity(intent);
         }
       });
-      //
-      //if (position==0){
-      //  v.setTranslationX(-ScreenUtils.getScreenWidth(mAnchor));
-      //  v.animate().translationX(0).setStartDelay(100).setDuration(500).start();
-      //}
-      //if (position==1){
-      //  v.setTranslationX(-ScreenUtils.getScreenWidth(mAnchor));
-      //  v.animate().translationX(0).setStartDelay(0).setDuration(500).start();
-      //}
+
 
       container.addView(v);
       return v;
