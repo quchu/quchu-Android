@@ -108,7 +108,14 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
     initRecyclerView();
 
-    getData();
+//    getData();
+
+    mSwipeRefreshLayout.post(new Runnable() {
+      @Override
+      public void run() {
+        onRefresh();
+      }
+    });
 
     //喜欢场景
 //    mLikeFab.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +160,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   }
 
   public void getData() {
-    DialogUtil.showProgess(this, R.string.loading_dialog_text);
+//    DialogUtil.showProgess(this, R.string.loading_dialog_text);
     int delay = 0;
     if (Math.abs(AppContext.mLastLocatingTimeStamp - System.currentTimeMillis()) >= (60000 * 5)) {
       AppContext.initLocation();
@@ -189,7 +196,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     if (mActivityStop) {
       return;
     }
-    DialogUtil.showProgess(this, R.string.loading_dialog_text);
+
+    if (loadMore) {
+      DialogUtil.showProgess(this, R.string.loading_dialog_text);
+    }
 
     ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), mPageNo, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), placeIds, new CommonListener<SceneDetailModel>() {
       @Override
@@ -327,6 +337,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
   @Override
   public void onRefresh() {
+    mSwipeRefreshLayout.setRefreshing(true);
     if (NetUtil.isNetworkConnected(getApplicationContext())) {
       getData();
     } else {
