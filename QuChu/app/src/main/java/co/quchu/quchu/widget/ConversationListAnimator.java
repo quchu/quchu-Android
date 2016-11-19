@@ -105,7 +105,7 @@ public class ConversationListAnimator extends DefaultItemAnimator {
           })
           .start();
     } else if(holder instanceof AIConversationAdapter.AnswerViewHolder){
-      holder.itemView.setAlpha(.3f);
+      holder.itemView.setAlpha(0);
       holder.itemView.animate()
           .alpha(1)
           .setInterpolator(new AccelerateDecelerateInterpolator())

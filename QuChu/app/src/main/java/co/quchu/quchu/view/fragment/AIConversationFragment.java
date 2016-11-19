@@ -90,7 +90,7 @@ public class AIConversationFragment extends BaseFragment
     float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
 
     int duration = 300;
-    selectedTarget.animate().translationY(translationY).translationX(translationX).alpha(.3f).setDuration(duration).start();
+    selectedTarget.animate().translationY(translationY).translationX(translationX).alpha(0).setDuration(duration).start();
     llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
 
     if (rvOptions.getChildCount()>1){
