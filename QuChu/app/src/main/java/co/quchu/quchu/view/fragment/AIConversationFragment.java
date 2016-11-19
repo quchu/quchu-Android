@@ -89,21 +89,21 @@ public class AIConversationFragment extends BaseFragment
     float translationY = targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
     float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
 
-    int duration = 300;
-    selectedTarget.animate().translationY(translationY).translationX(translationX).alpha(0).setDuration(duration).start();
+    int duration = 500;
+    selectedTarget.animate().translationY(translationY).translationX(translationX).setDuration(duration).start();
     llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
 
     if (rvOptions.getChildCount()>1){
       View disappearView = rvOptions.getChildAt(index ==0?1:0);
-      disappearView.animate().alpha(0).setDuration(duration).start();
+      disappearView.animate().alpha(0).translationY(llOptions.getHeight()*3).setDuration(duration).start();
     }
-    //
 
     //rvOptions.getAdapter().notifyItemRemoved(selected==1?0:1);
 
   }
 
   private void hideOptions(){
+    System.out.println("hideOptions()");
     llOptions.animate().translationY(llOptions.getHeight()).setDuration(200).start();
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
@@ -114,14 +114,15 @@ public class AIConversationFragment extends BaseFragment
 
   private void showOptions(){
 
+    System.out.println("hideOptions()"+mConversation.get(mConversation.size()-1).getDataType()+"|"+mShowAnimRunning);
     if (mConversation.get(mConversation.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION &&!mShowAnimRunning){
       mShowAnimRunning = true;
-      llOptions.animate().translationY(0).setDuration(200).setInterpolator(new OvershootInterpolator(2f)).start();
+      llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(2f)).start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
         }
-      },200);
+      },350);
 
     }
   }
@@ -199,7 +200,10 @@ public class AIConversationFragment extends BaseFragment
             //End of list
               showOptions();
           }else{
+            System.out.println("|~ "+mHideAnimRunning);
             if (!mHideAnimRunning){
+              System.out.println("|~ "+mHideAnimRunning);
+
               mHideAnimRunning = true;
               hideOptions();
             }
@@ -467,28 +471,25 @@ public class AIConversationFragment extends BaseFragment
       return;
     }
 
-    hideAndUpdate(index);
-    new Handler().postDelayed(new Runnable() {
-      @Override public void run() {
-        int position = mConversation.size() - 1;
-        mConversation.get(position).getAnswerPramms().clear();
-        AIConversationPresenter.delOptionMessages(getActivity());
-        mAdapter.notifyItemChanged(position);
+    int position = mConversation.size() - 1;
+    mConversation.get(position).getAnswerPramms().clear();
+    AIConversationPresenter.delOptionMessages(getActivity());
+    mAdapter.notifyItemChanged(position);
 
-        mRecyclerView.postDelayed(new Runnable() {
-          @Override public void run() {
-            AIConversationModel answerModel = new AIConversationModel();
-            answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
-            answerModel.setAnswer(answer);
-            AIConversationPresenter.insertMessage(getActivity(),answerModel);
-            mConversation.add(answerModel);
-            mAdapter.notifyItemInserted(mConversation.size() - 1);
-            //scrollToBottom();
-            getNext(answer, additionalShit);
-          }
-        }, CONVERSATION_REQUEST_DELAY);
+    mRecyclerView.postDelayed(new Runnable() {
+      @Override public void run() {
+        AIConversationModel answerModel = new AIConversationModel();
+        answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
+        answerModel.setAnswer(answer);
+        AIConversationPresenter.insertMessage(getActivity(),answerModel);
+        mConversation.add(answerModel);
+        mAdapter.notifyItemInserted(mConversation.size() - 1);
+        hideAndUpdate(index);
+
+        //scrollToBottom();
+        getNext(answer, additionalShit);
       }
-    },300);
+    }, 300);
 
   }
 
