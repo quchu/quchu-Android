@@ -97,6 +97,7 @@ public class AIConversationFragment extends BaseFragment
       View disappearView = rvOptions.getChildAt(index ==0?1:0);
       disappearView.animate().alpha(0).setDuration(duration).start();
     }
+    //
 
     //rvOptions.getAdapter().notifyItemRemoved(selected==1?0:1);
 
