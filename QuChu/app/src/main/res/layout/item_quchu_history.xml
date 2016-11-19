@@ -17,6 +17,7 @@
         android:id="@+id/best_describe_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:textColor="@color/standard_color_h1_dark"
         android:textSize="13sp"
         android:visibility="gone"
@@ -27,14 +28,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@mipmap/ic_shoucang"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:src="@mipmap/ic_right"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/history_left_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_shoucang"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:src="@mipmap/ic_left"
         android:visibility="gone"/>
 
     <TextView
@@ -42,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:textColor="@color/standard_color_red"
         android:textSize="13sp"
         android:visibility="gone"

@@ -41,7 +41,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
@@ -53,6 +52,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
+import co.quchu.quchu.test.TestListActivity;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -185,12 +185,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
         mRvScene.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
         adapter.setOnSceneListListener(new SceneListAdapter.OnSceneListListener() {
           @Override
-          public void onItemClick(SceneInfoModel sceneInfoModel) {
+          public void onItemClick(SceneInfoModel sceneInfoModel, int position) {
+            if (position == 3) {
+              SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
+              return;
+            }
+
             SceneDetailActivity.enterActivity(RecommendActivity.this, sceneInfoModel.getSceneId(), sceneInfoModel.getSceneName(), true);
           }
         });
-
-
       }
 
       @Override
@@ -493,8 +496,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemShareApp://分享 App
-        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("", "", "");
-        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
+        startActivity(TestListActivity.class);
+//        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("", "", "");
+//        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
         break;
     }
   }

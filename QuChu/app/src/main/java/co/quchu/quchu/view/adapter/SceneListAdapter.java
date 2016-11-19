@@ -34,7 +34,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     mSceneList = sceneList;
   }
 
-  public SceneListAdapter(Context context,List<SceneInfoModel> sceneList,int limitation ){
+  public SceneListAdapter(Context context, List<SceneInfoModel> sceneList, int limitation) {
     mContext = context;
     mSceneList = sceneList;
     mLimitation = limitation;
@@ -46,17 +46,25 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
   }
 
   @Override
-  public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+  public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
     SceneInfoModel sceneInfoModel = mSceneList.get(position);
 
     if (viewHolder instanceof SceneViewHolder) {
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
+
       if (!TextUtils.isEmpty(sceneInfoModel.getIconUrl())) {
         holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrl()));
       }
       holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
-      holder.mSceneTitleTv.setMaxLines(mLimitation>0?1:10);
-      holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation>0?R.color.standard_color_h1_dark:R.color.standard_color_h3_dark));
+      holder.mSceneTitleTv.setMaxLines(mLimitation > 0 ? 1 : 10);
+      holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
+
+      //首页显示所有场景
+      if (mLimitation > 0 && position == 3) {
+        holder.mSceneCoverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_suoyouchangjing_main);
+        holder.mSceneTitleTv.setText("所有场景");
+        holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h1_dark));
+      }
 
       holder.itemView.setTag(sceneInfoModel);
       holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +72,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View v) {
           SceneInfoModel sceneInfoModel = (SceneInfoModel) v.getTag();
           if (sceneInfoModel != null && mListener != null) {
-            mListener.onItemClick(sceneInfoModel);
+            mListener.onItemClick(sceneInfoModel, position);
           }
         }
       });
@@ -73,7 +81,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
   @Override
   public int getItemCount() {
-    return mSceneList != null ? mLimitation>0 ?Math.min(mSceneList.size(),mLimitation):mSceneList.size() : 0;
+    return mSceneList != null ? mLimitation > 0 ? Math.min(mSceneList.size(), mLimitation) : mSceneList.size() : 0;
   }
 
   public class SceneViewHolder extends RecyclerView.ViewHolder {
@@ -94,6 +102,6 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
   }
 
   public interface OnSceneListListener {
-    void onItemClick(SceneInfoModel sceneInfoModel);
+    void onItemClick(SceneInfoModel sceneInfoModel, int position);
   }
 }
