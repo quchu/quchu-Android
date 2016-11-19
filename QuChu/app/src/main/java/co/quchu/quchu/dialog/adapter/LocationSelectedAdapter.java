@@ -77,7 +77,7 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<RecyclerView.V
 
   @Override
   public int getItemViewType(int position) {
-    if (mCityList.get(position).getGroup() == 1 || mCityList.get(position).getGroup() == 0) {
+    if (mCityList.get(position).isGroupHeader()) {
       return ITEM_TYPE_HEADER;
     }
     return ITEM_TYPE_NORMAL;

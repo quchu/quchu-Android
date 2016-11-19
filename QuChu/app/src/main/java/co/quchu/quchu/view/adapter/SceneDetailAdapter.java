@@ -71,8 +71,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
   }
 
   public SceneDetailAdapter(Context mContext, List<DetailModel> pData,
-      List<SceneHeaderModel> pDataBanner, SimpleArticleModel articleModel, SceneInfoModel sceneInfo,
-      OnSceneItemClickListener listener) {
+                            List<SceneHeaderModel> pDataBanner, SimpleArticleModel articleModel, SceneInfoModel sceneInfo,
+                            OnSceneItemClickListener listener) {
     this.mContext = mContext;
     this.mData = pData;
     this.mBestPlace = pDataBanner;
@@ -81,7 +81,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     this.mArticleModel = articleModel;
   }
 
-  @Override public int getItemViewType(int position) {
+  @Override
+  public int getItemViewType(int position) {
     if (position == 0) {
       return TYPE_INFO;
     } else if (position > 0 && position <= getRecommendedListSize()) {
@@ -100,7 +101,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
   }
 
-  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+  @Override
+  public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
     switch (viewType) {
       case TYPE_INFO:
@@ -124,7 +126,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
   }
 
-  @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+  @Override
+  public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
     if (null == mData) {
       return;
     }
@@ -140,16 +143,16 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((InfoViewHolder) holder).tvENTitle.setTypeface(face);
         ((InfoViewHolder) holder).tvENTitle.setText(mSceneInfoModel.getEn());
         ((InfoViewHolder) holder).tvCNTitle.setText(mSceneInfoModel.getSceneName());
-        ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getSceneCover()));
-        ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
-        ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getSceneContent());
+        ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getIconUrl()));
+//        ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
+//        ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getSceneContent());
         String[] tags = mSceneInfoModel.getSceneTitle();
         ((InfoViewHolder) holder).recommendTag1.setVisibility(View.GONE);
         ((InfoViewHolder) holder).recommendTag2.setVisibility(View.GONE);
         ((InfoViewHolder) holder).recommendTag3.setVisibility(View.GONE);
 
-        ((InfoViewHolder) holder).vDivider1.setVisibility(View.INVISIBLE);
-        ((InfoViewHolder) holder).vDivider2.setVisibility(View.INVISIBLE);
+        ((InfoViewHolder) holder).vDivider1.setVisibility(View.GONE);
+        ((InfoViewHolder) holder).vDivider2.setVisibility(View.GONE);
         if (null != tags) {
           for (int i = 0; i < tags.length; i++) {
             switch (i) {
@@ -192,6 +195,11 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
               objScene.getPlaceInfo().getTags().get(i).getZh());
         }
       }
+
+      if (objScene.getPlaceInfo() != null) {
+        ((RecommendedViewHolder) holder).tvDescribe.setText(objScene.getPlaceInfo().getDescribed());
+      }
+
       ((RecommendedViewHolder) holder).llHighLight.setVisibility(View.VISIBLE);
       ((RecommendedViewHolder) holder).tvCircleName.setText(
           null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo()
@@ -221,7 +229,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
           objScene.getPlaceInfo().isIsf() ? R.mipmap.ic_xuanzhong : R.mipmap.ic_weishoucang);
 
       ((RecommendedViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
           if (null != mListener) {
             mListener.onFavoriteClick(objScene.getPlaceInfo().getPid(),
                 objScene.getPlaceInfo().isIsf(), finalPosition, true);
@@ -229,7 +238,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
       });
       holder.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
           if (null != mListener) {
             mListener.onPlaceClick(objScene.getPlaceInfo().getPid(),
                 objScene.getPlaceInfo().getName());
@@ -246,7 +256,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ArticleViewHolder) holder).tvReviews.setText(
             String.valueOf(mArticleModel.getReadCount()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
-          @Override public void onClick(View view) {
+          @Override
+          public void onClick(View view) {
             if (null != mListener) {
               mListener.onArticleClick(mArticleModel.getArticleId(), mArticleModel.getName());
             }
@@ -272,6 +283,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
               objScene.getTags().get(i).getZh());
         }
       }
+
+      ((PlaceViewHolder) holder).tvDescribe.setText(objScene.getDescribed());
+
       ((PlaceViewHolder) holder).tvCircleName.setText(
           null != objScene.getAreaCircleName() ? objScene.getAreaCircleName() : "");
       if (TextUtils.isEmpty(objScene.getLatitude()) || TextUtils.isEmpty(objScene.getLongitude())) {
@@ -292,7 +306,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
       ((PlaceViewHolder) holder).ivFavorite.setImageResource(
           objScene.isIsf() ? R.mipmap.ic_shoucang_yellow : R.mipmap.ic_weishoucang);
       ((PlaceViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
           if (null != mListener) {
             mListener.onFavoriteClick(objScene.getPid(), objScene.isIsf(), finalPosition, false);
           }
@@ -300,7 +315,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
       });
 
       holder.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
           if (null != mListener) {
             mListener.onPlaceClick(objScene.getPid(), objScene.getName());
           }
@@ -335,7 +351,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     return placeList;
   }
 
-  @Override public int getItemCount() {
+  @Override
+  public int getItemCount() {
     int intro = 1;
     int article = 1;
     int placeSize = getPlaceListSize();
@@ -346,12 +363,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
   public class InfoViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.sdvCover) SimpleDraweeView sdvCover;
-    @Bind(R.id.desc) TextView desc;
     @Bind(R.id.recommend_tag1) TextView recommendTag1;
     @Bind(R.id.recommend_tag2) TextView recommendTag2;
     @Bind(R.id.recommend_tag3) TextView recommendTag3;
     @Bind(R.id.tags) LinearLayout tags;
-    @Bind(R.id.tvDescription) TextView tvDescription;
     @Bind(R.id.llRoot) LinearLayout llRoot;
     @Bind(R.id.vHorizontalDivider1) View vDivider1;
     @Bind(R.id.vHorizontalDivider2) View vDivider2;
@@ -381,6 +396,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Bind(R.id.llHighLight) LinearLayout llHighLight;
     @Bind(R.id.vDivider1) View vDivider1;
     @Bind(R.id.vDivider2) View vDivider2;
+    @Bind(R.id.tvDescribe) TextView tvDescribe;
 
     public RecommendedViewHolder(View itemView) {
       super(itemView);
@@ -414,6 +430,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Bind(R.id.tvPrice) TextView tvPrice;
     @Bind(R.id.ivFavorite) ImageView ivFavorite;
     @Bind(R.id.llHighLight) LinearLayout llHighLight;
+    @Bind(R.id.tvDescribe) TextView tvDescribe;
 
     public PlaceViewHolder(View itemView) {
       super(itemView);

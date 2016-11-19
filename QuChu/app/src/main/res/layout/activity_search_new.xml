@@ -22,7 +22,7 @@
         app:tcvItemBorderVertical="10dp"
         app:tcvMultiLine="2"
         app:tcvTagResId="@layout/item_search_tag"
-        app:tcvTextColor="@color/standard_color_white"
+        app:tcvTextColor="@color/standard_color_h2_dark"
         app:tcvTextSize="12sp"/>
 
     <TextView
@@ -34,7 +34,7 @@
         android:layout_marginTop="@dimen/base_margin"
         android:drawableLeft="@mipmap/ic_huanyipi"
         android:drawablePadding="5dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:text="换一批"
         android:textColor="@color/standard_color_h1_dark"
         android:textSize="12sp"
@@ -73,7 +73,7 @@
             android:listSelector="@color/transparent"
             android:numColumns="3"
             android:overScrollMode="never"
-            android:paddingTop="30dp"
+            android:paddingTop="50dp"
             android:scrollbars="none"
             android:verticalSpacing="30dp"/>
 

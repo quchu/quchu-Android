@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.model.SimplePlaceModel;
-import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 
 /**
  * Created by Nico on 16/7/8.

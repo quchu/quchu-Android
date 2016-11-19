@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true">
+
+  <include
+      android:id="@+id/quchu_detail_toolbar"
+      layout="@layout/cp_enhanced_toolbar"/>
+
+  <android.support.design.widget.TabLayout
+      android:id="@+id/quchu_detail_tab_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="?attr/actionBarSize"
+      android:layout_centerHorizontal="true"/>
+
+  <android.support.v4.view.ViewPager
+      android:id="@+id/quchu_detail_view_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/detail_bottom_group_ll"
+      android:layout_below="@+id/quchu_detail_toolbar"/>
+
+  <LinearLayout
+      android:id="@+id/detail_bottom_group_ll"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:background="@color/standard_color_white"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontal_divider"
+        android:background="@color/colorBorder"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center_vertical"
+          android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivPingJia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/base_margin"
+            android:src="@mipmap/ic_pingjia"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="20dp"
+            android:background="@color/colorDivider"/>
+
+        <ImageView
+            android:id="@+id/ivShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/base_margin"
+            android:src="@mipmap/ic_share"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="20dp"
+            android:background="@color/colorDivider"/>
+
+        <ImageView
+            android:id="@+id/ivPreOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/base_margin"
+            android:src="@mipmap/ic_yuyue"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/llFavorite"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_margin="8dp"
+          android:layout_weight="1"
+          android:background="@drawable/shape_lineframe_gray_fill"
+          android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pname_favorite"
+            android:textColor="@color/standard_color_h3_dark"/>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <co.quchu.quchu.widget.ErrorView
+      android:id="@+id/errorView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"/>
+
+</RelativeLayout>

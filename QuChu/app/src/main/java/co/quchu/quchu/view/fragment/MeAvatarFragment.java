@@ -137,6 +137,10 @@ public class MeAvatarFragment extends BaseFragment {
       labels[i] = genes.get(i).getMark();
     }
 
+    if (polygonProgressView == null) {
+      return;
+    }
+
     polygonProgressView.postDelayed(new Runnable() {
       @Override
       public void run() {

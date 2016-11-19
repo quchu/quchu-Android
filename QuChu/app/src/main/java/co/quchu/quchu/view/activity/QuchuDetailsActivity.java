@@ -1,29 +1,25 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
-import java.io.Serializable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,20 +29,22 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
 import co.quchu.quchu.view.fragment.CommentListFragment;
+import co.quchu.quchu.view.fragment.QuchuDetailFragment;
 import co.quchu.quchu.widget.ErrorView;
+
+import static co.quchu.quchu.R.id.detail_bottom_group_ll;
+import static co.quchu.quchu.R.id.errorView;
+import static co.quchu.quchu.R.id.llFavorite;
+import static co.quchu.quchu.R.id.tvFavorite;
 
 /**
  * InterestingDetailsActivity
@@ -55,23 +53,6 @@ import co.quchu.quchu.widget.ErrorView;
  * 趣处详情
  */
 public class QuchuDetailsActivity extends BaseBehaviorActivity {
-
-  @Override protected String getPageNameCN() {
-    return getString(R.string.pname_quchu_details);
-  }
-
-  @Bind(R.id.detail_recyclerview) RecyclerView mRecyclerView;
-  @Bind(R.id.detail_bottom_group_ll) View detail_bottom_group_ll;
-  @Bind(R.id.errorView) ErrorView errorView;
-  @Bind(R.id.llFavorite) View llFavorite;
-  @Bind(R.id.tvFavorite) TextView tvFavorite;
-
-  public static final String REQUEST_KEY_PID = "pid";
-  public static final String REQUEST_KEY_FROM = "from";
-  private int pId = 0;
-  public DetailModel dModel = new DetailModel();
-  private QuchuDetailsAdapter mQuchuDetailAdapter;
-  private CommentListFragment mCommentListFragment;
 
   public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
   public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
@@ -82,114 +63,82 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   public static final String BUNDLE_KEY_DATA_MODEL = "BUNDLE_KEY_DATA_MODEL";
   private String from;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  public static final String REQUEST_KEY_PID = "pid";
+  public static final String REQUEST_KEY_FROM = "from";
+  private int pId = 0;
+  public DetailModel dModel = new DetailModel();
+
+  private QuchuDetailFragment mDetailFragment;
+  private CommentListFragment mCommentListFragment;
+
+  @Bind(R.id.quchu_detail_tab_layout) TabLayout mTabLayout;
+  @Bind(R.id.quchu_detail_view_pager) ViewPager mViewPager;
+  @Bind(R.id.ivPingJia) ImageView mIvPingJia;
+  @Bind(R.id.ivShare) ImageView mIvShare;
+  @Bind(R.id.ivPreOrder) ImageView mIvPreOrder;
+  @Bind(tvFavorite) TextView mTvFavorite;
+  @Bind(errorView) ErrorView mErrorView;
+  @Bind(llFavorite) LinearLayout mLlFavorite;
+  @Bind(detail_bottom_group_ll) LinearLayout mDetailBottomGroupLl;
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_quchu_details);
+    setContentView(R.layout.activity_quchu_details_new);
     ButterKnife.bind(this);
+
     from = getIntent().getStringExtra(REQUEST_KEY_FROM);
-    getEnhancedToolbar().getTitleTv().setText("");
 
-    TabLayout tabLayout = new TabLayout((new ContextThemeWrapper(this, R.style.AppTheme)));
-    tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.standard_color_h1_dark));
-    tabLayout.setTabMode(TabLayout.MODE_FIXED);
-    tabLayout.setTabTextColors(getResources().getColor(R.color.standard_color_h2_dark),getResources().getColor(R.color.standard_color_h1_dark));
-
-    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-    getEnhancedToolbar().addCustomView(tabLayout,lp);
-
-    TextView tag0 = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_detail_tab,tabLayout,false);
-    TextView tag1 = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_detail_tab,tabLayout,false);
-    tag0.setText("趣处");
-    tag1.setText("评论");
-    tabLayout.addTab(tabLayout.newTab().setCustomView(tag0).setTag(0));
-    tabLayout.addTab(tabLayout.newTab().setCustomView(tag1).setTag(1));
-
-
-    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-      @Override public void onTabSelected(TabLayout.Tab tab) {
-        if((int)tab.getTag()==0){
-          findViewById(R.id.flContainer).setVisibility(View.INVISIBLE);
-        }else{
-          findViewById(R.id.flContainer).setVisibility(View.VISIBLE);
-        }
-      }
-
-      @Override public void onTabUnselected(TabLayout.Tab tab) {}
-
-      @Override public void onTabReselected(TabLayout.Tab tab) {}
-    });
-
+    initToolbar();
 
     if (null != savedInstanceState) {
       dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
+      bindingDetailData(dModel);
+    } else {
+      initData();
     }
 
-    detail_bottom_group_ll.setVisibility(View.INVISIBLE);
-    mRecyclerView.setVisibility(View.INVISIBLE);
-
-    mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel);
-    mRecyclerView.setLayoutManager(
-        new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-    mRecyclerView.setAdapter(mQuchuDetailAdapter);
-
-    initData();
     getVisitors();
-
   }
 
-  private void resetFavorite() {
-    llFavorite.setBackgroundResource(!dModel.isIsf() ? R.drawable.shape_lineframe_yellow_fill : R.drawable.shape_lineframe_gray_fill);
-    tvFavorite.setTextColor(!dModel.isIsf() ? getResources().getColor(R.color.standard_color_h1_dark) : getResources().getColor(R.color.standard_color_h3_dark));
-    tvFavorite.setText(dModel.isIsf() ? R.string.cancel_favorite:R.string.favorite);
-  }
-
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
-
-    ArrayMap<String, Object> data = new ArrayMap<>();
-    data.put("pid", getIntent().getIntExtra(REQUEST_KEY_PID, -1));
-    return data;
-  }
-
-  @Override public int getUserBehaviorPageId() {
-    return 104;
-  }
-
-  private void getVisitors() {
-    InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId,
-        new CommonListener<VisitedUsersModel>() {
-          @Override public void successListener(VisitedUsersModel response) {
-            if (null != response) {
-              mQuchuDetailAdapter.updateVisitedUsers();
-            }
-          }
-
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
-          }
-        });
-  }
-
-
-  @Override protected int activitySetup() {
-    return TRANSITION_TYPE_LEFT;
-  }
-
-  @Override public void onSaveInstanceState(Bundle outState) {
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putSerializable(BUNDLE_KEY_DATA_MODEL, dModel);
+  }
+
+  private void initToolbar() {
+    getEnhancedToolbar().getTitleTv().setText("");
+    getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
+    getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        UMEvent("back_c");
+        ZGEvent("趣处名称", dModel.getName(), "返回首页");
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
+      }
+    });
+  }
+
+  private void initViewPager() {
+    QuchuDetailViewPagerAdapter viewPagerAdapter = new QuchuDetailViewPagerAdapter(getSupportFragmentManager());
+    mViewPager.setAdapter(viewPagerAdapter);
+
+    mTabLayout.setupWithViewPager(mViewPager);
   }
 
   private void initData() {
     pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
     if (-1 == pId) {
-      Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
+      makeToast("该趣处已不存在!");
     } else {
 
       if (dModel == null || StringUtils.isEmpty(dModel.getName())) {
 
         if (!NetUtil.isNetworkConnected(getApplicationContext())) {
-          errorView.showViewDefault(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+          mErrorView.showViewDefault(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
               getData();
             }
           });
@@ -199,26 +148,25 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
       } else {
         bindingDetailData(dModel);
       }
-
-
-
     }
   }
 
   private void getData() {
-
     DialogUtil.showProgess(this, "数据加载中...");
     InterestingDetailPresenter.getInterestingData(this, pId, new CommonListener<DetailModel>() {
-      @Override public void successListener(DetailModel response) {
+      @Override
+      public void successListener(DetailModel response) {
         DialogUtil.dismissProgess();
         bindingDetailData(response);
 
-        errorView.hideView();
+        mErrorView.hideView();
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
-        errorView.showViewDefault(new View.OnClickListener() {
-          @Override public void onClick(View v) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+        mErrorView.showViewDefault(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
             DialogUtil.showProgess(QuchuDetailsActivity.this, "加载中");
             getData();
           }
@@ -228,59 +176,28 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   private void bindingDetailData(DetailModel model) {
-    mRecyclerView.setVisibility(View.VISIBLE);
-    detail_bottom_group_ll.setVisibility(View.VISIBLE);
+    mDetailBottomGroupLl.setVisibility(View.VISIBLE);
     dModel.copyFrom(model);
 
-    getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
-    getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-
-        UMEvent("back_c");
-        ZGEvent("趣处名称", dModel.getName(), "返回首页");
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
-      }
-    });
-    if (null == mQuchuDetailAdapter) {
-      return;
-    }
-
-    detail_bottom_group_ll.setVisibility(View.VISIBLE);
-    mRecyclerView.setVisibility(View.VISIBLE);
-
-    if (null != dModel && null != dModel.getImglist() && dModel.getImglist().size() > 0) {
-
-      List<ImageModel> galleryImgs = new ArrayList<>();
-      for (int i = 0; i < dModel.getImglist().size(); i++) {
-        galleryImgs.add(dModel.getImglist().get(i).convert2ImageModel());
-      }
-
-      mQuchuDetailAdapter.updateGallery(galleryImgs);
-    }
-
     changeCollectState(dModel.isIsf());
-    mQuchuDetailAdapter.notifyDataSetChanged();
+
+    mDetailFragment = new QuchuDetailFragment();
+    Bundle detailBundle = new Bundle();
+    detailBundle.putSerializable(QuchuDetailFragment.BUNDLE_KEY_DETAIL_MODEL, dModel);
+    mDetailFragment.setArguments(detailBundle);
 
     mCommentListFragment = new CommentListFragment();
-    Bundle bundle = new Bundle();
-    bundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID,pId);
-    bundle.putInt(CommentListFragment.BUNDLE_KEY_RATING_COUNT,dModel.getPlaceReviewCount());
-    bundle.putFloat(CommentListFragment.BUNDLE_KEY_AVG_RATING,dModel.getSuggest());
-    bundle.putSerializable(CommentListFragment.BUNDLE_KEY_BIZ_LIST,
+    Bundle commentBundle = new Bundle();
+    commentBundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID, pId);
+    commentBundle.putInt(CommentListFragment.BUNDLE_KEY_RATING_COUNT, dModel.getPlaceReviewCount());
+    commentBundle.putFloat(CommentListFragment.BUNDLE_KEY_AVG_RATING, dModel.getSuggest());
+    commentBundle.putSerializable(CommentListFragment.BUNDLE_KEY_BIZ_LIST,
         (Serializable) dModel.getReviewGroupList());
-    bundle.putSerializable(CommentListFragment.BUNDLE_KEY_TAG_LIST,
+    commentBundle.putSerializable(CommentListFragment.BUNDLE_KEY_TAG_LIST,
         (Serializable) dModel.getReviewTagList());
-    mCommentListFragment.setArguments(bundle);
+    mCommentListFragment.setArguments(commentBundle);
 
-    getSupportFragmentManager().beginTransaction().add(R.id.flContainer,mCommentListFragment).commitAllowingStateLoss();
-
-    findViewById(R.id.flContainer).setVisibility(View.INVISIBLE);
-
-    mRecyclerView.postDelayed(new Runnable() {
-      @Override public void run() {
-        mQuchuDetailAdapter.notifyItemChanged(0);
-      }
-    }, 1000);
+    initViewPager();
   }
 
   private void changeCollectState(boolean isCollect) {
@@ -288,10 +205,32 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     resetFavorite();
   }
 
-  @OnClick({R.id.llFavorite, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia })
+  private void resetFavorite() {
+    mLlFavorite.setBackgroundResource(!dModel.isIsf() ? R.drawable.shape_lineframe_yellow_fill : R.drawable.shape_lineframe_gray_fill);
+    mTvFavorite.setTextColor(!dModel.isIsf() ? getResources().getColor(R.color.standard_color_h1_dark) : getResources().getColor(R.color.standard_color_h3_dark));
+    mTvFavorite.setText(dModel.isIsf() ? R.string.cancel_favorite : R.string.favorite);
+  }
+
+  private void getVisitors() {
+    InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId,
+        new CommonListener<VisitedUsersModel>() {
+          @Override
+          public void successListener(VisitedUsersModel response) {
+            if (null != response) {
+
+            }
+          }
+
+          @Override
+          public void errorListener(VolleyError error, String exception, String msg) {
+          }
+        });
+  }
+
+  @OnClick({llFavorite, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia})
   public void detailClick(View v) {
     if (!NetUtil.isNetworkConnected(this)) {
-      Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+      makeToast(R.string.network_error);
     }
 
     if (KeyboardUtils.isFastDoubleClick()) return;
@@ -307,12 +246,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
               WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(),
                   dModel.getName(), false);
             } else {
-              Toast.makeText(QuchuDetailsActivity.this, R.string.pre_order_not_supported,
-                  Toast.LENGTH_SHORT).show();
+              makeToast(R.string.pre_order_not_supported);
             }
           } else {
-            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT)
-                .show();
+            makeToast(R.string.network_error);
           }
 
           break;
@@ -325,13 +262,13 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
           break;
         case R.id.ivPingJia:
 
-            UMEvent("comment_c");
-            ZGEvent("趣处名称", dModel.getName(), "进入评价");
-            AddFootprintActivity.enterActivity(QuchuDetailsActivity.this, null,
-                dModel.getPid(), getPageNameCN());
+          UMEvent("comment_c");
+          ZGEvent("趣处名称", dModel.getName(), "进入评价");
+          AddFootprintActivity.enterActivity(QuchuDetailsActivity.this, null,
+              dModel.getPid(), getPageNameCN());
 
           break;
-        case R.id.llFavorite:
+        case llFavorite:
           //收藏
           UMEvent("like_c");
           ZGEvent("趣处名称", dModel.getName(), "收藏趣处");
@@ -347,7 +284,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   private void setFavorite() {
     InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(),
         new InterestingDetailPresenter.DetailDataListener() {
-          @Override public void onSuccessCall(String str) {
+          @Override
+          public void onSuccessCall(String str) {
             dModel.setIsf(!dModel.isIsf());
             changeCollectState(dModel.isIsf());
             if (AppContext.selectedPlace != null) {
@@ -355,9 +293,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
               AppContext.dCardListNeedUpdate = true;
             }
             if (dModel.isIsf()) {
-              Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+              makeToast("收藏成功!");
             } else {
-              Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+              makeToast("取消收藏!");
             }
 
             if (!TextUtils.isEmpty(from) && from.equals(FROM_TYPE_PROFILE)) {
@@ -366,31 +304,42 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
             }
           }
 
-          @Override public void onErrorCall(String str) {
+          @Override
+          public void onErrorCall(String str) {
 
           }
         });
   }
 
-  @Override public void onBackPressed() {
-    super.onBackPressed();
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
+    return null;
   }
 
-  @Override protected void onDestroy() {
-    super.onDestroy();
+  @Override
+  public int getUserBehaviorPageId() {
+    return 104;
   }
 
-  @Override public void onStart() {
+  @Override
+  protected String getPageNameCN() {
+    return "";
+  }
+
+  @Override
+  public void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
   }
 
-  @Override public void onStop() {
+  @Override
+  public void onStop() {
     EventBus.getDefault().unregister(this);
     super.onStop();
   }
 
-  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
 
     switch (event.getFlag()) {
 
@@ -407,6 +356,37 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
       case EventFlags.EVENT_GOTO_HOME_PAGE:
         startActivity(RecommendActivity.class);
         break;
+    }
+  }
+
+  /**
+   * ViewPager 适配器
+   */
+  private class QuchuDetailViewPagerAdapter extends FragmentPagerAdapter {
+
+    public QuchuDetailViewPagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      if (position == 0) {
+        return mDetailFragment;
+      }
+      return mCommentListFragment;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+      if (position == 0) {
+        return "趣处";
+      }
+      return "评论";
+    }
+
+    @Override
+    public int getCount() {
+      return 2;
     }
   }
 }

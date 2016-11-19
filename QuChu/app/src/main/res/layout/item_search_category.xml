@@ -15,11 +15,12 @@
 
   <TextView
       android:id="@+id/search_item_categoryName"
-      style="@style/TextView.H2"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/base_margin"
+      android:layout_marginTop="@dimen/half_margin"
       android:gravity="center"
+      android:textColor="@color/standard_color_h1_dark"
+      android:textSize="13sp"
       tools:text="类别"/>
 
 </LinearLayout>

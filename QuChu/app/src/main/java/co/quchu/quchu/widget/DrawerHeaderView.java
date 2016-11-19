@@ -1,6 +1,7 @@
 package co.quchu.quchu.widget;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -38,6 +39,8 @@ public class DrawerHeaderView extends LinearLayout {
   @Bind(R.id.drawerLoginBtn) TextView mDrawerLoginBtn;
   @Bind(R.id.drawerLoginLayout) RelativeLayout mDrawerLoginLayout;
   @Bind(R.id.drawerUserLayout) LinearLayout mDrawerUserLayout;
+  @Bind(R.id.drawerAppNameTv) TextView mDrawerAppNameTv;
+  @Bind(R.id.drawerAppDescribeTv) TextView mDrawerAppDescribeTv;
 
   private List<MyGeneModel.GenesEntity> mGenes;
   private boolean hasAvatar;
@@ -47,6 +50,15 @@ public class DrawerHeaderView extends LinearLayout {
 
     LayoutInflater.from(context).inflate(R.layout.view_drawer_header, this);
     ButterKnife.bind(this);
+  }
+
+  @Override
+  protected void onFinishInflate() {
+    super.onFinishInflate();
+
+    Typeface face = Typeface.createFromAsset(getContext().getAssets(), "BEBAS.TTF");
+    mDrawerAppNameTv.setTypeface(face);
+    mDrawerAppDescribeTv.setTypeface(face);
   }
 
   public void setUser() {

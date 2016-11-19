@@ -83,7 +83,7 @@
       android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
       android:gravity="center"
       android:text="@string/login_via_phone"
-      android:textColor="@android:color/white"
+      android:textColor="@color/standard_color_h1_dark"
       android:textSize="@dimen/standard_text_size_h3"/>
 
   <TextView

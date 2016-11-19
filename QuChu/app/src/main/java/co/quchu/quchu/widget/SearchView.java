@@ -161,7 +161,7 @@ public class SearchView extends LinearLayout {
   /**
    * 查询历史记录
    */
-  private void queryHistory() {
+  public void queryHistory() {
     List<SearchKeywordModel> keywords = SearchHistoryPresenter.getHistoryKeywords(getContext());
     if (keywords != null && keywords.size() > 0) {
       mSearchHistoryList.clear();
@@ -202,13 +202,13 @@ public class SearchView extends LinearLayout {
 
     if (mSearchHistoryList.contains(keyword)) {
       mSearchHistoryList.remove(keyword);
-      mSearchHistoryAdapter.notifyDataSetChanged();
     }
 
     if (mSearchHistoryList.size() == 0) {
       mSearchHistoryRv.setVisibility(GONE);
     }
 
+    mSearchHistoryAdapter.notifyDataSetChanged();
     SearchHistoryPresenter.deleteIfExisted(getContext(), keyword);
   }
 

@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -65,7 +66,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   private static final String BUNDLE_KEY_SCENE_NAME = "BUNDLE_KEY_SCENE_NAME";
   private static final String BUNDLE_KEY_SCENE_IS_FAVORITE = "BUNDLE_KEY_SCENE_IS_FAVORITE";
 
-  @Bind(R.id.rv) RecyclerView rv;
+  @Bind(R.id.rv) RecyclerView mRecyclerView;
   @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
   @Bind(R.id.errorView) ErrorView errorView;
   @Bind(R.id.likeFab) FloatingActionButton mLikeFab;
@@ -87,39 +88,25 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   private boolean mFavoriteRunning = false;
   private boolean mActivityStop = false;
 
+  private TextView mTitleTv;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_simple_recyclerview);
     ButterKnife.bind(this);
+
     sceneId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID, -1);
     String name = getIntent().getStringExtra(BUNDLE_KEY_SCENE_NAME);
     isFavorite = getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE, false);
 
-    getEnhancedToolbar().getTitleTv().setText(name);
-
-    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-    rv.setLayoutManager(mLayoutManager);
-    if (!NetUtil.isNetworkConnected(getApplicationContext()) && mAdapter == null) {
-      errorView.showViewDefault(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
-          getData(true, false);
-        }
-      });
-    }
-    mSwipeRefreshLayout.setOnRefreshListener(this);
-
-    mLoadingListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
-      @Override
-      public void onLoadMore(int current_page) {
-        getData(false, true);
-      }
-    };
-    rv.addOnScrollListener(mLoadingListener);
+    mTitleTv = getEnhancedToolbar().getTitleTv();
+    mTitleTv.setText(name);
+    mTitleTv.setAlpha(0);
 
     errorView.hideView();
+
+    initRecyclerView();
 
     getData();
 
@@ -134,6 +121,37 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 //    changeFavoriteBtn(isFavorite);
   }
 
+  private void initRecyclerView() {
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+    if (!NetUtil.isNetworkConnected(getApplicationContext()) && mAdapter == null) {
+      errorView.showViewDefault(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+          getData(true, false);
+        }
+      });
+    }
+    mSwipeRefreshLayout.setOnRefreshListener(this);
+
+    mLoadingListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
+      @Override
+      public void onLoadMore(int current_page) {
+        getData(false, true);
+      }
+
+      @Override
+      public void onScrolledDistance(int dy, int targetHeight) {
+        float offset = Math.abs(dy);
+        float progress = offset / targetHeight;
+
+        mTitleTv.setAlpha(progress);
+      }
+    };
+    mRecyclerView.addOnScrollListener(mLoadingListener);
+  }
+
   public void getData() {
     DialogUtil.showProgess(this, R.string.loading_dialog_text);
     int delay = 0;
@@ -142,85 +160,13 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
       delay += 3000;
     }
 
-    rv.postDelayed(new Runnable() {
+    mRecyclerView.postDelayed(new Runnable() {
       @Override
       public void run() {
         getData(true, false);
       }
     }, delay);
   }
-
-
-  private void changeFavorite() {
-    if (!NetUtil.isNetworkConnected(SceneDetailActivity.this)) {
-      Toast.makeText(SceneDetailActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-      return;
-    }
-    if (mFavoriteRunning) {
-      Toast.makeText(getApplicationContext(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
-      return;
-    }
-
-    if (isFavorite) {
-      UMEvent("d_setcommon_c");
-      ScenePresenter.delFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
-        @Override
-        public void successListener(Object response) {
-          mFavoriteRunning = false;
-          isFavorite = false;
-
-          Toast.makeText(getApplicationContext(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
-
-//          changeFavoriteBtn(isFavorite);
-        }
-
-        @Override
-        public void errorListener(VolleyError error, String exception, String msg) {
-          mFavoriteRunning = false;
-
-          Toast.makeText(getApplicationContext(), R.string.del_to_favorite_fail, Toast.LENGTH_SHORT).show();
-        }
-      });
-    } else {
-      ScenePresenter.addFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
-        @Override
-        public void successListener(Object response) {
-
-          ArrayMap<String, Object> params = new ArrayMap<>();
-          params.put("趣处名称", mSceneInfo.getSceneName());
-          params.put("入口名称", "场景详情");
-          ZGEvent(params, "设为常用");
-
-          mFavoriteRunning = false;
-          isFavorite = true;
-
-          Toast.makeText(getApplicationContext(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
-
-//          changeFavoriteBtn(isFavorite);
-        }
-
-        @Override
-        public void errorListener(VolleyError error, String exception, String msg) {
-          mFavoriteRunning = false;
-
-          Toast.makeText(getApplicationContext(), R.string.add_to_favorite_fail, Toast.LENGTH_SHORT).show();
-        }
-      });
-    }
-  }
-
-  /**
-   * 改变按钮状态
-   */
-//  private void changeFavoriteBtn(boolean isFavorite) {
-//    if (isFavorite) {
-//      //场景已经收藏
-//      mLikeFab.setImageResource(R.mipmap.ic_favorite_yichu);
-//
-//    } else {
-//      mLikeFab.setImageResource(R.mipmap.ic_favorite_add);
-//    }
-//  }
 
   private void getData(final boolean firstLoad, final boolean loadMore) {
     if (firstLoad) {
@@ -306,7 +252,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
               startActivity(intent);
             }
           });
-          rv.setAdapter(mAdapter);
+          mRecyclerView.setAdapter(mAdapter);
         } else {
           mAdapter.notifyDataSetChanged();
         }
@@ -388,4 +334,75 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
       mSwipeRefreshLayout.setRefreshing(false);
     }
   }
+
+  //  private void changeFavorite() {
+//    if (!NetUtil.isNetworkConnected(SceneDetailActivity.this)) {
+//      Toast.makeText(SceneDetailActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+//      return;
+//    }
+//    if (mFavoriteRunning) {
+//      Toast.makeText(getApplicationContext(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
+//      return;
+//    }
+//
+//    if (isFavorite) {
+//      UMEvent("d_setcommon_c");
+//      ScenePresenter.delFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
+//        @Override
+//        public void successListener(Object response) {
+//          mFavoriteRunning = false;
+//          isFavorite = false;
+//
+//          Toast.makeText(getApplicationContext(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
+//
+////          changeFavoriteBtn(isFavorite);
+//        }
+//
+//        @Override
+//        public void errorListener(VolleyError error, String exception, String msg) {
+//          mFavoriteRunning = false;
+//
+//          Toast.makeText(getApplicationContext(), R.string.del_to_favorite_fail, Toast.LENGTH_SHORT).show();
+//        }
+//      });
+//    } else {
+//      ScenePresenter.addFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
+//        @Override
+//        public void successListener(Object response) {
+//
+//          ArrayMap<String, Object> params = new ArrayMap<>();
+//          params.put("趣处名称", mSceneInfo.getSceneName());
+//          params.put("入口名称", "场景详情");
+//          ZGEvent(params, "设为常用");
+//
+//          mFavoriteRunning = false;
+//          isFavorite = true;
+//
+//          Toast.makeText(getApplicationContext(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
+//
+////          changeFavoriteBtn(isFavorite);
+//        }
+//
+//        @Override
+//        public void errorListener(VolleyError error, String exception, String msg) {
+//          mFavoriteRunning = false;
+//
+//          Toast.makeText(getApplicationContext(), R.string.add_to_favorite_fail, Toast.LENGTH_SHORT).show();
+//        }
+//      });
+//    }
+//  }
+
+//  /**
+//   * 改变按钮状态
+//   */
+//  private void changeFavoriteBtn(boolean isFavorite) {
+//    if (isFavorite) {
+//      //场景已经收藏
+//      mLikeFab.setImageResource(R.mipmap.ic_favorite_yichu);
+//
+//    } else {
+//      mLikeFab.setImageResource(R.mipmap.ic_favorite_add);
+//    }
+//  }
 }

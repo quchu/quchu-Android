@@ -31,15 +31,15 @@ public class CityModel implements Serializable {
     //1-为国内;0-为国外
     private String isInland = "";
 
-    //自己加的字段,区分国内和国外分组
-    private int group = -1;
+    //自己加的字段,是否分组头
+    private boolean isGroupHeader;
 
-    public int getGroup() {
-        return group;
+    public boolean isGroupHeader() {
+        return isGroupHeader;
     }
 
-    public void setGroup(int group) {
-        this.group = group;
+    public void setGroupHeader(boolean groupHeader) {
+        isGroupHeader = groupHeader;
     }
 
     public String getIsInland() {

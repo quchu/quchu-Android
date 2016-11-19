@@ -60,7 +60,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   private SearchAdapterNew mSearchHistoryAdapter;
   private EditText mSearchInputEt;
 
-  private List<String> mSearchHistoryList = new ArrayList<>();
   private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
   private List<String> mTags;
   private List<SceneInfoModel> mAllSceneList;
@@ -90,6 +89,13 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     initCategory();
 
 //    getNetArticleKeyword();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    mSearchView.queryHistory();
   }
 
   /**
