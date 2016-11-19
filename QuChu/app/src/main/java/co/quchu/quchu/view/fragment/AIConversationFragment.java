@@ -8,7 +8,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -78,6 +76,7 @@ public class AIConversationFragment extends BaseFragment
 
 
   private void hideAndUpdate(int selected){
+
     int index = rvOptions.getChildCount()==1?0:selected;
     final TextView selectedTarget = (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
 
@@ -86,12 +85,11 @@ public class AIConversationFragment extends BaseFragment
     selectedTarget.getLocationInWindow(answerLocation);
 
     mRecyclerView.getChildAt(mRecyclerView.getChildCount()-2).getLocationInWindow(targetLocation);
-    System.out.println(answerLocation[1]+" | "+targetLocation[1]);
 
     float translationY = targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
     float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
 
-    int duration = 450;
+    int duration = 300;
     selectedTarget.animate().translationY(translationY).translationX(translationX).alpha(.3f).setDuration(duration).start();
     llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
 
@@ -128,6 +126,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void resetOptions(final List<String>list,final String addition,final int type){
+
 
     if (mConversation.size()<=3){
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
@@ -468,23 +467,28 @@ public class AIConversationFragment extends BaseFragment
     }
 
     hideAndUpdate(index);
-    int position = mConversation.size() - 1;
-    mConversation.get(position).getAnswerPramms().clear();
-    AIConversationPresenter.delOptionMessages(getActivity());
-    mAdapter.notifyItemChanged(position);
-
-    mRecyclerView.postDelayed(new Runnable() {
+    new Handler().postDelayed(new Runnable() {
       @Override public void run() {
-        AIConversationModel answerModel = new AIConversationModel();
-        answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
-        answerModel.setAnswer(answer);
-        AIConversationPresenter.insertMessage(getActivity(),answerModel);
-        mConversation.add(answerModel);
-        mAdapter.notifyItemInserted(mConversation.size() - 1);
-        //scrollToBottom();
-        getNext(answer, additionalShit);
+        int position = mConversation.size() - 1;
+        mConversation.get(position).getAnswerPramms().clear();
+        AIConversationPresenter.delOptionMessages(getActivity());
+        mAdapter.notifyItemChanged(position);
+
+        mRecyclerView.postDelayed(new Runnable() {
+          @Override public void run() {
+            AIConversationModel answerModel = new AIConversationModel();
+            answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
+            answerModel.setAnswer(answer);
+            AIConversationPresenter.insertMessage(getActivity(),answerModel);
+            mConversation.add(answerModel);
+            mAdapter.notifyItemInserted(mConversation.size() - 1);
+            //scrollToBottom();
+            getNext(answer, additionalShit);
+          }
+        }, CONVERSATION_REQUEST_DELAY);
       }
-    }, CONVERSATION_REQUEST_DELAY);
+    },300);
+
   }
 
   @Override public void onRetry() {

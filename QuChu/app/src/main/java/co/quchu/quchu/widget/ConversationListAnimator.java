@@ -109,8 +109,7 @@ public class ConversationListAnimator extends DefaultItemAnimator {
       holder.itemView.animate()
           .alpha(1)
           .setInterpolator(new AccelerateDecelerateInterpolator())
-          .setDuration(500)
-          .setStartDelay(100)
+          .setDuration(250)
           .setListener(new Animator.AnimatorListener() {
             @Override public void onAnimationStart(Animator animation) {
               dispatchAddStarting(holder);

@@ -118,12 +118,10 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           }
 
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
-          holder.itemView.setTag("| 1");
           break;
         case TYPE_ANSWER:
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
           ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-          holder.itemView.setTag("| 2");
 
           break;
         case TYPE_OPTION:
@@ -134,7 +132,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
           ((OptionViewHolder) holder).rvOption.setLayoutManager(
               new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
-          holder.itemView.setTag("| 3");
 
           break;
 
@@ -150,7 +147,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           } else {
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.GONE);
           }
-          holder.itemView.setTag("| 4");
 
           break;
         case TYPE_NO_NETWORK:
@@ -169,11 +165,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
               }
             }
           });
-          holder.itemView.setTag("| 5");
 
-          break;
-        default :
-          holder.itemView.setTag("| 6");
           break;
       }
     }
