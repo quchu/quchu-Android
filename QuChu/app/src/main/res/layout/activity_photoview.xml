@@ -57,7 +57,7 @@
         android:text="图片来源:大众点评"
         android:textColor="@color/standard_color_white"
         android:textSize="13sp"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/ivShowSource"

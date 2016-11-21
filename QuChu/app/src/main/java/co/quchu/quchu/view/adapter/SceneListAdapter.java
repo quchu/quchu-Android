@@ -52,18 +52,19 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     if (viewHolder instanceof SceneViewHolder) {
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
 
-      if (!TextUtils.isEmpty(sceneInfoModel.getIconUrl())) {
-        holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrl()));
-      }
-      holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
-      holder.mSceneTitleTv.setMaxLines(mLimitation > 0 ? 1 : 10);
-      holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
-
       //首页显示所有场景
       if (mLimitation > 0 && position == 3) {
         holder.mSceneCoverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_suoyouchangjing_main);
         holder.mSceneTitleTv.setText("所有场景");
         holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h1_dark));
+
+      } else {
+        if (!TextUtils.isEmpty(sceneInfoModel.getIconUrl())) {
+          holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrl()));
+        }
+        holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
+        holder.mSceneTitleTv.setMaxLines(mLimitation > 0 ? 1 : 10);
+        holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
       }
 
       holder.itemView.setTag(sceneInfoModel);

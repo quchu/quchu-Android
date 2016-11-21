@@ -60,6 +60,7 @@ import co.quchu.quchu.view.adapter.SceneListAdapter;
 import co.quchu.quchu.view.fragment.AIConversationFragment;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
+import co.quchu.quchu.widget.DrawerMenu;
 import co.quchu.quchu.widget.XiaoQFab;
 
 /**
@@ -86,8 +87,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemShareApp) DrawerItemView mDrawerItemShareApp;
   @Bind(R.id.placeHolder) View placeHolder;
 
-  @Bind(R.id.vFakeDrawer) View vFakeDrawer;
-  @Bind(R.id.vDrawer) View vDrawer;
+  @Bind(R.id.vFakeDrawer) DrawerMenu vFakeDrawer;
+  @Bind(R.id.vDrawer) DrawerMenu vDrawer;
   @Bind(R.id.ivSearch) View ivSearch;
   @Bind(R.id.ivSwitchCity) View ivSwitchCity;
   @Bind(R.id.ivAllScene) View ivAllScene;
@@ -129,8 +130,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     initDrawerView();
 
-    getUnreadMessage();
-
     getSceneList();
 
     checkForceUpdate();
@@ -156,6 +155,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
     initFragment();
 
     startIntentIfFromPush(getIntent());
+  }
+
+  @Override
+  protected void onResume() {
+    resumeUpdateDataTimes = 0;
+    netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
+    super.onResume();
+
+    getUnreadMessage();
   }
 
   private void startIntentIfFromPush(Intent intent) {
@@ -302,6 +310,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
         showMsgUnreadView(msgCount);
 
         showFeedbackUnreadView(feedbackMsgCount);
+
+        if (msgCount > 0 || feedbackMsgCount > 0) {
+          vDrawer.showRedDot();
+          vFakeDrawer.showRedDot();
+        } else {
+          vDrawer.hideRedDot();
+          vFakeDrawer.hideRedDot();
+        }
       }
     });
   }
@@ -476,17 +492,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemMessage://消息
-        if (mDrawerItemMessage.getRedDotVisibility() == View.VISIBLE) {
-          mDrawerItemMessage.hideRedDot();
-        }
+//        if (mDrawerItemMessage.getRedDotVisibility() == View.VISIBLE) {
+//          mDrawerItemMessage.hideRedDot();
+//        }
 
         startActivity(MessageCenterActivity.class);
         break;
 
       case R.id.drawerItemFeedback://意见反馈
-        if (mDrawerItemFeedback.getRedDotVisibility() == View.VISIBLE) {
-          mDrawerItemFeedback.hideRedDot();
-        }
+//        if (mDrawerItemFeedback.getRedDotVisibility() == View.VISIBLE) {
+//          mDrawerItemFeedback.hideRedDot();
+//        }
 
         startActivity(FeedbackActivity.class);
         break;
@@ -509,13 +525,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     if (mCityEntity != null) {
       SelectedCityActivity.launch(this, mCityEntity);
     }
-  }
-
-  @Override
-  protected void onResume() {
-    resumeUpdateDataTimes = 0;
-    netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
-    super.onResume();
   }
 
   private Handler netHandler = new Handler() {
