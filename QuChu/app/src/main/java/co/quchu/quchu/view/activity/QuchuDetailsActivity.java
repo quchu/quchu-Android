@@ -84,7 +84,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_quchu_details_new);
+    setContentView(R.layout.activity_quchu_details);
     ButterKnife.bind(this);
 
     from = getIntent().getStringExtra(REQUEST_KEY_FROM);

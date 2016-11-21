@@ -35,7 +35,7 @@ public class RecommendModel implements Parcelable {
 
     private String address;
     private String cover;
-    private String describe;
+    private String described;
     private String distance;
     private int height;
     private boolean isActivity;
@@ -101,8 +101,8 @@ public class RecommendModel implements Parcelable {
         this.cover = cover;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescribe(String described) {
+        this.described = described;
     }
 
     public void setDistance(String distance) {
@@ -166,7 +166,7 @@ public class RecommendModel implements Parcelable {
     }
 
     public String getDescribe() {
-        return describe;
+        return described;
     }
 
     public String getDistance() {
@@ -284,7 +284,7 @@ public class RecommendModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.address);
         dest.writeString(this.cover);
-        dest.writeString(this.describe);
+        dest.writeString(this.described);
         dest.writeString(this.distance);
         dest.writeInt(this.height);
         dest.writeByte(this.isActivity ? (byte) 1 : (byte) 0);
@@ -308,7 +308,7 @@ public class RecommendModel implements Parcelable {
     protected RecommendModel(Parcel in) {
         this.address = in.readString();
         this.cover = in.readString();
-        this.describe = in.readString();
+        this.described = in.readString();
         this.distance = in.readString();
         this.height = in.readInt();
         this.isActivity = in.readByte() != 0;

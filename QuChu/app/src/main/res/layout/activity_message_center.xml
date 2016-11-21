@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
   <include
       android:id="@+id/message_center_toolbar"
       layout="@layout/cp_enhanced_toolbar"/>
+
+  <RelativeLayout
+      android:id="@+id/message_fragment_container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/appbar"/>
 
   <android.support.design.widget.TabLayout
       android:id="@+id/message_center_tab_layout"
       android:layout_width="wrap_content"
       android:layout_height="?attr/actionBarSize"
       android:layout_centerHorizontal="true"
+      android:visibility="gone"
       app:tabIndicatorColor="@color/standard_color_h1_dark"
       app:tabIndicatorHeight="2dp"
       app:tabMode="fixed"
@@ -24,6 +31,7 @@
       android:id="@+id/message_center_viewpager"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/message_center_toolbar"/>
+      android:layout_below="@+id/message_center_toolbar"
+      android:visibility="gone"/>
 
-</RelativeLayout>
+</LinearLayout>

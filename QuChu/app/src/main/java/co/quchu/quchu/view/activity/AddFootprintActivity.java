@@ -17,6 +17,14 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.VolleyError;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -32,11 +40,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
 import co.quchu.quchu.widget.SelectedImagePopWin;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.android.volley.VolleyError;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nico on 16/4/12.
@@ -202,18 +205,18 @@ public class AddFootprintActivity extends BaseBehaviorActivity
                 new ImageUpload.UploadResponseListener() {
                   @Override public void finish(String result) {
 
-                    StringBuffer sb = new StringBuffer();
-                    for (int i = 0; i < tags.size(); i++) {
-                      if (tags.get(i).isPraise()) {
-                        sb.append(tags.get(i).getTagId()).append(",");
-                      }
-                    }
-                    String strTagIds = sb.toString();
-                    if (null != strTagIds && strTagIds.endsWith(",")) {
-                      strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
-                    }
-
-                    saveRating(result, strTagIds, pId, etContent.getText().toString(),
+//                    StringBuffer sb = new StringBuffer();
+//                    for (int i = 0; i < tags.size(); i++) {
+//                      if (tags.get(i).isPraise()) {
+//                        sb.append(tags.get(i).getTagId()).append(",");
+//                      }
+//                    }
+//                    String strTagIds = sb.toString();
+//                    if (null != strTagIds && strTagIds.endsWith(",")) {
+//                      strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
+//                    }
+//
+                    saveRating(result, "", pId, etContent.getText().toString(),
                         (int) rbRating.getRating());
                   }
 
@@ -225,17 +228,17 @@ public class AddFootprintActivity extends BaseBehaviorActivity
                 });
           } else {
             DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接收中");
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < tags.size(); i++) {
-              if (tags.get(i).isPraise()) {
-                sb.append(tags.get(i).getTagId()).append(",");
-              }
-            }
-            String strTagIds = sb.toString();
-            if (null != strTagIds && strTagIds.endsWith(",")) {
-              strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
-            }
-            saveRating("", strTagIds, pId, etContent.getText().toString(),
+//            StringBuffer sb = new StringBuffer();
+//            for (int i = 0; i < tags.size(); i++) {
+//              if (tags.get(i).isPraise()) {
+//                sb.append(tags.get(i).getTagId()).append(",");
+//              }
+//            }
+//            String strTagIds = sb.toString();
+//            if (null != strTagIds && strTagIds.endsWith(",")) {
+//              strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
+//            }
+            saveRating("", "", pId, etContent.getText().toString(),
                 (int) rbRating.getRating());
           }
         } else {

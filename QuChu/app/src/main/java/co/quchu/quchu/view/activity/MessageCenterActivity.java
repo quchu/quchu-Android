@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.widget.TextView;
@@ -36,10 +37,15 @@ public class MessageCenterActivity extends BaseBehaviorActivity {
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView titleTv = toolbar.getTitleTv();
-    titleTv.setText("");
+    titleTv.setText("消息");
 
-    mViewpager.setAdapter(new MessageTabAdapter(getSupportFragmentManager()));
-    mTabLayout.setupWithViewPager(mViewpager);
+    FragmentManager fm = getSupportFragmentManager();
+    FragmentTransaction ft = fm.beginTransaction();
+    ft.add(R.id.message_fragment_container, new MessageFragment());
+    ft.commit();
+
+//    mViewpager.setAdapter(new MessageTabAdapter(getSupportFragmentManager()));
+//    mTabLayout.setupWithViewPager(mViewpager);
   }
 
   /**
