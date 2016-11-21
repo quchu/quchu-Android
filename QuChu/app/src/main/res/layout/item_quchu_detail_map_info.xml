@@ -23,7 +23,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:src="@mipmap/ic_map_pin_me"
+      android:src="@mipmap/ic_map_pin_blue"
       />
 
   <TextView

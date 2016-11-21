@@ -77,7 +77,7 @@ public class PhotoViewActivity extends BaseActivity {
       public void onPageSelected(int position) {
         mTvIndicator.setText((position + 1) + " of " + (mPhotoList.size()));
         if (mTvSource.getVisibility() == View.VISIBLE) {
-          mTvSource.setVisibility(View.GONE);
+          mTvSource.setVisibility(View.INVISIBLE);
           mIvShowSource.setVisibility(View.VISIBLE);
         }
       }
