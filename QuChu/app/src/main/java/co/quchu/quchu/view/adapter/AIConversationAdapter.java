@@ -30,9 +30,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   public static final int TYPE_QUESTION = 0x001;
   public static final int TYPE_ANSWER = 0x002;
-  public static final int TYPE_OPTION = 0x003;
+  //public static final int TYPE_OPTION = 0x003;
   public static final int TYPE_GALLERY_OPTION = 0x004;
-  public static final int TYPE_NO_NETWORK = 0x005;
   public static final int TYPE_SPACE = 0x006;
 
 
@@ -40,33 +39,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   private List<AIConversationModel> mDataSet;
   private co.quchu.quchu.view.adapter.TextOptionAdapter.OnInteractiveClick mOnInteractiveListener;
 
-  public void updateNoNetwork(boolean noNetWork) {
-    if (noNetWork){
-
-      if (mDataSet.size()>0){
-        for (int i = 0; i < mDataSet.size(); i++) {
-          if (mDataSet.get(i).getDataType()== AIConversationModel.EnumDataType.NO_NETWORK){
-            mDataSet.remove(i);
-          }
-        }
-
-      }
-      AIConversationModel aiConversationModel = new AIConversationModel();
-      aiConversationModel.setDataType(AIConversationModel.EnumDataType.NO_NETWORK);
-      mDataSet.add(aiConversationModel);
-
-    }else{
-      for (int i = 0; i < mDataSet.size(); i++) {
-        if (mDataSet.get(i).getDataType()== AIConversationModel.EnumDataType.NO_NETWORK){
-          mDataSet.remove(i);
-        }
-      }
-
-    }
-
-    notifyDataSetChanged();
-
-  }
 
 
   public AIConversationAdapter(Activity context, List<AIConversationModel> data,
@@ -84,15 +56,15 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       case TYPE_ANSWER:
         return new AnswerViewHolder(LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_ai_conversation_answer, parent, false));
-      case TYPE_OPTION:
-        return new OptionViewHolder(LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_ai_conversation_option, parent, false));
+      //case TYPE_OPTION:
+      //  return new OptionViewHolder(LayoutInflater.from(parent.getContext())
+      //      .inflate(R.layout.item_ai_conversation_option, parent, false));
       case TYPE_GALLERY_OPTION:
         return new GalleryViewHolder(LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_ai_conversation_gallery_option, parent, false));
-      case TYPE_NO_NETWORK:
-        return new NoNetworkViewHolder(LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_ai_conversation_no_network, parent, false));
+      //case TYPE_NO_NETWORK:
+      //  return new NoNetworkViewHolder(LayoutInflater.from(parent.getContext())
+      //      .inflate(R.layout.item_ai_conversation_no_network, parent, false));
       default:
         return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_space,parent,false));
@@ -124,16 +96,16 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
 
           break;
-        case TYPE_OPTION:
-
-          holder.itemView.setVisibility(View.INVISIBLE);
-          ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
-          TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash());
-          ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
-          ((OptionViewHolder) holder).rvOption.setLayoutManager(
-              new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
-
-          break;
+        //case TYPE_OPTION:
+        //
+        //  holder.itemView.setVisibility(View.INVISIBLE);
+        //  ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
+        //  TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash());
+        //  ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
+        //  ((OptionViewHolder) holder).rvOption.setLayoutManager(
+        //      new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
+        //
+        //  break;
 
         case TYPE_GALLERY_OPTION:
           if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
@@ -149,24 +121,24 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           }
 
           break;
-        case TYPE_NO_NETWORK:
-          ((NoNetworkViewHolder)holder).tvRetry.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-              if (null!=mOnInteractiveListener){
-                mOnInteractiveListener.onRetry();
-              }
-            }
-          });
-
-          ((NoNetworkViewHolder) holder).tvSearch.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-              if (null!=mOnInteractiveListener){
-                mOnInteractiveListener.onSearch();
-              }
-            }
-          });
-
-          break;
+        //case TYPE_NO_NETWORK:
+        //  ((NoNetworkViewHolder)holder).tvRetry.setOnClickListener(new View.OnClickListener() {
+        //    @Override public void onClick(View v) {
+        //      if (null!=mOnInteractiveListener){
+        //        mOnInteractiveListener.onRetry();
+        //      }
+        //    }
+        //  });
+        //
+        //  ((NoNetworkViewHolder) holder).tvSearch.setOnClickListener(new View.OnClickListener() {
+        //    @Override public void onClick(View v) {
+        //      if (null!=mOnInteractiveListener){
+        //        mOnInteractiveListener.onSearch();
+        //      }
+        //    }
+        //  });
+        //
+        //  break;
       }
     }
   }
@@ -187,12 +159,12 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           return TYPE_QUESTION;
         case ANSWER:
           return TYPE_ANSWER;
-        case OPTION:
-          return TYPE_OPTION;
+        //case OPTION:
+        //  return TYPE_OPTION;
         case GALLERY:
           return TYPE_GALLERY_OPTION;
-        case NO_NETWORK:
-          return TYPE_NO_NETWORK;
+        //case NO_NETWORK:
+        //  return TYPE_NO_NETWORK;
         default:
           return TYPE_SPACE;
       }
@@ -253,46 +225,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
   }
 
-  private class TextOptionAdapter extends RecyclerView.Adapter<TextOptionViewHolder> {
 
-    private List<String> options;
-    private String additionalShit;
-
-    public TextOptionAdapter(List<String> options, String additional) {
-      this.options = options;
-      this.additionalShit = additional;
-    }
-
-    @Override public TextOptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return new TextOptionViewHolder(LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.item_ai_conversation_txt_opt, parent, false));
-    }
-
-    @Override public void onBindViewHolder(TextOptionViewHolder holder, final int position) {
-      String s = Character.toString ((char) (65+position));
-      final String answer = String.valueOf(options.get(position));
-      holder.tvOption.setText(s+": "+answer);
-      holder.tvOption.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          mOnInteractiveListener.onAnswer(answer, additionalShit,position);
-        }
-      });
-    }
-
-    @Override public int getItemCount() {
-      return null != options ? options.size() : 0;
-    }
-  }
-
-  public class TextOptionViewHolder extends RecyclerView.ViewHolder {
-
-    @Bind(R.id.tvOption) TextView tvOption;
-
-    public TextOptionViewHolder(View itemView) {
-      super(itemView);
-      ButterKnife.bind(this, itemView);
-    }
-  }
 
   public class PlaceVPAdapter extends PagerAdapter {
 

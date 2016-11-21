@@ -105,7 +105,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     RecommendPresenter.getSceneList(this, new CommonListener<List<SceneInfoModel>>() {
       @Override
       public void successListener(List<SceneInfoModel> response) {
-        mAllSceneList.clear();
+        if (null!=mAllSceneList){
+          mAllSceneList.clear();
+        }
         mAllSceneList.addAll(response);
 
         initTags();

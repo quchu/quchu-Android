@@ -49,6 +49,7 @@ public class AIConversationFragment extends BaseFragment
 
   private AIConversationAdapter mAdapter;
   private List<AIConversationModel> mConversation = new ArrayList<>();
+  private List<AIConversationModel> mHistory;
   public static final int CONVERSATION_REQUEST_DELAY = 500;
   public static final int CONVERSATION_ANSWER_DELAY = 300;
 
@@ -56,7 +57,6 @@ public class AIConversationFragment extends BaseFragment
   private int mAppbarOffSet;
   private XiaoQFab mXiaoQFab;
   private boolean mNetworkBusy = false;
-  private List<AIConversationModel> history;
   private boolean mHideAnimRunning = false;
   private boolean mShowAnimRunning = false;
 
@@ -91,42 +91,50 @@ public class AIConversationFragment extends BaseFragment
 
     int duration = 500;
     selectedTarget.animate().translationY(translationY).translationX(translationX).setDuration(duration).start();
-    llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
 
     if (rvOptions.getChildCount()>1){
       View disappearView = rvOptions.getChildAt(index ==0?1:0);
       disappearView.animate().alpha(0).translationY(llOptions.getHeight()*3).setDuration(duration).start();
     }
-
+    llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
     //rvOptions.getAdapter().notifyItemRemoved(selected==1?0:1);
 
   }
 
   private void hideOptions(){
-    System.out.println("hideOptions()" +" |"+mHideAnimRunning);
-    llOptions.animate().translationY(llOptions.getHeight()).setDuration(200).start();
+    if (mHideAnimRunning){
+      return;
+    }
+    mHideAnimRunning = true;
+    llOptions.animate().translationY(llOptions.getHeight()).setDuration(350).start();
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
         mHideAnimRunning = false;
       }
-    },200);
+    },1000);
   }
 
   private void showOptions(){
-    if (mConversation.get(mConversation.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION &&!mShowAnimRunning){
+    if (mShowAnimRunning){
+      return;
+    }
+    if (mConversation.get(mConversation.size()-1).getAnswerPramms()!=null &&mConversation.get(mConversation.size()-1).getAnswerPramms().size()>0  ){
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(2f)).start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
         }
-      },350);
+      },1000);
 
     }
   }
 
   private void resetOptions(final List<String>list,final String addition,final int type){
 
+    if (null==list){
+      return;
+    }
 
     if (mConversation.size()<=3){
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
@@ -157,6 +165,7 @@ public class AIConversationFragment extends BaseFragment
         }
       }
     },0);
+    llOptions.clearAnimation();
 
   }
 
@@ -199,7 +208,6 @@ public class AIConversationFragment extends BaseFragment
               showOptions();
           }else{
             if (!mHideAnimRunning){
-              mHideAnimRunning = true;
               hideOptions();
             }
           }
@@ -226,8 +234,8 @@ public class AIConversationFragment extends BaseFragment
 
     deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
-    history = AIConversationPresenter.getMessages(getActivity());
-    mConversation.addAll(history);
+    mHistory = AIConversationPresenter.getMessages(getActivity());
+    mConversation.addAll(mHistory);
     mAdapter.notifyDataSetChanged();
 
     if (mConversation.size()>0){
@@ -237,7 +245,7 @@ public class AIConversationFragment extends BaseFragment
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
 
-        if (history.size()>0 ){
+        if (mHistory.size()>0 ){
           startConversation(false);
         }else{
           startConversation(true);
@@ -267,6 +275,7 @@ public class AIConversationFragment extends BaseFragment
 
   private void addModel(AIConversationModel model) {
 
+    System.out.println("type -> " +model.getType()+" _type_ ");
     if (Integer.valueOf(model.getType()) == 0 && TextUtils.isEmpty(model.getAnswer())) {
 
     } else {
@@ -291,28 +300,27 @@ public class AIConversationFragment extends BaseFragment
       galleryModel.setDataType(AIConversationModel.EnumDataType.GALLERY);
       mRecyclerView.postDelayed(new Runnable() {
         @Override public void run() {
-          boolean galleryAdded = false;
+          //boolean galleryAdded = false;
           if (null!=galleryModel.getPlaceList() && galleryModel.getPlaceList().size()>0){
             mConversation.add(galleryModel);
             AIConversationPresenter.insertMessage(getActivity(),galleryModel);
             mAdapter.notifyItemInserted(mConversation.size() - 1);
             scrollToBottom();
-            galleryAdded = true;
+            //galleryAdded = true;
           }
 
-          int delay = galleryAdded?CONVERSATION_ANSWER_DELAY:0;
-          new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-              mConversation.add(modelOption);
-              AIConversationPresenter.insertMessage(getActivity(),modelOption);
-              mAdapter.notifyItemInserted(mConversation.size() - 1);
-            }
-          },delay);
+          //int delay = galleryAdded?CONVERSATION_ANSWER_DELAY:0;
+          //new Handler().postDelayed(new Runnable() {
+          //  @Override public void run() {
+          //    mConversation.add(modelOption);
+          //    AIConversationPresenter.insertMessage(getActivity(),modelOption);
+          //    mAdapter.notifyItemInserted(mConversation.size() - 1);
+          //  }
+          //},delay);
         }
       }, CONVERSATION_ANSWER_DELAY);
       scrollToBottom();
       resetOptions(modelOption.getAnswerPramms(),modelOption.getFlash(),null!=modelOption.getType()? Integer.valueOf(modelOption.getType()):0);
-
     }
   }
 
@@ -338,7 +346,7 @@ public class AIConversationFragment extends BaseFragment
   private void getNext(final String question, final String flash) {
     if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
-      mAdapter.updateNoNetwork(true);
+      updateNoNetwork(true);
       scrollToBottom();
 
       return;
@@ -356,7 +364,7 @@ public class AIConversationFragment extends BaseFragment
               @Override public void successListener(AIConversationModel response) {
                 if (mNetworkInterrupted) {
                   mNetworkInterrupted = false;
-                  mAdapter.updateNoNetwork(false);
+                  updateNoNetwork(false);
                 }
                 addModel(response);
 
@@ -370,7 +378,7 @@ public class AIConversationFragment extends BaseFragment
 
               @Override public void errorListener(VolleyError error, String exception, String msg) {
                 mNetworkInterrupted = true;
-                mAdapter.updateNoNetwork(true);
+                updateNoNetwork(true);
                 scrollToBottom();
                 mXiaoQFab.endLoading();
                 mNetworkBusy = false;
@@ -385,7 +393,7 @@ public class AIConversationFragment extends BaseFragment
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
-      mAdapter.updateNoNetwork(true);
+      updateNoNetwork(true);
       scrollToBottom();
       return;
     }
@@ -398,12 +406,12 @@ public class AIConversationFragment extends BaseFragment
 
             if (mNetworkInterrupted) {
               mNetworkInterrupted = false;
-              mAdapter.updateNoNetwork(false);
+              updateNoNetwork(false);
             }
             if (!TextUtils.isEmpty(response.getAnswer())) {
               addModel(response);
             }
-            if (starter) {
+            if (starter && Integer.valueOf(response.getType())!=2) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             } else {
 
@@ -423,7 +431,7 @@ public class AIConversationFragment extends BaseFragment
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
             mNetworkInterrupted = true;
-            mAdapter.updateNoNetwork(true);
+            updateNoNetwork(true);
             scrollToBottom();
             mXiaoQFab.endLoading();
             mNetworkBusy = false;
@@ -448,7 +456,7 @@ public class AIConversationFragment extends BaseFragment
     switch (event.getFlag()) {
       case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
         if (mNetworkInterrupted) {
-          mAdapter.updateNoNetwork(false);
+          updateNoNetwork(false);
           startConversation(false);
         }
         break;
@@ -461,13 +469,13 @@ public class AIConversationFragment extends BaseFragment
       makeToast(R.string.network_error);
       return;
     }
-
     if (mNetworkBusy){
       return;
     }
-
     int position = mConversation.size() - 1;
-    mConversation.get(position).getAnswerPramms().clear();
+    if (null!=mConversation.get(position).getAnswerPramms()){
+      mConversation.get(position).getAnswerPramms().clear();
+    }
     AIConversationPresenter.delOptionMessages(getActivity());
     mAdapter.notifyItemChanged(position);
 
@@ -480,8 +488,6 @@ public class AIConversationFragment extends BaseFragment
         mConversation.add(answerModel);
         mAdapter.notifyItemInserted(mConversation.size() - 1);
         hideAndUpdate(index);
-
-        //scrollToBottom();
         getNext(answer, additionalShit);
       }
     }, 300);
@@ -498,6 +504,37 @@ public class AIConversationFragment extends BaseFragment
     startActivity(new Intent(getActivity(), SearchActivityNew.class));
   }
 
+
+  private void updateNoNetwork(boolean noNetWork){
+
+    System.out.println("type -> update network status");
+    if (mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION && noNetWork){
+      AIConversationModel noNetworkModel = new AIConversationModel();
+      noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
+      noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
+      noNetworkModel.setType("2");
+      List<String> retryAction = new ArrayList<>();
+      retryAction.add("手动刷新");
+      retryAction.add("手动搜索");
+      noNetworkModel.setAnswerPramms(retryAction);
+      addModel(noNetworkModel);
+    }else{
+      mConversation.remove(mConversation.size()-1);
+      mAdapter.notifyDataSetChanged();
+    }
+
+
+    if (noNetWork){
+      List<String> retryAction = new ArrayList<>();
+      retryAction.add("手动刷新");
+      retryAction.add("手动搜索");
+      resetOptions(retryAction,null,2);
+    }else{
+      hideOptions();
+    }
+
+
+  }
 
 
 }

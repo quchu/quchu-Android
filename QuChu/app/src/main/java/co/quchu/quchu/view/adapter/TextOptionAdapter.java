@@ -46,6 +46,7 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
     holder.tvOption.setText(answer);
     holder.tvOption.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
+        System.out.println("type -> "+type);
         if (type==2){
           if (position==0){
             mOnInteractiveListener.onRetry();

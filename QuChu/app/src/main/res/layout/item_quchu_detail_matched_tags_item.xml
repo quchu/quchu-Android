@@ -17,8 +17,8 @@
       android:paddingBottom="@dimen/quarter_margin"
       android:layout_marginTop="@dimen/quarter_margin"
       android:layout_marginBottom="@dimen/quarter_margin"
-      android:layout_marginLeft="@dimen/half_margin"
-      android:layout_marginRight="@dimen/half_margin"
+      android:layout_marginLeft="@dimen/quarter_margin"
+      android:layout_marginRight="@dimen/quarter_margin"
       android:textSize="12sp"
       />
 </LinearLayout>
