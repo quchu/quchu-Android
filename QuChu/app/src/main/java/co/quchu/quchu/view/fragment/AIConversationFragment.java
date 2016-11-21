@@ -103,7 +103,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void hideOptions(){
-    System.out.println("hideOptions()");
+    System.out.println("hideOptions()" +" |"+mHideAnimRunning);
     llOptions.animate().translationY(llOptions.getHeight()).setDuration(200).start();
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
@@ -113,8 +113,6 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void showOptions(){
-
-    System.out.println("hideOptions()"+mConversation.get(mConversation.size()-1).getDataType()+"|"+mShowAnimRunning);
     if (mConversation.get(mConversation.size()-1).getDataType()== AIConversationModel.EnumDataType.OPTION &&!mShowAnimRunning){
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(2f)).start();
@@ -200,10 +198,7 @@ public class AIConversationFragment extends BaseFragment
             //End of list
               showOptions();
           }else{
-            System.out.println("|~ "+mHideAnimRunning);
             if (!mHideAnimRunning){
-              System.out.println("|~ "+mHideAnimRunning);
-
               mHideAnimRunning = true;
               hideOptions();
             }
