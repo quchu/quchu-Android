@@ -11,7 +11,7 @@
         android:id="@+id/enhancedToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/standard_color_white"
+        android:background="@color/standard_color_yellow"
         android:elevation="0dp"
         android:gravity="center_vertical"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
