@@ -107,8 +107,11 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       public void successListener(List<SceneInfoModel> response) {
         if (null!=mAllSceneList){
           mAllSceneList.clear();
+          mAllSceneList.addAll(response);
+        }else{
+          mAllSceneList = new ArrayList<>();
+          mAllSceneList.addAll(response);
         }
-        mAllSceneList.addAll(response);
 
         initTags();
       }

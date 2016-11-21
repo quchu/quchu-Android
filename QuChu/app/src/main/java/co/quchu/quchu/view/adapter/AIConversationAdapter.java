@@ -82,7 +82,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       AIConversationModel q = mDataSet.get(position);
       switch (getItemViewType(position)) {
         case TYPE_QUESTION:
-
+          System.out.println("type question");
           if (position == 0) {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.VISIBLE);
           } else {
@@ -92,6 +92,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           break;
         case TYPE_ANSWER:
+          System.out.println("type answer");
+
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
           ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
 
@@ -108,6 +110,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         //  break;
 
         case TYPE_GALLERY_OPTION:
+          System.out.println("type gallery");
+
           if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
             ((GalleryViewHolder) holder).vpPlace.setAdapter(new PlaceVPAdapter(q.getPlaceList()));
             ((GalleryViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);

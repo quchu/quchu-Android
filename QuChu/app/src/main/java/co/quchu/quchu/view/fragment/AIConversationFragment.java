@@ -118,6 +118,9 @@ public class AIConversationFragment extends BaseFragment
     if (mShowAnimRunning){
       return;
     }
+    if (mConversation.get(mConversation.size()-1).getAnswerPramms()!=null && mConversation.get(mConversation.size()-1).getAnswerPramms().size()==1&&mConversation.get(mConversation.size()-1).getAnswerPramms().get(0).equals("get_query")){
+      return;
+    }
     if (mConversation.get(mConversation.size()-1).getAnswerPramms()!=null &&mConversation.get(mConversation.size()-1).getAnswerPramms().size()>0  ){
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(2f)).start();
@@ -275,15 +278,28 @@ public class AIConversationFragment extends BaseFragment
 
   private void addModel(AIConversationModel model) {
 
-    System.out.println("type -> " +model.getType()+" _type_ ");
+
+
     if (Integer.valueOf(model.getType()) == 0 && TextUtils.isEmpty(model.getAnswer())) {
 
     } else {
-      mConversation.add(model);
-      AIConversationPresenter.insertMessage(getActivity(),model);
 
-      mAdapter.notifyItemInserted(mConversation.size() - 1);
-      scrollToBottom();
+      if (Integer.valueOf(model.getType())==2
+              && mConversation.size()>0
+              && null!=mConversation.get(mConversation.size()-1).getType()
+              && Integer.valueOf(mConversation.get(mConversation.size()-1).getType())==2){
+
+      }else{
+        if (model.getAnswer()!=null){
+          System.out.println(model.toString());
+          mConversation.add(model);
+          AIConversationPresenter.insertMessage(getActivity(),model);
+
+          mAdapter.notifyItemInserted(mConversation.size() - 1);
+          scrollToBottom();
+        }
+      }
+
     }
 
     if ((Integer.valueOf(model.getType()) == 0 && model.getAnswerPramms().size() > 0)||Integer.valueOf(model.getType())==2) {
@@ -293,6 +309,7 @@ public class AIConversationFragment extends BaseFragment
       modelOption.setAnswerPramms(model.getAnswerPramms());
       modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
       modelOption.setFlash(model.getFlash());
+      modelOption.setType(model.getType());
 
 
       final AIConversationModel galleryModel = new AIConversationModel();
@@ -411,7 +428,7 @@ public class AIConversationFragment extends BaseFragment
             if (!TextUtils.isEmpty(response.getAnswer())) {
               addModel(response);
             }
-            if (starter && Integer.valueOf(response.getType())!=2) {
+            if (starter && Integer.valueOf(response.getType())!=2 || Integer.valueOf(response.getType())==1) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             } else {
 
@@ -420,7 +437,7 @@ public class AIConversationFragment extends BaseFragment
                 modelOption.setAnswerPramms(response.getAnswerPramms());
                 modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
                 modelOption.setFlash(response.getFlash());
-                modelOption.setType("0");
+                modelOption.setType(response.getType());
                 addModel(modelOption);
                 mXiaoQFab.endLoading();
               }
