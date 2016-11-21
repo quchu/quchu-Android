@@ -44,6 +44,7 @@ public class MeActivity extends BaseBehaviorActivity {
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView textView = toolbar.getTitleTv();
+    toolbar.setBackground(null);
     textView.setText("");
 
     FragmentManager fm = getSupportFragmentManager();

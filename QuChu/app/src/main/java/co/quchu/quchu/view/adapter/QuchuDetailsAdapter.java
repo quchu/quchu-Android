@@ -288,7 +288,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
       ((AdditionalInfoViewHolder) holder).ivDeliver.setImageResource(StringUtils.isEmpty(mData.getTakeoutUrl())?R.mipmap.ic_nowaimai:R.mipmap.ic_waimai);
       ((AdditionalInfoViewHolder) holder).ivOrder.setImageResource(StringUtils.isEmpty(mData.getNet())?R.mipmap.ic_noyuding:R.mipmap.ic_yuding);
-      ((AdditionalInfoViewHolder) holder).ivQueue.setImageResource(StringUtils.isEmpty(mData.getLineUrl())?R.mipmap.ic_nopaiwei:R.mipmap.ic_paiwei);
+      ((AdditionalInfoViewHolder) holder).ivQueue.setImageResource(StringUtils.isEmpty(mData.getLineUrl())?R.mipmap.ic_nopaihao:R.mipmap.ic_paiwei);
       ((AdditionalInfoViewHolder) holder).ivTel.setImageResource(StringUtils.isEmpty(mData.getTel())?R.mipmap.ic_nodianhua:R.mipmap.ic_dianhua);
 
 

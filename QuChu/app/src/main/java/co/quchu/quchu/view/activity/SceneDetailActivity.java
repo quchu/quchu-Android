@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -46,6 +47,8 @@ import co.quchu.quchu.widget.ErrorView;
  * Created by Nico on 16/7/11.
  */
 public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRefreshLayout.OnRefreshListener {
+
+  private EnhancedToolbar mToolbar;
 
   @Override
   public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -70,6 +73,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
   @Bind(R.id.errorView) ErrorView errorView;
   @Bind(R.id.likeFab) FloatingActionButton mLikeFab;
+  @Bind(R.id.scene_toolbar_background_view) View mToolbarBackgroundView;
 
   private boolean isFavorite = false;
   private int sceneId;
@@ -100,9 +104,12 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     String name = getIntent().getStringExtra(BUNDLE_KEY_SCENE_NAME);
     isFavorite = getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE, false);
 
-    mTitleTv = getEnhancedToolbar().getTitleTv();
+    mToolbar = getEnhancedToolbar();
+    mToolbar.setBackground(null);
+    mTitleTv = mToolbar.getTitleTv();
     mTitleTv.setText(name);
     mTitleTv.setAlpha(0);
+    mToolbarBackgroundView.setAlpha(0);
 
     errorView.hideView();
 
@@ -153,6 +160,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         float offset = Math.abs(dy);
         float progress = offset / targetHeight;
 
+        mToolbarBackgroundView.setAlpha(progress);
         mTitleTv.setAlpha(progress);
       }
     };
