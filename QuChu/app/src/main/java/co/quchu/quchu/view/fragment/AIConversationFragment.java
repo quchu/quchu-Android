@@ -517,7 +517,7 @@ public class AIConversationFragment extends BaseFragment
 
   private void updateNoNetwork(boolean noNetWork){
 
-    if (mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION && noNetWork){
+    if((mConversation.size()<1 || mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION )&& noNetWork){
       AIConversationModel noNetworkModel = new AIConversationModel();
       noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
       noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
@@ -528,6 +528,7 @@ public class AIConversationFragment extends BaseFragment
       noNetworkModel.setAnswerPramms(retryAction);
       addModel(noNetworkModel);
     }else{
+      if (mConversation.size()>0&&mConversation.get(mConversation.size()-1).getType().equals("2"))
       mConversation.remove(mConversation.size()-1);
       mAdapter.notifyDataSetChanged();
     }

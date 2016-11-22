@@ -10,7 +10,7 @@ android {
         targetSdkVersion 22
         minSdkVersion 16
         versionCode 1522
-        versionName "1.5.1"
+        versionName "2.0.0"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 
@@ -58,12 +58,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "int", "API_SERVER", "2"
+            buildConfigField "int", "API_SERVER", "0"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
         }
 
         uat {
-            buildConfigField "int", "API_SERVER", "1"
+            buildConfigField "int", "API_SERVER", "0"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
 //            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
 //            applicationIdSuffix ".uat"

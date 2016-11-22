@@ -101,7 +101,16 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           System.out.println("type answer");
 
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
-          //((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getGeneAvatar()==-1?AppContext.user.getPhoto():AppContext.user.getGeneAvatar()));
+          if (AppContext.user.getGeneAvatar()!=-1){
+
+            Uri userAvatar = new Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                .path(String.valueOf(AppContext.user.getGeneAvatar()))
+                .build();
+            ((AnswerViewHolder) holder).sdvAvatar.setImageURI(userAvatar);
+          }else{
+            ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+          }
 
           break;
         //case TYPE_OPTION:
