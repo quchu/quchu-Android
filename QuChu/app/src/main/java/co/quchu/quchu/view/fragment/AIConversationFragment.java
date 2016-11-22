@@ -77,7 +77,7 @@ public class AIConversationFragment extends BaseFragment
 
 
   private void hideAndUpdate(int selected){
-
+    lOut("hide"+selected);
     int index = rvOptions.getChildCount()==1?0:selected;
     final TextView selectedTarget = (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
 
@@ -97,7 +97,12 @@ public class AIConversationFragment extends BaseFragment
       View disappearView = rvOptions.getChildAt(index ==0?1:0);
       disappearView.animate().alpha(0).translationY(llOptions.getHeight()*3).setDuration(duration).start();
     }
-    llOptions.animate().translationY(llOptions.getHeight()*3).alpha(1).setDuration(0).setStartDelay(duration).start();
+    if (mConversation.size()<=10){
+      llOptions.animate().translationYBy(ScreenUtils.getScreenHeight(getActivity())).alpha(1).setDuration(0).setStartDelay(duration).start();
+    }else{
+      llOptions.animate().translationYBy(ScreenUtils.getScreenHeight(getActivity())/2).alpha(1).setDuration(0).setStartDelay(duration).start();
+    }
+
     //rvOptions.getAdapter().notifyItemRemoved(selected==1?0:1);
 
   }
@@ -112,11 +117,10 @@ public class AIConversationFragment extends BaseFragment
       @Override public void run() {
         mHideAnimRunning = false;
       }
-    },1000);
+    },700);
   }
 
   private void showOptions(){
-
     if (mConversation.size()<1){
       return;
     }
@@ -134,12 +138,12 @@ public class AIConversationFragment extends BaseFragment
       
 
       mShowAnimRunning = true;
-      llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(2f)).start();
+      llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
         }
-      },1000);
+      },700);
 
     }
   }
@@ -249,7 +253,6 @@ public class AIConversationFragment extends BaseFragment
     mHistory = AIConversationPresenter.getMessages(getActivity());
     mConversation.addAll(mHistory);
     mAdapter.notifyDataSetChanged();
-
     if (mConversation.size()>0){
       mRecyclerView.scrollToPosition(mConversation.size()-1);
     }
