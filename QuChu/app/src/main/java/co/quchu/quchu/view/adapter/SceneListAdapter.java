@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -16,6 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.model.SceneInfoModel;
 
 /**
@@ -52,6 +54,19 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     if (viewHolder instanceof SceneViewHolder) {
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
 
+      LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) holder.mSceneCoverImg.getLayoutParams();
+      if (mLimitation > 0) {
+        //首页
+        lp.width = Utils.dip2px(mContext, 38);
+        lp.height = Utils.dip2px(mContext, 38);
+        holder.mSceneCoverImg.setLayoutParams(lp);
+
+      } else {
+        lp.width = Utils.dip2px(mContext, 64);
+        lp.height = Utils.dip2px(mContext, 64);
+        holder.mSceneCoverImg.setLayoutParams(lp);
+      }
+
       //首页显示所有场景
       if (mLimitation > 0 && position == 3) {
         holder.mSceneCoverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_suoyouchangjing_main);
@@ -59,8 +74,8 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h1_dark));
 
       } else {
-        if (!TextUtils.isEmpty(sceneInfoModel.getIconUrl())) {
-          holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrl()));
+        if (!TextUtils.isEmpty(sceneInfoModel.getIconUrlSmall())) {
+          holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrlSmall()));
         }
         holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
         holder.mSceneTitleTv.setMaxLines(mLimitation > 0 ? 1 : 10);

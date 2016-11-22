@@ -143,7 +143,17 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((InfoViewHolder) holder).tvENTitle.setTypeface(face);
         ((InfoViewHolder) holder).tvENTitle.setText(mSceneInfoModel.getEn());
         ((InfoViewHolder) holder).tvCNTitle.setText(mSceneInfoModel.getSceneName());
-        ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getIconUrl()));
+
+//        FrescoUtils.setImageUrlEx(((InfoViewHolder) holder).sdvCover, mSceneInfoModel.getIconUrlBig(), new BasePostprocessor() {
+//          @Override
+//          public void process(Bitmap bitmap) {
+//            if (bitmap != null) {
+//              LogUtils.e("---mwb", "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
+//            }
+//          }
+//        });
+
+        ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getIconUrlBig()));
 //        ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
 //        ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getSceneContent());
         String[] tags = mSceneInfoModel.getSceneTitle();
