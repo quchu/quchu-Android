@@ -108,6 +108,13 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     mSearchView.queryHistory();
   }
 
+  @Override
+  protected void onStop() {
+    mSearchView.setInputEditText("");
+
+    super.onStop();
+  }
+
   private void initRefreshLayout() {
     mSearchRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override

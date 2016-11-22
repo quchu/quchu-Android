@@ -98,6 +98,13 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     mSearchView.queryHistory();
   }
 
+  @Override
+  protected void onStop() {
+    mSearchView.setInputEditText("");
+
+    super.onStop();
+  }
+
   /**
    * 获得场景列表
    */
