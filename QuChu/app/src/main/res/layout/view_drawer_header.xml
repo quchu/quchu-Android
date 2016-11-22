@@ -27,9 +27,7 @@
           android:layout_width="100dp"
           android:layout_height="100dp"
           fresco:placeholderImage="@mipmap/head_place_hold"
-          fresco:roundAsCircle="true"
-          fresco:roundingBorderColor="@color/colorBorder"
-          fresco:roundingBorderWidth="2dp"/>
+          fresco:roundAsCircle="true"/>
 
       <com.facebook.drawee.view.SimpleDraweeView
           android:id="@+id/drawerHeaderGenderImg"
