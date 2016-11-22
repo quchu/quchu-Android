@@ -159,16 +159,12 @@ public class MeAvatarFragment extends BaseFragment {
         }
 
         String avatar = AppContext.user.getPhoto();
+        int localAvatar = AppContext.user.getGeneAvatar();
         Uri uri;
-        if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
-          uri = Uri.parse(user.getPhoto());
+        if (localAvatar != -1) {
+          uri = Uri.parse("res:///" + localAvatar);
         } else {
-          int resId = QuChuHelper.getUserAvatar(SPUtils.getUserMark());
-          if (resId != -1) {
-            uri = new Uri.Builder().scheme("res").path(String.valueOf(resId)).build();
-          } else {
-            uri = Uri.parse(user.getPhoto());
-          }
+          uri = Uri.parse(avatar);
         }
 
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
@@ -280,7 +276,7 @@ public class MeAvatarFragment extends BaseFragment {
           if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
             headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
           } else {
-            int resId = QuChuHelper.getUserAvatar(SPUtils.getUserMark());
+            int resId = QuChuHelper.getUserAvatarByGene(SPUtils.getUserMark());
             if (resId != -1) {
               headImage.getHierarchy().setPlaceholderImage(resId);
             } else {

@@ -7,7 +7,7 @@ import co.quchu.quchu.R;
  */
 public class QuChuHelper {
 
-  public static int getUserAvatar(String mark) {
+  public static int getUserAvatarByGene(String mark) {
     int resId = -1;
     switch (mark) {
       case "小食神":
@@ -34,7 +34,7 @@ public class QuChuHelper {
         resId = R.mipmap.ic_haoqi_main;
         break;
 
-      default:
+      case "新生宝宝":
         resId = R.mipmap.ic_xinshengbaby_main;
         break;
     }

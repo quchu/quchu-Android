@@ -30,6 +30,7 @@ public class UserInfoModel implements Parcelable {
     private boolean isVisitors;
     private String location = "";
     private String photo;
+    private int geneAvatar = -1;//本地头像
     private String token;
     private int userId;
     private String username;
@@ -40,6 +41,14 @@ public class UserInfoModel implements Parcelable {
     private String rongYunToken;//融云token
 
     private String getuiStatus;//个推开关状态 0-关闭;1-开启
+
+    public int getGeneAvatar() {
+        return geneAvatar;
+    }
+
+    public void setGeneAvatar(int geneAvatar) {
+        this.geneAvatar = geneAvatar;
+    }
 
     public String getGetuiStatus() {
         return getuiStatus;

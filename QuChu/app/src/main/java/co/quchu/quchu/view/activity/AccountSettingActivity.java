@@ -112,7 +112,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
     if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
       avatarImg.setImageURI(Uri.parse(user.getPhoto()));
     } else {
-      int imgResId = QuChuHelper.getUserAvatar(SPUtils.getUserMark());
+      int imgResId = QuChuHelper.getUserAvatarByGene(SPUtils.getUserMark());
       if (imgResId != -1) {
         avatarImg.getHierarchy().setPlaceholderImage(imgResId);
       } else {

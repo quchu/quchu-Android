@@ -112,7 +112,7 @@ public class DrawerHeaderView extends LinearLayout {
 
   private void getMaxGene(List<MyGeneModel.GenesEntity> genes) {
     double defaultValue = 0;
-    int index = 0;
+    int index = -1;
     for (int i = 0; i < genes.size(); i++) {
       if (genes.get(i).getWeight() > defaultValue) {
         defaultValue = genes.get(i).getWeight();
@@ -120,14 +120,18 @@ public class DrawerHeaderView extends LinearLayout {
       }
     }
 
-    String mark = genes.get(index).getMark();
+    String mark = "新生宝宝";
+    if (index != -1) {
+      mark = genes.get(index).getMark();
+    }
     SPUtils.setUserMark(mark);
     setMark(mark);
 
     //设置趣基因头像
     if (!hasAvatar) {
-      int imgResId = QuChuHelper.getUserAvatar(mark);
+      int imgResId = QuChuHelper.getUserAvatarByGene(mark);
       if (imgResId != -1) {
+        AppContext.user.setGeneAvatar(imgResId);
         mDrawerHeaderAvatarImg.getHierarchy().setPlaceholderImage(imgResId);
       } else {
         mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
