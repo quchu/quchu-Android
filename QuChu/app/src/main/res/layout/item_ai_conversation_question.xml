@@ -5,6 +5,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:gravity="center_vertical"
     >
 
   <View
@@ -14,33 +15,40 @@
       android:visibility="gone"
       />
 
-  <LinearLayout
+  <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      android:layout_marginTop="8dp"
-      android:layout_marginBottom="8dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginRight="@dimen/toolbar_item_size"
+      android:layout_margin="8dp"
+      android:gravity="center_vertical"
       >
 
-
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdvAvatar"
+        android:layout_width="@dimen/ai_conversation_avatar_size"
+        android:layout_height="@dimen/ai_conversation_avatar_size"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        fresco:placeholderImage="@color/translucent_dark"
+        android:scaleType="fitXY"
+        android:layout_marginRight="8dp"
+        fresco:roundAsCircle="true"
+        />
 
     <TextView
         android:id="@+id/tvQuestion"
+        android:layout_toRightOf="@+id/sdvAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/toolbar_item_size"
         android:background="@mipmap/bg_conversation_white"
-        android:paddingLeft="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:paddingRight="12dp"
+        android:lineSpacingExtra="2dp"
+        android:padding="12dp"
         android:textSize="12sp"
+        android:gravity="left|center_vertical"
         tools:text="Question Number 1"
         />
 
-  </LinearLayout>
+  </RelativeLayout>
 
 
 </LinearLayout>

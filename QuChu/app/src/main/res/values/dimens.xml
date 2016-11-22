@@ -16,6 +16,9 @@
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_10">10sp</dimen>
 
+    <dimen name="ai_conversation_x_offset">40dp</dimen>
+
+
     <dimen name="design_fab_image_size" tools:override="true">56dp</dimen>
 
     <dimen name="capsule_scene_switch">24dp</dimen>

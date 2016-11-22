@@ -20,6 +20,7 @@ import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.CardsPagerTransformerBasic;
+import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -88,6 +89,11 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           } else {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
           }
+          Uri xiaoQLogoUri = new Uri.Builder()
+              .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+              .path(String.valueOf(R.mipmap.ic_xiaoq_logo))
+              .build();
+          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
 
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           break;
@@ -95,7 +101,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           System.out.println("type answer");
 
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
-          ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+          //((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getGeneAvatar()==-1?AppContext.user.getPhoto():AppContext.user.getGeneAvatar()));
 
           break;
         //case TYPE_OPTION:
@@ -180,6 +186,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   public static class QuestionViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.tvQuestion) TextView tvQuestion;
     @Bind(R.id.vSpace) View vSpace;
+    @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
 
     QuestionViewHolder(View view) {
       super(view);

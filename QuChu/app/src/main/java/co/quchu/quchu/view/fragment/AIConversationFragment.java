@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +87,8 @@ public class AIConversationFragment extends BaseFragment
 
     mRecyclerView.getChildAt(mRecyclerView.getChildCount()-2).getLocationInWindow(targetLocation);
 
-    float translationY = targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
-    float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.toolbar_container_horizontal_padding);
+    float translationY = targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(R.dimen.half_margin);
+    float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.ai_conversation_x_offset);
 
     int duration = 500;
     selectedTarget.animate().translationY(translationY).translationX(translationX).setDuration(duration).start();
@@ -115,13 +116,23 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void showOptions(){
+
+    if (mConversation.size()<1){
+      return;
+    }
+
+    AIConversationModel last = mConversation.get(mConversation.size()-1);
+
     if (mShowAnimRunning){
       return;
     }
-    if (mConversation.get(mConversation.size()-1).getAnswerPramms()!=null && mConversation.get(mConversation.size()-1).getAnswerPramms().size()==1&&mConversation.get(mConversation.size()-1).getAnswerPramms().get(0).equals("get_query")){
-      return;
-    }
-    if (mConversation.get(mConversation.size()-1).getAnswerPramms()!=null &&mConversation.get(mConversation.size()-1).getAnswerPramms().size()>0  ){
+
+    if (last.getAnswerPramms()!=null
+        &&last.getAnswerPramms().size()>0
+        &&!(null!=last.getType() && Integer.valueOf(last.getType())==1)
+        ){
+      
+
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(2f)).start();
       new Handler().postDelayed(new Runnable() {
@@ -134,8 +145,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void resetOptions(final List<String>list,final String addition,final int type){
-
-    if (null==list){
+    if (type==1 || null == list){
       return;
     }
 
@@ -168,7 +178,6 @@ public class AIConversationFragment extends BaseFragment
         }
       }
     },0);
-    llOptions.clearAnimation();
 
   }
 
@@ -278,32 +287,23 @@ public class AIConversationFragment extends BaseFragment
 
   private void addModel(AIConversationModel model) {
 
-
-
-    if (Integer.valueOf(model.getType()) == 0 && TextUtils.isEmpty(model.getAnswer())) {
-
-    } else {
+    if (!TextUtils.isEmpty(model.getAnswer())) {
 
       if (Integer.valueOf(model.getType())==2
               && mConversation.size()>0
               && null!=mConversation.get(mConversation.size()-1).getType()
               && Integer.valueOf(mConversation.get(mConversation.size()-1).getType())==2){
-
       }else{
-        if (model.getAnswer()!=null){
-          System.out.println(model.toString());
-          mConversation.add(model);
+        mConversation.add(model);
           AIConversationPresenter.insertMessage(getActivity(),model);
-
           mAdapter.notifyItemInserted(mConversation.size() - 1);
           scrollToBottom();
-        }
       }
 
     }
 
-    if ((Integer.valueOf(model.getType()) == 0 && model.getAnswerPramms().size() > 0)||Integer.valueOf(model.getType())==2) {
-
+    if (model.getAnswerPramms().size() > 0 && !"1".equals(model.getType())) {
+      lOut(model.toString());
 
       final AIConversationModel modelOption = new AIConversationModel();
       modelOption.setAnswerPramms(model.getAnswerPramms());
@@ -315,6 +315,8 @@ public class AIConversationFragment extends BaseFragment
       final AIConversationModel galleryModel = new AIConversationModel();
       galleryModel.setPlaceList(model.getPlaceList());
       galleryModel.setDataType(AIConversationModel.EnumDataType.GALLERY);
+      galleryModel.setAnswerPramms(model.getAnswerPramms());
+
       mRecyclerView.postDelayed(new Runnable() {
         @Override public void run() {
           //boolean galleryAdded = false;
@@ -323,17 +325,8 @@ public class AIConversationFragment extends BaseFragment
             AIConversationPresenter.insertMessage(getActivity(),galleryModel);
             mAdapter.notifyItemInserted(mConversation.size() - 1);
             scrollToBottom();
-            //galleryAdded = true;
           }
 
-          //int delay = galleryAdded?CONVERSATION_ANSWER_DELAY:0;
-          //new Handler().postDelayed(new Runnable() {
-          //  @Override public void run() {
-          //    mConversation.add(modelOption);
-          //    AIConversationPresenter.insertMessage(getActivity(),modelOption);
-          //    mAdapter.notifyItemInserted(mConversation.size() - 1);
-          //  }
-          //},delay);
         }
       }, CONVERSATION_ANSWER_DELAY);
       scrollToBottom();
@@ -428,7 +421,7 @@ public class AIConversationFragment extends BaseFragment
             if (!TextUtils.isEmpty(response.getAnswer())) {
               addModel(response);
             }
-            if (starter && Integer.valueOf(response.getType())!=2 || Integer.valueOf(response.getType())==1) {
+            if (Integer.valueOf(response.getType())==1) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             } else {
 
@@ -524,7 +517,6 @@ public class AIConversationFragment extends BaseFragment
 
   private void updateNoNetwork(boolean noNetWork){
 
-    System.out.println("type -> update network status");
     if (mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION && noNetWork){
       AIConversationModel noNetworkModel = new AIConversationModel();
       noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
@@ -553,5 +545,9 @@ public class AIConversationFragment extends BaseFragment
 
   }
 
+
+  private void lOut(String msg){
+    Log.e("AICFss",msg);
+  }
 
 }

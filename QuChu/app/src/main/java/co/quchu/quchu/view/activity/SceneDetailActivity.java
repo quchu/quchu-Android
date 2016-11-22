@@ -214,6 +214,9 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
       public void successListener(SceneDetailModel response) {
         DialogUtil.dismissProgessDirectly();
 
+        if (null!=response ){
+          errorView.hideView();
+        }
         if (mMaxPageNo == -1) {
           mMaxPageNo = response.getPlaceList().getPageCount();
           mRecommendedList.addAll(response.getBestList());
