@@ -47,8 +47,8 @@
 
       <com.facebook.drawee.view.SimpleDraweeView
           android:id="@+id/sdvImage"
-          android:layout_width="210px"
-          android:layout_height="210px"
+          android:layout_width="250px"
+          android:layout_height="250px"
           fresco:roundedCornerRadius="10px"
           android:visibility="gone"
           />
