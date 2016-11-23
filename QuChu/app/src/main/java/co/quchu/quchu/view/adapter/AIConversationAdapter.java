@@ -96,6 +96,18 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
 
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
+
+
+          ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.GONE);
+          if (position>0){
+            if (mDataSet.get(position-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION){
+              ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+            }
+          }else if(position==0){
+            ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+          }
+
+
           break;
         case TYPE_ANSWER:
           System.out.println("type answer");

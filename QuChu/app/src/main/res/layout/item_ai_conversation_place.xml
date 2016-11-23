@@ -34,7 +34,6 @@
         android:id="@+id/history_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
         android:textColor="@color/standard_color_white"
         android:textSize="20sp"
         android:textStyle="bold"

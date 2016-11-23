@@ -33,6 +33,8 @@
         android:scaleType="fitXY"
         android:layout_marginRight="8dp"
         fresco:roundAsCircle="true"
+        android:layout_alignBottom="@+id/tvQuestion"
+
         />
 
     <TextView
@@ -43,7 +45,7 @@
         android:background="@mipmap/bg_conversation_white"
         android:lineSpacingExtra="2dp"
         android:padding="12dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="left|center_vertical"
         tools:text="Question Number 1"
         />

@@ -91,7 +91,7 @@ public class AIConversationFragment extends BaseFragment
     float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.ai_conversation_x_offset);
 
     int duration = 500;
-    selectedTarget.animate().translationY(translationY).translationX(translationX).setDuration(duration).start();
+    selectedTarget.animate().alpha(0).translationY(translationY).translationX(translationX).setDuration(duration).start();
 
     if (rvOptions.getChildCount()>1){
       View disappearView = rvOptions.getChildAt(index ==0?1:0);
@@ -121,21 +121,27 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void showOptions(){
+    lOut("show Options");
+
     if (mConversation.size()<1){
       return;
     }
 
+    lOut("show Options 1");
     AIConversationModel last = mConversation.get(mConversation.size()-1);
 
     if (mShowAnimRunning){
       return;
     }
+    lOut("show Options 2");
+
 
     if (last.getAnswerPramms()!=null
         &&last.getAnswerPramms().size()>0
         &&!(null!=last.getType() && Integer.valueOf(last.getType())==1)
         ){
-      
+
+      lOut("show Options 3");
 
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
@@ -219,10 +225,16 @@ public class AIConversationFragment extends BaseFragment
         int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
         int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
-          if (pastVisibleItems + visibleItemCount >= totalItemCount-1) {
+        if (!mRecyclerView.canScrollVertically(-1)){
+          System.out.println("bottom ~");
+        }
+
+          if (pastVisibleItems + visibleItemCount >= totalItemCount) {
             //End of list
+            lOut("show");
               showOptions();
           }else{
+            lOut("hide");
             if (!mHideAnimRunning){
               hideOptions();
             }
@@ -531,7 +543,7 @@ public class AIConversationFragment extends BaseFragment
       noNetworkModel.setAnswerPramms(retryAction);
       addModel(noNetworkModel);
     }else{
-      if (mConversation.size()>0&&mConversation.get(mConversation.size()-1).getType().equals("2"))
+      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() && mConversation.get(mConversation.size()-1).getType().equals("2"))
       mConversation.remove(mConversation.size()-1);
       mAdapter.notifyDataSetChanged();
     }
