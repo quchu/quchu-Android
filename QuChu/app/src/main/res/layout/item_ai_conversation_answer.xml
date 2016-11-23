@@ -26,7 +26,6 @@
         android:background="@mipmap/bg_conversation_gray"
         android:lineSpacingExtra="2dp"
         android:layout_marginLeft="8dp"
-        android:padding="12dp"
         android:textSize="14sp"
         android:textColor="@color/standard_color_h2_dark"
         tools:text="Super Super Super Super Super Super Super Super Super Super Super Super Super Super Long Answer Number 1"
