@@ -144,7 +144,7 @@ public class WeiboHelper {
         WebpageObject mediaObject = new WebpageObject();
         mediaObject.identify = Utility.generateGUID();
         mediaObject.title = shareTitle;
-        mediaObject.description = "趣处 - 一千个人，就有一千个趣处";
+        mediaObject.description = "点亮你的生活半径";
 
         if (bitmap == null || bitmap.isRecycled())
             bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);

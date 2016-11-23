@@ -172,6 +172,7 @@ public class QuChuHistoryModel {
       private String cover;
       private double gdLatitude;
       private double gdLongitude;
+      private String described;
       private int height;
       private boolean isActivity;
       private boolean isf;
@@ -219,6 +220,14 @@ public class QuChuHistoryModel {
 
       public String getCover() {
         return cover;
+      }
+
+      public String getDescribed() {
+        return described;
+      }
+
+      public void setDescribed(String described) {
+        this.described = described;
       }
 
       public void setCover(String cover) {

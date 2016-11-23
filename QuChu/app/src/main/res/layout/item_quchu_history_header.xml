@@ -10,7 +10,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Alice每天4：00清除浏览记录"
+      android:text="Alice已经将浏览记录进行分类整理"
       android:textColor="@color/standard_color_h3_dark"
       android:textSize="13sp"/>
 
