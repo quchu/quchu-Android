@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +27,9 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
+import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.view.adapter.TextOptionAdapter;
@@ -69,6 +72,7 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.rvOptions) RecyclerView rvOptions;
   @Bind(R.id.llOptions) View llOptions;
   @Bind(R.id.tvOption) TextView mTvOption;
+  @Bind(R.id.ivGuide) ImageView ivGuide;
 
   @Override protected String getPageNameCN() {
     return null;
@@ -91,7 +95,7 @@ public class AIConversationFragment extends BaseFragment
     float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.ai_conversation_x_offset);
 
     int duration = 500;
-    selectedTarget.animate().translationY(translationY).translationX(translationX).setDuration(duration).start();
+    selectedTarget.animate().alpha(0).translationY(translationY).translationX(translationX).setDuration(duration).start();
 
     if (rvOptions.getChildCount()>1){
       View disappearView = rvOptions.getChildAt(index ==0?1:0);
@@ -121,6 +125,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void showOptions(){
+
     if (mConversation.size()<1){
       return;
     }
@@ -131,11 +136,12 @@ public class AIConversationFragment extends BaseFragment
       return;
     }
 
+
     if (last.getAnswerPramms()!=null
         &&last.getAnswerPramms().size()>0
         &&!(null!=last.getType() && Integer.valueOf(last.getType())==1)
         ){
-      
+
 
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
@@ -149,11 +155,17 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void resetOptions(final List<String>list,final String addition,final int type){
+
+    if (!SPUtils.getConversationGuide()){
+      ivGuide.setVisibility(View.VISIBLE);
+    }
+
+
     if (type==1 || null == list){
       return;
     }
 
-    if (mConversation.size()<=3){
+    if (mConversation.size()>=3){
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
     }
 
@@ -219,15 +231,22 @@ public class AIConversationFragment extends BaseFragment
         int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
         int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
-          if (pastVisibleItems + visibleItemCount >= totalItemCount-1) {
-            //End of list
-              showOptions();
-          }else{
-            if (!mHideAnimRunning){
-              hideOptions();
-            }
+        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+          //End of list
+          showOptions();
+        } else {
+          if (!mHideAnimRunning) {
+            hideOptions();
           }
         }
+
+
+        if (!mRecyclerView.canScrollVertically(1)){
+          mShowAnimRunning = false;
+          showOptions();
+        }
+
+      }
 
     });
 
@@ -248,7 +267,7 @@ public class AIConversationFragment extends BaseFragment
     },200);
 
 
-    deleteHistoryIfNeed();
+    final int deletedRows = deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
     mHistory = AIConversationPresenter.getMessages(getActivity());
     mConversation.addAll(mHistory);
@@ -261,9 +280,11 @@ public class AIConversationFragment extends BaseFragment
       @Override public void run() {
 
         if (mHistory.size()>0 ){
-          startConversation(false);
+            startConversation("03");
+        }else if(deletedRows>0){
+          startConversation("04");
         }else{
-          startConversation(true);
+          startConversation("01");
         }
 
       }
@@ -272,9 +293,18 @@ public class AIConversationFragment extends BaseFragment
 
   }
 
+  @Override public void onResume() {
+    super.onResume();
+    if (null!=mAdapter && null!=mRecyclerView){
+      mAdapter.notifyDataSetChanged();
+      mRecyclerView.clearAnimation();
+      mRecyclerView.invalidate();
+    }
+  }
 
-  private void deleteHistoryIfNeed(){
+  private int deleteHistoryIfNeed(){
 
+    int effectedRows = 0;
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(System.currentTimeMillis());
 
@@ -283,8 +313,9 @@ public class AIConversationFragment extends BaseFragment
       calendar.set(Calendar.MINUTE,0);
       calendar.set(Calendar.SECOND,0);
 
-      AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
+      effectedRows = AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
     }
+    return effectedRows;
 
   }
 
@@ -306,7 +337,6 @@ public class AIConversationFragment extends BaseFragment
     }
 
     if (model.getAnswerPramms().size() > 0 && !"1".equals(model.getType())) {
-      lOut(model.toString());
 
       final AIConversationModel modelOption = new AIConversationModel();
       modelOption.setAnswerPramms(model.getAnswerPramms());
@@ -401,7 +431,7 @@ public class AIConversationFragment extends BaseFragment
     }, CONVERSATION_REQUEST_DELAY);
   }
 
-  private void startConversation(final boolean starter) {
+  private void startConversation(final String type) {
     mXiaoQFab.animateLoading();
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
@@ -413,7 +443,7 @@ public class AIConversationFragment extends BaseFragment
 
     mNetworkBusy = true;
 
-    AIConversationPresenter.startConversation(getActivity(), starter,
+    AIConversationPresenter.startConversation(getActivity(), type,
         new CommonListener<AIConversationModel>() {
           @Override public void successListener(AIConversationModel response) {
 
@@ -470,13 +500,15 @@ public class AIConversationFragment extends BaseFragment
       case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
         if (mNetworkInterrupted) {
           updateNoNetwork(false);
-          startConversation(false);
+          startConversation("03");
         }
         break;
     }
   }
 
   @Override public void onAnswer(final String answer, final String additionalShit,final int index) {
+
+    ivGuide.setVisibility(View.GONE);
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
       makeToast(R.string.network_error);
@@ -508,7 +540,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   @Override public void onRetry() {
-    startConversation(false);
+    startConversation("03");
     hideOptions();
 
   }
@@ -520,18 +552,21 @@ public class AIConversationFragment extends BaseFragment
 
   private void updateNoNetwork(boolean noNetWork){
 
-    if((mConversation.size()<1 || mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION )&& noNetWork){
-      AIConversationModel noNetworkModel = new AIConversationModel();
-      noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
-      noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
-      noNetworkModel.setType("2");
-      List<String> retryAction = new ArrayList<>();
-      retryAction.add("手动刷新");
-      retryAction.add("手动搜索");
-      noNetworkModel.setAnswerPramms(retryAction);
-      addModel(noNetworkModel);
+    if( noNetWork){
+      if (mConversation.size()<1 || mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION ){
+        AIConversationModel noNetworkModel = new AIConversationModel();
+        noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
+        noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
+        noNetworkModel.setType("2");
+        List<String> retryAction = new ArrayList<>();
+        retryAction.add("手动刷新");
+        retryAction.add("手动搜索");
+        noNetworkModel.setAnswerPramms(retryAction);
+        addModel(noNetworkModel);
+      }
+
     }else{
-      if (mConversation.size()>0&&mConversation.get(mConversation.size()-1).getType().equals("2")&&!noNetWork)
+      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() && mConversation.get(mConversation.size()-1).getType().equals("2"))
       mConversation.remove(mConversation.size()-1);
       mAdapter.notifyDataSetChanged();
     }

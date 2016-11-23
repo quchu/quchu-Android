@@ -480,7 +480,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.fab://历史记录
-        startActivity(QuChuHistoryActivity.class);
+        //startActivity(QuChuHistoryActivity.class);
         break;
 
       case R.id.drawerItemFavorite://收藏
@@ -512,7 +512,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.drawerItemShareApp://分享 App
-        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("http://www.quchu.co/shareApp/", "趣处APP", "");
+        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance("http://www.quchu.co/shareApp/", "趣处", "");
         shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
         break;
     }

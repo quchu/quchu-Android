@@ -16,7 +16,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_dialog_user_genes"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="30dp">
 
       <TextView
           android:layout_width="match_parent"

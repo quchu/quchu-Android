@@ -188,7 +188,7 @@ public class WechatHelper {
         msg = new WXMediaMessage(webpage);
 
         msg.title = title;
-        msg.description = "趣处 - 一千个人，就有一千个趣处";
+        msg.description = "点亮你的生活半径";
         if (bitmap != null && !bitmap.isRecycled()) {
             msg.thumbData = bmpToByteArray(bitmap, true);
         } else {

@@ -61,8 +61,8 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         QuChuHistoryModel.BestListBean bestListBean = mBestList.get(actualPosition);
         QuChuHistoryModel.PlaceListBean.ResultBean bestPlaceInfo = bestListBean.getPlaceInfo();
         holder.mCoverImg.setImageURI(Uri.parse(bestPlaceInfo.getCover()));
-        holder.mTitleTv.setText(bestPlaceInfo.getName());
-        holder.mSubtitleTv.setText("- " + bestPlaceInfo.getAreaCircleName());
+        holder.mTitleTv.setText(bestPlaceInfo.getDescribed());
+        holder.mSubtitleTv.setText("- " + bestPlaceInfo.getName());
 
         StringBuffer sb = new StringBuffer();
         if (bestPlaceInfo.getTags() != null) {
@@ -121,8 +121,8 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         QuChuHistoryModel.PlaceListBean.ResultBean resultBean = mResultBeanList.get(actualPosition);
         holder.mCoverImg.setImageURI(Uri.parse(resultBean.getCover()));
-        holder.mTitleTv.setText(resultBean.getName());
-        holder.mSubtitleTv.setText("- " + resultBean.getAreaCircleName());
+        holder.mTitleTv.setText(resultBean.getDescribed());
+        holder.mSubtitleTv.setText("- " + resultBean.getName());
 
         StringBuffer sb = new StringBuffer();
         if (resultBean.getTags() != null) {

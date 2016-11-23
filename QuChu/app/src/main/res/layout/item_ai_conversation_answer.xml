@@ -23,11 +23,11 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/sdvAvatar"
         android:layout_centerVertical="true"
-        android:background="@mipmap/bg_conversation_yellow"
+        android:background="@mipmap/bg_conversation_gray"
         android:lineSpacingExtra="2dp"
         android:layout_marginLeft="8dp"
-        android:padding="12dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:textColor="@color/standard_color_h2_dark"
         tools:text="Super Super Super Super Super Super Super Super Super Super Super Super Super Super Long Answer Number 1"
         />
 
@@ -39,6 +39,7 @@
         android:layout_height="@dimen/ai_conversation_avatar_size"
         android:layout_marginLeft="8dp"
         android:scaleType="fitXY"
+        android:layout_alignBottom="@+id/tvAnswer"
         fresco:placeholderImage="@color/translucent_dark"
         fresco:roundAsCircle="true"
         />

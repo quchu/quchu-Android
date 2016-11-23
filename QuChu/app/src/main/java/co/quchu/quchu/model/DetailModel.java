@@ -89,6 +89,15 @@ public class DetailModel implements Serializable{
     private List<QuchuDetailArticleModel> articleList;
     private List<String> reviewTagList;
     private List<BizInfoModel> reviewGroupList;
+    private String circleName;
+
+    public String getCircleName() {
+        return circleName;
+    }
+
+    public void setCircleName(String circleName) {
+        this.circleName = circleName;
+    }
 
     public List<String> getReviewTagList() {
         return reviewTagList;
@@ -261,6 +270,10 @@ public class DetailModel implements Serializable{
         setRecentSuggest(objTarget.getRecentSuggest());
         setTakeoutUrl(objTarget.getTakeoutUrl());
         setLineUrl(objTarget.getLineUrl());
+
+
+        setAreaCircleName(objTarget.getAreaCircleName());
+        setCircleName(objTarget.getCircleName());
 
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
@@ -743,7 +756,25 @@ public class DetailModel implements Serializable{
         private String name;
         private String address;
         private boolean isActivity;
+        private String circleName;
+        private String areaCircleName;
         private List<TagsModel> tags;
+
+        public String getAreaCircleName() {
+            return areaCircleName;
+        }
+
+        public void setAreaCircleName(String areaCircleName) {
+            this.areaCircleName = areaCircleName;
+        }
+
+        public String getCircleName() {
+            return circleName;
+        }
+
+        public void setCircleName(String circleName) {
+            this.circleName = circleName;
+        }
 
         public int getPlaceId() {
             return pid;

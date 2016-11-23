@@ -2,6 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,7 +22,13 @@ import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.CardsPagerTransformerBasic;
 import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.image.QualityInfo;
 import java.util.List;
 
 /**
@@ -89,13 +96,58 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           } else {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
           }
+
+          if (null!=q.getAnswer() && q.getAnswer().startsWith("http")){
+            ((QuestionViewHolder) holder).sdvImage.setVisibility(View.VISIBLE);
+            ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.GONE);
+
+            Uri uri = Uri.parse(q.getAnswer());
+
+            ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
+              @Override
+              public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+                super.onFinalImageSet(id, imageInfo, animatable);
+                if (imageInfo == null) {
+                  return;
+                }
+                ViewGroup.LayoutParams lp = ((QuestionViewHolder) holder).sdvImage.getLayoutParams();
+                lp.width = imageInfo.getWidth();
+                lp.height = imageInfo.getHeight();
+                ((QuestionViewHolder) holder).sdvImage.requestLayout();
+              }
+            };
+
+            DraweeController draweeController =
+                Fresco.newDraweeControllerBuilder()
+                    .setUri(uri)
+                    .setControllerListener(controllerListener)
+                    .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
+                    .build();
+
+            ((QuestionViewHolder) holder).sdvImage.setController(draweeController);
+          }else{
+            ((QuestionViewHolder) holder).sdvImage.setVisibility(View.GONE);
+            ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.VISIBLE);
+
+          }
+
           Uri xiaoQLogoUri = new Uri.Builder()
               .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
               .path(String.valueOf(R.mipmap.ic_xiaoq_logo))
               .build();
-          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
-
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
+          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
+          ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.INVISIBLE);
+          if (position>0){
+            if (mDataSet.get(position-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION){
+              ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+            }
+          }else if(position==0){
+            ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+          }
+
+
+
           break;
         case TYPE_ANSWER:
           System.out.println("type answer");
@@ -196,6 +248,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Bind(R.id.tvQuestion) TextView tvQuestion;
     @Bind(R.id.vSpace) View vSpace;
     @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
+    @Bind(R.id.sdvImage) SimpleDraweeView sdvImage;
 
     QuestionViewHolder(View view) {
       super(view);
