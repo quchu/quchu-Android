@@ -82,7 +82,7 @@ public interface AppKey {
   /**
    * 推荐页引导
    */
-  String DISPLAY_RECOMMEND_GUID = "DISPLAY_RECOMMEND_GUID";
+  String SHOW_AI_CONVERSATION_GUIDE = "SHOW_AI_CONVERSATION_GUIDE";
 
   /**
    * 首页向导

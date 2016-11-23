@@ -14,6 +14,16 @@
       android:layout_height="match_parent"
       />
 
+  
+  <ImageView
+      android:id="@+id/ivGuide"
+      android:layout_above="@+id/llOptions"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      android:layout_marginLeft="@dimen/dialog_margin"
+      android:src="@mipmap/ic_conversation_guide"
+      />
 
   <LinearLayout
       android:id="@+id/llOptions"

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +27,9 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
+import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.view.adapter.TextOptionAdapter;
@@ -69,6 +72,7 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.rvOptions) RecyclerView rvOptions;
   @Bind(R.id.llOptions) View llOptions;
   @Bind(R.id.tvOption) TextView mTvOption;
+  @Bind(R.id.ivGuide) ImageView ivGuide;
 
   @Override protected String getPageNameCN() {
     return null;
@@ -151,6 +155,12 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void resetOptions(final List<String>list,final String addition,final int type){
+
+    if (!SPUtils.getConversationGuide()){
+      ivGuide.setVisibility(View.VISIBLE);
+    }
+
+
     if (type==1 || null == list){
       return;
     }
@@ -497,6 +507,8 @@ public class AIConversationFragment extends BaseFragment
   }
 
   @Override public void onAnswer(final String answer, final String additionalShit,final int index) {
+
+    ivGuide.setVisibility(View.GONE);
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
       makeToast(R.string.network_error);
