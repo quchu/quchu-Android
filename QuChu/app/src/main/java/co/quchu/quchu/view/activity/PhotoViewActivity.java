@@ -1,5 +1,8 @@
 package co.quchu.quchu.view.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
@@ -77,8 +80,16 @@ public class PhotoViewActivity extends BaseActivity {
       public void onPageSelected(int position) {
         mTvIndicator.setText((position + 1) + " of " + (mPhotoList.size()));
         if (mTvSource.getVisibility() == View.VISIBLE) {
-          mTvSource.setVisibility(View.INVISIBLE);
-          mIvShowSource.setVisibility(View.VISIBLE);
+          ObjectAnimator animator = ObjectAnimator.ofFloat(mTvSource, "translationX", 300);
+          animator.setDuration(500);
+          animator.start();
+          animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              mTvSource.setVisibility(View.INVISIBLE);
+              mIvShowSource.setVisibility(View.VISIBLE);
+            }
+          });
         }
       }
 
@@ -91,6 +102,15 @@ public class PhotoViewActivity extends BaseActivity {
       mTvIndicator.setText("1 of " + (mPhotoList.size()));
       viewPager.setCurrentItem(mIndex);
     }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    ObjectAnimator animator = ObjectAnimator.ofFloat(mTvSource, "translationX", 300);
+    animator.setDuration(500);
+    animator.start();
   }
 
   @Override
@@ -108,6 +128,9 @@ public class PhotoViewActivity extends BaseActivity {
     switch (view.getId()) {
       case R.id.ivShowSource:
         mTvSource.setVisibility(View.VISIBLE);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mTvSource, "translationX", 0);
+        animator.setDuration(500);
+        animator.start();
         mIvShowSource.setVisibility(View.INVISIBLE);
         break;
 

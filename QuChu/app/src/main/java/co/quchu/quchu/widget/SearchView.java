@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,6 +41,8 @@ public class SearchView extends LinearLayout {
   @Bind(R.id.search_input_et) EditText mSearchInputEt;
   @Bind(R.id.search_btn) TextView mSearchBtn;
   @Bind(R.id.search_history_rv) RecyclerView mSearchHistoryRv;
+  @Bind(R.id.search_history_layout) LinearLayout mSearchHistoryLayout;
+  @Bind(R.id.search_history_mask_view) View mSearchHistoryMaskView;
 
   private SearchAdapterNew mSearchHistoryAdapter;
   private List<String> mSearchHistoryList = new ArrayList<>();
@@ -108,19 +111,19 @@ public class SearchView extends LinearLayout {
   }
 
   public void showHistory() {
-    if (mSearchHistoryList != null && mSearchHistoryList.size() > 0) {
-      mSearchHistoryRv.setVisibility(VISIBLE);
-    }
+    mSearchHistoryLayout.setVisibility(VISIBLE);
+    mSearchHistoryLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
   }
 
   public void hideHistory() {
-    if (mSearchHistoryRv.getVisibility() == VISIBLE) {
-      mSearchHistoryRv.setVisibility(GONE);
+    if (mSearchHistoryLayout.getVisibility() == VISIBLE) {
+      mSearchHistoryLayout.setVisibility(GONE);
+      mSearchHistoryLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_out));
     }
   }
 
   public boolean isShowHistory() {
-    return mSearchHistoryRv.getVisibility() == VISIBLE;
+    return mSearchHistoryLayout.getVisibility() == VISIBLE;
   }
 
   /**
@@ -165,8 +168,16 @@ public class SearchView extends LinearLayout {
     List<SearchKeywordModel> keywords = SearchHistoryPresenter.getHistoryKeywords(getContext());
     if (keywords != null && keywords.size() > 0) {
       mSearchHistoryList.clear();
-      for (SearchKeywordModel keyword : keywords) {
-        mSearchHistoryList.add(keyword.getKeyword());
+      if (keywords.size() <= 5) {
+        for (SearchKeywordModel keyword : keywords) {
+          mSearchHistoryList.add(keyword.getKeyword());
+        }
+
+      } else {
+        for (int i = 0; i <= 4; i++) {
+          SearchKeywordModel keyword = keywords.get(i);
+          mSearchHistoryList.add(keyword.getKeyword());
+        }
       }
     }
 
@@ -187,6 +198,15 @@ public class SearchView extends LinearLayout {
     }
 
     mSearchHistoryList.add(0, keyword);
+    List<String> keywordModelList = null;
+    if (mSearchHistoryList.size() > 5) {
+      keywordModelList = mSearchHistoryList.subList(5, mSearchHistoryList.size());
+    }
+
+    if (keywordModelList != null) {
+      mSearchHistoryList.removeAll(keywordModelList);
+    }
+
     mSearchHistoryAdapter.notifyDataSetChanged();
 
     SearchHistoryPresenter.insertKeyword(getContext(), keyword);
@@ -204,15 +224,15 @@ public class SearchView extends LinearLayout {
       mSearchHistoryList.remove(keyword);
     }
 
-    if (mSearchHistoryList.size() == 0) {
-      mSearchHistoryRv.setVisibility(GONE);
-    }
+//    if (mSearchHistoryList.size() == 0) {
+//      mSearchHistoryRv.setVisibility(GONE);
+//    }
 
     mSearchHistoryAdapter.notifyDataSetChanged();
     SearchHistoryPresenter.deleteIfExisted(getContext(), keyword);
   }
 
-  @OnClick({R.id.search_back_btn, R.id.search_input_et, R.id.search_btn})
+  @OnClick({R.id.search_back_btn, R.id.search_input_et, R.id.search_btn, R.id.search_history_mask_view})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.search_back_btn:
@@ -226,6 +246,11 @@ public class SearchView extends LinearLayout {
 
       case R.id.search_btn:
         clickSearch();
+        break;
+
+      case R.id.search_history_mask_view:
+        SoftInputUtils.hideSoftInput((Activity) getContext());
+        hideHistory();
         break;
     }
   }
