@@ -25,10 +25,15 @@ import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
 import java.util.List;
 
 /**
@@ -100,7 +105,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((QuestionViewHolder) holder).sdvImage.setVisibility(View.VISIBLE);
             ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.GONE);
 
-            Uri uri = Uri.parse(q.getAnswer());
 
             ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
               @Override
@@ -121,13 +125,20 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
               }
             };
 
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse(q.getAnswer()))
+                    .setRequestPriority(Priority.HIGH)
+                    //.setProgressiveRenderingEnabled(true)
+                    .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH)
+                    .build();
             DraweeController draweeController =
                 Fresco.newDraweeControllerBuilder()
-                    .setUri(uri)
+                    .setImageRequest(imageRequest)
                     .setControllerListener(controllerListener)
                     .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
                     .build();
 
+            //((QuestionViewHolder) holder).sdvImage.getHierarchy().setProgressBarImage(new ProgressBarDrawable());
             ((QuestionViewHolder) holder).sdvImage.setController(draweeController);
           }else{
             ((QuestionViewHolder) holder).sdvImage.setVisibility(View.GONE);
