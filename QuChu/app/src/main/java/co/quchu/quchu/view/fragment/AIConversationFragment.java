@@ -144,7 +144,16 @@ public class AIConversationFragment extends BaseFragment
 
 
       mShowAnimRunning = true;
-      llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
+
+      int offSet = 0;
+      if (mConversation.size()<=3){
+        int[] location = new int[2];
+        llOptions.getLocationInWindow(location);
+        offSet = ScreenUtils.getScreenHeight(getActivity())-location[1]-llOptions.getHeight();
+        ivGuide.setTranslationY(offSet);
+      }
+
+      llOptions.animate().translationY(offSet).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
@@ -566,7 +575,7 @@ public class AIConversationFragment extends BaseFragment
       }
 
     }else{
-      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() && mConversation.get(mConversation.size()-1).getType().equals("2"))
+      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() &&!noNetWork && mConversation.get(mConversation.size()-1).getType().equals("2"))
       mConversation.remove(mConversation.size()-1);
       mAdapter.notifyDataSetChanged();
     }

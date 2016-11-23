@@ -119,6 +119,11 @@ public class EnhancedToolbar extends Toolbar {
         return v;
     }
 
+    public void setBackgroundColorRes(int res){
+     if (null!=rlContent){
+         rlContent.setBackgroundResource(res);
+     }
+    }
 
     private TextView addLeftTv() {
         return (TextView) addActionView(TYPE_LEFT_TV);

@@ -216,16 +216,16 @@ public class SplashActivity extends BaseActivity {
 
   public void enterApp() {
 
-    if (!SPUtils.getShowGuild()) {
-      startActivity(new Intent(SplashActivity.this, WizardActivity.class));
-      SplashActivity.this.finish();
-    } else {
+//    if (!SPUtils.getShowGuild()) {
+//      startActivity(new Intent(SplashActivity.this, WizardActivity.class));
+//      SplashActivity.this.finish();
+//    } else {
       Intent intent = new Intent(this, RecommendActivity.class);
       intent.putExtra(INTENT_KEY_IM_CHAT, mIsChat);
       intent.putExtra(INTENT_KEY_IM_CHAT_LIST, mIsChatList);
       startActivity(intent);
       SplashActivity.this.finish();
-    }
+//    }
   }
 
   /**

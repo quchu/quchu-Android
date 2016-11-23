@@ -90,7 +90,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       AIConversationModel q = mDataSet.get(position);
       switch (getItemViewType(position)) {
         case TYPE_QUESTION:
-          System.out.println("type question");
           if (position == 0) {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.VISIBLE);
           } else {
@@ -110,10 +109,15 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if (imageInfo == null) {
                   return;
                 }
+
                 ViewGroup.LayoutParams lp = ((QuestionViewHolder) holder).sdvImage.getLayoutParams();
                 lp.width = imageInfo.getWidth();
                 lp.height = imageInfo.getHeight();
                 ((QuestionViewHolder) holder).sdvImage.requestLayout();
+                if (animatable != null) {
+                  // app-specific logic to enable animation starting
+                  animatable.start();
+                }
               }
             };
 

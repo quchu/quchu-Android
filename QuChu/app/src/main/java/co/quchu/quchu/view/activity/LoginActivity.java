@@ -52,6 +52,7 @@ public class LoginActivity extends BaseBehaviorActivity {
     ButterKnife.bind(this);
 
     getEnhancedToolbar().show();
+    getEnhancedToolbar().setBackgroundColorRes(R.color.standard_color_white);
 
     loginFragment = new LoginFragment();
     fragmentManager = getFragmentManager();
