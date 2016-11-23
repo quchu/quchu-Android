@@ -165,7 +165,7 @@ public class AIConversationFragment extends BaseFragment
       return;
     }
 
-    if (mConversation.size()<=3){
+    if (mConversation.size()>=3){
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
     }
 
