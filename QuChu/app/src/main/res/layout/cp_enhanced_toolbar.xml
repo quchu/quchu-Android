@@ -13,6 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/standard_color_yellow"
         android:elevation="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
         android:gravity="center_vertical"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
