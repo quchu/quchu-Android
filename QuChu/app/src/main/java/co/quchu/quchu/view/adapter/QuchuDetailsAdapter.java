@@ -232,12 +232,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       String tagsString = "";
 
       if (!TextUtils.isEmpty(mData.getDescribed())) {
-        ((SimpleInfoViewHolder) holder).tvDesc.setText(mData.getDescribed());
+        ((SimpleInfoViewHolder) holder).tvDesc.setText("- "+mData.getDescribed());
       } else {
         ((SimpleInfoViewHolder) holder).tvDesc.setText("- 还没有简介");
       }
       if (null != mData.getTags()) {
-        for (int i = 0; i < mData.getTags().size(); i++) {
+        for (int i = 0; i < Math.min(mData.getTags().size(),3); i++) {
           tagsString += mData.getTags().get(i).getZh();
           tagsString += (i + 1) < mData.getTags().size() ? " | " : "";
         }
@@ -523,7 +523,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
         ((NearbyViewHolder) holder).address.setText(
-            mData.getNearPlace().get(imgIndex).getAddress());
+            mData.getNearPlace().get(imgIndex).getCircleName()+
+            mData.getNearPlace().get(imgIndex).getAreaCircleName());
         ((NearbyViewHolder) holder).address.setVisibility(View.VISIBLE);
         ((NearbyViewHolder) holder).sdvImage.setImageURI(
             Uri.parse(mData.getNearPlace().get(imgIndex).getCover()));

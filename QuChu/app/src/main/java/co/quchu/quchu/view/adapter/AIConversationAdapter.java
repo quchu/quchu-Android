@@ -98,7 +98,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
 
 
-          ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.GONE);
+          ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.INVISIBLE);
           if (position>0){
             if (mDataSet.get(position-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION){
               ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);

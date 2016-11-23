@@ -121,19 +121,16 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void showOptions(){
-    lOut("show Options");
 
     if (mConversation.size()<1){
       return;
     }
 
-    lOut("show Options 1");
     AIConversationModel last = mConversation.get(mConversation.size()-1);
 
     if (mShowAnimRunning){
       return;
     }
-    lOut("show Options 2");
 
 
     if (last.getAnswerPramms()!=null
@@ -141,7 +138,6 @@ public class AIConversationFragment extends BaseFragment
         &&!(null!=last.getType() && Integer.valueOf(last.getType())==1)
         ){
 
-      lOut("show Options 3");
 
       mShowAnimRunning = true;
       llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
@@ -225,21 +221,22 @@ public class AIConversationFragment extends BaseFragment
         int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
         int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
-        if (!mRecyclerView.canScrollVertically(-1)){
-          System.out.println("bottom ~");
-        }
-
-          if (pastVisibleItems + visibleItemCount >= totalItemCount) {
-            //End of list
-            lOut("show");
-              showOptions();
-          }else{
-            lOut("hide");
-            if (!mHideAnimRunning){
-              hideOptions();
-            }
+        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+          //End of list
+          showOptions();
+        } else {
+          if (!mHideAnimRunning) {
+            hideOptions();
           }
         }
+
+
+        if (!mRecyclerView.canScrollVertically(1)){
+          mShowAnimRunning = false;
+          showOptions();
+        }
+
+      }
 
     });
 
@@ -318,7 +315,6 @@ public class AIConversationFragment extends BaseFragment
     }
 
     if (model.getAnswerPramms().size() > 0 && !"1".equals(model.getType())) {
-      lOut(model.toString());
 
       final AIConversationModel modelOption = new AIConversationModel();
       modelOption.setAnswerPramms(model.getAnswerPramms());
