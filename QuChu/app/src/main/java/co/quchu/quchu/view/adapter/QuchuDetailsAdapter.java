@@ -237,9 +237,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((SimpleInfoViewHolder) holder).tvDesc.setText("- 还没有简介");
       }
       if (null != mData.getTags()) {
-        for (int i = 0; i < Math.min(mData.getTags().size(),3); i++) {
+        int size = Math.min(mData.getTags().size(),3);
+        for (int i = 0; i < size; i++) {
           tagsString += mData.getTags().get(i).getZh();
-          tagsString += (i + 1) < mData.getTags().size() ? " | " : "";
+          tagsString += (i + 1) < size ? " | " : "";
         }
       }
 

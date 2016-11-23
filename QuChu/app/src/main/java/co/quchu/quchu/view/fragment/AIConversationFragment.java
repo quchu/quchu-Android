@@ -257,7 +257,7 @@ public class AIConversationFragment extends BaseFragment
     },200);
 
 
-    deleteHistoryIfNeed();
+    final int deletedRows = deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
     mHistory = AIConversationPresenter.getMessages(getActivity());
     mConversation.addAll(mHistory);
@@ -270,9 +270,11 @@ public class AIConversationFragment extends BaseFragment
       @Override public void run() {
 
         if (mHistory.size()>0 ){
-          startConversation(false);
+            startConversation("03");
+        }else if(deletedRows>0){
+          startConversation("04");
         }else{
-          startConversation(true);
+          startConversation("01");
         }
 
       }
@@ -282,8 +284,9 @@ public class AIConversationFragment extends BaseFragment
   }
 
 
-  private void deleteHistoryIfNeed(){
+  private int deleteHistoryIfNeed(){
 
+    int effectedRows = 0;
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(System.currentTimeMillis());
 
@@ -292,8 +295,9 @@ public class AIConversationFragment extends BaseFragment
       calendar.set(Calendar.MINUTE,0);
       calendar.set(Calendar.SECOND,0);
 
-      AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
+      effectedRows = AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
     }
+    return effectedRows;
 
   }
 
@@ -409,7 +413,7 @@ public class AIConversationFragment extends BaseFragment
     }, CONVERSATION_REQUEST_DELAY);
   }
 
-  private void startConversation(final boolean starter) {
+  private void startConversation(final String type) {
     mXiaoQFab.animateLoading();
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
@@ -421,7 +425,7 @@ public class AIConversationFragment extends BaseFragment
 
     mNetworkBusy = true;
 
-    AIConversationPresenter.startConversation(getActivity(), starter,
+    AIConversationPresenter.startConversation(getActivity(), type,
         new CommonListener<AIConversationModel>() {
           @Override public void successListener(AIConversationModel response) {
 
@@ -478,7 +482,7 @@ public class AIConversationFragment extends BaseFragment
       case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
         if (mNetworkInterrupted) {
           updateNoNetwork(false);
-          startConversation(false);
+          startConversation("03");
         }
         break;
     }
@@ -516,7 +520,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   @Override public void onRetry() {
-    startConversation(false);
+    startConversation("03");
     hideOptions();
 
   }
@@ -528,16 +532,19 @@ public class AIConversationFragment extends BaseFragment
 
   private void updateNoNetwork(boolean noNetWork){
 
-    if((mConversation.size()<1 || mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION )&& noNetWork){
-      AIConversationModel noNetworkModel = new AIConversationModel();
-      noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
-      noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
-      noNetworkModel.setType("2");
-      List<String> retryAction = new ArrayList<>();
-      retryAction.add("手动刷新");
-      retryAction.add("手动搜索");
-      noNetworkModel.setAnswerPramms(retryAction);
-      addModel(noNetworkModel);
+    if( noNetWork){
+      if (mConversation.size()<1 || mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION ){
+        AIConversationModel noNetworkModel = new AIConversationModel();
+        noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
+        noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
+        noNetworkModel.setType("2");
+        List<String> retryAction = new ArrayList<>();
+        retryAction.add("手动刷新");
+        retryAction.add("手动搜索");
+        noNetworkModel.setAnswerPramms(retryAction);
+        addModel(noNetworkModel);
+      }
+
     }else{
       if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() && mConversation.get(mConversation.size()-1).getType().equals("2"))
       mConversation.remove(mConversation.size()-1);

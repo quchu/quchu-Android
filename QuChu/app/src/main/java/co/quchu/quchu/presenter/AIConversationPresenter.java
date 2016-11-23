@@ -29,11 +29,11 @@ import java.util.Map;
  */
 public class AIConversationPresenter {
 
-  public static void startConversation(Context context, boolean startor,
+  public static void startConversation(Context context, String type,
       final CommonListener<AIConversationModel> listener) {
 
     Map<String, String> map = new HashMap<>();
-    map.put("type", startor ? String.valueOf("01") : "03");
+    map.put("type", String.valueOf(type));
 
     map.put("longitude",String.valueOf(SPUtils.getLongitude()));
     map.put("latitude",String.valueOf(SPUtils.getLatitude()));
@@ -211,17 +211,18 @@ public class AIConversationPresenter {
   /**
    * 删除小于日期前的
    */
-  public static void delMessagesBefore(Context context,long date) {
+  public static int delMessagesBefore(Context context,long date) {
 
-
+int effectedRows = 0;
     DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," timeStamp < "+ date,null);
     Cursor topOne = DatabaseHelper.getInstance(context).getWritableDatabase().rawQuery("select id from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" where dataType = 1 order by timeStamp asc limit 1",null);
     if (topOne.moveToNext()){
       int id = topOne.getInt(0);
-      DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," id < "+ id,null);
+      effectedRows = DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," id < "+ id,null);
     }
     topOne.close();
     DatabaseHelper.closeIfOpend(context);
+    return effectedRows;
   }
 
   /**
