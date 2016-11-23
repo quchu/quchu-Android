@@ -523,9 +523,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
-        ((NearbyViewHolder) holder).address.setText(
-            mData.getNearPlace().get(imgIndex).getCircleName()+
-            mData.getNearPlace().get(imgIndex).getAreaCircleName());
+        ((NearbyViewHolder) holder).address.setText(mData.getNearPlace().get(imgIndex).getAreaCircleName());
         ((NearbyViewHolder) holder).address.setVisibility(View.VISIBLE);
         ((NearbyViewHolder) holder).sdvImage.setImageURI(
             Uri.parse(mData.getNearPlace().get(imgIndex).getCover()));

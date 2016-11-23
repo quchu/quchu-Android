@@ -54,7 +54,7 @@
         android:id="@+id/tvSource"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="图片来源:大众点评"
+        android:text="图片来源于网络"
         android:textColor="@color/standard_color_white"
         android:textSize="13sp"
         android:visibility="invisible"/>
