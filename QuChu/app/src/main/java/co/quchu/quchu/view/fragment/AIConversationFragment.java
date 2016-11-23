@@ -165,7 +165,7 @@ public class AIConversationFragment extends BaseFragment
         boolean singleAnswer = list.size()==1?true:false;
         for (int i = 0; i < list.size(); i++) {
 
-          if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.75){
+          if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.7){
             vertical = true;
           }
         }
@@ -531,7 +531,7 @@ public class AIConversationFragment extends BaseFragment
       noNetworkModel.setAnswerPramms(retryAction);
       addModel(noNetworkModel);
     }else{
-      if (mConversation.size()>0&&mConversation.get(mConversation.size()-1).getType().equals("2"))
+      if (mConversation.size()>0&&mConversation.get(mConversation.size()-1).getType().equals("2")&&!noNetWork)
       mConversation.remove(mConversation.size()-1);
       mAdapter.notifyDataSetChanged();
     }
