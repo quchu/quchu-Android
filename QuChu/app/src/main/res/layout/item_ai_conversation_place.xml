@@ -3,9 +3,9 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
     android:layout_marginTop="@dimen/half_margin"
@@ -34,10 +34,15 @@
         android:id="@+id/history_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="55dp"
+        android:layout_marginRight="55dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
         android:textColor="@color/standard_color_white"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="给味蕾一次歇斯底里的呐喊"
+        tools:text="给味蕾一次歇斯底里的呐喊给味蕾一次歇斯底里的呐喊给味蕾一次歇斯底里的呐喊"
         />
 
     <TextView

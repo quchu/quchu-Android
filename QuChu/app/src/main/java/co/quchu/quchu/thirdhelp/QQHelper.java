@@ -22,7 +22,7 @@ public class QQHelper {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, shareTitle);
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "趣处 - 一千个人，就有一千个趣处");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "点亮你的生活半径");
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareUrl);
 /*        if (StringUtils.isEmpty(imageUrl)) {*/
 
