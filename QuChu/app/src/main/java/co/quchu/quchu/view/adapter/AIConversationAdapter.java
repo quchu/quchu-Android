@@ -21,6 +21,8 @@ import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.CardsPagerTransformerBasic;
 import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -89,15 +91,32 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           } else {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
           }
+
+          if (null!=q.getAnswer() && q.getAnswer().startsWith("http")){
+            ((QuestionViewHolder) holder).sdvImage.setVisibility(View.VISIBLE);
+            ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.GONE);
+
+            Uri uri = Uri.parse(q.getAnswer());
+
+            DraweeController draweeController =
+                Fresco.newDraweeControllerBuilder()
+                    .setUri(uri)
+                    .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
+                    .build();
+
+            ((QuestionViewHolder) holder).sdvImage.setController(draweeController);
+          }else{
+            ((QuestionViewHolder) holder).sdvImage.setVisibility(View.GONE);
+            ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.VISIBLE);
+
+          }
+
           Uri xiaoQLogoUri = new Uri.Builder()
               .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
               .path(String.valueOf(R.mipmap.ic_xiaoq_logo))
               .build();
-          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
-
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
-
-
+          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
           ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.INVISIBLE);
           if (position>0){
             if (mDataSet.get(position-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION){
@@ -106,6 +125,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           }else if(position==0){
             ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
           }
+
 
 
           break;
@@ -208,6 +228,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Bind(R.id.tvQuestion) TextView tvQuestion;
     @Bind(R.id.vSpace) View vSpace;
     @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
+    @Bind(R.id.sdvImage) SimpleDraweeView sdvImage;
 
     QuestionViewHolder(View view) {
       super(view);

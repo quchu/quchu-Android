@@ -33,22 +33,38 @@
         android:scaleType="fitXY"
         android:layout_marginRight="8dp"
         fresco:roundAsCircle="true"
-        android:layout_alignBottom="@+id/tvQuestion"
+        android:layout_alignBottom="@+id/rvContent"
 
         />
 
-    <TextView
-        android:id="@+id/tvQuestion"
-        android:layout_toRightOf="@+id/sdvAvatar"
+
+    <RelativeLayout
+        android:id="@+id/rvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@mipmap/bg_conversation_white"
-        android:lineSpacingExtra="2dp"
-        android:padding="12dp"
-        android:textSize="14sp"
-        android:gravity="left|center_vertical"
-        tools:text="Question Number 1"
-        />
+        android:layout_toRightOf="@+id/sdvAvatar"
+        >
+
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/sdvImage"
+          android:layout_width="210px"
+          android:layout_height="210px"
+          fresco:roundedCornerRadius="10px"
+          android:visibility="gone"
+          />
+
+      <TextView
+          android:id="@+id/tvQuestion"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/bg_conversation_white"
+          android:lineSpacingExtra="2dp"
+          android:padding="12dp"
+          android:textSize="14sp"
+          android:gravity="left|center_vertical"
+          tools:text="Question Number 1"
+          />
+    </RelativeLayout>
 
   </RelativeLayout>
 

@@ -283,6 +283,14 @@ public class AIConversationFragment extends BaseFragment
 
   }
 
+  @Override public void onResume() {
+    super.onResume();
+    if (null!=mAdapter && null!=mRecyclerView){
+      mAdapter.notifyDataSetChanged();
+      mRecyclerView.clearAnimation();
+      mRecyclerView.invalidate();
+    }
+  }
 
   private int deleteHistoryIfNeed(){
 
