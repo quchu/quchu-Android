@@ -168,7 +168,7 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
     int startIndex = 0;
     int endIndex = 0;
     boolean futureHasCurrentCity = false;//即将上线的城市中有当前城市
-    if (cityEntity.getFuture() != null) {
+    if (cityEntity.getFuture() != null && cityEntity.getFuture().length > 0) {
       String[] futureCity = cityEntity.getFuture();
       mBottomLayout.setVisibility(View.VISIBLE);
 

@@ -166,6 +166,12 @@ public class FeedbackActivity extends BaseBehaviorActivity {
                     data.remove(feedbackModel);
                   }
 
+                  if (data.size() > 0) {
+                    mBackgroundLayout.setVisibility(View.VISIBLE);
+                  } else {
+                    mBackgroundLayout.setVisibility(View.GONE);
+                  }
+
                   adapter.initData(data);
                   adapter.setLoadMoreEnable(false);
                 }
