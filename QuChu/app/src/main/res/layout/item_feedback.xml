@@ -54,12 +54,10 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerVertical="true"
-          android:background="@drawable/shape_feedback_settle_btn"
           android:paddingBottom="5dp"
           android:paddingLeft="18dp"
           android:paddingRight="18dp"
           android:paddingTop="5dp"
-          android:text="未处理"
           android:textColor="@color/standard_color_h2_dark"
           android:textSize="12sp"
           android:visibility="visible"/>
