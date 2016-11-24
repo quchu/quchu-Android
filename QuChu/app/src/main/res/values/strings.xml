@@ -40,12 +40,7 @@
         - 趣处v%s -\n
         带你重新认识你的城市\n
         陪你重新定义你的生活方式\n\n\n\n
-        意见建议\n Email:service@quchu.co\n\n
-        加入我们\n
-        (选择以下“虚席”对号入座:....)\n
-         Email:hr@quchu.co\n\n
-        商务合作\n
-        Email:contact@quchu.co!</string>
+        </string>
 
     <string name="mypost_timer_now">刚刚</string>
     <string name="mypost_timer_minutes">分钟前</string>
