@@ -59,7 +59,6 @@ public class RecommentFragPresenter {
         model.getTabData(selectedTag, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
-                System.out.printf("getTABDATA success");
                 DialogUtil.dismissProgessDirectly();
                 if (response != null)
                     view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo(), response.getRowCount());
@@ -70,7 +69,6 @@ public class RecommentFragPresenter {
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                System.out.printf("getTABDATA error listener");
                 DialogUtil.dismissProgessDirectly();
                 view.initTabData(true, null, 0, 0, 0);
             }

@@ -146,7 +146,6 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
           @Override
           public void successListener(PagerModel response) {
             DialogUtil.dismissProgessDirectly();
-            System.out.println(response.getResult().size() + " |||");
             mData.addAll(response.getResult());
             if (mMaxPageNo == -1) {
               mMaxPageNo = response.getPageCount();

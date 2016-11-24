@@ -165,7 +165,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
           break;
         case TYPE_ANSWER:
-          System.out.println("type answer");
 
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
           if (AppContext.user.getGeneAvatar()!=-1){
@@ -192,7 +191,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         //  break;
 
         case TYPE_GALLERY_OPTION:
-          System.out.println("type gallery");
 
           if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
             ((GalleryViewHolder) holder).vpPlace.setAdapter(new PlaceVPAdapter(q.getPlaceList()));

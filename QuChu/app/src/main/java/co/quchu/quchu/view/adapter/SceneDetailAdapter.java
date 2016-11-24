@@ -48,7 +48,6 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
   private SceneInfoModel mSceneInfoModel;
 
   public void updateFavorite(int index, boolean status, boolean fromRec) {
-    System.out.println("place " + index + " | " + status + " | " + fromRec);
     if (fromRec) {
       if (mBestPlace.size() > index) {
         System.out.println("rec place changed");

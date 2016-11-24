@@ -129,7 +129,6 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
       mPageNo = 1;
     }
 
-    System.out.println(mMaxPageNo + "|" + mPageNo + "|" + mMaxPageNo + "|" + loadMore);
     if (mMaxPageNo != -1 && mPageNo >= mMaxPageNo && loadMore) {
       mAdapter.showPageEnd(true);
       return;
