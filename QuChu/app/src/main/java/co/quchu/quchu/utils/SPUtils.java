@@ -236,9 +236,9 @@ public class SPUtils {
     return Double.parseDouble(getValueFromSPMap(AppContext.mContext, AppKey.LAT, "0"));
   }
 
-  public static boolean getShowRecommendGuide() {
-    boolean show = getBooleanFromSPMap(AppContext.mContext, AppKey.DISPLAY_RECOMMEND_GUID, false);
-    putBooleanToSPMap(AppContext.mContext, AppKey.DISPLAY_RECOMMEND_GUID, true);
+  public static boolean getConversationGuide() {
+    boolean show = getBooleanFromSPMap(AppContext.mContext, AppKey.SHOW_AI_CONVERSATION_GUIDE, false);
+    putBooleanToSPMap(AppContext.mContext, AppKey.SHOW_AI_CONVERSATION_GUIDE, true);
     return show;
   }
 

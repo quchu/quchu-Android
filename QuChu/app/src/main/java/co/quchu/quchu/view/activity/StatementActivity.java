@@ -3,6 +3,8 @@ package co.quchu.quchu.view.activity;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 

@@ -2,6 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,8 +23,17 @@ import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.CardsPagerTransformerBasic;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.Priority;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.image.QualityInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
 import java.util.List;
 
 /**
@@ -85,7 +95,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       AIConversationModel q = mDataSet.get(position);
       switch (getItemViewType(position)) {
         case TYPE_QUESTION:
-          System.out.println("type question");
           if (position == 0) {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.VISIBLE);
           } else {
@@ -96,14 +105,40 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((QuestionViewHolder) holder).sdvImage.setVisibility(View.VISIBLE);
             ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.GONE);
 
-            Uri uri = Uri.parse(q.getAnswer());
 
+            ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
+              @Override
+              public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+                super.onFinalImageSet(id, imageInfo, animatable);
+                if (imageInfo == null) {
+                  return;
+                }
+
+                ViewGroup.LayoutParams lp = ((QuestionViewHolder) holder).sdvImage.getLayoutParams();
+                lp.width = imageInfo.getWidth();
+                lp.height = imageInfo.getHeight();
+                ((QuestionViewHolder) holder).sdvImage.requestLayout();
+                if (animatable != null) {
+                  // app-specific logic to enable animation starting
+                  animatable.start();
+                }
+              }
+            };
+
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse(q.getAnswer()))
+                    .setRequestPriority(Priority.HIGH)
+                    //.setProgressiveRenderingEnabled(true)
+                    .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH)
+                    .build();
             DraweeController draweeController =
                 Fresco.newDraweeControllerBuilder()
-                    .setUri(uri)
+                    .setImageRequest(imageRequest)
+                    .setControllerListener(controllerListener)
                     .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
                     .build();
 
+            //((QuestionViewHolder) holder).sdvImage.getHierarchy().setProgressBarImage(new ProgressBarDrawable());
             ((QuestionViewHolder) holder).sdvImage.setController(draweeController);
           }else{
             ((QuestionViewHolder) holder).sdvImage.setVisibility(View.GONE);

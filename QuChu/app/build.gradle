@@ -58,12 +58,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "int", "API_SERVER", "0"
+            buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
         }
 
         uat {
-            buildConfigField "int", "API_SERVER", "0"
+            buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
 //            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
 //            applicationIdSuffix ".uat"
@@ -158,13 +158,14 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
 
     compile 'com.qiniu:qiniu-android-sdk:7.0.0'
-    compile 'me.relex:photodraweeview:1.0.0'
+    compile 'me.relex:photodraweeview:1.1.2'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.he5ed.lib:volley:android-6.0.1_r5'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.getui:sdk:2.9.0.0'
-    compile 'com.facebook.fresco:fresco:0.11.0'
-    compile 'com.facebook.fresco:webpsupport:0.11.0'
+    compile 'com.facebook.fresco:fresco:0.14.1'
+    compile 'com.facebook.fresco:webpsupport:0.14.1'
+    compile 'com.facebook.fresco:animated-gif:0.14.1'
     compile 'pub.devrel:easypermissions:0.1.0'
 
     //融云im

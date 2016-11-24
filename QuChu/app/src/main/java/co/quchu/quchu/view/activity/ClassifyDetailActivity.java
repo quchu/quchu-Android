@@ -154,7 +154,7 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
                             if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
                                 ImageRequest request = ImageRequestBuilder
                                         .newBuilderWithSource(imageUri)
-                                        .setImageType(ImageRequest.ImageType.SMALL)
+                                        //.setImageType(ImageRequest.ImageType.SMALL)
                                         .setPostprocessor(new Postprocessor() {
                                             @Override
                                             public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {

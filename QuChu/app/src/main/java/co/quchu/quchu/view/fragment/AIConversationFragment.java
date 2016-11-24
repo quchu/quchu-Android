@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +27,9 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
+import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.activity.SearchActivityNew;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.view.adapter.TextOptionAdapter;
@@ -69,6 +72,7 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.rvOptions) RecyclerView rvOptions;
   @Bind(R.id.llOptions) View llOptions;
   @Bind(R.id.tvOption) TextView mTvOption;
+  @Bind(R.id.ivGuide) ImageView ivGuide;
 
   @Override protected String getPageNameCN() {
     return null;
@@ -140,7 +144,16 @@ public class AIConversationFragment extends BaseFragment
 
 
       mShowAnimRunning = true;
-      llOptions.animate().translationY(0).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
+
+      int offSet = 0;
+      if (mConversation.size()<=3){
+        int[] location = new int[2];
+        llOptions.getLocationInWindow(location);
+        offSet = ScreenUtils.getScreenHeight(getActivity())-location[1]-llOptions.getHeight();
+        ivGuide.setTranslationY(offSet);
+      }
+
+      llOptions.animate().translationY(offSet).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
@@ -151,11 +164,17 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void resetOptions(final List<String>list,final String addition,final int type){
+
+    if (!SPUtils.getConversationGuide()){
+      ivGuide.setVisibility(View.VISIBLE);
+    }
+
+
     if (type==1 || null == list){
       return;
     }
 
-    if (mConversation.size()<=3){
+    if (mConversation.size()>=3){
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
     }
 
@@ -167,7 +186,7 @@ public class AIConversationFragment extends BaseFragment
         boolean singleAnswer = list.size()==1?true:false;
         for (int i = 0; i < list.size(); i++) {
 
-          if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.75){
+          if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.7){
             vertical = true;
           }
         }
@@ -498,6 +517,8 @@ public class AIConversationFragment extends BaseFragment
 
   @Override public void onAnswer(final String answer, final String additionalShit,final int index) {
 
+    ivGuide.setVisibility(View.GONE);
+
     if (!NetUtil.isNetworkConnected(getActivity())) {
       makeToast(R.string.network_error);
       return;
@@ -554,7 +575,7 @@ public class AIConversationFragment extends BaseFragment
       }
 
     }else{
-      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() && mConversation.get(mConversation.size()-1).getType().equals("2"))
+      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() &&!noNetWork && mConversation.get(mConversation.size()-1).getType().equals("2"))
       mConversation.remove(mConversation.size()-1);
       mAdapter.notifyDataSetChanged();
     }
