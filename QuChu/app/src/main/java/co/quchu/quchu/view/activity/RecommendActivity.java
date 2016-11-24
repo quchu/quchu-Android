@@ -103,6 +103,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   private ArrayList<CityModel> mCityList = new ArrayList<>();
   private CityEntity mCityEntity;
   private List<SceneInfoModel> mAllSceneList = new ArrayList<>();
+  private AIConversationFragment mAIContent;
 
   @Override
   protected String getPageNameCN() {
@@ -148,7 +149,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         mRvScene.setAlpha(1 - progress);
         toolbar.setAlpha(1 - progress);
-
+        if (null!=mAIContent){
+          mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
+        }
       }
     });
 
@@ -176,7 +179,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
    * 添加Fragment
    */
   private void initFragment() {
-    getSupportFragmentManager().beginTransaction().add(R.id.flContainer, new AIConversationFragment()).commitAllowingStateLoss();
+    if (null==mAIContent){
+      mAIContent = new AIConversationFragment();
+    }
+    getSupportFragmentManager().beginTransaction().add(R.id.flContainer, mAIContent).commitAllowingStateLoss();
   }
 
   /**

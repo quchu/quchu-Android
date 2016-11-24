@@ -81,7 +81,6 @@ public class AIConversationFragment extends BaseFragment
 
 
   private void hideAndUpdate(int selected){
-    lOut("hide"+selected);
     int index = rvOptions.getChildCount()==1?0:selected;
     final TextView selectedTarget = (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
 
@@ -146,14 +145,14 @@ public class AIConversationFragment extends BaseFragment
       mShowAnimRunning = true;
 
       int offSet = 0;
-      if (mConversation.size()<=3){
+      if (mConversation.size()<=2){
         int[] location = new int[2];
         llOptions.getLocationInWindow(location);
         offSet = ScreenUtils.getScreenHeight(getActivity())-location[1]-llOptions.getHeight();
-        ivGuide.setTranslationY(offSet);
+        ivGuide.setTranslationY(offSet - offSetY);
       }
 
-      llOptions.animate().translationY(offSet).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
+      llOptions.animate().translationY(offSet -offSetY).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
@@ -207,6 +206,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
 
+
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
@@ -226,6 +226,7 @@ public class AIConversationFragment extends BaseFragment
           }
         });
 
+
     mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
@@ -233,9 +234,12 @@ public class AIConversationFragment extends BaseFragment
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+
+
         if (mConversation==null||mConversation.size()<1){
           return;
         }
+
         int visibleItemCount = mRecyclerView.getLayoutManager().getChildCount();
         int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
         int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
@@ -279,6 +283,7 @@ public class AIConversationFragment extends BaseFragment
     final int deletedRows = deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
     mHistory = AIConversationPresenter.getMessages(getActivity());
+    //TODO
     mConversation.addAll(mHistory);
     mAdapter.notifyDataSetChanged();
     if (mConversation.size()>0){
@@ -309,7 +314,6 @@ public class AIConversationFragment extends BaseFragment
       mRecyclerView.clearAnimation();
       mRecyclerView.invalidate();
 
-   ;
 
       int effectedRows = deleteHistoryIfNeed();
       if (effectedRows>0){
@@ -610,8 +614,20 @@ public class AIConversationFragment extends BaseFragment
   }
 
 
-  private void lOut(String msg){
-    Log.e("AICFss",msg);
+  public void resetOffset(float scrollRange) {
+    if (mConversation.size()<=2){
+      int offSet = 0;
+      int[] location = new int[2];
+      llOptions.getLocationOnScreen(location);
+      offSet = ScreenUtils.getScreenHeight(getActivity())-location[1]-llOptions.getHeight();
+
+      ivGuide.setTranslationY(-scrollRange);
+      llOptions.setTranslationY(-scrollRange);
+      offSetY = scrollRange;
+    }else{
+      offSetY = 0;
+    }
   }
 
+  public float offSetY = 0;
 }
