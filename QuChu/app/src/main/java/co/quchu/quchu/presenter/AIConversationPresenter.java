@@ -213,16 +213,18 @@ public class AIConversationPresenter {
    */
   public static int delMessagesBefore(Context context,long date) {
 
-int effectedRows = 0;
-    DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," timeStamp < "+ date,null);
+    int sizeB4 = getMessageSize(context);
+    DatabaseHelper.getInstance(context).getWritableDatabase().execSQL("delete from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION +" where timeStamp < "+ date);
+
     Cursor topOne = DatabaseHelper.getInstance(context).getWritableDatabase().rawQuery("select id from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" where dataType = 1 order by timeStamp asc limit 1",null);
     if (topOne.moveToNext()){
       int id = topOne.getInt(0);
-      effectedRows = DatabaseHelper.getInstance(context).getWritableDatabase().delete(DatabaseHelper.TABLE_NAME_AI_CONVERSATION," id < "+ id,null);
+      DatabaseHelper.getInstance(context).getWritableDatabase().execSQL("delete from "+DatabaseHelper.TABLE_NAME_AI_CONVERSATION+" where id < "+ id);
     }
     topOne.close();
+    int sizeAft = getMessageSize(context);
     DatabaseHelper.closeIfOpend(context);
-    return effectedRows;
+    return sizeB4-sizeAft;
   }
 
   /**

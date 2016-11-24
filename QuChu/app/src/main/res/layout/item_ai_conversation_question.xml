@@ -50,6 +50,7 @@
           android:layout_width="250px"
           android:layout_height="250px"
           fresco:roundedCornerRadius="10px"
+          fresco:placeholderImage="@color/translucent_dark"
           android:visibility="gone"
           />
 
