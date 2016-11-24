@@ -88,7 +88,7 @@
               android:drawableLeft="@mipmap/ic_pull_menus_search"
               android:drawablePadding="4dp"
               android:gravity="left|center_vertical"
-              android:text="Welcome To A.I Research Lab"
+              android:text="搜索和分类"
               android:textColor="@color/colorHint"
               android:textSize="13sp"
               />

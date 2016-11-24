@@ -308,7 +308,21 @@ public class AIConversationFragment extends BaseFragment
       mAdapter.notifyDataSetChanged();
       mRecyclerView.clearAnimation();
       mRecyclerView.invalidate();
+
+      int effectedRows = deleteHistoryIfNeed();
+      if (effectedRows>0){
+        AIConversationPresenter.delOptionMessages(getActivity());
+        mHistory = AIConversationPresenter.getMessages(getActivity());
+        mConversation.clear();
+        mConversation.addAll(mHistory);
+        mAdapter.notifyDataSetChanged();
+        if (mConversation.size()==0 && !mNetworkBusy){
+          startConversation("04");
+          hideOptions();
+        }
+      }
     }
+
   }
 
   private int deleteHistoryIfNeed(){
@@ -318,7 +332,7 @@ public class AIConversationFragment extends BaseFragment
     calendar.setTimeInMillis(System.currentTimeMillis());
 
     if (calendar.get(Calendar.HOUR_OF_DAY)>=4) {
-      calendar.set(Calendar.HOUR_OF_DAY,0);
+      calendar.set(Calendar.HOUR_OF_DAY,4);
       calendar.set(Calendar.MINUTE,0);
       calendar.set(Calendar.SECOND,0);
 
