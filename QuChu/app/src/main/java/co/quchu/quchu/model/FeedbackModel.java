@@ -20,6 +20,7 @@ public class FeedbackModel implements Serializable{
 
     private int feedbackId;
     private String state; // 0-未解决;1-已解决;2-有回复
+    private String isFeed;// F 未解决 D 已回复 T 已处理 判断消息状态
     private String title;
     private String value;
     private String createDate;
@@ -39,6 +40,14 @@ public class FeedbackModel implements Serializable{
      */
 
     private List<MsgListBean> msgList;
+
+    public String getIsFeed() {
+        return isFeed;
+    }
+
+    public void setIsFeed(String isFeed) {
+        this.isFeed = isFeed;
+    }
 
     public int getFeedmsgCount() {
         return feedmsgCount;

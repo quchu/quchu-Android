@@ -47,12 +47,28 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
     holder.contentTv.setText(feedbackModel.getValue());
     holder.chatTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     holder.chatTv.getPaint().setAntiAlias(true);
-    if (feedbackModel.getState().equals("1")) {
-      holder.settleTv.setText("已解决");
-      holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_settle_btn));
-    } else {
-      holder.settleTv.setText("未解决");
-      holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
+    if (feedbackModel.getIsFeed() != null) {
+      switch (feedbackModel.getIsFeed()) {
+        case "F"://未解决
+          holder.settleTv.setText("未解决");
+          holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
+          break;
+
+        case "D"://已回复
+          holder.settleTv.setText("已回复");
+          holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_settle_btn));
+          break;
+
+        case "T"://已处理
+          holder.settleTv.setText("已处理");
+          holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_settle_btn));
+          break;
+
+        default://未解决
+          holder.settleTv.setText("未解决");
+          holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
+          break;
+      }
     }
 
 //    if (feedbackModel.getState().equals("2")) {
