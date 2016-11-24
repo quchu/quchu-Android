@@ -84,8 +84,8 @@
           <TextView
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginLeft="16dp"
-              android:drawableLeft="@mipmap/ic_pull_menus_search"
+              android:layout_marginLeft="8dp"
+              android:drawableLeft="@mipmap/ic_sousuokuang"
               android:drawablePadding="4dp"
               android:gravity="left|center_vertical"
               android:text="搜索和分类"
