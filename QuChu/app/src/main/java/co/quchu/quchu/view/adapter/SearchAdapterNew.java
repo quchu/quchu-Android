@@ -148,7 +148,12 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
       ResultViewHolder holder = (ResultViewHolder) viewHolder;
       RecommendModel model = mResultList.get(position);
 
-      holder.mTvDescribe.setText("- " + model.getDescribe());
+      if (!TextUtils.isEmpty(model.getDescribe())) {
+        holder.mTvDescribe.setVisibility(View.VISIBLE);
+        holder.mTvDescribe.setText("- " + model.getDescribe());
+      } else {
+        holder.mTvDescribe.setVisibility(View.GONE);
+      }
       if (null != model.getCover()) {
         holder.mSdvCover.setImageURI(Uri.parse(model.getCover()));
       }

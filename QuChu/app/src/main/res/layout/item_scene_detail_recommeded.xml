@@ -117,6 +117,7 @@
         android:singleLine="true"
         android:textColor="@color/standard_color_h2_dark"
         android:textSize="@dimen/standard_text_size_h4"
+        android:visibility="gone"
         tools:text="- 一句话描述"/>
 
     <LinearLayout

@@ -205,8 +205,11 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
       }
 
-      if (objScene.getPlaceInfo() != null) {
+      if (objScene.getPlaceInfo() != null && !TextUtils.isEmpty(objScene.getPlaceInfo().getDescribed())) {
+        ((RecommendedViewHolder) holder).tvDescribe.setVisibility(View.VISIBLE);
         ((RecommendedViewHolder) holder).tvDescribe.setText("- " + objScene.getPlaceInfo().getDescribed());
+      } else {
+        ((RecommendedViewHolder) holder).tvDescribe.setVisibility(View.GONE);
       }
 
       ((RecommendedViewHolder) holder).llHighLight.setVisibility(View.VISIBLE);
@@ -293,7 +296,12 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
       }
 
-      ((PlaceViewHolder) holder).tvDescribe.setText("- " + objScene.getDescribed());
+      if (!TextUtils.isEmpty(objScene.getDescribed())) {
+        ((PlaceViewHolder) holder).tvDescribe.setVisibility(View.VISIBLE);
+        ((PlaceViewHolder) holder).tvDescribe.setText("- " + objScene.getDescribed());
+      } else {
+        ((PlaceViewHolder) holder).tvDescribe.setVisibility(View.GONE);
+      }
 
       ((PlaceViewHolder) holder).tvCircleName.setText(
           null != objScene.getAreaCircleName() ? objScene.getAreaCircleName() : "");
