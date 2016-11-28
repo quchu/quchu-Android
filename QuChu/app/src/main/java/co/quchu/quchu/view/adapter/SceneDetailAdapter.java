@@ -323,7 +323,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
       }
 
       ((PlaceViewHolder) holder).ivFavorite.setImageResource(
-          objScene.isIsf() ? R.drawable.ic_shoucang_yellow : R.drawable.ic_weishoucang);
+          objScene.isIsf() ? R.drawable.ic_xuanzhong : R.drawable.ic_weishoucang);
       ((PlaceViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
