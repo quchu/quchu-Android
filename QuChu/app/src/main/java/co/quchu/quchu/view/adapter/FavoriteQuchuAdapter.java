@@ -90,13 +90,13 @@ public class FavoriteQuchuAdapter
     }
 
     String distance = "";
-    if (SPUtils.getLatitude() > 0
-        && null != bean.getLatitude()
-        && Double.valueOf(bean.getLatitude()) > 0) {
-      distance = " | "+StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(),
-          Double.valueOf(bean.getLatitude()), Double.valueOf(bean.getLongitude()));
-
-    }
+    //if (SPUtils.getLatitude() > 0
+    //    && null != bean.getLatitude()
+    //    && Double.valueOf(bean.getLatitude()) > 0) {
+    //  distance = " | "+StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(),
+    //      Double.valueOf(bean.getLatitude()), Double.valueOf(bean.getLongitude()));
+    //
+    //}
 
     holder.address.setText(info + distance);
     holder.address.setSelected(true);
