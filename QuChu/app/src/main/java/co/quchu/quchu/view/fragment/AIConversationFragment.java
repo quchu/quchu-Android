@@ -532,6 +532,12 @@ public class AIConversationFragment extends BaseFragment
           startConversation("03");
         }
         break;
+      case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+      case EventFlags.EVENT_USER_LOGOUT:
+        if (null!=mAdapter){
+          mAdapter.notifyDataSetChanged();
+        }
+        break;
     }
   }
 
