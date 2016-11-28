@@ -21,7 +21,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_back"
+        android:src="@drawable/ic_back"
         android:rotation="180"
         />
 

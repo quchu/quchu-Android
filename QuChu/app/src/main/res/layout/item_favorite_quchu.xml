@@ -38,7 +38,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_weight="1"
-              app:placeholderImage="@mipmap/ic_image_empty"
+              app:placeholderImage="@drawable/ic_image_empty"
               app:viewAspectRatio="1.4"/>
 
           <LinearLayout
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_delete"
+            android:src="@drawable/ic_delete"
             tools:ignore="ContentDescription"/>
       </FrameLayout>
 

@@ -32,7 +32,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/base_margin"
         android:layout_marginTop="@dimen/base_margin"
-        android:drawableLeft="@mipmap/ic_huanyipi"
+        android:drawableLeft="@drawable/ic_huanyipi"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:text="换一批"
@@ -61,7 +61,7 @@
               android:layout_centerHorizontal="true"
               android:layout_marginBottom="30dp"
               android:layout_marginTop="15dp"
-              android:src="@mipmap/ic_search_xiahua"/>
+              android:src="@drawable/ic_search_xiahua"/>
 
         </RelativeLayout>
 

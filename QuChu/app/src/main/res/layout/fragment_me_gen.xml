@@ -24,7 +24,7 @@
           android:layout_height="wrap_content"
           android:layout_marginBottom="5dp"
           android:layout_marginTop="20dp"
-          android:background="@mipmap/ic_quchu"/>
+          android:background="@drawable/ic_quchu"/>
 
       <TextView
           android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_wenyi_blue"/>
+              android:src="@drawable/ic_wenyi_blue"/>
 
           <TextView
               android:id="@+id/wenyi_tv"
@@ -98,7 +98,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_shejiao_blue"/>
+              android:src="@drawable/ic_shejiao_blue"/>
 
           <TextView
               android:id="@+id/shejiao_tv"
@@ -135,7 +135,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_tuhao_blue"/>
+              android:src="@drawable/ic_tuhao_blue"/>
 
           <TextView
               android:id="@+id/tuhao_tv"
@@ -180,7 +180,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_chihuo_blue"/>
+              android:src="@drawable/ic_chihuo_blue"/>
 
           <TextView
               android:id="@+id/chihuo_tv"
@@ -217,7 +217,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_shishang_blue"/>
+              android:src="@drawable/ic_shishang_blue"/>
 
           <TextView
               android:id="@+id/shishang_tv"
@@ -254,7 +254,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_haoqi_blue"/>
+              android:src="@drawable/ic_haoqi_blue"/>
 
           <TextView
               android:id="@+id/haoqi_tv"

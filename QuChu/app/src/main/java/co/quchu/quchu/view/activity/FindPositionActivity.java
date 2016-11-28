@@ -123,7 +123,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         position.setText("");
         photoInfos = new ArrayList<>();
         tackImage = new PhotoInfo();
-        tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
+        tackImage.setPhotoPath("res:///" + R.drawable.ic_take_photo);
         photoInfos.add(tackImage);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));

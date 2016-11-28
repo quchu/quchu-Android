@@ -21,9 +21,9 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdvCover"
             card_view:actualImageScaleType="centerCrop"
-            card_view:failureImage="@mipmap/ic_image_empty"
+            card_view:failureImage="@drawable/ic_image_empty"
             card_view:failureImageScaleType="center"
-            card_view:placeholderImage="@mipmap/ic_image_empty"
+            card_view:placeholderImage="@drawable/ic_image_empty"
             card_view:placeholderImageScaleType="center"
             card_view:viewAspectRatio="1.7"
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             card_view:roundBottomRight="false"
             card_view:roundTopLeft="true"
             card_view:roundTopRight="true"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_launcher" />
 
         <RelativeLayout
             android:id="@+id/rl"
@@ -90,7 +90,7 @@
                     android:id="@+id/tvReviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/ic_eyes"
+                    android:drawableLeft="@drawable/ic_eyes"
                     android:drawablePadding="@dimen/half_margin"
                     android:shadowColor="@color/standard_color_h1_dark"
                     android:shadowRadius="10"
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:drawableLeft="@mipmap/ic_faxian_shoucang"
+                    android:drawableLeft="@drawable/ic_faxian_shoucang"
                     android:drawablePadding="@dimen/half_margin"
                     android:shadowColor="@color/standard_color_h1_dark"
                     android:shadowRadius="10"

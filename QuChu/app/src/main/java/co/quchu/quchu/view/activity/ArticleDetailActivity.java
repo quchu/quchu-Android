@@ -218,7 +218,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 });
                 rv.setAdapter(mAdapter);
 
-                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang);
+                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.drawable.ic_shoucang_yellow:R.drawable.ic_shoucang);
                 mSwipeRefreshLayout.setRefreshing(false);
                 errorView.hideView();
 
@@ -267,7 +267,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                     EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_ARTICLE_FAVORITE_CHANGED));
                     mFavoriteProgressRunning = false;
                     Toast.makeText(getApplicationContext(), R.string.add_to_favorite_article_success, Toast.LENGTH_SHORT).show();
-                    ivFavorite.setImageResource(R.mipmap.ic_shoucang_yellow);
+                    ivFavorite.setImageResource(R.drawable.ic_shoucang_yellow);
                     mArticleDetailModel.getArticle().setFavorite(true);
 
                     if (!TextUtils.isEmpty(from) && from.equals(FROM_TYPE_PROFILE)) {
@@ -289,7 +289,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                     mFavoriteProgressRunning = false;
                     EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_ARTICLE_FAVORITE_CHANGED));
                     Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
-                    ivFavorite.setImageResource(R.mipmap.ic_shoucang);
+                    ivFavorite.setImageResource(R.drawable.ic_shoucang);
                     mArticleDetailModel.getArticle().setFavorite(false);
 
                     if (!TextUtils.isEmpty(from) && from.equals(FROM_TYPE_PROFILE)) {

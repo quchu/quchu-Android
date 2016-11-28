@@ -40,14 +40,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:src="@mipmap/ic_timeline_circle_active" />
+                    android:src="@drawable/ic_timeline_circle_active" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="303dp"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:src="@mipmap/ic_timeline_circle_active" />
+                    android:src="@drawable/ic_timeline_circle_active" />
 
                 <LinearLayout
                     android:id="@+id/llContent"
@@ -65,7 +65,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="56dp"
-                            android:src="@mipmap/ic_dingbu" />
+                            android:src="@drawable/ic_dingbu" />
 
                     </LinearLayout>
 
@@ -127,7 +127,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/half_margin"
-                                    android:drawableLeft="@mipmap/ic_zuobiao"
+                                    android:drawableLeft="@drawable/ic_zuobiao"
                                     android:drawablePadding="@dimen/half_margin"
                                     android:gravity="center"
                                     android:paddingTop="@dimen/half_margin"
@@ -144,7 +144,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/half_margin"
 
-                                    android:drawableLeft="@mipmap/ic_dianhua"
+                                    android:drawableLeft="@drawable/ic_dianhua"
                                     android:drawablePadding="@dimen/half_margin"
                                     android:gravity="center"
                                     android:paddingTop="@dimen/half_margin"
@@ -160,7 +160,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/half_margin"
-                                    android:drawableLeft="@mipmap/ic_money"
+                                    android:drawableLeft="@drawable/ic_money"
                                     android:drawablePadding="@dimen/half_margin"
                                     android:gravity="center"
                                     android:paddingTop="@dimen/half_margin"
@@ -174,7 +174,7 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/ic_qr_code"
+                                    android:src="@drawable/ic_qr_code"
 
                                     />
 

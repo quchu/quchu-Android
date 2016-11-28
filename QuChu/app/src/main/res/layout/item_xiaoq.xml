@@ -19,7 +19,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginRight="8dp"
-        fresco:placeholderImage="@mipmap/ic_xiaoq"
+        fresco:placeholderImage="@drawable/ic_xiaoq"
         fresco:roundAsCircle="true"/>
 
     <LinearLayout
@@ -65,7 +65,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="14dp"
-            android:src="@mipmap/ic_friends_arrow"/>
+            android:src="@drawable/ic_friends_arrow"/>
 
       </RelativeLayout>
 

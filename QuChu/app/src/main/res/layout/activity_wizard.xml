@@ -26,7 +26,7 @@
       android:layout_height="wrap_content"
       android:layout_above="@id/vAnchor"
       android:layout_centerHorizontal="true"
-      android:src="@mipmap/ic_women"
+      android:src="@drawable/ic_women"
       />
 
 
@@ -36,7 +36,7 @@
       android:layout_height="wrap_content"
       android:layout_above="@id/vAnchor"
       android:layout_centerHorizontal="true"
-      android:src="@mipmap/ic_men"
+      android:src="@drawable/ic_men"
 
       />
 
@@ -46,7 +46,7 @@
       android:layout_height="wrap_content"
       android:layout_above="@id/vAnchor"
       android:layout_centerHorizontal="true"
-      android:src="@mipmap/ic_wizard_logo"
+      android:src="@drawable/ic_wizard_logo"
       tools:visibility="invisible"
       />
 

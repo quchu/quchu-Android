@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:placeholderImage="@mipmap/ic_image_empty"
+        app:placeholderImage="@drawable/ic_image_empty"
         app:viewAspectRatio="1.4"
         />
 

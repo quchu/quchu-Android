@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_bind_type_phone"
+        android:drawableLeft="@drawable/ic_bind_type_phone"
         android:drawablePadding="@dimen/half_margin"
         android:gravity="center_vertical"
         android:text="手机号"
@@ -48,7 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_bind_type_sina"
+        android:drawableLeft="@drawable/ic_bind_type_sina"
         android:drawablePadding="@dimen/half_margin"
         android:gravity="center_vertical"
         android:text="新浪微博"
@@ -79,7 +79,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_bind_type_weixin"
+        android:drawableLeft="@drawable/ic_bind_type_weixin"
         android:drawablePadding="@dimen/half_margin"
         android:gravity="center_vertical"
         android:text="微信"

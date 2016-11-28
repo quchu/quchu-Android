@@ -105,7 +105,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     if (holder instanceof LoadMoreViewHolder) {
       final LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
       if (loadMoreEnable) {
-        loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
+        loadMoreHold.loadView.setImageResource(R.drawable.ic_loadmore);
         loadMoreHold.loadView.setVisibility(View.VISIBLE);
         loadMoreHold.retryView.setText("加载中~~");
         ((LoadMoreViewHolder) holder).massage.setVisibility(View.GONE);
@@ -127,7 +127,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
           rotation.cancel();
         loadMoreHold.loadView.setVisibility(View.GONE);
         loadMoreHold.retryView.setText("");
-//        loadMoreHold.loadView.setImageResource(R.mipmap.ic_nointernet);
+//        loadMoreHold.loadView.setImageResource(R.drawable.ic_nointernet);
 //        loadMoreHold.retryView.setText("点击重试");
 //        ((LoadMoreViewHolder) holder).massage.setVisibility(View.VISIBLE);
 //
@@ -138,7 +138,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 //          public void onClick(View v) {
 //            v.setClickable(false);
 //            loadMoreHold.loadView.setVisibility(View.VISIBLE);
-//            loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
+//            loadMoreHold.loadView.setImageResource(R.drawable.ic_loadmore);
 //            rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
 //            rotation.setInterpolator(new LinearInterpolator());
 //            rotation.setRepeatMode(ValueAnimator.RESTART);

@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_jubao"
+        android:drawableLeft="@drawable/ic_jubao"
         android:drawablePadding="@dimen/half_margin"
         android:gravity="center"
         android:text="举报"
@@ -43,7 +43,7 @@
         android:id="@+id/dialog_message_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_pingbi"
+        android:drawableLeft="@drawable/ic_pingbi"
         android:drawablePadding="@dimen/half_margin"
         android:gravity="center"
         android:text="屏蔽"

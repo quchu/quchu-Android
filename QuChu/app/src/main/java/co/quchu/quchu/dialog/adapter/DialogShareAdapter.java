@@ -20,7 +20,7 @@ import co.quchu.quchu.R;
 public class DialogShareAdapter extends BaseAdapter {
     private Context mContext;
 
-    private int[] imageLIst = {R.mipmap.ic_share_wechat, R.mipmap.ic_share_circle, R.mipmap.ic_share_tencent, R.mipmap.ic_share_weibo, R.mipmap.ic_share_copy_to_clipboard};
+    private int[] imageLIst = {R.drawable.ic_share_wechat, R.drawable.ic_share_circle, R.drawable.ic_share_tencent, R.drawable.ic_share_weibo, R.drawable.ic_share_copy_to_clipboard};
 
     private String[] textArray = {
             "微信好友",

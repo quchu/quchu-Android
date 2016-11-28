@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/double_margin"
         fresco:actualImageScaleType="focusCrop"
-        fresco:placeholderImage="@mipmap/head_place_hold"
+        fresco:placeholderImage="@drawable/head_place_hold"
         fresco:roundAsCircle="true"/>
 
     <TextView

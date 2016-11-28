@@ -47,7 +47,7 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
         FollowUserModel model = data.get(position);
         holder.itemFirendsIconSdv.setImageURI(Uri.parse(model.getPhoto()));
         holder.itemFriendsNameTv.setText(model.getName());
-//        holder.gender.setImageURI(Uri.parse("res:///" + (model.getGender().equals("男") ? R.mipmap.ic_male : R.mipmap.ic_female)));
+//        holder.gender.setImageURI(Uri.parse("res:///" + (model.getGender().equals("男") ? R.drawable.ic_male : R.drawable.ic_female)));
     }
 
     @Override

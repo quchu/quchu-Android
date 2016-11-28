@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/sdvAvatar"
         android:layout_centerVertical="true"
-        android:background="@mipmap/bg_conversation_gray"
+        android:background="@drawable/bg_conversation_gray"
         android:lineSpacingExtra="2dp"
         android:layout_marginLeft="8dp"
         android:textSize="14sp"

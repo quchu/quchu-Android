@@ -66,7 +66,7 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/half_margin"
-                    android:src="@mipmap/ic_edit_small"
+                    android:src="@drawable/ic_edit_small"
                     android:visibility="gone" />
 
                 <TextView
@@ -142,7 +142,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/quarter_margin"
-                        android:src="@mipmap/ic_tuhao" />
+                        android:src="@drawable/ic_tuhao" />
 
                     <TextView
                         android:id="@+id/tv1"
@@ -177,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/quarter_margin"
-                        android:src="@mipmap/ic_chihuo" />
+                        android:src="@drawable/ic_chihuo" />
 
                     <TextView
                         android:id="@+id/tv2"
@@ -213,7 +213,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/quarter_margin"
-                        android:src="@mipmap/ic_haoqi" />
+                        android:src="@drawable/ic_haoqi" />
 
                     <TextView
                         android:id="@+id/tv3"
@@ -259,7 +259,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/quarter_margin"
-                        android:src="@mipmap/ic_shejiao" />
+                        android:src="@drawable/ic_shejiao" />
 
                     <TextView
                         android:id="@+id/tv4"
@@ -295,7 +295,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/quarter_margin"
-                        android:src="@mipmap/ic_shishang" />
+                        android:src="@drawable/ic_shishang" />
 
                     <TextView
                         android:id="@+id/tv5"
@@ -331,7 +331,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/quarter_margin"
-                        android:src="@mipmap/ic_wenyi" />
+                        android:src="@drawable/ic_wenyi" />
 
                     <TextView
                         android:id="@+id/tv6"
@@ -399,7 +399,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/quarter_margin"
                         android:layout_weight="1"
-                        android:drawableLeft="@mipmap/ic_jiaoying"
+                        android:drawableLeft="@drawable/ic_jiaoying"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
                         android:text="脚印"
@@ -409,7 +409,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_go_right" />
+                        android:src="@drawable/ic_go_right" />
                 </LinearLayout>
 
                 <View style="@style/HorizontalLine" />
@@ -428,7 +428,7 @@
                         android:layout_marginLeft="@dimen/quarter_margin"
                         android:layout_weight="1"
 
-                        android:drawableLeft="@mipmap/ic_shoucang_blk"
+                        android:drawableLeft="@drawable/ic_shoucang_blk"
 
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
@@ -439,7 +439,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_go_right" />
+                        android:src="@drawable/ic_go_right" />
                 </LinearLayout>
 
                 <View style="@style/HorizontalLine" />
@@ -457,7 +457,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/quarter_margin"
                         android:layout_weight="1"
-                        android:drawableLeft="@mipmap/ic_quyouquan"
+                        android:drawableLeft="@drawable/ic_quyouquan"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
                         android:text="趣友圈"
@@ -468,7 +468,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_go_right" />
+                        android:src="@drawable/ic_go_right" />
                 </LinearLayout>
 
                 <View style="@style/HorizontalLine" />
@@ -485,7 +485,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/toolbar_item_size"
                         android:layout_marginLeft="@dimen/quarter_margin"
-                        android:drawableLeft="@mipmap/ic_xiaoxi"
+                        android:drawableLeft="@drawable/ic_xiaoxi"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
                         android:text="消息"
@@ -512,7 +512,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_go_right" />
+                        android:src="@drawable/ic_go_right" />
                 </RelativeLayout>
 
             </LinearLayout>

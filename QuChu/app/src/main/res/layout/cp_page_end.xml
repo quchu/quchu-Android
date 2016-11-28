@@ -28,6 +28,6 @@
         android:paddingBottom="@dimen/half_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_quchu_hc"/>
+        android:src="@drawable/ic_quchu_hc"/>
 
 </LinearLayout>

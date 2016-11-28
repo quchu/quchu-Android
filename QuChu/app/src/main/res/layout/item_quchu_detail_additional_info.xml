@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="center"
-        android:src="@mipmap/ic_paiwei"
+        android:src="@drawable/ic_paiwei"
         />
 
     <ImageView
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="center"
-        android:src="@mipmap/ic_waimai"
+        android:src="@drawable/ic_waimai"
         />
     <ImageView
         android:id="@+id/ivOrder"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="center"
-        android:src="@mipmap/ic_yuding"
+        android:src="@drawable/ic_yuding"
         />
     <ImageView
         android:id="@+id/ivTel"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="center"
-        android:src="@mipmap/ic_dianhua"
+        android:src="@drawable/ic_dianhua"
 
         />
 

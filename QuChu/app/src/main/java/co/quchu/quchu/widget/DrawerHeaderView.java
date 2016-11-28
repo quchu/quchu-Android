@@ -76,8 +76,8 @@ public class DrawerHeaderView extends LinearLayout {
         mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
       }
       mDrawerHeaderGenderImg.setImageURI(Uri.parse(
-          "res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male
-              : R.mipmap.ic_female)));
+          "res:///" + (AppContext.user.getGender().equals("男") ? R.drawable.ic_male
+              : R.drawable.ic_female)));
     }
   }
 

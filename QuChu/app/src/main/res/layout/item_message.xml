@@ -27,14 +27,14 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@mipmap/ic_xiaoq_logo"/>
+        android:src="@drawable/ic_xiaoq_logo"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="@dimen/half_margin"
-        android:background="@mipmap/bg_conversation_white"
+        android:background="@drawable/bg_conversation_white"
         android:orientation="vertical"
         android:paddingBottom="12dp"
         android:paddingLeft="20dp"

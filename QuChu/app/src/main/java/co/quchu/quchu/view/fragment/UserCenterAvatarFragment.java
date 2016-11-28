@@ -60,8 +60,8 @@ public class UserCenterAvatarFragment extends BaseFragment {
     mUserAvatarImg.setImageURI(Uri.parse(userCenterInfo.getPhoto()));
     mUserNameTv.setText(userCenterInfo.getName());
     mUserGenderImg.setImageURI(Uri.parse(
-        "res:///" + (userCenterInfo.getGender().equals("男") ? R.mipmap.ic_male
-            : R.mipmap.ic_female)));
+        "res:///" + (userCenterInfo.getGender().equals("男") ? R.drawable.ic_male
+            : R.drawable.ic_female)));
 
     String userMark = userCenterInfo.getMark();
     if (userMark != null) {
@@ -70,27 +70,27 @@ public class UserCenterAvatarFragment extends BaseFragment {
 
       switch (userMark) {
         case "小食神":
-          mUserMarkImg.setImageResource(R.mipmap.ic_chihuo_ahsy);
+          mUserMarkImg.setImageResource(R.drawable.ic_chihuo_ahsy);
           break;
 
         case "艺术家":
-          mUserMarkImg.setImageResource(R.mipmap.ic_wenyi_ahsy);
+          mUserMarkImg.setImageResource(R.drawable.ic_wenyi_ahsy);
           break;
 
         case "外交官":
-          mUserMarkImg.setImageResource(R.mipmap.ic_shejiao_ahsy);
+          mUserMarkImg.setImageResource(R.drawable.ic_shejiao_ahsy);
           break;
 
         case "时尚精":
-          mUserMarkImg.setImageResource(R.mipmap.ic_shishang_ahsy);
+          mUserMarkImg.setImageResource(R.drawable.ic_shishang_ahsy);
           break;
 
         case "大财阀":
-          mUserMarkImg.setImageResource(R.mipmap.ic_tuhao_ahsy);
+          mUserMarkImg.setImageResource(R.drawable.ic_tuhao_ahsy);
           break;
 
         case "玩乐咖":
-          mUserMarkImg.setImageResource(R.mipmap.ic_haoqi_ahsy);
+          mUserMarkImg.setImageResource(R.drawable.ic_haoqi_ahsy);
           break;
       }
     }

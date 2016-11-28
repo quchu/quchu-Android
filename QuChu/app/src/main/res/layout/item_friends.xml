@@ -22,7 +22,7 @@
         fresco:roundAsCircle="true"
         fresco:roundBottomLeft="true"
         fresco:roundBottomRight="true"
-        fresco:placeholderImage="@mipmap/head_place_hold"
+        fresco:placeholderImage="@drawable/head_place_hold"
         fresco:roundTopLeft="true"
         fresco:roundTopRight="true"
         fresco:roundedCornerRadius="180dp" />
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/ic_friends_arrow" />
+        android:src="@drawable/ic_friends_arrow" />
 
     <TextView
         android:id="@+id/item_friends_name_tv"

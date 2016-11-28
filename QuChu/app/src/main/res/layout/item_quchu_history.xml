@@ -30,7 +30,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:padding="5dp"
-        android:src="@mipmap/ic_right"
+        android:src="@drawable/ic_right"
         android:visibility="gone"/>
 
     <ImageView
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="5dp"
-        android:src="@mipmap/ic_left"
+        android:src="@drawable/ic_left"
         android:visibility="gone"/>
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_height="175dp"
         android:layout_margin="10dp"
         fresco:overlayImage="@color/translucent_dark"
-        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:placeholderImage="@drawable/ic_image_empty"
         fresco:roundedCornerRadius="10dp"
         fresco:viewAspectRatio="2"/>
 

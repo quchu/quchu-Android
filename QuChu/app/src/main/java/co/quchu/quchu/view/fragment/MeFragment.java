@@ -91,8 +91,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
   private boolean mProgressViewAnimated = false;
 
   private int[] bmResource = new int[] {
-      R.mipmap.ic_chihuo, R.mipmap.ic_haoqi, R.mipmap.ic_shejiao, R.mipmap.ic_wenyi,
-      R.mipmap.ic_tuhao, R.mipmap.ic_shishang
+      R.drawable.ic_chihuo, R.drawable.ic_haoqi, R.drawable.ic_shejiao, R.drawable.ic_wenyi,
+      R.drawable.ic_tuhao, R.drawable.ic_shishang
   };
 
   @Nullable @Override
@@ -114,7 +114,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     //        EnhancedToolbar toolbar = ((BaseActivity)getActivity()).getEnhancedToolbar();
     //
     //        ImageView imageView = toolbar.getRightIv();
-    //        imageView.setImageResource(R.mipmap.ic_tools);
+    //        imageView.setImageResource(R.drawable.ic_tools);
     //        imageView.setOnClickListener(this);
     userHead = AppContext.user.getPhoto();
 
@@ -261,8 +261,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
   }
 
   private static final int[] mBitmapSet = new int[] {
-      R.mipmap.ic_tuhao, R.mipmap.ic_chihuo, R.mipmap.ic_haoqi, R.mipmap.ic_shejiao,
-      R.mipmap.ic_shishang, R.mipmap.ic_wenyi
+      R.drawable.ic_tuhao, R.drawable.ic_chihuo, R.drawable.ic_haoqi, R.drawable.ic_shejiao,
+      R.drawable.ic_shishang, R.drawable.ic_wenyi
   };
 
   public void initGene() {

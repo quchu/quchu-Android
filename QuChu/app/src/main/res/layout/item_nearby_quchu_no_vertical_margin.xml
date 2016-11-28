@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             fresco:overlayImage="@color/translucent_dark"
-            fresco:placeholderImage="@mipmap/ic_image_empty"
+            fresco:placeholderImage="@drawable/ic_image_empty"
             fresco:roundedCornerRadius="@dimen/rounded_radius"
             fresco:viewAspectRatio="3.3" />
 
@@ -51,7 +51,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/base_margin"
-            android:src="@mipmap/ic_forward" />
+            android:src="@drawable/ic_forward" />
     </RelativeLayout>
 
 </LinearLayout>

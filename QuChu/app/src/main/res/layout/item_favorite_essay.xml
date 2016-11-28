@@ -25,7 +25,7 @@
                 android:id="@+id/simpleDraweeView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:placeholderImage="@drawable/ic_image_empty"
                 fresco:overlayImage="@color/colorSceneColor"
                 fresco:viewAspectRatio="1.8" />
 
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/ic_delete"
+                android:src="@drawable/ic_delete"
                 tools:ignore="ContentDescription" />
         </FrameLayout>
     </LinearLayout>

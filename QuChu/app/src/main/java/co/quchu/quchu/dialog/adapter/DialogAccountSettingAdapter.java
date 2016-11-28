@@ -19,7 +19,7 @@
 // */
 //public class DialogAccountSettingAdapter extends BaseAdapter {
 //    private Context mContext;
-//    private int[] imageLIst = {R.mipmap.ic_account_setting_album, R.mipmap.ic_account_setting_qu_photo};
+//    private int[] imageLIst = {R.drawable.ic_account_setting_album, R.drawable.ic_account_setting_qu_photo};
 //    private String[] textArray = {"相册", "趣头像"};
 //
 //    public DialogAccountSettingAdapter(Context context) {

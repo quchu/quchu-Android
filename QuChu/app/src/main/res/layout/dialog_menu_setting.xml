@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/base_margin"
         android:layout_margin="@dimen/base_margin"
-        android:src="@mipmap/ic_dismiss_dialog" />
+        android:src="@drawable/ic_dismiss_dialog" />
 
     <LinearLayout
         android:layout_width="match_parent"

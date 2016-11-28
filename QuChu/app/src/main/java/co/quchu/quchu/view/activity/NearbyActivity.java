@@ -83,7 +83,7 @@ public class NearbyActivity extends BaseBehaviorActivity {
 
         mStrFilterPattern = "";
         getEnhancedToolbar().getTitleTv().setText(R.string.guess_what_you_like);
-//        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
+//        getEnhancedToolbar().getRightIv().setImageResource(R.drawable.ic_tags_filter);
 //        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

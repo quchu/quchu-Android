@@ -69,7 +69,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
       //首页显示所有场景
       if (mLimitation > 0 && position == 3) {
-        holder.mSceneCoverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_suoyouchangjing_main);
+        holder.mSceneCoverImg.getHierarchy().setPlaceholderImage(R.drawable.ic_suoyouchangjing_main);
         holder.mSceneTitleTv.setText("所有场景");
         holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h1_dark));
 

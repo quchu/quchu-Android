@@ -148,7 +148,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
           Uri xiaoQLogoUri = new Uri.Builder()
               .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-              .path(String.valueOf(R.mipmap.ic_xiaoq_logo))
+              .path(String.valueOf(R.drawable.ic_xiaoq_logo))
               .build();
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);

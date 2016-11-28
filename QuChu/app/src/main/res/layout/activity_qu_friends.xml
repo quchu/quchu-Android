@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            fresco:placeholderImage="@mipmap/head_place_hold"
+            fresco:placeholderImage="@drawable/head_place_hold"
             fresco:roundAsCircle="true" />
 
         <com.facebook.drawee.view.SimpleDraweeView

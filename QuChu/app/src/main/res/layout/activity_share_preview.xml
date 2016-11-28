@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/base_margin"
-                fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:placeholderImage="@drawable/ic_image_empty"
                 fresco:roundedCornerRadius="5dp"
                 fresco:viewAspectRatio="1.33" />
 

@@ -31,7 +31,7 @@
                 android:button="@null"
                 android:checked="true"
                 android:gravity="center"
-                android:drawableLeft="@mipmap/ic_wodechangjing"
+                android:drawableLeft="@drawable/ic_wodechangjing"
                 android:text="常用场景"
                 android:background="@drawable/bg_scene_switch"
                 android:textColor="@color/color_selector_recommend_b_n_ltg" />
@@ -47,7 +47,7 @@
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
                 android:drawablePadding="@dimen/quarter_margin"
-                android:drawableLeft="@mipmap/ic_changjinggongfang"
+                android:drawableLeft="@drawable/ic_changjinggongfang"
                 android:textColor="@color/color_selector_recommend_b_n_ltg"
 
                 />
@@ -150,7 +150,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_scene_placeholder" />
+                android:src="@drawable/ic_scene_placeholder" />
 
             <TextView
                 android:id="@+id/tvEmptyView"

@@ -276,9 +276,9 @@ public class PhotoSelectActivity extends BaseActivity implements View.OnClickLis
         PhotoListAdapter.PhotoViewHolder holder = (PhotoListAdapter.PhotoViewHolder) view.getTag();
         if (holder != null) {
             if (checked) {
-                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_checked);
+                holder.mIvCheck.setImageResource(R.drawable.ic_photo_checked);
             } else {
-                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_unchecked);
+                holder.mIvCheck.setImageResource(R.drawable.ic_photo_unchecked);
             }
         } else {
             mPhotoListAdapter.notifyDataSetChanged();

@@ -38,7 +38,7 @@
       <ImageView
           android:layout_width="@dimen/login_social_icon_size"
           android:layout_height="@dimen/login_social_icon_size"
-          android:src="@mipmap/ic_weibo"
+          android:src="@drawable/ic_weibo"
           android:textColor="@color/standard_color_h2_dark"/>
 
       <TextView
@@ -61,7 +61,7 @@
       <ImageView
           android:layout_width="@dimen/login_social_icon_size"
           android:layout_height="@dimen/login_social_icon_size"
-          android:src="@mipmap/ic_wexin"/>
+          android:src="@drawable/ic_wexin"/>
 
       <TextView
           android:layout_width="wrap_content"

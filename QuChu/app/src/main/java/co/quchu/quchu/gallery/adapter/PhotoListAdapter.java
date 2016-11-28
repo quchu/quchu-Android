@@ -77,9 +77,9 @@ public class PhotoListAdapter extends BaseAdapter {
 //        if (GalleryFinal.getFunctionConfig().isMutiSelect()) {
 //            holder.mIvCheck.setVisibility(View.VISIBLE);
 //            if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
-//                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_checked);
+//                holder.mIvCheck.setImageResource(R.drawable.ic_photo_checked);
 //            } else {
-//                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_unchecked);
+//                holder.mIvCheck.setImageResource(R.drawable.ic_photo_unchecked);
 //            }
 //        } else {
 //            holder.mIvCheck.setVisibility(View.GONE);
@@ -130,9 +130,9 @@ public class PhotoListAdapter extends BaseAdapter {
         if (GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
-                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_checked);
+                holder.mIvCheck.setImageResource(R.drawable.ic_photo_checked);
             } else {
-                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_unchecked);
+                holder.mIvCheck.setImageResource(R.drawable.ic_photo_unchecked);
             }
         } else {
             holder.mIvCheck.setVisibility(View.GONE);

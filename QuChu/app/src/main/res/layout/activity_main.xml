@@ -49,7 +49,7 @@
             android:id="@+id/drawerItemFavorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@mipmap/ic_shoucang_drawer"
+            app:divImage="@drawable/ic_shoucang_drawer"
             app:divText="收藏"/>
 
         <co.quchu.quchu.widget.DrawerItemView
@@ -57,35 +57,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:divImage="@mipmap/ic_gerenzhongxin_drawer"
+            app:divImage="@drawable/ic_gerenzhongxin_drawer"
             app:divText="个人中心"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@mipmap/ic_xiaoxi_drawer"
+            app:divImage="@drawable/ic_xiaoxi_drawer"
             app:divText="消息"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@mipmap/ic_yijianhefankui_drawer"
+            app:divImage="@drawable/ic_yijianhefankui_drawer"
             app:divText="意见和帮助"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemSetting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@mipmap/ic_shezhi_drawer"
+            app:divImage="@drawable/ic_shezhi_drawer"
             app:divText="设置"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemShareApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@mipmap/ic_fengxiang_drawer"
+            app:divImage="@drawable/ic_fengxiang_drawer"
             app:divText="分享 App"/>
 
       </LinearLayout>

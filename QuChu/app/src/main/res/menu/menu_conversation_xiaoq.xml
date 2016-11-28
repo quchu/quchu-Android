@@ -4,7 +4,7 @@
 
   <item
       android:id="@+id/action_xiaoq"
-      android:icon="@mipmap/ic_shezhi"
+      android:icon="@drawable/ic_shezhi"
       android:orderInCategory="100"
       android:title="设置"
       app:showAsAction="always"/>

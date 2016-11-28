@@ -99,7 +99,7 @@ public class SplashActivity extends BaseActivity {
     ButterKnife.bind(this);
 
     mTvVersion.setText(getVersionName());
-    mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
+    mIvAppIcon.setImageResource(R.drawable.ic_user_loginview_logo);
 
     //        final AnimatorSet animatorSetText = new AnimatorSet();
     //        animatorSetText.playTogether(

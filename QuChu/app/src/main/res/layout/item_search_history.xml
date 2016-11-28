@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="24dp"
-        android:src="@mipmap/ic_clock"/>
+        android:src="@drawable/ic_clock"/>
 
     <TextView
         android:id="@+id/search_item_history_tv"
@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
         android:paddingRight="24dp"
-        android:src="@mipmap/ic_searchcancel"/>
+        android:src="@drawable/ic_searchcancel"/>
 
   </LinearLayout>
 

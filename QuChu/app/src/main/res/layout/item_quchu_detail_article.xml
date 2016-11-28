@@ -26,9 +26,9 @@
         fresco:actualImageScaleType="centerCrop"
         fresco:cardCornerRadius="4dp"
         fresco:cardPreventCornerOverlap="true"
-        fresco:failureImage="@mipmap/ic_image_empty"
+        fresco:failureImage="@drawable/ic_image_empty"
         fresco:failureImageScaleType="center"
-        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:placeholderImage="@drawable/ic_image_empty"
         fresco:placeholderImageScaleType="center"
         fresco:roundedCornerRadius="@dimen/rounded_radius"
         />
@@ -68,7 +68,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/base_margin"
-        android:src="@mipmap/ic_friends_arrow"
+        android:src="@drawable/ic_friends_arrow"
         />
   </RelativeLayout>
 

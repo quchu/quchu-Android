@@ -30,7 +30,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:padding="@dimen/half_margin"
-        android:src="@mipmap/ic_dingwei2"
+        android:src="@drawable/ic_dingwei2"
         android:layout_alignParentRight="true"
         tools:ignore="ContentDescription" />
 
@@ -43,7 +43,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:padding="@dimen/half_margin"
-        android:src="@mipmap/ic_dingwei"
+        android:src="@drawable/ic_dingwei"
         tools:ignore="ContentDescription" />
 
 
@@ -54,7 +54,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="10dp"
         android:padding="@dimen/half_margin"
-        android:src="@mipmap/ic_map_return"
+        android:src="@drawable/ic_map_return"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

@@ -29,11 +29,11 @@
           android:id="@+id/sdvCover"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:src="@mipmap/ic_launcher"
+          android:src="@drawable/ic_launcher"
           card_view:actualImageScaleType="centerCrop"
-          card_view:failureImage="@mipmap/ic_image_empty"
+          card_view:failureImage="@drawable/ic_image_empty"
           card_view:failureImageScaleType="center"
-          card_view:placeholderImage="@mipmap/ic_image_empty"
+          card_view:placeholderImage="@drawable/ic_image_empty"
           card_view:placeholderImageScaleType="center"
           card_view:roundBottomLeft="false"
           card_view:roundBottomRight="false"
@@ -60,7 +60,7 @@
             android:id="@+id/tvHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/ic_most"
+            android:drawableLeft="@drawable/ic_most"
             android:drawablePadding="@dimen/half_margin"
             android:textColor="@color/standard_color_yellow"
             android:textStyle="bold"
@@ -77,7 +77,7 @@
           android:layout_marginTop="@dimen/base_margin"
           android:background="@drawable/shape_round_scene_favorite_dark_background"
           android:scaleType="center"
-          android:src="@mipmap/ic_weishoucang"
+          android:src="@drawable/ic_weishoucang"
           />
 
     </RelativeLayout>

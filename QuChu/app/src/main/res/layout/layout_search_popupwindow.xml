@@ -13,7 +13,7 @@
         android:layout_width="@dimen/half_margin"
         android:layout_height="@dimen/half_margin"
         android:visibility="gone"
-        android:src="@mipmap/ic_trigon" />
+        android:src="@drawable/ic_trigon" />
 
     <FrameLayout
         android:layout_width="match_parent"

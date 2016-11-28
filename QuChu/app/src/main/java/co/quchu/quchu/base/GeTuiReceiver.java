@@ -52,7 +52,7 @@ public class GeTuiReceiver extends BroadcastReceiver {
                     Gson gson = new Gson();
                     PushMessageBean messageBean = gson.fromJson(data, PushMessageBean.class);
 
-                    builder.setSmallIcon(R.mipmap.ic_launcher)
+                    builder.setSmallIcon(R.drawable.ic_launcher)
                             .setContentTitle(messageBean.getTitle())
                             .setContentText(messageBean.getContent())
                             .setAutoCancel(true)

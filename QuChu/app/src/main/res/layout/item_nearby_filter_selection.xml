@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="@dimen/half_margin"
     android:background="@drawable/shape_lineframe_black"
-    android:drawableRight="@mipmap/ic_cancel26"
+    android:drawableRight="@drawable/ic_cancel26"
     android:gravity="center"
     android:maxLines="1"
     android:orientation="vertical"

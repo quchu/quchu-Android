@@ -147,7 +147,7 @@ public class WeiboHelper {
         mediaObject.description = "点亮你的生活半径";
 
         if (bitmap == null || bitmap.isRecycled())
-            bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
+            bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_launcher);
         // 设置 Bitmap 类型的图片到视频对象里  设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
 
 

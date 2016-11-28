@@ -44,9 +44,9 @@
               android:layout_height="match_parent"
               android:layout_weight="0.6"
               app:actualImageScaleType="centerCrop"
-              app:failureImage="@mipmap/ic_image_empty"
+              app:failureImage="@drawable/ic_image_empty"
               app:failureImageScaleType="center"
-              app:placeholderImage="@mipmap/ic_image_empty"
+              app:placeholderImage="@drawable/ic_image_empty"
               app:placeholderImageScaleType="center"
               app:roundedCornerRadius="@dimen/rounded_radius"
 
@@ -123,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_dahuo"
+        android:src="@drawable/ic_dahuo"
         />
 
   </RelativeLayout>

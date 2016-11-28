@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:src="@mipmap/ic_xiaoq"/>
+            android:src="@drawable/ic_xiaoq"/>
 
         <TextView
             android:id="@+id/xiaoq_title_tv"

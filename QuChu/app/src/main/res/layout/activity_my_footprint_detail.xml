@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="@dimen/base_margin"
-            android:src="@mipmap/ic_forward" />
+            android:src="@drawable/ic_forward" />
     </FrameLayout>
 
 
@@ -50,7 +50,7 @@
             android:layout_height="50dp"
 
             app:roundAsCircle="true"
-            fresco:placeholderImage="@mipmap/head_place_hold" />
+            fresco:placeholderImage="@drawable/head_place_hold" />
 
         <TextView
             android:id="@+id/detail"
@@ -89,7 +89,7 @@
                 android:id="@+id/support"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_heart" />
+                android:src="@drawable/ic_heart" />
 
             <TextView
                 android:id="@+id/supportCount"
@@ -117,7 +117,7 @@
             android:layout_weight="1"
             android:paddingBottom="@dimen/half_margin"
             android:paddingTop="@dimen/half_margin"
-            android:src="@mipmap/ic_share" />
+            android:src="@drawable/ic_share" />
 
         <FrameLayout
             android:id="@+id/edit"
@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/ic_write_white" />
+                android:src="@drawable/ic_write_white" />
 
         </FrameLayout>
 

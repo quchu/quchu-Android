@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/recommend_title_location_tv"
-        android:src="@mipmap/ic_down"/>
+        android:src="@drawable/ic_down"/>
   </RelativeLayout>
 
   <TextView
@@ -49,7 +49,7 @@
       android:layout_alignParentRight="true"
       android:layout_centerVertical="true"
       android:padding="@dimen/base_margin"
-      android:src="@mipmap/ic_search"/>
+      android:src="@drawable/ic_search"/>
 
   <ImageView
       android:id="@+id/ivLeft"
@@ -57,7 +57,7 @@
       android:layout_height="wrap_content"
       android:layout_centerVertical="true"
       android:padding="@dimen/base_margin"
-      android:src="@mipmap/ic_shezhi"/>
+      android:src="@drawable/ic_shezhi"/>
 
   <TextView
       android:id="@+id/tvRight"

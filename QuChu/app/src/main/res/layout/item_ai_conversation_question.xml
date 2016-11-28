@@ -58,7 +58,7 @@
           android:id="@+id/tvQuestion"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@mipmap/bg_conversation_white"
+          android:background="@drawable/bg_conversation_white"
           android:lineSpacingExtra="2dp"
           android:textSize="14sp"
           android:gravity="left|center_vertical"

@@ -421,10 +421,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 //  private void changeFavoriteBtn(boolean isFavorite) {
 //    if (isFavorite) {
 //      //场景已经收藏
-//      mLikeFab.setImageResource(R.mipmap.ic_favorite_yichu);
+//      mLikeFab.setImageResource(R.drawable.ic_favorite_yichu);
 //
 //    } else {
-//      mLikeFab.setImageResource(R.mipmap.ic_favorite_add);
+//      mLikeFab.setImageResource(R.drawable.ic_favorite_add);
 //    }
 //  }
 }

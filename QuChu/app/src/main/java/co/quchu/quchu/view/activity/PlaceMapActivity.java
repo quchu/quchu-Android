@@ -138,9 +138,9 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
    * init MapView
    */
   private void initMapView(Bundle savedInstanceState) {
-    mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_yellow);
-    mMapPinBlue = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_blue);
-    mOverlayMyLocation = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_me);
+    mMapPin = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_yellow);
+    mMapPinBlue = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_blue);
+    mOverlayMyLocation = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_me);
     mapView.onCreate(getApplicationContext(), savedInstanceState);// 此方法必须重写
     ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
     ImageView myPosition = (ImageView) findViewById(R.id.my_position);
@@ -343,7 +343,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
     //MyLocationStyle myLocationStyle = new MyLocationStyle();
     //myLocationStyle.myLocationIcon(BitmapDescriptorFactory.
-    //        fromResource(R.mipmap.ic_map_pin_me));
+    //        fromResource(R.drawable.ic_map_pin_me));
     //
     //aMap.setMyLocationStyle(myLocationStyle);
     aMap.animateMapStatus(mMapStatusUpdate);

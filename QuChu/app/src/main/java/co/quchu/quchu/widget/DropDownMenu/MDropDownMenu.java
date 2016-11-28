@@ -111,7 +111,7 @@ public class MDropDownMenu extends LinearLayout {
         }
       });
       tabView.getTextView().setText(tabs.get(i));
-      tabView.getImageView().setImageResource(R.mipmap.ic_down);
+      tabView.getImageView().setImageResource(R.drawable.ic_down);
     }
   }
 

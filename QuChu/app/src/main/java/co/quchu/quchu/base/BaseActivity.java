@@ -185,7 +185,7 @@ public abstract class BaseActivity extends AppCompatActivity {
   private EnhancedToolbar initToolbar() {
     if (null != findViewById(R.id.enhancedToolbar)) {
       enhancedToolbar = (EnhancedToolbar) findViewById(R.id.enhancedToolbar);
-      enhancedToolbar.getLeftIv().setImageResource(R.mipmap.ic_back);
+      enhancedToolbar.getLeftIv().setImageResource(R.drawable.ic_back);
       enhancedToolbar.getLeftIv().setScaleType(ImageView.ScaleType.CENTER);
       enhancedToolbar.getLeftIv().setOnClickListener(new View.OnClickListener() {
         @Override

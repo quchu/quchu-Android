@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="@dimen/half_margin"
-            android:src="@mipmap/ic_back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/title"
@@ -31,7 +31,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/half_margin"
-            android:src="@mipmap/ic_close" />
+            android:src="@drawable/ic_close" />
     </RelativeLayout>
 
     <android.support.design.widget.TextInputLayout

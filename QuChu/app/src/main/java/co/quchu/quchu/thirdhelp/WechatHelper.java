@@ -192,7 +192,7 @@ public class WechatHelper {
         if (bitmap != null && !bitmap.isRecycled()) {
             msg.thumbData = bmpToByteArray(bitmap, true);
         } else {
-            Bitmap bm = BitmapFactory.decodeResource(mActivity.getResources(), R.mipmap.ic_launcher);
+            Bitmap bm = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.ic_launcher);
             if (bm.getWidth()>120 || bm.getHeight() >120){
                 bm = Bitmap.createScaledBitmap(bm,120,120,false);
             }

@@ -267,12 +267,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#666666"));
       }else if (mData.getRecentSuggest()-mData.getSuggest()<0){
         ((RatingInfoViewHolder) holder).ivTrend.setVisibility(View.VISIBLE);
-        ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_fall);
+        ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.drawable.ic_rate_fall);
         ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#00b38a"));
         ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
       }else{
         ((RatingInfoViewHolder) holder).ivTrend.setVisibility(View.VISIBLE);
-        ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.mipmap.ic_rate_rise);
+        ((RatingInfoViewHolder) holder).ivTrend.setImageResource(R.drawable.ic_rate_rise);
         ((RatingInfoViewHolder) holder).tvRatingChange.setTextColor(Color.parseColor("#ff4242"));
         ((RatingInfoViewHolder) holder).tvRatingChange.setText(String.valueOf(Math.abs(mData.getSuggest()-mData.getRecentSuggest()))+"分");
       }
@@ -287,10 +287,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
     } else if (holder instanceof AdditionalInfoViewHolder) {
 
-      ((AdditionalInfoViewHolder) holder).ivDeliver.setImageResource(StringUtils.isEmpty(mData.getTakeoutUrl())?R.mipmap.ic_nowaimai:R.mipmap.ic_waimai);
-      ((AdditionalInfoViewHolder) holder).ivOrder.setImageResource(StringUtils.isEmpty(mData.getNet())?R.mipmap.ic_noyuding:R.mipmap.ic_yuding);
-      ((AdditionalInfoViewHolder) holder).ivQueue.setImageResource(StringUtils.isEmpty(mData.getLineUrl())?R.mipmap.ic_nopaihao:R.mipmap.ic_paiwei);
-      ((AdditionalInfoViewHolder) holder).ivTel.setImageResource(StringUtils.isEmpty(mData.getTel())?R.mipmap.ic_nodianhua:R.mipmap.ic_dianhua);
+      ((AdditionalInfoViewHolder) holder).ivDeliver.setImageResource(StringUtils.isEmpty(mData.getTakeoutUrl())?R.drawable.ic_nowaimai:R.drawable.ic_waimai);
+      ((AdditionalInfoViewHolder) holder).ivOrder.setImageResource(StringUtils.isEmpty(mData.getNet())?R.drawable.ic_noyuding:R.drawable.ic_yuding);
+      ((AdditionalInfoViewHolder) holder).ivQueue.setImageResource(StringUtils.isEmpty(mData.getLineUrl())?R.drawable.ic_nopaihao:R.drawable.ic_paiwei);
+      ((AdditionalInfoViewHolder) holder).ivTel.setImageResource(StringUtils.isEmpty(mData.getTel())?R.drawable.ic_nodianhua:R.drawable.ic_dianhua);
 
 
       ((AdditionalInfoViewHolder) holder).ivTel.setOnClickListener(new View.OnClickListener() {

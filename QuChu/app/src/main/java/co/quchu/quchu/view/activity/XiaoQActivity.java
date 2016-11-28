@@ -67,7 +67,7 @@ public class XiaoQActivity extends BaseBehaviorActivity implements CommonListene
     EnhancedToolbar toolbar = getEnhancedToolbar();
     toolbar.getTitleTv().setText("小Q");
     ImageView rightImage = toolbar.getRightIv();
-    rightImage.setImageResource(R.mipmap.ic_shezhi);
+    rightImage.setImageResource(R.drawable.ic_shezhi);
     rightImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {

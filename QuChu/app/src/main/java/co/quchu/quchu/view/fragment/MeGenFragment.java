@@ -191,32 +191,32 @@ public class MeGenFragment extends BaseFragment {
 
     switch (mark) {
       case "小食神":
-        chihuoImg.setImageResource(R.mipmap.ic_chihuo_yellow);
+        chihuoImg.setImageResource(R.drawable.ic_chihuo_yellow);
         chihuoTv.setTextColor(getResources().getColor(R.color.colorPrimary));
         break;
 
       case "艺术家":
-        wenyiImg.setImageResource(R.mipmap.ic_wenyi_yellow);
+        wenyiImg.setImageResource(R.drawable.ic_wenyi_yellow);
         wenyiTv.setTextColor(getResources().getColor(R.color.colorPrimary));
         break;
 
       case "外交官":
-        shejiaoImg.setImageResource(R.mipmap.ic_shejiao_yellow);
+        shejiaoImg.setImageResource(R.drawable.ic_shejiao_yellow);
         shejiaoTv.setTextColor(getResources().getColor(R.color.colorPrimary));
         break;
 
       case "时尚精":
-        shishangImg.setImageResource(R.mipmap.ic_shishang_yellow);
+        shishangImg.setImageResource(R.drawable.ic_shishang_yellow);
         shishangTv.setTextColor(getResources().getColor(R.color.colorPrimary));
         break;
 
       case "大财阀":
-        tuhaoImg.setImageResource(R.mipmap.ic_tuhao_yellow);
+        tuhaoImg.setImageResource(R.drawable.ic_tuhao_yellow);
         tuhaoTv.setTextColor(getResources().getColor(R.color.colorPrimary));
         break;
 
       case "玩乐咖":
-        haoqiImg.setImageResource(R.mipmap.ic_haoqi_yellow);
+        haoqiImg.setImageResource(R.drawable.ic_haoqi_yellow);
         haoqiTv.setTextColor(getResources().getColor(R.color.colorPrimary));
         break;
     }

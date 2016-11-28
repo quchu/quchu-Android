@@ -109,7 +109,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
   private void initToolbar() {
     getEnhancedToolbar().getTitleTv().setText("");
-    getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
+    getEnhancedToolbar().getRightIv().setImageResource(R.drawable.ic_home);
     getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {

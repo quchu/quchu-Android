@@ -102,7 +102,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     EnhancedToolbar toolbar = getEnhancedToolbar();
     mTitleTv = toolbar.getTitleTv();
     ImageView settingIv = toolbar.getRightIv();
-    settingIv.setImageResource(R.mipmap.ic_gengduo);
+    settingIv.setImageResource(R.drawable.ic_gengduo);
     settingIv.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {

@@ -447,7 +447,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       if (!TextUtils.isEmpty(categoryBean.getIconUrl())) {
         holder.coverImg.setImageURI(Uri.parse(categoryBean.getIconUrl()));
       } else {
-        holder.coverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_launcher);
+        holder.coverImg.getHierarchy().setPlaceholderImage(R.drawable.ic_launcher);
       }
 
       holder.nameTv.setText(categoryBean.getZh());

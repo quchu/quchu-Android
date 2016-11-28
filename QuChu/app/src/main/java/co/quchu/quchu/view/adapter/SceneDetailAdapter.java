@@ -235,7 +235,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((RecommendedViewHolder) holder).vDivider2.setVisibility(View.GONE);
       }
       ((RecommendedViewHolder) holder).ivFavorite.setImageResource(
-          objScene.getPlaceInfo().isIsf() ? R.mipmap.ic_xuanzhong : R.mipmap.ic_weishoucang);
+          objScene.getPlaceInfo().isIsf() ? R.drawable.ic_xuanzhong : R.drawable.ic_weishoucang);
 
       ((RecommendedViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -315,7 +315,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
       }
 
       ((PlaceViewHolder) holder).ivFavorite.setImageResource(
-          objScene.isIsf() ? R.mipmap.ic_shoucang_yellow : R.mipmap.ic_weishoucang);
+          objScene.isIsf() ? R.drawable.ic_shoucang_yellow : R.drawable.ic_weishoucang);
       ((PlaceViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {

@@ -22,7 +22,7 @@
 
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/half_margin"
-            android:src="@mipmap/ic_checked" />
+            android:src="@drawable/ic_checked" />
 
         <TextView
             android:layout_centerInParent="true"

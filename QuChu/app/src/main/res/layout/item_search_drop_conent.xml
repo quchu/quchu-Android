@@ -26,7 +26,7 @@
       android:layout_alignParentRight="true"
       android:layout_centerVertical="true"
       android:layout_marginRight="@dimen/base_margin"
-      android:src="@mipmap/ic_checked"
+      android:src="@drawable/ic_checked"
       android:visibility="gone"/>
 
   <View

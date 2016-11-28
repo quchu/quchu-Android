@@ -200,7 +200,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                         edit.setVisibility(View.VISIBLE);
                     }
                     if (!entity.isP) {                            //当前登录用户是否已经点赞
-                        support.setImageResource(R.mipmap.ic_fenshu_big_w);
+                        support.setImageResource(R.drawable.ic_fenshu_big_w);
                     } else {
                         support.setImageResource(R.drawable.ic_fenshu_big);
                     }
@@ -276,7 +276,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         }
 
         if (!model.isIsp()) {                            //当前登录用户是否已经点赞
-            support.setImageResource(R.mipmap.ic_fenshu_big_w);
+            support.setImageResource(R.drawable.ic_fenshu_big_w);
         } else {
             support.setImageResource(R.drawable.ic_fenshu_big);
         }
@@ -293,7 +293,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         share.setOnClickListener(this);
         headImage.setOnClickListener(this);
         fooopDetailActionBack.setOnClickListener(this);
-        fooopDetailActionBack.setImageResource(R.mipmap.ic_back);
+        fooopDetailActionBack.setImageResource(R.drawable.ic_back);
         fooopDetailActionBack.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -333,7 +333,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         }
         FootprintModel.Entity currentEntity = mEntitys.get(viewPager.getCurrentItem());
         if (!currentEntity.isP) {                            //当前登录用户是否已经点赞
-            support.setImageResource(R.mipmap.ic_fenshu_big_w);
+            support.setImageResource(R.drawable.ic_fenshu_big_w);
         } else {
             support.setImageResource(R.drawable.ic_fenshu_big);
         }
@@ -354,7 +354,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                                 model.setIsp(false);
                                 model.setPraiseNum(model.getPraiseNum() - 1);
                                 supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-                                support.setImageResource(R.mipmap.ic_fenshu_big_w);
+                                support.setImageResource(R.drawable.ic_fenshu_big_w);
                             } else {
                                 model.setIsp(true);
                                 LogUtils.e("点赞成功");

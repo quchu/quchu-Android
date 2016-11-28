@@ -58,7 +58,7 @@ public class MDropTabView extends RelativeLayout {
     mImageView = new ImageView(context);
     mImageView.setPadding(dpToPx(2), 0, 0, 0);
     mImageView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-    mImageView.setImageResource(R.mipmap.ic_down);
+    mImageView.setImageResource(R.drawable.ic_down);
     linearLayout.addView(mImageView, 1);
 
     addView(linearLayout, 0);

@@ -53,7 +53,7 @@
         android:id="@+id/sdvAvatar"
         android:layout_width="@dimen/comment_users_avatar_size"
         android:layout_height="@dimen/comment_users_avatar_size"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/ic_launcher"
         fresco:roundAsCircle="true"
         />
 

@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@mipmap/ic_photo_del" />
+        android:src="@drawable/ic_photo_del" />
 </RelativeLayout>
 
 

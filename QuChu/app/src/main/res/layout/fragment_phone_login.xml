@@ -37,7 +37,7 @@
         android:layout_height="@dimen/toolbar_item_size"
         android:layout_alignParentRight="true"
         android:scaleType="center"
-        android:src="@mipmap/ic_cancel"/>
+        android:src="@drawable/ic_cancel"/>
 
   </RelativeLayout>
 
@@ -72,7 +72,7 @@
         android:layout_height="@dimen/toolbar_item_size"
         android:layout_alignParentRight="true"
         android:scaleType="center"
-        android:src="@mipmap/ic_see"/>
+        android:src="@drawable/ic_see"/>
 
   </RelativeLayout>
 

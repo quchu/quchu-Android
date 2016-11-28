@@ -99,7 +99,7 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
       if (!TextUtils.isEmpty(categoryBean.getIconUrl())) {
         holder.mCategoryCoverImg.setImageURI(Uri.parse(categoryBean.getIconUrl()));
       } else {
-        holder.mCategoryCoverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_launcher);
+        holder.mCategoryCoverImg.getHierarchy().setPlaceholderImage(R.drawable.ic_launcher);
       }
 
       holder.mCategoryNameTv.setText(categoryBean.getZh());

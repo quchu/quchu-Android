@@ -22,7 +22,7 @@
       android:layout_height="wrap_content"
       android:visibility="gone"
       android:layout_marginLeft="@dimen/dialog_margin"
-      android:src="@mipmap/ic_conversation_guide"
+      android:src="@drawable/ic_conversation_guide"
       />
 
   <LinearLayout

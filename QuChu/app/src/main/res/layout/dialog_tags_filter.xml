@@ -12,7 +12,7 @@
         android:id="@+id/ivClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_dismiss_dialog"
+        android:src="@drawable/ic_dismiss_dialog"
         android:padding="@dimen/base_margin"
         android:layout_margin="@dimen/base_margin"
         />
@@ -36,7 +36,7 @@
         android:id="@+id/ivFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_confirm"
+        android:src="@drawable/ic_confirm"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dialog_margin"

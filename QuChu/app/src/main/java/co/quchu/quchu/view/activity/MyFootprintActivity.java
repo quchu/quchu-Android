@@ -65,7 +65,7 @@ public class MyFootprintActivity extends BaseBehaviorActivity {
         toolbar.getTitleTv().setText(title);
 
         ImageView rightIv = toolbar.getRightIv();
-        rightIv.setImageResource(R.mipmap.ic_add_position);
+        rightIv.setImageResource(R.drawable.ic_add_position);
         rightIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

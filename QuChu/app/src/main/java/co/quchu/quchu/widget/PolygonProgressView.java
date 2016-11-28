@@ -302,7 +302,7 @@ public class PolygonProgressView extends View {
       mPaintLabels.setStyle(Paint.Style.FILL);
       mPaintLabels.setAntiAlias(true);
       mPieces = mSides > 0 ? 360 / mSides : 0;
-      mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.mipmap.bg);
+      mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
     }
   }
 

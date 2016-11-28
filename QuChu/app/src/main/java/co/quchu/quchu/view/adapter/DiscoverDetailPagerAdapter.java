@@ -70,7 +70,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
                     DynamicDrawableSpan.ALIGN_BOTTOM) {
                 @Override
                 public Drawable getDrawable() {
-                    Drawable d = mContext.getResources().getDrawable(R.mipmap.ic_span_been);
+                    Drawable d = mContext.getResources().getDrawable(R.drawable.ic_span_been);
                     d.setBounds(StringUtils.dip2px(8), -StringUtils.dip2px(16), StringUtils.dip2px(40), 0);
                     return d;
                 }
