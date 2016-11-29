@@ -13,11 +13,10 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -360,5 +359,9 @@ public class StringUtils {
             return new DecimalFormat("##.#").format(((distance / 1000) / 100f) * 100) + "km";
         }
 
+    }
+
+    public static String getRount(float value) {
+        return new DecimalFormat("#.#").format(value);
     }
 }
