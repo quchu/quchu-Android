@@ -1,0 +1,46 @@
+package co.quchu.quchu.refactor.mvp;
+
+import co.quchu.quchu.refactor.QuChuApiService;
+import co.quchu.quchu.refactor.retrofit.AppClient;
+import co.quchu.quchu.refactor.rxjava.BaseSubscriber;
+import rx.Observable;
+import rx.subscriptions.CompositeSubscription;
+
+/**
+ * Created by mwb on 2016/11/29.
+ */
+public abstract class BasePresenter<V extends BaseView, T> {
+
+  protected V mMvpView;
+  private AppClient mAppClient;
+  protected QuChuApiService mService;
+  private CompositeSubscription mCompositeSubscription;
+
+  public abstract void bindView(V view);
+
+  protected void attachView(V mvpView) {
+    mMvpView = mvpView;
+    mAppClient = AppClient.getInstance();
+    mService = mAppClient.getService();
+  }
+
+  protected void detachView() {
+    mMvpView = null;
+    unSubscribe();
+  }
+
+  protected void execute(Observable observable, BaseSubscriber<T> subscriber) {
+    if (mCompositeSubscription == null) {
+      mCompositeSubscription = new CompositeSubscription();
+    }
+
+    //保存 Subscription 在 Activity 销毁时取消订阅,防止 Memory Leak
+    mCompositeSubscription.add(mAppClient.packageObservable(observable, subscriber));
+  }
+
+  protected void unSubscribe() {
+    if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
+      mCompositeSubscription.unsubscribe();
+    }
+  }
+}
