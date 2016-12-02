@@ -5,7 +5,7 @@ package co.quchu.quchu.refactor.mvp;
  */
 public interface BaseView {
 
-  void showLoading();
+  void showLoading(String msg, boolean isCancelable);
 
   void hideLoading();
 }

@@ -38,6 +38,11 @@ public abstract class BasePresenter<V extends BaseView, T> {
     mCompositeSubscription.add(mAppClient.packageObservable(observable, subscriber));
   }
 
+  /**
+   * 注意:一旦你调用了 CompositeSubscription.unsubscribe()，
+   * 这个CompositeSubscription对象就不可用了,
+   * 如果你还想使用CompositeSubscription，就必须在创建一个新的对象了。
+   */
   protected void unSubscribe() {
     if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
       mCompositeSubscription.unsubscribe();

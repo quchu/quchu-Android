@@ -9,7 +9,6 @@ import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,13 +20,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.refactor.LoginPresenter;
-import co.quchu.quchu.refactor.QuChuView;
-import co.quchu.quchu.refactor.mvp.MvpActivity;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.MeAvatarFragment;
@@ -35,17 +31,10 @@ import co.quchu.quchu.view.fragment.MeAvatarFragment;
 /**
  * Created by mwb on 16/10/25.
  */
-public class MeActivity extends MvpActivity<LoginPresenter> implements QuChuView<UserInfoModel> {
+public class MeActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.user_mask_layout) LinearLayout mUserMaskLayout;
   @Bind(R.id.user_operate_layout) LinearLayout mUserOperateLayout;
-
-  @Override
-  protected LoginPresenter createPresenter() {
-    LoginPresenter presenter = new LoginPresenter();
-    presenter.bindView(this);
-    return presenter;
-  }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,24 +95,7 @@ public class MeActivity extends MvpActivity<LoginPresenter> implements QuChuView
         break;
 
       case R.id.user_logout_btn://退出登录
-        final MaterialDialog confirmDialog = new MaterialDialog.Builder(this)
-            .title("确认退出")
-            .content("退出后将以游客模式登录")
-            .positiveText("是")
-            .negativeText("否")
-            .cancelable(false).build();
-        confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
-          @Override
-          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-            SPUtils.clearUserinfo(AppContext.mContext);
-            AppContext.user = null;
-            SPUtils.clearSpMap(MeActivity.this, AppKey.LOGIN_TYPE);
-
-            mMvpPresenter.visitorRegiest();
-          }
-        });
-        confirmDialog.show();
-//        logout();
+        logout();
         break;
 
       case R.id.user_login_btn://登录
@@ -201,15 +173,5 @@ public class MeActivity extends MvpActivity<LoginPresenter> implements QuChuView
   @Override
   protected String getPageNameCN() {
     return null;
-  }
-
-  @Override
-  public void onSuccess(UserInfoModel data) {
-    startActivity(RecommendActivity.class);
-  }
-
-  @Override
-  public void onFailure(String msg, String exception) {
-    Toast.makeText(this, "msg = " + msg + ", exception = " + exception, Toast.LENGTH_SHORT).show();
   }
 }

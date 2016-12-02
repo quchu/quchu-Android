@@ -19,6 +19,9 @@ public interface QuChuApiService {
   @POST("login/android")
   Observable<BaseResponse<UserInfoModel>> login(@QueryMap Map<String, String> map);
 
+  /**
+   * 游客登录
+   */
   @POST("mregister")
-  Observable<BaseResponse<UserInfoModel>> visitorRegiest(@QueryMap Map<String, String> map);
+  Observable<BaseResponse<UserInfoModel>> visitorRegister(@QueryMap Map<String, String> map);
 }

@@ -23,7 +23,7 @@ public class LoginPresenter extends BasePresenter<QuChuView, UserInfoModel> {
   }
 
   public void login(String userName, String password) {
-    mMvpView.showLoading();
+    mMvpView.showLoading("正在登录", false);
     Map<String, String> map = new HashMap<>();
     map.put("j_username", userName);
     map.put("j_password", MD5.hexdigest(password));
@@ -49,12 +49,12 @@ public class LoginPresenter extends BasePresenter<QuChuView, UserInfoModel> {
     });
   }
 
-  public void visitorRegiest() {
-    mMvpView.showLoading();
+  public void visitorRegister() {
+    mMvpView.showLoading("正在退出登录", false);
     Map<String, String> map = new HashMap<>();
     map.put("visitors", "1");
     map.put("equip", StringUtils.getMyUUID());
-    execute(mService.visitorRegiest(map), new BaseSubscriber<UserInfoModel>() {
+    execute(mService.visitorRegister(map), new BaseSubscriber<UserInfoModel>() {
       @Override
       public void onSuccess(UserInfoModel data) {
         SPUtils.setUserToken(AppContext.mContext, data.getToken());

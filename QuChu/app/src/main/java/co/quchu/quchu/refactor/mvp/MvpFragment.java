@@ -3,7 +3,8 @@ package co.quchu.quchu.refactor.mvp;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+
+import co.quchu.quchu.dialog.DialogUtil;
 
 /**
  * Created by mwb on 2016/11/30.
@@ -29,11 +30,13 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     }
   }
 
-  public void showLoading() {
-    Toast.makeText(getActivity(), "start", Toast.LENGTH_SHORT).show();
+  public void showLoading(String msg, boolean isCancelable) {
+    DialogUtil.showProgess(getActivity(), msg, isCancelable);
   }
 
   public void hideLoading() {
-    Toast.makeText(getActivity(), "end", Toast.LENGTH_SHORT).show();
+    if (DialogUtil.isDialogShowing()) {
+      DialogUtil.dismissProgess();
+    }
   }
 }

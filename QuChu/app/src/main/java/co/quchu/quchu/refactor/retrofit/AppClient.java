@@ -1,9 +1,5 @@
 package co.quchu.quchu.refactor.retrofit;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -71,7 +67,7 @@ public class AppClient {
     OkHttpClient okHttpClient = builder.build();
 
     //变量名使用驼峰式，e.g: user_name --> userName
-    Gson gson = new GsonBuilder().setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+//    Gson gson = new GsonBuilder().setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     String API_HOST = BuildConfig.API_SERVER == 0 ? HOST_RELEASE
         : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
@@ -79,7 +75,7 @@ public class AppClient {
     mRetrofit = new Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(API_HOST)
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(GsonConverterFactory.create())
         .addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .build();

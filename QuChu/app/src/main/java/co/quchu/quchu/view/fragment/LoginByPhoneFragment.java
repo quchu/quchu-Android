@@ -21,15 +21,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.refactor.LoginPresenter;
-import co.quchu.quchu.refactor.QuChuView;
-import co.quchu.quchu.refactor.mvp.MvpFragment;
+import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.LoginActivity;
@@ -39,8 +43,8 @@ import co.quchu.quchu.widget.ErrorView;
 /**
  * Created by Nico on 16/5/13.
  */
-public class LoginByPhoneFragment extends MvpFragment<LoginPresenter>
-    implements TextWatcher, View.OnFocusChangeListener, QuChuView<UserInfoModel> {
+public class LoginByPhoneFragment extends Fragment
+    implements TextWatcher, View.OnFocusChangeListener {
 
   @Bind(R.id.etUsername) EditText etUsername;
   @Bind(R.id.ivIconClear) ImageView ivIconClear;
@@ -58,13 +62,6 @@ public class LoginByPhoneFragment extends MvpFragment<LoginPresenter>
   public String mPhoneNumber = "";
 
   public boolean mDisplayPassword = false;
-
-  @Override
-  protected LoginPresenter createPresenter() {
-    LoginPresenter presenter = new LoginPresenter();
-    presenter.bindView(this);
-    return presenter;
-  }
 
   @Nullable
   @Override
@@ -97,8 +94,7 @@ public class LoginByPhoneFragment extends MvpFragment<LoginPresenter>
       @Override
       public void onClick(View v) {
         if (!mEmptyForum && verifyForm()) {
-          mMvpPresenter.login(etUsername.getText().toString(), etPassword.getText().toString());
-//          userLogin(etUsername.getText().toString(), etPassword.getText().toString());
+          userLogin(etUsername.getText().toString(), etPassword.getText().toString());
         }
       }
     });
@@ -230,55 +226,55 @@ public class LoginByPhoneFragment extends MvpFragment<LoginPresenter>
   /**
    * 用户登录
    */
-//  private void userLogin(String userName, String password) {
-//
-//    if (!NetUtil.isNetworkConnected(getActivity())) {
-//      Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
-//      return;
-//    }
-//
-//    DialogUtil.showProgess(getActivity(), "正在登录", false);
-//
-//    //退出已经登录的融云账号
-////    new IMPresenter().logout();
-//
-//    UserLoginPresenter.userLogin(getActivity(), userName, password, new UserLoginListener() {
-//      @Override
-//      public void loginSuccess(int type, String token, String appId) {
-//        LogUtils.e("LoginByPhoneFragment", "login success");
-//
-//        //连接融云服务
-////        new IMPresenter().getToken(getActivity(), null);
-//
-//        SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-//
-//        DialogUtil.dismissProgess();
-//
-//        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
-//      }
-//
-//      @Override
-//      public void loginFail(String message) {
-//        LogUtils.e("LoginByPhoneFragment", "login fail message : " + message);
-//
-//        if (!TextUtils.isEmpty(message)) {
-//          try {
-//            JSONObject object = new JSONObject(message);
-//            if (object.has("msg") && !object.isNull("msg")) {
-//              tvLoginViaPhone.setText(object.get("msg").toString());
-//              tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-//              tvLoginViaPhone.setClickable(false);
-//            }
-//            //TODO
-//          } catch (JSONException e) {
-//            e.printStackTrace();
-//          }
-//        }
-//
-//        DialogUtil.dismissProgess();
-//      }
-//    });
-//  }
+  private void userLogin(String userName, String password) {
+
+    if (!NetUtil.isNetworkConnected(getActivity())) {
+      Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    DialogUtil.showProgess(getActivity(), "正在登录", false);
+
+    //退出已经登录的融云账号
+//    new IMPresenter().logout();
+
+    UserLoginPresenter.userLogin(getActivity(), userName, password, new UserLoginListener() {
+      @Override
+      public void loginSuccess(int type, String token, String appId) {
+        LogUtils.e("LoginByPhoneFragment", "login success");
+
+        //连接融云服务
+//        new IMPresenter().getToken(getActivity(), null);
+
+        SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
+
+        DialogUtil.dismissProgess();
+
+        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
+      }
+
+      @Override
+      public void loginFail(String message) {
+        LogUtils.e("LoginByPhoneFragment", "login fail message : " + message);
+
+        if (!TextUtils.isEmpty(message)) {
+          try {
+            JSONObject object = new JSONObject(message);
+            if (object.has("msg") && !object.isNull("msg")) {
+              tvLoginViaPhone.setText(object.get("msg").toString());
+              tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+              tvLoginViaPhone.setClickable(false);
+            }
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+        }
+
+        DialogUtil.dismissProgess();
+      }
+    });
+  }
+
   @Override
   public void onDestroyView() {
     super.onDestroyView();
@@ -306,18 +302,5 @@ public class LoginByPhoneFragment extends MvpFragment<LoginPresenter>
   @OnClick(R.id.backgroundLayout)
   public void onClick() {
     ((LoginActivity) getActivity()).hideSoftware();
-  }
-
-  @Override
-  public void onSuccess(UserInfoModel data) {
-    Toast.makeText(getActivity(), "login success", Toast.LENGTH_SHORT).show();
-
-    SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-    getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
-  }
-
-  @Override
-  public void onFailure(String msg, String exception) {
-    Toast.makeText(getActivity(), "msg = " + msg + ", exception = " + exception, Toast.LENGTH_SHORT).show();
   }
 }
