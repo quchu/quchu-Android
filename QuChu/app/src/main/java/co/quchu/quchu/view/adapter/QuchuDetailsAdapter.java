@@ -380,7 +380,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
       }
     } else if (holder instanceof CommentViewHolder) {
-      //((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
       if (null != mData.getReviewList()) {
         int commentIndex = 0;
         final CommentModel commentModel = mData.getReviewList().get(commentIndex);
@@ -393,13 +392,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           ((CommentViewHolder) holder).tvDate.setText("-");
         }
 
-
-        final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
-
         ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
-
         ((CommentViewHolder) holder).tvRatingCount.setText("共"+mData.getPlaceReviewCount()+"人评价");
-        ((CommentViewHolder) holder).tvRatingCount.setVisibility(View.VISIBLE);
 
       }
     } else if (holder instanceof MatchedTagsViewHolder) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,34 +9,7 @@
     >
 
 
-  <RelativeLayout
-      android:id="@+id/bottom_layout"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignTop="@+id/llStart"
-      android:layout_alignParentRight="true"
-      android:layout_marginRight="@dimen/base_margin"
-      android:layout_marginBottom="@dimen/base_margin"
-      >
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/ivFrom"
-        android:layout_width="@dimen/comment_from_avatar_size"
-        android:layout_height="@dimen/comment_from_avatar_size"
-        />
-
-    <TextView
-        android:id="@+id/tvFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_toRightOf="@id/ivFrom"
-        tools:text="来自大众点评"
-        android:layout_centerVertical="true"
-        style="@style/TextView.H3"
-        />
-
-  </RelativeLayout>
 
   <LinearLayout
       android:id="@+id/llStart"
@@ -90,24 +63,20 @@
 
   <LinearLayout
       android:id="@+id/llComments"
-      android:layout_marginTop="@dimen/base_margin"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/base_margin"
-      android:layout_below="@+id/llStart"
       android:layout_marginRight="@dimen/base_margin"
-      android:background="@drawable/shape_lineframe_common_gray_fill"
       android:orientation="vertical"
-      android:padding="@dimen/base_margin"
-
       >
 
     <TextView
         android:id="@+id/tvUserComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="4dp"
         tools:text="Comment"
+        android:lineSpacingExtra="6dp"
+        android:layout_marginTop="@dimen/base_margin"
         style="@style/TextView.H3"
         />
 
@@ -122,15 +91,10 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/half_margin"
-          android:layout_weight="0.25"
           tools:listitem="@layout/rc_item_image_message"
           />
 
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:layout_weight="0.75"
-          />
+
     </LinearLayout>
 
     <TextView
@@ -146,6 +110,35 @@
         />
 
   </LinearLayout>
+
+  <RelativeLayout
+      android:id="@+id/bottom_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginRight="@dimen/base_margin"
+      android:layout_marginBottom="@dimen/base_margin"
+      >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivFrom"
+        android:layout_width="@dimen/comment_from_avatar_size"
+        android:layout_height="@dimen/comment_from_avatar_size"
+        />
+
+    <TextView
+        android:id="@+id/tvFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_toRightOf="@id/ivFrom"
+        tools:text="来自大众点评"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        style="@style/TextView.H3"
+        />
+
+  </RelativeLayout>
 
   <TextView
       android:id="@+id/tvRatingCount"
@@ -171,4 +164,4 @@
 
 
 
-</RelativeLayout>
+</LinearLayout>

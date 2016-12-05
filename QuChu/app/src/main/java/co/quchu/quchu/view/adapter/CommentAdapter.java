@@ -133,10 +133,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
       final boolean collapsed = commentModel.isCollapsed();
       if (collapsed) {
-        ((CommentViewHolder) holder).tvCollapse.setText("展开");
+        ((CommentViewHolder) holder).tvCollapse.setText("[展开]");
         ((CommentViewHolder) holder).tvUserComment.setMaxLines(4);
       } else {
-        ((CommentViewHolder) holder).tvCollapse.setText("收起");
+        ((CommentViewHolder) holder).tvCollapse.setText("[收起]");
         ((CommentViewHolder) holder).tvUserComment.setMaxLines(Integer.MAX_VALUE);
       }
       final int finalCommentIndex = position;

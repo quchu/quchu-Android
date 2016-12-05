@@ -8,42 +8,15 @@
     >
 
 
-  <LinearLayout
-
-      android:layout_marginLeft="@dimen/base_margin"
-      android:layout_marginRight="@dimen/base_margin"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/base_margin"
-      android:orientation="horizontal"
-      >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="综合得分"
-        android:textColor="@color/standard_color_h1_dark"
-        android:textSize="14sp"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:text="(取各网相加的平均值)"
-        android:textColor="@color/standard_color_h3_dark"
-        android:textSize="12sp"
-        />
-
-  </LinearLayout>
 
 
   <RelativeLayout
+      android:layout_gravity="center_horizontal"
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_marginRight="@dimen/base_margin"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/half_margin"
+      android:layout_marginTop="@dimen/double_margin"
       android:gravity="center_vertical"
       android:orientation="horizontal"
       android:paddingBottom="@dimen/half_margin"
@@ -70,17 +43,19 @@
         style="@style/TextView.H2"
         />
 
-    <TextView
-        android:id="@+id/tvRatingCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:text="全网1200人评价过"
-        android:textSize="13sp"
-        android:textColor="@color/standard_color_h3_dark"
-        />
+
   </RelativeLayout>
+  <TextView
+      android:id="@+id/tvRatingCount"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:text="全网1200人评价过"
+      android:layout_margin="@dimen/half_margin"
+      android:textSize="13sp"
+      android:textColor="@color/standard_color_h3_dark"
+      />
   <android.support.v7.widget.RecyclerView
       android:id="@+id/rvBizList"
       android:layout_marginLeft="@dimen/base_margin"
@@ -90,15 +65,12 @@
       android:orientation="horizontal"
       android:paddingTop="@dimen/quarter_margin"/>
 
-
   <View
-      android:layout_marginTop="@dimen/base_margin"
-      android:layout_marginBottom="@dimen/base_margin"
-      android:layout_height="@dimen/half_margin"
+      android:layout_margin="@dimen/base_margin"
+      android:layout_height="@dimen/horizontal_divider"
       android:layout_width="match_parent"
       android:background="@color/colorBackground"
       />
-
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/rvTagList"
