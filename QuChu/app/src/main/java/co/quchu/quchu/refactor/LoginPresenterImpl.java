@@ -15,10 +15,9 @@ import co.quchu.quchu.utils.StringUtils;
 /**
  * Created by mwb on 2016/11/30.
  */
-public class LoginPresenter extends BasePresenter<QuChuView, UserInfoModel> {
+public class LoginPresenterImpl extends BasePresenter<LoginContract.LoginView> implements LoginContract.LoginPresenter {
 
-  @Override
-  public void bindView(QuChuView view) {
+  public LoginPresenterImpl(LoginContract.LoginView view) {
     attachView(view);
   }
 
@@ -57,9 +56,9 @@ public class LoginPresenter extends BasePresenter<QuChuView, UserInfoModel> {
     execute(mService.visitorRegister(map), new BaseSubscriber<UserInfoModel>() {
       @Override
       public void onSuccess(UserInfoModel data) {
-        SPUtils.setUserToken(AppContext.mContext, data.getToken());
-        AppContext.token = data.getToken();
-        AppContext.user = data;
+//        SPUtils.setUserToken(AppContext.mContext, data.getToken());
+//        AppContext.token = data.getToken();
+//        AppContext.user = data;
         mMvpView.onSuccess(data);
       }
 

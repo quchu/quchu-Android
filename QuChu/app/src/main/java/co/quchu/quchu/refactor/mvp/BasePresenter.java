@@ -9,14 +9,12 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by mwb on 2016/11/29.
  */
-public abstract class BasePresenter<V extends BaseView, T> {
+public abstract class BasePresenter<V extends BaseView> {
 
   protected V mMvpView;
   private AppClient mAppClient;
   protected QuChuApiService mService;
   private CompositeSubscription mCompositeSubscription;
-
-  public abstract void bindView(V view);
 
   protected void attachView(V mvpView) {
     mMvpView = mvpView;
@@ -29,7 +27,7 @@ public abstract class BasePresenter<V extends BaseView, T> {
     unSubscribe();
   }
 
-  protected void execute(Observable observable, BaseSubscriber<T> subscriber) {
+  protected void execute(Observable observable, BaseSubscriber subscriber) {
     if (mCompositeSubscription == null) {
       mCompositeSubscription = new CompositeSubscription();
     }

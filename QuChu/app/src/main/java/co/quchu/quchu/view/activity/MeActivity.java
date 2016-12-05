@@ -20,10 +20,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.refactor.LoginContract;
+import co.quchu.quchu.refactor.LoginPresenterImpl;
+import co.quchu.quchu.refactor.mvp.MvpActivity;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.MeAvatarFragment;
@@ -31,10 +34,15 @@ import co.quchu.quchu.view.fragment.MeAvatarFragment;
 /**
  * Created by mwb on 16/10/25.
  */
-public class MeActivity extends BaseBehaviorActivity {
+public class MeActivity extends MvpActivity<LoginPresenterImpl> implements LoginContract.LoginView {
 
   @Bind(R.id.user_mask_layout) LinearLayout mUserMaskLayout;
   @Bind(R.id.user_operate_layout) LinearLayout mUserOperateLayout;
+
+  @Override
+  protected LoginPresenterImpl createPresenter() {
+    return new LoginPresenterImpl(this);
+  }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +103,8 @@ public class MeActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.user_logout_btn://退出登录
-        logout();
+        mMvpPresenter.visitorRegister();
+//        logout();
         break;
 
       case R.id.user_login_btn://登录
@@ -173,5 +182,10 @@ public class MeActivity extends BaseBehaviorActivity {
   @Override
   protected String getPageNameCN() {
     return null;
+  }
+
+  @Override
+  public void onSuccess(UserInfoModel data) {
+    startActivity(RecommendActivity.class);
   }
 }

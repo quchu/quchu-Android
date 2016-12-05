@@ -63,4 +63,8 @@ public abstract class MvpActivity<P extends BasePresenter> extends BaseBehaviorA
       DialogUtil.dismissProgess();
     }
   }
+
+  public void onFailure(String msg, String exception) {
+
+  }
 }
