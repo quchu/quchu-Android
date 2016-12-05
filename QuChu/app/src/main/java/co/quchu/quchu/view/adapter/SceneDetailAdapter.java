@@ -118,7 +118,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             .inflate(R.layout.item_scene_detail_recommeded, parent, false));
       case TYPE_PAGE_END:
         return new PageEndViewHolder(
-            LayoutInflater.from(mContext).inflate(R.layout.cp_page_end, parent, false));
+            LayoutInflater.from(mContext).inflate(R.layout.cp_page_end_old, parent, false));
       default:
         return new QuchuDetailsAdapter.BlankViewHolder(
             LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));

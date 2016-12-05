@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -20,7 +19,6 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
-import co.quchu.quchu.widget.SpacesItemDecoration;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +69,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             .inflate(R.layout.item_quchu_detail_comment, parent, false));
       default:
         return new PageEndViewHolder(
-            LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_page_end, parent, false));
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_page_end_old, parent, false));
     }
   }
 

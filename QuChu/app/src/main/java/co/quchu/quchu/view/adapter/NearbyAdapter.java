@@ -60,7 +60,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             case TYPE_NORMAL:
                 return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nearby_quchu_detail, parent, false));
             default:
-                return new PageEndViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_page_end, parent, false));
+                return new PageEndViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_page_end_old, parent, false));
         }
     }
 

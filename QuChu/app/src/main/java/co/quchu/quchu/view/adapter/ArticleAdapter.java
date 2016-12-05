@@ -77,7 +77,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }else if(viewType == TYPE_NORMAL) {
             return new ArticleHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false));
         }else {
-            return new PageEndViewHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_page_end, parent, false));
+            return new PageEndViewHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_page_end_old, parent, false));
         }
     }
 

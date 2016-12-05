@@ -72,7 +72,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
           LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
     } else {
       return new PageEndViewHolder(
-          LayoutInflater.from(mContext).inflate(R.layout.cp_page_end, parent, false));
+          LayoutInflater.from(mContext).inflate(R.layout.cp_page_end_old, parent, false));
     }
   }
 

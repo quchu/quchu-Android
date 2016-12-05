@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/standard_color_white"
     >
 
-    <View
-        android:id="@+id/vDivider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/half_margin"
-        android:visibility="gone"
-        android:background="@color/colorBackground"
-        />
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/TextView.H3"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
-        android:textColor="@color/standard_color_h0_dark"
-        android:text="@string/no_more_data" />
+  <ImageView
+      android:id="@+id/ivPageEndDrawable"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:src="@mipmap/ic_launcher"
+      />
 
-    <ImageView
-        android:id="@+id/vLogo"
-        android:paddingBottom="@dimen/half_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_quchu_hc"/>
-
+  <TextView
+      android:id="@+id/tvPageEndText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_marginLeft="16dp"
+      android:text="LoadMore"
+      />
 </LinearLayout>
