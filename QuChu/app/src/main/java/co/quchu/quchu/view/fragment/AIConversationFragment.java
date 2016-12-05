@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,7 +56,6 @@ public class AIConversationFragment extends BaseFragment
   private List<AIConversationModel> mConversation = new ArrayList<>();
   private List<AIConversationModel> mHistory;
   public static final int CONVERSATION_REQUEST_DELAY = 500;
-  public static final int CONVERSATION_ANSWER_DELAY = 300;
 
   private int mScreenHeight;
   private int mAppbarOffSet;
@@ -63,10 +63,10 @@ public class AIConversationFragment extends BaseFragment
   private boolean mNetworkBusy = false;
   private boolean mHideAnimRunning = false;
   private boolean mShowAnimRunning = false;
+  public float offSetY = 0;
 
   //是否断开网络
   private boolean mNetworkInterrupted = false;
-
 
   @Bind(R.id.rv) RecyclerView mRecyclerView;
   @Bind(R.id.rvOptions) RecyclerView rvOptions;
@@ -78,40 +78,71 @@ public class AIConversationFragment extends BaseFragment
     return null;
   }
 
-
-
-  private void hideAndUpdate(int selected){
-    int index = rvOptions.getChildCount()==1?0:selected;
-    final TextView selectedTarget = (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
+  /**
+   * 更新选择项
+   */
+  private void hideAndUpdate(int selected) {
+    int index = rvOptions.getChildCount() == 1 ? 0 : selected;
+    final TextView selectedTarget =
+        (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
 
     int[] answerLocation = new int[2];
     int[] targetLocation = new int[2];
     selectedTarget.getLocationInWindow(answerLocation);
 
-    mRecyclerView.getChildAt(mRecyclerView.getChildCount()-2).getLocationInWindow(targetLocation);
+    mRecyclerView.getChildAt(mRecyclerView.getChildCount() - 2).getLocationInWindow(targetLocation);
 
-    float translationY = targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(R.dimen.half_margin);
-    float translationX = llOptions.getWidth()-selectedTarget.getWidth()-answerLocation[0] - getResources().getDimensionPixelSize(R.dimen.ai_conversation_x_offset);
+    float translationY =
+        targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(
+            R.dimen.half_margin);
+    float translationX = llOptions.getWidth()
+        - selectedTarget.getWidth()
+        - answerLocation[0]
+        - getResources().getDimensionPixelSize(R.dimen.ai_conversation_x_offset);
 
     int duration = 500;
-    selectedTarget.animate().alpha(0).translationY(translationY).translationX(translationX).setDuration(duration).start();
+    selectedTarget.animate()
+        .alpha(0)
+        .translationY(translationY)
+        .translationX(translationX)
+        .setStartDelay(200)
+        .setInterpolator(new AccelerateDecelerateInterpolator())
+        .setDuration(300)
+        .start();
 
-    if (rvOptions.getChildCount()>1){
-      View disappearView = rvOptions.getChildAt(index ==0?1:0);
-      disappearView.animate().alpha(0).translationY(llOptions.getHeight()*3).setDuration(duration).start();
+    if (rvOptions.getChildCount() > 1) {
+      View disappearView = rvOptions.getChildAt(index == 0 ? 1 : 0);
+      disappearView.animate()
+          .alpha(0)
+          .setInterpolator(new AccelerateDecelerateInterpolator())
+          .setDuration(300)
+          .start();
     }
-    if (mConversation.size()<=10){
-      llOptions.animate().translationYBy(ScreenUtils.getScreenHeight(getActivity())).alpha(1).setDuration(0).setStartDelay(duration).start();
-    }else{
-      llOptions.animate().translationYBy(ScreenUtils.getScreenHeight(getActivity())/2).alpha(1).setDuration(0).setStartDelay(duration).start();
+    if (mConversation.size() <= 10) {
+      llOptions.animate()
+          .translationYBy(ScreenUtils.getScreenHeight(getActivity()))
+          .alpha(1)
+          .setDuration(0)
+          .setStartDelay(duration)
+          .start();
+    } else {
+      llOptions.animate()
+          .translationYBy(ScreenUtils.getScreenHeight(getActivity()) / 2)
+          .alpha(1)
+          .setDuration(0)
+          .setStartDelay(duration)
+          .start();
     }
 
     //rvOptions.getAdapter().notifyItemRemoved(selected==1?0:1);
 
   }
 
-  private void hideOptions(){
-    if (mHideAnimRunning){
+  /**
+   * 隐藏选项
+   */
+  private void hideOptions() {
+    if (mHideAnimRunning) {
       return;
     }
     mHideAnimRunning = true;
@@ -120,92 +151,97 @@ public class AIConversationFragment extends BaseFragment
       @Override public void run() {
         mHideAnimRunning = false;
       }
-    },700);
+    }, 700);
   }
 
-  private void showOptions(){
+  /**
+   * 显示选项
+   */
+  private void showOptions() {
 
-    if (mConversation.size()<1){
+    if (mConversation.size() < 1) {
       return;
     }
 
-    AIConversationModel last = mConversation.get(mConversation.size()-1);
+    AIConversationModel last = mConversation.get(mConversation.size() - 1);
 
-    if (mShowAnimRunning){
+    if (mShowAnimRunning) {
       return;
     }
 
-
-    if (last.getAnswerPramms()!=null
-        &&last.getAnswerPramms().size()>0
-        &&!(null!=last.getType() && Integer.valueOf(last.getType())==1)
-        ){
-
+    if (last.getAnswerPramms() != null && last.getAnswerPramms().size() > 0 && !(null
+        != last.getType() && Integer.valueOf(last.getType()) == 1)) {
 
       mShowAnimRunning = true;
 
       int offSet = 0;
-      if (mConversation.size()<=2){
+      if (mConversation.size() <= 2) {
         int[] location = new int[2];
         llOptions.getLocationInWindow(location);
-        offSet = ScreenUtils.getScreenHeight(getActivity())-location[1]-llOptions.getHeight();
+        offSet = ScreenUtils.getScreenHeight(getActivity()) - location[1] - llOptions.getHeight();
         ivGuide.setTranslationY(offSet - offSetY);
       }
 
-      llOptions.animate().translationY(offSet -offSetY).setDuration(350).setInterpolator(new OvershootInterpolator(0.75f)).start();
+      llOptions.animate()
+          .translationY(offSet - offSetY)
+          .setDuration(350)
+          .setInterpolator(new OvershootInterpolator(0.75f))
+          .start();
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           mShowAnimRunning = false;
         }
-      },700);
-
+      }, 700);
     }
   }
 
-  private void resetOptions(final List<String>list,final String addition,final int type){
+  /**
+   * 重置选项
+   */
+  private void resetOptions(final List<String> list, final String addition, final int type) {
 
-    if (!SPUtils.getConversationGuide()){
+    if (!SPUtils.getConversationGuide()) {
       ivGuide.setVisibility(View.VISIBLE);
     }
 
-
-    if (type==1 || null == list){
+    if (type == 1 || null == list) {
       return;
     }
 
-    if (mConversation.size()>3){
+    if (mConversation.size() > 3) {
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
     }
 
-
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
-        TextOptionAdapter textOptionAdapter = new TextOptionAdapter(list, addition, type, AIConversationFragment.this);
+        TextOptionAdapter textOptionAdapter =
+            new TextOptionAdapter(list, addition, type, AIConversationFragment.this);
         boolean vertical = false;
-        boolean singleAnswer = list.size()==1?true:false;
+        boolean singleAnswer = list.size() == 1 ? true : false;
         for (int i = 0; i < list.size(); i++) {
 
-          if (mTvOption.getPaint().measureText(list.get(i))>=(ScreenUtils.getScreenWidth(getActivity())/2)*0.7){
+          if (mTvOption.getPaint().measureText(list.get(i))
+              >= (ScreenUtils.getScreenWidth(getActivity()) / 2) * 0.7) {
             vertical = true;
           }
         }
 
         rvOptions.setAdapter(textOptionAdapter);
-        rvOptions.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        rvOptions.setLayoutManager(
+            new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        if (vertical||singleAnswer){
+        if (vertical || singleAnswer) {
           textOptionAdapter.updateGravity(vertical);
-          rvOptions.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        }else{
+          rvOptions.setLayoutManager(
+              new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        } else {
           textOptionAdapter.updateGravity(vertical);
-          rvOptions.setLayoutManager(new GridLayoutManager(getActivity(),2,LinearLayoutManager.VERTICAL,false));
+          rvOptions.setLayoutManager(
+              new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
         }
       }
-    },0);
-
+    }, 0);
   }
-
-
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -226,7 +262,6 @@ public class AIConversationFragment extends BaseFragment
           }
         });
 
-
     mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
@@ -235,14 +270,14 @@ public class AIConversationFragment extends BaseFragment
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
-
-        if (mConversation==null||mConversation.size()<1){
+        if (mConversation == null || mConversation.size() < 1) {
           return;
         }
 
         int visibleItemCount = mRecyclerView.getLayoutManager().getChildCount();
         int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
-        int pastVisibleItems = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+        int pastVisibleItems =
+            ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
         if (pastVisibleItems + visibleItemCount >= totalItemCount) {
           //End of list
@@ -253,22 +288,19 @@ public class AIConversationFragment extends BaseFragment
           }
         }
 
-
-        if (!mRecyclerView.canScrollVertically(1)){
+        if (!mRecyclerView.canScrollVertically(1)) {
           mShowAnimRunning = false;
           showOptions();
         }
-
       }
-
     });
 
+    System.out.println("123");
 
     mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
     mRecyclerView.addItemDecoration(new DynamicItemDecoration());
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
-    mAdapter = new AIConversationAdapter(getActivity(), mConversation,
-        this);
+    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this);
     mRecyclerView.setAdapter(mAdapter);
 
     mXiaoQFab = (XiaoQFab) getActivity().findViewById(R.id.fab);
@@ -277,8 +309,7 @@ public class AIConversationFragment extends BaseFragment
       @Override public void run() {
         mXiaoQFab.animateInitial();
       }
-    },200);
-
+    }, 200);
 
     final int deletedRows = deleteHistoryIfNeed();
     AIConversationPresenter.delOptionMessages(getActivity());
@@ -286,83 +317,94 @@ public class AIConversationFragment extends BaseFragment
     //TODO
     mConversation.addAll(mHistory);
     mAdapter.notifyDataSetChanged();
-    if (mConversation.size()>0){
-      mRecyclerView.scrollToPosition(mConversation.size()-1);
+    if (mConversation.size() > 0) {
+      mRecyclerView.scrollToPosition(mConversation.size() - 1);
     }
 
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
 
-        if (mHistory.size()>0 ){
-            startConversation("03");
-        }else if(deletedRows>0){
+        if (mHistory.size() > 0) {
+          startConversation("03");
+        } else if (deletedRows > 0) {
           startConversation("04");
-        }else{
+        } else if (System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
+            .getTimeStamp() > (1000 * 60 * 60)) {
+          //最后一条数据若大于1小时重启对话
+          startConversation("05");
+        } else {
           startConversation("01");
         }
-
       }
-    },1500);
+    }, 1500);
     return v;
-
   }
 
   @Override public void onResume() {
     super.onResume();
-    if (null!=mAdapter && null!=mRecyclerView){
+    if (null != mAdapter && null != mRecyclerView) {
       mAdapter.notifyDataSetChanged();
       mRecyclerView.clearAnimation();
       mRecyclerView.invalidate();
 
-
       int effectedRows = deleteHistoryIfNeed();
-      if (effectedRows>0){
+      if (effectedRows > 0) {
         AIConversationPresenter.delOptionMessages(getActivity());
         mHistory = AIConversationPresenter.getMessages(getActivity());
         mConversation.clear();
         mConversation.addAll(mHistory);
         mAdapter.notifyDataSetChanged();
-        if (mConversation.size()==0 && !mNetworkBusy){
+        if (mConversation.size() == 0 && !mNetworkBusy) {
           startConversation("04");
           hideOptions();
         }
+      } else if (System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
+          .getTimeStamp() > (1000 * 60 * 60)) {
+        //最后一条数据若大于1小时重启对话
+        startConversation("05");
       }
     }
-
   }
 
-  private int deleteHistoryIfNeed(){
+  /**
+   * 删除一天前的缓存如果现在大于4点
+   */
+  private int deleteHistoryIfNeed() {
 
     int effectedRows = 0;
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(System.currentTimeMillis());
 
-    if (calendar.get(Calendar.HOUR_OF_DAY)>=4) {
-      calendar.set(Calendar.HOUR_OF_DAY,4);
-      calendar.set(Calendar.MINUTE,0);
-      calendar.set(Calendar.SECOND,0);
+    if (calendar.get(Calendar.HOUR_OF_DAY) >= 4) {
+      calendar.set(Calendar.HOUR_OF_DAY, 4);
+      calendar.set(Calendar.MINUTE, 0);
+      calendar.set(Calendar.SECOND, 0);
 
-      effectedRows = AIConversationPresenter.delMessagesBefore(getActivity(),calendar.getTimeInMillis());
+      effectedRows =
+          AIConversationPresenter.delMessagesBefore(getActivity(), calendar.getTimeInMillis());
     }
     return effectedRows;
-
   }
 
+  /**
+   * 添加一条对话(存在数据库操作)
+   */
   private void addModel(AIConversationModel model) {
 
     if (!TextUtils.isEmpty(model.getAnswer())) {
 
-      if (Integer.valueOf(model.getType())==2
-              && mConversation.size()>0
-              && null!=mConversation.get(mConversation.size()-1).getType()
-              && Integer.valueOf(mConversation.get(mConversation.size()-1).getType())==2){
-      }else{
+      if (Integer.valueOf(model.getType()) == 2
+          && mConversation.size() > 0
+          && null != mConversation.get(mConversation.size() - 1)
+          .getType()
+          && Integer.valueOf(mConversation.get(mConversation.size() - 1).getType()) == 2) {
+      } else {
+        model.setTimeStamp(System.currentTimeMillis());
         mConversation.add(model);
-          AIConversationPresenter.insertMessage(getActivity(),model);
-          mAdapter.notifyItemInserted(mConversation.size() - 1);
-          scrollToBottom();
+        AIConversationPresenter.insertMessage(getActivity(), model);
+        mAdapter.notifyItemInserted(mConversation.size() - 1);
+        scrollToBottom();
       }
-
     }
 
     if (model.getAnswerPramms().size() > 0 && !"1".equals(model.getType())) {
@@ -373,29 +415,32 @@ public class AIConversationFragment extends BaseFragment
       modelOption.setFlash(model.getFlash());
       modelOption.setType(model.getType());
 
-
       final AIConversationModel galleryModel = new AIConversationModel();
       galleryModel.setPlaceList(model.getPlaceList());
       galleryModel.setDataType(AIConversationModel.EnumDataType.GALLERY);
       galleryModel.setAnswerPramms(model.getAnswerPramms());
+      galleryModel.setTimeStamp(System.currentTimeMillis());
 
       mRecyclerView.postDelayed(new Runnable() {
         @Override public void run() {
           //boolean galleryAdded = false;
-          if (null!=galleryModel.getPlaceList() && galleryModel.getPlaceList().size()>0){
+          if (null != galleryModel.getPlaceList() && galleryModel.getPlaceList().size() > 0) {
             mConversation.add(galleryModel);
-            AIConversationPresenter.insertMessage(getActivity(),galleryModel);
+            AIConversationPresenter.insertMessage(getActivity(), galleryModel);
             mAdapter.notifyItemInserted(mConversation.size() - 1);
             scrollToBottom();
           }
-
         }
-      }, CONVERSATION_ANSWER_DELAY);
+      }, 750);
       scrollToBottom();
-      resetOptions(modelOption.getAnswerPramms(),modelOption.getFlash(),null!=modelOption.getType()? Integer.valueOf(modelOption.getType()):0);
+      resetOptions(modelOption.getAnswerPramms(), modelOption.getFlash(),
+          null != modelOption.getType() ? Integer.valueOf(modelOption.getType()) : 0);
     }
   }
 
+  /**
+   * 滚动至底部
+   */
   private void scrollToBottom() {
 
     mRecyclerView.postDelayed(new Runnable() {
@@ -412,9 +457,12 @@ public class AIConversationFragment extends BaseFragment
       @Override public void run() {
         showOptions();
       }
-    },100);
+    }, 100);
   }
 
+  /**
+   * 获得下一对话
+   */
   private void getNext(final String question, final String flash) {
     if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
@@ -423,11 +471,10 @@ public class AIConversationFragment extends BaseFragment
 
       return;
     }
-    if (!mXiaoQFab.mLoading){
+    if (!mXiaoQFab.mLoading) {
       mXiaoQFab.animateLoading();
     }
     mNetworkBusy = true;
-
 
     mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {
@@ -442,7 +489,7 @@ public class AIConversationFragment extends BaseFragment
 
                 if (Integer.valueOf(response.getType()) == 1) {
                   getNext(response.getAnswerPramms().get(0), response.getFlash());
-                }else{
+                } else {
                   mXiaoQFab.endLoading();
                 }
                 mNetworkBusy = false;
@@ -460,6 +507,9 @@ public class AIConversationFragment extends BaseFragment
     }, CONVERSATION_REQUEST_DELAY);
   }
 
+  /**
+   * 开始对话
+   */
   private void startConversation(final String type) {
     mXiaoQFab.animateLoading();
 
@@ -483,11 +533,12 @@ public class AIConversationFragment extends BaseFragment
             if (!TextUtils.isEmpty(response.getAnswer())) {
               addModel(response);
             }
-            if (Integer.valueOf(response.getType())==1) {
+            if (Integer.valueOf(response.getType()) == 1) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             } else {
 
-              if (mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.OPTION){
+              if (mConversation.get(mConversation.size() - 1).getDataType()
+                  != AIConversationModel.EnumDataType.OPTION) {
                 AIConversationModel modelOption = new AIConversationModel();
                 modelOption.setAnswerPramms(response.getAnswerPramms());
                 modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
@@ -496,7 +547,6 @@ public class AIConversationFragment extends BaseFragment
                 addModel(modelOption);
                 mXiaoQFab.endLoading();
               }
-
             }
             mNetworkBusy = false;
           }
@@ -534,14 +584,15 @@ public class AIConversationFragment extends BaseFragment
         break;
       case EventFlags.EVENT_USER_LOGIN_SUCCESS:
       case EventFlags.EVENT_USER_LOGOUT:
-        if (null!=mAdapter){
+        if (null != mAdapter) {
           mAdapter.notifyDataSetChanged();
         }
         break;
     }
   }
 
-  @Override public void onAnswer(final String answer, final String additionalShit,final int index) {
+  @Override
+  public void onAnswer(final String answer, final String additionalShit, final int index) {
 
     ivGuide.setVisibility(View.GONE);
 
@@ -549,11 +600,11 @@ public class AIConversationFragment extends BaseFragment
       makeToast(R.string.network_error);
       return;
     }
-    if (mNetworkBusy){
+    if (mNetworkBusy) {
       return;
     }
     int position = mConversation.size() - 1;
-    if (null!=mConversation.get(position).getAnswerPramms()){
+    if (null != mConversation.get(position).getAnswerPramms()) {
       mConversation.get(position).getAnswerPramms().clear();
     }
     AIConversationPresenter.delOptionMessages(getActivity());
@@ -564,31 +615,33 @@ public class AIConversationFragment extends BaseFragment
         AIConversationModel answerModel = new AIConversationModel();
         answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
         answerModel.setAnswer(answer);
-        AIConversationPresenter.insertMessage(getActivity(),answerModel);
+        AIConversationPresenter.insertMessage(getActivity(), answerModel);
         mConversation.add(answerModel);
         mAdapter.notifyItemInserted(mConversation.size() - 1);
         hideAndUpdate(index);
         getNext(answer, additionalShit);
       }
     }, 300);
-
   }
 
   @Override public void onRetry() {
     startConversation("03");
     hideOptions();
-
   }
 
   @Override public void onSearch() {
     startActivity(new Intent(getActivity(), SearchActivityNew.class));
   }
 
+  /**
+   * 更新无网络状态
+   */
+  private void updateNoNetwork(boolean noNetWork) {
 
-  private void updateNoNetwork(boolean noNetWork){
-
-    if( noNetWork){
-      if (mConversation.size()<1 || mConversation.get(mConversation.size()-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION ){
+    if (noNetWork) {
+      if (mConversation.size() < 1
+          || mConversation.get(mConversation.size() - 1).getDataType()
+          != AIConversationModel.EnumDataType.QUESTION) {
         AIConversationModel noNetworkModel = new AIConversationModel();
         noNetworkModel.setAnswer("你好，Alice暂时无法和总部取得 联系！");
         noNetworkModel.setDataType(AIConversationModel.EnumDataType.QUESTION);
@@ -599,41 +652,38 @@ public class AIConversationFragment extends BaseFragment
         noNetworkModel.setAnswerPramms(retryAction);
         addModel(noNetworkModel);
       }
-
-    }else{
-      if (mConversation.size()>0&& null!=mConversation.get(mConversation.size()-1).getType() &&!noNetWork && mConversation.get(mConversation.size()-1).getType().equals("2"))
-      mConversation.remove(mConversation.size()-1);
+    } else {
+      if (mConversation.size() > 0
+          && null != mConversation.get(mConversation.size() - 1).getType()
+          && !noNetWork
+          && mConversation.get(mConversation.size() - 1).getType().equals("2")) {
+        mConversation.remove(mConversation.size() - 1);
+      }
       mAdapter.notifyDataSetChanged();
     }
 
-
-    if (noNetWork){
+    if (noNetWork) {
       List<String> retryAction = new ArrayList<>();
       retryAction.add("手动刷新");
       retryAction.add("手动搜索");
-      resetOptions(retryAction,null,2);
-    }else{
+      resetOptions(retryAction, null, 2);
+    } else {
       hideOptions();
     }
-
-
   }
 
-
+  /**
+   * 重置选项偏移量
+   */
   public void resetOffset(float scrollRange) {
-    if (mConversation.size()<=2){
-      int offSet = 0;
+    if (mConversation.size() <= 2) {
       int[] location = new int[2];
       llOptions.getLocationOnScreen(location);
-      offSet = ScreenUtils.getScreenHeight(getActivity())-location[1]-llOptions.getHeight();
-
       ivGuide.setTranslationY(-scrollRange);
       llOptions.setTranslationY(-scrollRange);
       offSetY = scrollRange;
-    }else{
+    } else {
       offSetY = 0;
     }
   }
-
-  public float offSetY = 0;
 }

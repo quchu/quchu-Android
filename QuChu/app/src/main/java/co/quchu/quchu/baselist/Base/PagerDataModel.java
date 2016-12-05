@@ -9,7 +9,6 @@ import java.util.List;
 public class PagerDataModel<E> {
 
   private DataBean<E> data;
-
   private String errorCode;
   private String exception;
   private String msg;

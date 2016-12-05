@@ -26,7 +26,7 @@ public class PageEndViewHolder extends BaseViewHolder {
   }
 
   @Override public void onBind(Object d) {
-    tvPageEnd.setText(((Boolean)d)?"没有更多了":"正在加载");
+    tvPageEnd.setText(((Boolean)d)?R.string.no_more_data:R.string.loading_dialog_text);
     if ((Boolean)d){
       ivPageEndDrawable.clearAnimation();
     }else{

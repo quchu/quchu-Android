@@ -34,6 +34,7 @@ import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -156,12 +157,19 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           if (position>0){
             if (mDataSet.get(position-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION){
               ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+              ((QuestionViewHolder) holder).tvDate.setVisibility(View.INVISIBLE);
+            }else{
+              ((QuestionViewHolder) holder).tvDate.setVisibility(View.VISIBLE);
             }
           }else if(position==0){
             ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+            ((QuestionViewHolder) holder).tvDate.setVisibility(View.INVISIBLE);
+          }else{
+            ((QuestionViewHolder) holder).tvDate.setVisibility(View.VISIBLE);
           }
 
-
+          SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+          ((QuestionViewHolder) holder).tvDate.setText(sdf.format(q.getTimeStamp()));
 
           break;
         case TYPE_ANSWER:
@@ -262,6 +270,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Bind(R.id.vSpace) View vSpace;
     @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
     @Bind(R.id.sdvImage) SimpleDraweeView sdvImage;
+    @Bind(R.id.tvDate) TextView tvDate;
 
     QuestionViewHolder(View view) {
       super(view);

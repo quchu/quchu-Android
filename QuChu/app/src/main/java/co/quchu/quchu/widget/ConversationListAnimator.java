@@ -58,11 +58,17 @@ public class ConversationListAnimator extends DefaultItemAnimator {
   @Override public boolean animateAdd(final RecyclerView.ViewHolder holder) {
     int holderWidth = holder.itemView.getWidth();
     if (holder instanceof AIConversationAdapter.QuestionViewHolder) {
+      holder.itemView.findViewById(R.id.sdvAvatar).setAlpha(0);
+      holder.itemView.findViewById(R.id.sdvAvatar).animate().alpha(1).setDuration(500);
 
+      holder.itemView.findViewById(R.id.tvDate).setAlpha(0);
+      holder.itemView.findViewById(R.id.tvDate).animate().alpha(1).setDuration(500);
 
-        holder.itemView.setTranslationX(-holderWidth);
-        holder.itemView.animate()
+      holder.itemView.findViewById(R.id.tvQuestion).setTranslationX(0-20);
+      holder.itemView.findViewById(R.id.tvQuestion).setAlpha(0);
+      holder.itemView.findViewById(R.id.tvQuestion).animate()
             .translationX(0)
+            .alpha(1)
             .setInterpolator(new AccelerateDecelerateInterpolator())
             .setDuration(500)
             .setStartDelay(100)
@@ -108,9 +114,9 @@ public class ConversationListAnimator extends DefaultItemAnimator {
       holder.itemView.setAlpha(0);
       holder.itemView.animate()
           .alpha(1)
-          .setStartDelay(350)
+          .setStartDelay(450)
           .setInterpolator(new AccelerateDecelerateInterpolator())
-          .setDuration(250)
+          .setDuration(300)
           .setListener(new Animator.AnimatorListener() {
             @Override public void onAnimationStart(Animator animation) {
               dispatchAddStarting(holder);
