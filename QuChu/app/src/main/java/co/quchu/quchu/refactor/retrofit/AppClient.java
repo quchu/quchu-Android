@@ -8,8 +8,7 @@ import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.refactor.QuChuApiService;
 import co.quchu.quchu.refactor.rxjava.BaseSubscriber;
-import co.quchu.quchu.refactor.rxjava.HttpResponseFunc;
-import co.quchu.quchu.refactor.rxjava.HttpResultFunc;
+import co.quchu.quchu.refactor.rxjava.CommonTransformer;
 import co.quchu.quchu.utils.SPUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -19,8 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Retrofit 配置
@@ -95,11 +92,8 @@ public class AppClient {
     return mRetrofit.create(service);
   }
 
-  public <T> Subscription packageObservable(Observable observable, BaseSubscriber<T> subscriber) {
-    return observable.subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .map(new HttpResultFunc<T>())
-        .onErrorResumeNext(new HttpResponseFunc<T>())
+  public <T> Subscription toSubscribe(Observable observable, BaseSubscriber<T> subscriber) {
+    return observable.compose(new CommonTransformer<T>())
         .subscribe(subscriber);
   }
 }

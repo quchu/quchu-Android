@@ -33,7 +33,7 @@ public abstract class BasePresenter<V extends BaseView> {
     }
 
     //保存 Subscription 在 Activity 销毁时取消订阅,防止 Memory Leak
-    mCompositeSubscription.add(mAppClient.packageObservable(observable, subscriber));
+    mCompositeSubscription.add(mAppClient.toSubscribe(observable, subscriber));
   }
 
   /**

@@ -13,7 +13,8 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,28 +22,23 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.refactor.LoginContract;
-import co.quchu.quchu.refactor.LoginPresenterImpl;
-import co.quchu.quchu.refactor.mvp.MvpActivity;
+import co.quchu.quchu.refactor.BaseTaskActivity;
+import co.quchu.quchu.refactor.rxjava.BaseSubscriber;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.MeAvatarFragment;
 
 /**
  * Created by mwb on 16/10/25.
  */
-public class MeActivity extends MvpActivity<LoginPresenterImpl> implements LoginContract.LoginView {
+public class MeActivity extends BaseTaskActivity {
 
   @Bind(R.id.user_mask_layout) LinearLayout mUserMaskLayout;
   @Bind(R.id.user_operate_layout) LinearLayout mUserOperateLayout;
 
-  @Override
-  protected LoginPresenterImpl createPresenter() {
-    return new LoginPresenterImpl(this);
-  }
+  private MaterialDialog mConfirmDialog;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,8 +99,7 @@ public class MeActivity extends MvpActivity<LoginPresenterImpl> implements Login
         break;
 
       case R.id.user_logout_btn://退出登录
-        mMvpPresenter.visitorRegister();
-//        logout();
+        logout();
         break;
 
       case R.id.user_login_btn://登录
@@ -117,53 +112,111 @@ public class MeActivity extends MvpActivity<LoginPresenterImpl> implements Login
    * 退出登录
    */
   private void logout() {
-    final MaterialDialog confirmDialog = new MaterialDialog.Builder(this)
+    mConfirmDialog = new MaterialDialog.Builder(this)
         .title("确认退出")
         .content("退出后将以游客模式登录")
         .positiveText("是")
         .negativeText("否")
         .cancelable(false).build();
 
-    confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
+    mConfirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
       @Override
       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-        DialogUtil.showProgess(MeActivity.this, "正在退出登录", false);
+        showLoading("正在退出登录", false);
 
         SPUtils.clearUserinfo(AppContext.mContext);
         AppContext.user = null;
         SPUtils.clearSpMap(MeActivity.this, AppKey.LOGIN_TYPE);
 
-        //退出当前账号登录的融云信息
-//        new IMPresenter().logout();
-
-        UserLoginPresenter.visitorRegiest(MeActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
-          @Override
-          public void isUnique(JSONObject msg) {
-            ArrayMap<String, Object> params = new ArrayMap<>();
-            params.put("用户名", AppContext.user.getFullname());
-            params.put("登陆方式", "游客模式");
-            ZGEvent(params, "用户登陆");
-
-            //重新获取融云token连接服务器
-//            new IMPresenter().getToken(MeActivity.this, null);
-
-            confirmDialog.dismiss();
-            DialogUtil.dismissProgess();
-
-            startActivity(RecommendActivity.class);
-          }
-
-          @Override
-          public void notUnique(String msg) {
-            DialogUtil.dismissProgess();
-          }
-        });
+        visitorRegister();
       }
     });
 
-    confirmDialog.show();
+    mConfirmDialog.show();
   }
 
+  /**
+   * 游客身份登录
+   */
+  private void visitorRegister() {
+    Map<String, String> map = new HashMap<>();
+    map.put("visitors", "1");
+    map.put("equip", StringUtils.getMyUUID());
+
+    executeTask(mService.visitorRegister(map), new BaseSubscriber<UserInfoModel>() {
+      @Override
+      public void onSuccess(UserInfoModel data) {
+        mConfirmDialog.dismiss();
+
+        ArrayMap<String, Object> params = new ArrayMap<>();
+        params.put("用户名", data.getFullname());
+        params.put("登陆方式", "游客模式");
+        ZGEvent(params, "用户登陆");
+
+        SPUtils.setUserToken(AppContext.mContext, data.getToken());
+        AppContext.token = data.getToken();
+        AppContext.user = data;
+
+        startActivity(RecommendActivity.class);
+      }
+
+      @Override
+      protected void onFinish() {
+        hideLoading();
+      }
+    });
+  }
+
+  /**
+   * 退出登录
+   */
+//  private void logout() {
+//    final MaterialDialog confirmDialog = new MaterialDialog.Builder(this)
+//        .title("确认退出")
+//        .content("退出后将以游客模式登录")
+//        .positiveText("是")
+//        .negativeText("否")
+//        .cancelable(false).build();
+//
+//    confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
+//      @Override
+//      public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//        DialogUtil.showProgess(MeActivity.this, "正在退出登录", false);
+//
+//        SPUtils.clearUserinfo(AppContext.mContext);
+//        AppContext.user = null;
+//        SPUtils.clearSpMap(MeActivity.this, AppKey.LOGIN_TYPE);
+//
+//        //退出当前账号登录的融云信息
+////        new IMPresenter().logout();
+//
+//        UserLoginPresenter.visitorRegiest(MeActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
+//          @Override
+//          public void isUnique(JSONObject msg) {
+//            ArrayMap<String, Object> params = new ArrayMap<>();
+//            params.put("用户名", AppContext.user.getFullname());
+//            params.put("登陆方式", "游客模式");
+//            ZGEvent(params, "用户登陆");
+//
+//            //重新获取融云token连接服务器
+////            new IMPresenter().getToken(MeActivity.this, null);
+//
+//            confirmDialog.dismiss();
+//            DialogUtil.dismissProgess();
+//
+//            startActivity(RecommendActivity.class);
+//          }
+//
+//          @Override
+//          public void notUnique(String msg) {
+//            DialogUtil.dismissProgess();
+//          }
+//        });
+//      }
+//    });
+//
+//    confirmDialog.show();
+//  }
   @Override
   public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
@@ -182,10 +235,5 @@ public class MeActivity extends MvpActivity<LoginPresenterImpl> implements Login
   @Override
   protected String getPageNameCN() {
     return null;
-  }
-
-  @Override
-  public void onSuccess(UserInfoModel data) {
-    startActivity(RecommendActivity.class);
   }
 }

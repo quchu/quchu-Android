@@ -56,9 +56,9 @@ public class LoginPresenterImpl extends BasePresenter<LoginContract.LoginView> i
     execute(mService.visitorRegister(map), new BaseSubscriber<UserInfoModel>() {
       @Override
       public void onSuccess(UserInfoModel data) {
-//        SPUtils.setUserToken(AppContext.mContext, data.getToken());
-//        AppContext.token = data.getToken();
-//        AppContext.user = data;
+        SPUtils.setUserToken(AppContext.mContext, data.getToken());
+        AppContext.token = data.getToken();
+        AppContext.user = data;
         mMvpView.onSuccess(data);
       }
 

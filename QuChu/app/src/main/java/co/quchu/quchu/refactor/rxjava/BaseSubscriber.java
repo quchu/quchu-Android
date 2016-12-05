@@ -14,9 +14,13 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
   public abstract void onSuccess(T data);
 
-  public abstract void onFailure(String msg, String exception);
+  protected void onFailure(String msg, String exception) {
 
-  public abstract void onFinish();
+  }
+
+  protected void onFinish() {
+
+  }
 
   @Override
   public void onStart() {
