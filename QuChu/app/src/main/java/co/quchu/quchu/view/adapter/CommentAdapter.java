@@ -66,7 +66,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             .inflate(R.layout.item_rating_detail_header, parent, false));
       case TYPE_INFO:
         return new CommentViewHolder(LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_quchu_detail_comment, parent, false));
+            .inflate(R.layout.item_quchu_comment, parent, false));
       default:
         return new PageEndViewHolder(
             LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_page_end_old, parent, false));

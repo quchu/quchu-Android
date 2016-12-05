@@ -385,26 +385,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int commentIndex = 0;
         final CommentModel commentModel = mData.getReviewList().get(commentIndex);
 
-        ((CommentViewHolder) holder).rvImages.setLayoutManager(
-            new GridLayoutManager(mAnchorActivity, 4));
-        CommentImageAdapter adapter = new CommentImageAdapter(commentModel.getImageList());
-        if (null != commentModel && null != commentModel.getImageList()) {
-
-          adapter.setOnItemClickListener(new CommonItemClickListener() {
-            @Override public void onItemClick(View v, int position) {
-              List<ImageModel> imageModels = new ArrayList<>();
-              for (int i = 0; i < commentModel.getImageList().size(); i++) {
-                ImageModel imageModel = new ImageModel();
-                imageModel.setWidth(commentModel.getImageList().get(i).getWidth());
-                imageModel.setHeight(commentModel.getImageList().get(i).getHeight());
-                imageModel.setPath(commentModel.getImageList().get(i).getPathStr());
-                imageModels.add(imageModel);
-              }
-              PhotoViewActivity.enterActivity(mAnchorActivity, position, imageModels);
-            }
-          });
-        }
-        ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
         if (null != commentModel.getCreateDate()) {
           ((CommentViewHolder) holder).tvDate.setText(
@@ -412,49 +392,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
           ((CommentViewHolder) holder).tvDate.setText("-");
         }
-        ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
-        if (!StringUtils.isEmpty(commentModel.getPqUrl())) {
-          ((CommentViewHolder) holder).tvFrom.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-              WebViewActivity.enterActivity(mAnchorActivity, commentModel.getPqUrl(), "查看评论",
-                  false);
-            }
-          });
-        }
+
 
         final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
 
         ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
 
-        if (collapsed) {
-          ((CommentViewHolder) holder).tvCollapse.setText("展开");
-          ((CommentViewHolder) holder).tvUserComment.setMaxLines(4);
-        } else {
-          ((CommentViewHolder) holder).tvCollapse.setText("收起");
-          ((CommentViewHolder) holder).tvUserComment.setMaxLines(Integer.MAX_VALUE);
-        }
-        final int finalCommentIndex = commentIndex;
-        ((CommentViewHolder) holder).tvUserComment.post(new Runnable() {
-          @Override public void run() {
-            if (((CommentViewHolder) holder).tvUserComment.getLineCount() > 4) {
-              ((CommentViewHolder) holder).tvCollapse.setVisibility(View.VISIBLE);
-            } else {
-              ((CommentViewHolder) holder).tvCollapse.setVisibility(View.GONE);
-            }
-          }
-        });
-
-        ((CommentViewHolder) holder).tvCollapse.setOnClickListener(new View.OnClickListener() {
-          @Override public void onClick(View v) {
-            mData.getReviewList().get(finalCommentIndex).setCollapsed(!collapsed);
-            notifyDataSetChanged();
-          }
-        });
-        ((CommentViewHolder) holder).sdvAvatar.setImageURI(
-            Uri.parse(commentModel.getUserPhoneUrl()));
-        if (null != commentModel.getSourceUrl()) {
-          ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
-        }
         ((CommentViewHolder) holder).tvRatingCount.setText("共"+mData.getPlaceReviewCount()+"人评价");
         ((CommentViewHolder) holder).tvRatingCount.setVisibility(View.VISIBLE);
 
@@ -633,11 +576,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tvUsername) TextView tvUsername;
     @Bind(R.id.tvDate) TextView tvDate;
     @Bind(R.id.tvUserComment) TextView tvUserComment;
-    @Bind(R.id.tvCollapse) TextView tvCollapse;
-    @Bind(R.id.ivFrom) SimpleDraweeView ivFrom;
-    @Bind(R.id.tvFrom) TextView tvFrom;
-    @Bind(R.id.rvImages) RecyclerView rvImages;
-    //@Bind(R.id.vDivider) View vDivider;
     @Bind(R.id.tvRatingCount) TextView tvRatingCount;
 
     CommentViewHolder(View view) {
