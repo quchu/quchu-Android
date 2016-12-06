@@ -149,8 +149,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         mRvScene.setAlpha(1 - progress);
         toolbar.setAlpha(1 - progress);
+        //toolbar.setTranslationY(verticalOffset);
         if (null!=mAIContent){
           mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
+          mAIContent.resetOffsetPassive(offset);
         }
       }
     });

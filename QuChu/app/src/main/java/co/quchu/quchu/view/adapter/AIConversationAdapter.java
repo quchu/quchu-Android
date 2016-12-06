@@ -6,8 +6,6 @@ import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +23,10 @@ import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.controller.ControllerListener;
-import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.image.ImageInfo;
-import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
@@ -47,6 +43,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   //public static final int TYPE_OPTION = 0x003;
   public static final int TYPE_GALLERY_OPTION = 0x004;
   public static final int TYPE_SPACE = 0x006;
+  public static final int TYPE_DIVIDER = 0x007;
 
 
   private Activity mAnchor;
@@ -64,6 +61,9 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     switch (viewType) {
+      case TYPE_DIVIDER:
+        return new DividerViewHolder(LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_ai_conversation_history_divider, parent, false));
       case TYPE_QUESTION:
         return new QuestionViewHolder(LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_ai_conversation_question, parent, false));
@@ -247,6 +247,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       return TYPE_SPACE;
     }else{
       switch (mDataSet.get(position).getDataType()) {
+        case DIVIDER:
+          return TYPE_DIVIDER;
         case QUESTION:
           return TYPE_QUESTION;
         case ANSWER:
@@ -263,6 +265,15 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
+  }
+
+
+  public static class DividerViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.tvDivider) TextView tvDivider;
+    DividerViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
   }
 
   public static class QuestionViewHolder extends RecyclerView.ViewHolder {

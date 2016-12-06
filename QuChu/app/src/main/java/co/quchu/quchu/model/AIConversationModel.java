@@ -74,7 +74,7 @@ public class AIConversationModel {
   }
 
   public enum EnumDataType {
-    QUESTION, ANSWER, OPTION,GALLERY, NO_NETWORK
+    QUESTION, ANSWER, OPTION,GALLERY, NO_NETWORK, DIVIDER
   }
 
   @Override public String toString() {

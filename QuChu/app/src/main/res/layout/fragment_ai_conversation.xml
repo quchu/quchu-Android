@@ -7,6 +7,16 @@
     android:background="#f8f8f8"
     >
 
+  <TextView
+      android:id="@+id/tvPullUpToLoad"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/standard_color_h2_dark"
+      android:layout_marginTop="36dp"
+      android:text="上拉加载更多"
+      android:visibility="gone"
+      android:layout_centerHorizontal="true"
+      />
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/rv"

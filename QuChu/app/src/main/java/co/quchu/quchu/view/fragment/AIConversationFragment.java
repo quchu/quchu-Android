@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -39,9 +40,16 @@ import co.quchu.quchu.widget.DynamicItemDecoration;
 import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
+import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter;
+import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -55,6 +63,7 @@ public class AIConversationFragment extends BaseFragment
   private AIConversationAdapter mAdapter;
   private List<AIConversationModel> mConversation = new ArrayList<>();
   private List<AIConversationModel> mHistory;
+  private List<AIConversationModel> mHistoryHourBefore = new ArrayList<>();
   public static final int CONVERSATION_REQUEST_DELAY = 500;
 
   private int mScreenHeight;
@@ -73,6 +82,154 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.llOptions) View llOptions;
   @Bind(R.id.tvOption) TextView mTvOption;
   @Bind(R.id.ivGuide) ImageView ivGuide;
+  @Bind(R.id.tvPullUpToLoad) TextView tvPullUpToLoad;
+
+  private boolean mHistoryLoaded = false;
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+
+    View v = inflater.inflate(R.layout.fragment_ai_conversation, container, false);
+
+    ButterKnife.bind(this, v);
+
+    mScreenHeight = ScreenUtils.getScreenHeight(getActivity());
+
+    final View appbar = getActivity().findViewById(R.id.appbar);
+    appbar.getViewTreeObserver()
+        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+          @Override public void onGlobalLayout() {
+            appbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            mAppbarOffSet = appbar.getHeight() + ScreenUtils.getStatusHeight(getActivity());
+          }
+        });
+
+    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+      }
+
+      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+
+        if (mConversation == null || mConversation.size() < 1) {
+          return;
+        }
+
+        int visibleItemCount = mRecyclerView.getLayoutManager().getChildCount();
+        int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
+        int pastVisibleItems =
+            ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+          //End of list
+          showOptions();
+        } else {
+          if (!mHideAnimRunning) {
+            hideOptions();
+          }
+        }
+
+        if (!mRecyclerView.canScrollVertically(1)) {
+          mShowAnimRunning = false;
+          showOptions();
+        }
+      }
+    });
+
+    mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
+    mRecyclerView.addItemDecoration(new DynamicItemDecoration());
+    mRecyclerView.setItemAnimator(new ConversationListAnimator());
+    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this);
+    mRecyclerView.setAdapter(mAdapter);
+
+
+    VerticalOverScrollBounceEffectDecorator s = new VerticalOverScrollBounceEffectDecorator(new IOverScrollDecoratorAdapter() {
+
+      @Override
+      public View getView() {
+        return mRecyclerView;
+      }
+
+      @Override
+      public boolean isInAbsoluteStart() {
+        // canScrollUp() is an example of a method you must implement
+        return !mRecyclerView.canScrollVertically(-1) && (offset==0);
+      }
+
+      @Override
+      public boolean isInAbsoluteEnd() {
+        // canScrollDown() is an example of a method you must implement
+        return !mRecyclerView.canScrollVertically(1);
+      }
+    });
+    s.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
+      @Override public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
+        if (offset>100 && mHistoryHourBefore.size()>0){
+          tvPullUpToLoad.setVisibility(View.VISIBLE);
+        }else{
+          tvPullUpToLoad.setVisibility(View.GONE);
+        }
+
+        //System.out.println(offset +" | "+state +" - "+mHistoryLoaded +" | " +mHistoryHourBefore.size());
+        if (offset>100 && state ==3 && !mHistoryLoaded && mHistoryHourBefore.size()>0){
+          mHistoryLoaded = true;
+          new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+              AIConversationModel divider = new AIConversationModel();
+              divider.setDataType(AIConversationModel.EnumDataType.DIVIDER);
+              mConversation.add(0,divider);
+              mConversation.addAll(0,mHistoryHourBefore);
+              mAdapter.notifyItemRangeInserted(0,mHistoryHourBefore.size()+1);
+              mRecyclerView.smoothScrollToPosition(mHistoryHourBefore.size()-1);
+            }
+          },300);
+        }
+      }
+    });
+
+    mXiaoQFab = (XiaoQFab) getActivity().findViewById(R.id.fab);
+
+    mXiaoQFab.postDelayed(new Runnable() {
+      @Override public void run() {
+        mXiaoQFab.animateInitial();
+      }
+    }, 200);
+
+    final int deletedRows = deleteHistoryIfNeed();
+    AIConversationPresenter.delOptionMessages(getActivity());
+
+    mHistoryHourBefore = AIConversationPresenter.getMessages(getActivity(),1);
+    mHistory = AIConversationPresenter.getMessages(getActivity(),2);
+
+
+
+    //TODO
+    mConversation.addAll(mHistory);
+    mAdapter.notifyDataSetChanged();
+    if (mConversation.size() > 0) {
+      mRecyclerView.scrollToPosition(mConversation.size() - 1);
+    }
+
+    mXiaoQFab.postDelayed(new Runnable() {
+      @Override public void run() {
+
+        if (mHistory.size() > 0) {
+          startConversation("03");
+        } else if (deletedRows > 0) {
+          startConversation("04");
+        } else if (System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
+            .getTimeStamp() > (1000 * 60 * 60)) {
+          //最后一条数据若大于1小时重启对话
+          startConversation("05");
+        } else {
+          startConversation("01");
+        }
+      }
+    }, 1500);
+    return v;
+  }
 
   @Override protected String getPageNameCN() {
     return null;
@@ -83,6 +240,9 @@ public class AIConversationFragment extends BaseFragment
    */
   private void hideAndUpdate(int selected) {
     int index = rvOptions.getChildCount() == 1 ? 0 : selected;
+
+    playTheFuckingSound(index);
+
     final TextView selectedTarget =
         (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
 
@@ -243,102 +403,6 @@ public class AIConversationFragment extends BaseFragment
     }, 0);
   }
 
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-
-    View v = inflater.inflate(R.layout.fragment_ai_conversation, container, false);
-
-    ButterKnife.bind(this, v);
-
-    mScreenHeight = ScreenUtils.getScreenHeight(getActivity());
-
-    final View appbar = getActivity().findViewById(R.id.appbar);
-    appbar.getViewTreeObserver()
-        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-          @Override public void onGlobalLayout() {
-            appbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            mAppbarOffSet = appbar.getHeight() + ScreenUtils.getStatusHeight(getActivity());
-          }
-        });
-
-    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-      }
-
-      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
-
-        if (mConversation == null || mConversation.size() < 1) {
-          return;
-        }
-
-        int visibleItemCount = mRecyclerView.getLayoutManager().getChildCount();
-        int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
-        int pastVisibleItems =
-            ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-
-        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
-          //End of list
-          showOptions();
-        } else {
-          if (!mHideAnimRunning) {
-            hideOptions();
-          }
-        }
-
-        if (!mRecyclerView.canScrollVertically(1)) {
-          mShowAnimRunning = false;
-          showOptions();
-        }
-      }
-    });
-
-    System.out.println("123");
-
-    mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
-    mRecyclerView.addItemDecoration(new DynamicItemDecoration());
-    mRecyclerView.setItemAnimator(new ConversationListAnimator());
-    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this);
-    mRecyclerView.setAdapter(mAdapter);
-
-    mXiaoQFab = (XiaoQFab) getActivity().findViewById(R.id.fab);
-
-    mXiaoQFab.postDelayed(new Runnable() {
-      @Override public void run() {
-        mXiaoQFab.animateInitial();
-      }
-    }, 200);
-
-    final int deletedRows = deleteHistoryIfNeed();
-    AIConversationPresenter.delOptionMessages(getActivity());
-    mHistory = AIConversationPresenter.getMessages(getActivity());
-    //TODO
-    mConversation.addAll(mHistory);
-    mAdapter.notifyDataSetChanged();
-    if (mConversation.size() > 0) {
-      mRecyclerView.scrollToPosition(mConversation.size() - 1);
-    }
-
-    mXiaoQFab.postDelayed(new Runnable() {
-      @Override public void run() {
-
-        if (mHistory.size() > 0) {
-          startConversation("03");
-        } else if (deletedRows > 0) {
-          startConversation("04");
-        } else if (System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
-            .getTimeStamp() > (1000 * 60 * 60)) {
-          //最后一条数据若大于1小时重启对话
-          startConversation("05");
-        } else {
-          startConversation("01");
-        }
-      }
-    }, 1500);
-    return v;
-  }
 
   @Override public void onResume() {
     super.onResume();
@@ -350,7 +414,7 @@ public class AIConversationFragment extends BaseFragment
       int effectedRows = deleteHistoryIfNeed();
       if (effectedRows > 0) {
         AIConversationPresenter.delOptionMessages(getActivity());
-        mHistory = AIConversationPresenter.getMessages(getActivity());
+        mHistory = AIConversationPresenter.getMessages(getActivity(),3);
         mConversation.clear();
         mConversation.addAll(mHistory);
         mAdapter.notifyDataSetChanged();
@@ -676,6 +740,7 @@ public class AIConversationFragment extends BaseFragment
    * 重置选项偏移量
    */
   public void resetOffset(float scrollRange) {
+
     if (mConversation.size() <= 2) {
       int[] location = new int[2];
       llOptions.getLocationOnScreen(location);
@@ -685,5 +750,24 @@ public class AIConversationFragment extends BaseFragment
     } else {
       offSetY = 0;
     }
+  }
+
+  private float offset;
+
+  public void resetOffsetPassive(float scrollRangePassive) {
+    offset = scrollRangePassive;
+  }
+
+
+  private void playTheFuckingSound(int index){
+    //MediaPlayer mPlayer = MediaPlayer.create(getActivity(), index==0?R.raw.sound_01:R.raw.sound_02);
+    //mPlayer.setLooping(false);
+    //try {
+    //  mPlayer.prepare();
+    //  mPlayer.start();
+    //
+    //} catch (IOException e) {
+    //  e.printStackTrace();
+    //}
   }
 }

@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,13 +128,32 @@ public class AIConversationPresenter {
   /**
    * 获得所有对话
    */
-  public static List<AIConversationModel> getMessages(Context context) {
-    //dataType,chatContent,placeList,options,timeStamp
+  public static List<AIConversationModel> getMessages(Context context,int i) {
+
+    //1 history ,2 in hour, 3 all
     List<AIConversationModel> dataSet = new ArrayList<>();
+    Calendar cBefore = Calendar.getInstance();
+    cBefore.setTimeInMillis(System.currentTimeMillis());
+    cBefore.set(Calendar.HOUR_OF_DAY,cBefore.get(Calendar.HOUR_OF_DAY)-1);
+
+
+    String whereCause;
+    switch (i){
+      case 1:
+        whereCause = " timeStamp < "+ cBefore.getTimeInMillis();
+        break;
+      case 2:
+        whereCause = " timeStamp > "+ cBefore.getTimeInMillis();
+        break;
+      default:
+        whereCause = null;
+        break;
+    }
+
     Cursor c = DatabaseHelper.getInstance(context)
         .getWritableDatabase()
         .query(DatabaseHelper.TABLE_NAME_AI_CONVERSATION,
-            new String[] { "dataType", "chatContent", "placeList", "timeStamp" }, null,
+            new String[] { "dataType", "chatContent", "placeList", "timeStamp" }, whereCause,
             null, null, null, "timeStamp asc");
 
     while (c.moveToNext()) {
