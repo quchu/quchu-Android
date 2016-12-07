@@ -115,7 +115,7 @@ public class MFrameHelper {
     return to < POS_START;
   }
 
-  public static boolean checkCanDoRefresh(View view) {
+  public boolean checkCanDoRefresh(View view) {
     if (android.os.Build.VERSION.SDK_INT < 14) {
       if (view instanceof AbsListView) {
         final AbsListView absListView = (AbsListView) view;
