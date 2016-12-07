@@ -13,7 +13,7 @@
       android:id="@+id/sdvAvatar"
       android:layout_marginTop="@dimen/double_margin"
       android:layout_marginBottom="@dimen/base_margin"
-      android:layout_width="@dimen/comment_user去处details_avatar_size_large"
+      android:layout_width="@dimen/comment_users_avatar_size_large"
       android:layout_height="@dimen/comment_users_avatar_size_large"
       android:src="@drawable/ic_launcher"
       fresco:placeholderImage="@color/translucent_dark"
