@@ -2,6 +2,7 @@ package co.quchu.quchu.widget.MFrameLayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -21,8 +22,8 @@ public class MFrameLayout extends ViewGroup {
   private MFrameHelper mFrameHelper;
   private ScrollChecker mScrollChecker;
   private boolean mPreventForHorizontal;//防止水平移动
-  private boolean mPreventForMultiTouch;//防止多点触摸
   private MotionEvent mLastMoveEvent;
+  private int mActivePointerId;//当前活动的触摸点
 
   public MFrameLayout(Context context) {
     this(context, null);
@@ -130,9 +131,59 @@ public class MFrameLayout extends ViewGroup {
 
     int action = e.getAction();
     switch (action) {
+      case MotionEvent.ACTION_DOWN:
+        int pointerIndex = e.getActionIndex();
+        mActivePointerId = e.findPointerIndex(pointerIndex);
+
+        mFrameHelper.onPressDown(e.getX(pointerIndex), e.getY(pointerIndex));
+
+        mPreventForHorizontal = false;
+        dispatchTouchEventSupper(e);
+        return true;
+
+      case MotionEvent.ACTION_MOVE:
+        mLastMoveEvent = e;
+
+        int activePointerIndex = e.findPointerIndex(mActivePointerId);
+
+        if (activePointerIndex == MotionEvent.INVALID_POINTER_ID) {
+          Log.e(TAG, "mActivePointerId = " + mActivePointerId + ", activePointerIndex = " + activePointerIndex);
+          return dispatchTouchEventSupper(e);
+        }
+
+        mFrameHelper.onMove(e.getX(activePointerIndex), e.getY(activePointerIndex));
+
+        float offsetX = mFrameHelper.getOffsetX();
+        float offsetY = mFrameHelper.getOffsetY();
+
+        //当水平滑动偏移量大于垂直滑动偏移量时禁用移动
+        if (Math.abs(offsetX) > Math.abs(offsetY) && mFrameHelper.isInStartPosition()) {
+          mPreventForHorizontal = true;
+        }
+
+        if (mPreventForHorizontal) {
+          return dispatchTouchEventSupper(e);
+        }
+
+        boolean moveDown = offsetY > 0;
+        boolean moveUp = !moveDown;
+        boolean canMoveUp = mFrameHelper.hasLeftStartPosition();
+
+        //当 content view 没有达到顶部时禁用移动
+        if (moveDown && mFrameHelper.checkCanDoRefresh(mContentView)) {
+          return dispatchTouchEventSupper(e);
+        }
+
+        //执行移动
+        if ((moveUp && canMoveUp) || moveDown) {
+          startMove(offsetY);
+          return true;
+        }
+
       case MotionEvent.ACTION_UP:
       case MotionEvent.ACTION_CANCEL:
-//        Log.d(TAG, "ACTION_UP");
+//        mActivePointerId = MotionEvent.INVALID_POINTER_ID;
+
         mFrameHelper.onRelease();
         if (mFrameHelper.hasLeftStartPosition()) {
           tryScrollBackToTop();
@@ -145,59 +196,24 @@ public class MFrameLayout extends ViewGroup {
           return dispatchTouchEventSupper(e);
         }
 
-      case MotionEvent.ACTION_DOWN:
-//        Log.d(TAG, "ACTION_DOWN");
-
-        mFrameHelper.onPressDown(e.getX(), e.getY());
-
-        mPreventForHorizontal = false;
-        mPreventForMultiTouch = false;
-        dispatchTouchEventSupper(e);
-        return true;
-
       case MotionEvent.ACTION_POINTER_DOWN:
-//        Log.d(TAG, "ACTION_POINTER_DOWN");
-        mPreventForMultiTouch = true;
+        int multiDownPointerIndex = e.getActionIndex();
+        int multiDownPointerId = e.findPointerIndex(multiDownPointerIndex);
+        if (multiDownPointerId != mActivePointerId) {
+          mActivePointerId = e.findPointerIndex(multiDownPointerIndex);
+          mFrameHelper.onPressDown(e.getX(multiDownPointerIndex), e.getY(multiDownPointerIndex));
+        }
         return true;
 
       case MotionEvent.ACTION_POINTER_UP:
-//        Log.d(TAG, "ACTION_POINTER_UP");
-        mPreventForMultiTouch = true;
+        int multiUpPointerIndex = e.getActionIndex();
+        int multiUpPointerId = e.findPointerIndex(multiUpPointerIndex);
+        if (multiUpPointerId == mActivePointerId) {
+          int newPointerIndex = multiUpPointerIndex == 0 ? 1 : 0;
+          mActivePointerId = e.getPointerId(newPointerIndex);
+          mFrameHelper.onPressDown(e.getX(newPointerIndex), e.getY(newPointerIndex));
+        }
         return true;
-
-      case MotionEvent.ACTION_MOVE:
-//        Log.d(TAG, "ACTION_MOVE");
-        mLastMoveEvent = e;
-        mFrameHelper.onMove(e.getX(), e.getY());
-
-        float offsetX = mFrameHelper.getOffsetX();
-        float offsetY = mFrameHelper.getOffsetY();
-
-        //当水平滑动偏移量大于垂直滑动偏移量时禁用移动
-        if (Math.abs(offsetX) > Math.abs(offsetY) && mFrameHelper.isInStartPosition()) {
-          mPreventForHorizontal = true;
-        }
-        if (mPreventForHorizontal) {
-          return dispatchTouchEventSupper(e);
-        }
-
-        boolean moveDown = offsetY > 0;
-        boolean moveUp = !moveDown;
-        boolean canMoveUp = mFrameHelper.hasLeftStartPosition();
-
-        //当 content view 没有达到顶部时禁用移动
-        if (moveDown && mFrameHelper != null && MFrameHelper.checkCanDoRefresh(mContentView)) {
-          return dispatchTouchEventSupper(e);
-        }
-
-        //执行移动
-        if (!mPreventForMultiTouch) {
-          if ((moveUp && canMoveUp) || moveDown) {
-//          Log.d(TAG, "start move the content down");
-            startMove(offsetY);
-            return true;
-          }
-        }
     }
     return dispatchTouchEventSupper(e);
   }

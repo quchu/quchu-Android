@@ -20,6 +20,7 @@
       android:paddingTop="10dp"
       android:paddingBottom="10dp"
       android:textSize="14sp"
+      android:soundEffectsEnabled="false"
 
       android:text="Question Number 1"
       />
