@@ -219,7 +219,7 @@ public class AIConversationFragment extends BaseFragment
           startConversation("03");
         } else if (deletedRows > 0) {
           startConversation("04");
-        } else if (System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
+        } else if (mConversation.size()>1&& System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
             .getTimeStamp() > (1000 * 60 * 60)) {
           //最后一条数据若大于1小时重启对话
           startConversation("05");
@@ -422,7 +422,7 @@ public class AIConversationFragment extends BaseFragment
           startConversation("04");
           hideOptions();
         }
-      } else if (System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
+      } else if (mConversation.size()>1&& System.currentTimeMillis() - mConversation.get(mConversation.size() - 1)
           .getTimeStamp() > (1000 * 60 * 60)) {
         //最后一条数据若大于1小时重启对话
         startConversation("05");
@@ -760,14 +760,13 @@ public class AIConversationFragment extends BaseFragment
 
 
   private void playTheFuckingSound(int index){
-    //MediaPlayer mPlayer = MediaPlayer.create(getActivity(), index==0?R.raw.sound_01:R.raw.sound_02);
-    //mPlayer.setLooping(false);
-    //try {
-    //  mPlayer.prepare();
-    //  mPlayer.start();
-    //
-    //} catch (IOException e) {
-    //  e.printStackTrace();
-    //}
+    final MediaPlayer mPlayer = MediaPlayer.create(getActivity(), index==0?R.raw.sound_0:R.raw.sound_1);
+    mPlayer.setLooping(false);
+    mPlayer.setVolume(30,30);
+    mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+      @Override public void onPrepared(MediaPlayer mp) {
+        mPlayer.start();
+      }
+    });
   }
 }
