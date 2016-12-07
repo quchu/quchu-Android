@@ -29,7 +29,7 @@
     <dimen name="quchu_detail_addtionalinfo_icon_size">20dp</dimen>
     <dimen name="visited_users_avatar_size">24dp</dimen>
     <dimen name="comment_users_avatar_size">36dp</dimen>
-    <dimen name="comment_users_avatar_size_large">56dp</dimen>
+    <dimen name="comment_users_avatar_size_large">5dp</dimen>
 
     <dimen name="ai_conversation_avatar_size">32dp</dimen>
 
