@@ -765,6 +765,7 @@ public class AIConversationFragment extends BaseFragment
     mPlayer.setVolume(30,30);
     mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
       @Override public void onPrepared(MediaPlayer mp) {
+        mPlayer.seekTo(0);
         mPlayer.start();
       }
     });

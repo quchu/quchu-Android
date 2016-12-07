@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_activity_info_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/half_margin"
     android:orientation="vertical"
-    android:visibility="visible">
+    android:visibility="visible"
+    >
 
     <TextView
         android:id="@+id/detail_activity_title_tv"
-        android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginTop="@dimen/half_margin"
         android:text="活动详情"
+        android:layout_gravity="center_horizontal"
         style="@style/TextView.H2"/>
 
 
@@ -22,9 +24,12 @@
     <TextView
         android:id="@+id/detail_activity_info_tv"
         android:layout_marginBottom="@dimen/half_margin"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="42dp"
+        android:layout_marginRight="42dp"
+        tools:text="content"
         android:layout_marginTop="@dimen/half_margin"
+        android:maxLines="6"
         style="@style/TextView.H2" />
 
     <!--    <View

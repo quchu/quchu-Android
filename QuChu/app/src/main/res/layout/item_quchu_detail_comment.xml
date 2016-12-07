@@ -38,6 +38,7 @@
       tools:text="Date"
       android:layout_gravity="top"
       style="@style/TextView.H3"
+      android:textColor="@color/colorHint"
       android:gravity="center_horizontal"
 
       />

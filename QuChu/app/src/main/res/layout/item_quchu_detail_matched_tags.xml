@@ -18,6 +18,7 @@
       android:text="@string/guess_what_you_like"
       android:gravity="center"
       style="@style/TextView.H2"
+      android:textColor="@color/colorHint"
       />
 
   <RelativeLayout

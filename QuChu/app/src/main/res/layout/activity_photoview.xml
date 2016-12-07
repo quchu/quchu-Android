@@ -36,7 +36,7 @@
       android:textSize="13sp"
       tools:text="1 of 6"/>
 
-  <LinearLayout
+  <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
@@ -57,6 +57,7 @@
         android:text="图片来源于网络"
         android:textColor="@color/standard_color_white"
         android:textSize="13sp"
+        android:layout_centerVertical="true"
         android:visibility="invisible"/>
 
     <ImageView
@@ -64,9 +65,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/half_margin"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_gantanhao"/>
 
-  </LinearLayout>
+  </RelativeLayout>
 
   <ImageView
       android:id="@+id/ivReturn"

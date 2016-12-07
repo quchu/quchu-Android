@@ -159,7 +159,7 @@
     <string name="cancel">取消</string>
     <string name="promote_verify_fail">验证失败，请输入正确的验证码</string>
     <string name="quchu_detail">趣处详情</string>
-    <string name="guess_what_you_like"> - Alice还找到了些别的 - </string>
+    <string name="guess_what_you_like"> ———— Alice还找到了些别的 ———— </string>
     <string name="guess_where_is_it">这是个超赞的趣处</string>
     <string name="registration_step_1">注册（1/2）</string>
     <string name="registration_step_2">注册（2/2）</string>

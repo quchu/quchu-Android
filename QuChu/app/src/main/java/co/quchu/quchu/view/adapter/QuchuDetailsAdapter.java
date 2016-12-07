@@ -41,6 +41,7 @@ import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
+import java.util.logging.Handler;
 
 /**
  * Created by admin on 2016/3/7.
@@ -393,6 +394,35 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
+
+
+        new android.os.Handler().postDelayed(new Runnable(){
+          @Override public void run() {
+
+            try{
+              if (((CommentViewHolder) holder).tvUserComment.getLineCount()>3){
+                String finalString ="";
+                int breaks = 0;
+                int x = commentModel.getContent().length()/((CommentViewHolder) holder).tvUserComment.getLineCount();
+                for (int i = 0; i < commentModel.getContent().length() ; i++) {
+                  finalString += commentModel.getContent().charAt(i);
+                  if (i % x ==0 && breaks<3){
+                    finalString += "\r\n";
+                    x -=3;
+                  }
+                }
+                ((CommentViewHolder) holder).tvUserComment.setText(finalString);
+
+              }
+            }catch (Exception ex){
+
+            }
+
+          }
+        },50);
+
+
+
         ((CommentViewHolder) holder).tvRatingCount.setText("共"+mData.getPlaceReviewCount()+"人评价");
 
       }

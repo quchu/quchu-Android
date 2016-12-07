@@ -10,7 +10,7 @@ android {
         targetSdkVersion 22
         minSdkVersion 16
         versionCode 1601
-        versionName "2.0.1"
+        versionName "2.0.2"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 
