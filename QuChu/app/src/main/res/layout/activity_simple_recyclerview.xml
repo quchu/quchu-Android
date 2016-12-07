@@ -9,7 +9,7 @@
       android:id="@+id/scene_toolbar_background_view"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      android:background="@color/standard_color_yellow"/>
+      android:background="@color/standard_color_white"/>
 
   <include layout="@layout/cp_enhanced_toolbar"/>
 

@@ -206,25 +206,24 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   private void resetFavorite() {
-    mLlFavorite.setBackgroundResource(!dModel.isIsf() ? R.drawable.shape_lineframe_yellow_fill : R.drawable.shape_lineframe_gray_fill);
+    mLlFavorite.setBackgroundResource(!dModel.isIsf() ? R.color.standard_color_yellow : R.color.colorHint);
     mTvFavorite.setTextColor(!dModel.isIsf() ? getResources().getColor(R.color.standard_color_h1_dark) : getResources().getColor(R.color.standard_color_h3_dark));
     mTvFavorite.setText(dModel.isIsf() ? R.string.cancel_favorite : R.string.favorite);
   }
 
   private void getVisitors() {
-    InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId,
-        new CommonListener<VisitedUsersModel>() {
-          @Override
-          public void successListener(VisitedUsersModel response) {
-            if (null != response) {
-
-            }
-          }
-
-          @Override
-          public void errorListener(VolleyError error, String exception, String msg) {
-          }
-        });
+    //InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId,
+    //    new CommonListener<VisitedUsersModel>() {
+    //      @Override
+    //      public void successListener(VisitedUsersModel response) {
+    //        if (null != response) {
+    //
+    //        }
+    //      }
+    //
+    //      @Override
+    //      public void errorListener(VolleyError error, String exception, String msg) {}
+    //    });
   }
 
   @OnClick({llFavorite, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia})

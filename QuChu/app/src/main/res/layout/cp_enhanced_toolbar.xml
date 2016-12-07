@@ -11,7 +11,7 @@
         android:id="@+id/enhancedToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/standard_color_yellow"
+        android:background="@color/standard_color_white"
         android:elevation="0dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"

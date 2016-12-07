@@ -48,7 +48,7 @@
 
       <TextView
           android:id="@+id/tvDate"
-          android:layout_marginTop="@dimen/quarter_margin"
+          android:layout_marginTop="3dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           tools:text="Date"
@@ -97,17 +97,34 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvCollapse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:visibility="gone"
-        tools:text="Comment"
-        tools:visibility="visible"
-        style="@style/TextView.H2"
-        />
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       >
+
+     <TextView
+         android:id="@+id/tvFrom"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         tools:text="来自大众点评"
+         android:layout_centerVertical="true"
+         style="@style/TextView.H3"
+         android:textColor="@color/colorHint"
+         />
+     <TextView
+         android:id="@+id/tvCollapse"
+         android:layout_alignParentRight="true"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="right"
+         android:gravity="right"
+         android:visibility="gone"
+         tools:text="Comment"
+         tools:visibility="visible"
+         style="@style/TextView.H3"
+         />
+   </RelativeLayout>
 
   </LinearLayout>
 
@@ -122,21 +139,12 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivFrom"
+        android:visibility="gone"
         android:layout_width="@dimen/comment_from_avatar_size"
         android:layout_height="@dimen/comment_from_avatar_size"
         />
 
-    <TextView
-        android:id="@+id/tvFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_toRightOf="@id/ivFrom"
-        tools:text="来自大众点评"
-        android:visibility="gone"
-        android:layout_centerVertical="true"
-        style="@style/TextView.H3"
-        />
+
 
   </RelativeLayout>
 
@@ -155,12 +163,12 @@
       />
 
 
-  <!--<View-->
-  <!--android:id="@+id/vDivider"-->
-  <!--android:layout_marginLeft="@dimen/base_margin"-->
-  <!--android:layout_marginRight="@dimen/base_margin"-->
-  <!--style="@style/HorizontalLine"-->
-  <!--/>-->
+  <View
+  android:id="@+id/vDivider"
+  android:layout_marginLeft="@dimen/base_margin"
+  android:layout_marginRight="@dimen/base_margin"
+  style="@style/HorizontalLine"
+  />
 
 
 

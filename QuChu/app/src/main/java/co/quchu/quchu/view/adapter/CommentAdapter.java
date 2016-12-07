@@ -89,7 +89,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       if (null!=mBizList){
         CommentSourceAdapter adapter = new CommentSourceAdapter(mBizList);
         ((HeaderViewHolder) holder).rvBizList.setAdapter(adapter);
-        ((HeaderViewHolder) holder).rvBizList.setLayoutManager(new GridLayoutManager(mAnchorActivity,2,GridLayoutManager.VERTICAL,false));
+        int cellCount = 2;
+        if (mBizList.size()==1){
+          cellCount = 1;
+        }
+        ((HeaderViewHolder) holder).rvBizList.setLayoutManager(new GridLayoutManager(mAnchorActivity,cellCount,GridLayoutManager.VERTICAL,false));
+
       }
 
 

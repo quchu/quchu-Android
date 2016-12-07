@@ -31,7 +31,7 @@
       android:layout_alignParentBottom="true"
       android:background="@color/standard_color_white"
       android:orientation="vertical"
-      android:visibility="gone">
+      android:visibility="visible">
 
     <View
         android:layout_width="match_parent"
@@ -74,6 +74,7 @@
         <View
             android:layout_width="1px"
             android:layout_height="20dp"
+            android:visibility="gone"
             android:background="@color/colorDivider"/>
 
         <ImageView
@@ -81,6 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:padding="@dimen/base_margin"
             android:src="@drawable/ic_yuyue"/>
 
@@ -90,9 +92,8 @@
           android:id="@+id/llFavorite"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_margin="8dp"
           android:layout_weight="1"
-          android:background="@drawable/shape_lineframe_gray_fill"
+          android:background="@color/standard_color_yellow"
           android:gravity="center">
 
         <TextView
