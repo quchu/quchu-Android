@@ -66,6 +66,7 @@ public class MessageAdapter extends AdapterBase<MessageModel.ResultBean, Recycle
 
   public class MessageViewHolder extends RecyclerView.ViewHolder {
 
+    @Bind(R.id.item_message_title_tv) TextView mTitleTv;
     @Bind(R.id.item_message_date_tv) TextView mDateTv;
     @Bind(R.id.item_message_cover_img) SimpleDraweeView mCoverImg;
     @Bind(R.id.item_message_text_tv) TextView mTextTv;

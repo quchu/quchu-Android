@@ -37,7 +37,7 @@ public class MessageCenterActivity extends BaseBehaviorActivity {
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView titleTv = toolbar.getTitleTv();
-    titleTv.setText("消息");
+    titleTv.setText("消息中心");
 
     FragmentManager fm = getSupportFragmentManager();
     FragmentTransaction ft = fm.beginTransaction();

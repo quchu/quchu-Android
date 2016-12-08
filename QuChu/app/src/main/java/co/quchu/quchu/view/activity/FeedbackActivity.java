@@ -59,7 +59,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     ButterKnife.bind(this);
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView textView = toolbar.getTitleTv();
-    textView.setText("意见和帮助");
+    textView.setText("意见帮助");
 
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     adapter = new FeedbackAdapter(this);
