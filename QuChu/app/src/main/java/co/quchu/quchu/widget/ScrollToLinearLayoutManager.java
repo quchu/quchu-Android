@@ -12,7 +12,7 @@ import android.util.DisplayMetrics;
  */
 
 public class ScrollToLinearLayoutManager extends LinearLayoutManager {
-  private static final float MILLISECONDS_PER_INCH = 200f;
+  private static final float MILLISECONDS_PER_INCH = 150f;
   private Context mContext;
 
   public ScrollToLinearLayoutManager(Context context) {
@@ -29,7 +29,7 @@ public class ScrollToLinearLayoutManager extends LinearLayoutManager {
     }else if (position - findFirstVisibleItemPosition()>25){
       factor = 0.05f;
     } else if (position - findFirstVisibleItemPosition()>10){
-      factor = 0.5f;
+      factor = 0.25f;
     } else{
       factor = 1;
     }

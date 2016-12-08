@@ -115,7 +115,6 @@ public class AIConversationFragment extends BaseFragment
         super.onScrolled(recyclerView, dx, dy);
 
         if (null!=mRecyclerView.getAdapter()){
-          System.out.println(mRecyclerView.getAdapter().getItemCount()+" | "+((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition());
           if (mRecyclerView.getAdapter().getItemCount()-((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition()>=10){
             quickReturn.setVisibility(View.VISIBLE);
           }else{
@@ -226,7 +225,13 @@ public class AIConversationFragment extends BaseFragment
     quickReturn.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         quickReturn.setVisibility(View.GONE);
-        scrollToBottom();
+        if (null!=mRecyclerView.getAdapter()){
+          if (mRecyclerView.getAdapter().getItemCount()-((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition()>=30){
+            mRecyclerView.scrollToPosition(mAdapter.getItemCount()-1);
+          }else{
+            scrollToBottom();
+          }
+        }
       }
     });
 
