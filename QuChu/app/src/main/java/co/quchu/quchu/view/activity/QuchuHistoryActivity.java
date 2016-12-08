@@ -50,7 +50,8 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView textView = toolbar.getTitleTv();
-    textView.setText("Alice");
+    textView.setText("Alice已经将你的历史记录整理好了");
+    textView.setTextSize(16f);
 
     initView();
   }
@@ -80,10 +81,10 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
         if (!canScrollDown) {
           //已经在顶部,可以下拉刷新
-          mRecyclerView.setEnabled(true);
+          mRefreshLayout.setEnabled(false);
         } else {
           //不能下拉刷新
-          mRecyclerView.setEnabled(false);
+          mRefreshLayout.setEnabled(false);
         }
 
         if (!canScrollUp && mHasMoreData) {
@@ -115,7 +116,7 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
   public void onRefresh() {
     pageNo = 1;
     mIsLoadMore = false;
-    mRefreshLayout.setRefreshing(true);
+//    mRefreshLayout.setRefreshing(true);
     QuChuHistoryPresenter.getHistory(this, mPlaceIds, pageNo, mCommonListener);
   }
 

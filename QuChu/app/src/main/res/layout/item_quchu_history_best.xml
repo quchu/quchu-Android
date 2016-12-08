@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#efefef"
+      android:paddingBottom="@dimen/half_margin"
+      android:paddingLeft="@dimen/base_margin"
+      android:paddingRight="@dimen/base_margin"
+      android:paddingTop="@dimen/half_margin">
+
+    <TextView
+        android:id="@+id/history_describe_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="13sp"
+        android:visibility="visible"
+        tools:text="距离最近的"/>
+
+    <co.quchu.quchu.widget.CircleIndicator
+        android:id="@+id/history_siv"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+  </RelativeLayout>
+
+  <android.support.v4.view.ViewPager
+      android:id="@+id/history_vp"
+      android:layout_width="match_parent"
+      android:layout_height="155dp"
+      android:fadingEdge="none"
+      android:overScrollMode="never"
+      android:requiresFadingEdge="none"
+      tools:listItem="@layout/item_nearby_quchu_detail"/>
+
+</LinearLayout>

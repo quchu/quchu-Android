@@ -35,6 +35,7 @@ public class MeActivity extends BaseTaskActivity {
 
   @Bind(R.id.user_mask_layout) LinearLayout mUserMaskLayout;
   @Bind(R.id.user_operate_layout) LinearLayout mUserOperateLayout;
+  @Bind(R.id.enhancedToolbarDivider) View mEnhancedToolbarDivider;
 
   private MaterialDialog mConfirmDialog;
 
@@ -48,6 +49,7 @@ public class MeActivity extends BaseTaskActivity {
     TextView textView = toolbar.getTitleTv();
     toolbar.setBackground(null);
     textView.setText("");
+    mEnhancedToolbarDivider.setVisibility(View.GONE);
 
     FragmentManager fm = getSupportFragmentManager();
     FragmentTransaction ft = fm.beginTransaction();

@@ -7,7 +7,7 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="@dimen/title_bar_height"
-      android:background="@color/standard_color_yellow_label"
+      android:background="@color/standard_color_white"
       android:orientation="horizontal">
 
     <ImageView

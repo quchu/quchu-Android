@@ -2,25 +2,28 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.QuChuHistoryModel;
-import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.widget.CircleIndicator;
+import co.quchu.quchu.widget.TagCloudView;
+
+import static co.quchu.quchu.R.id.address;
 
 /**
  * Created by mwb on 16/11/5.
@@ -29,23 +32,26 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   private int TYPE_HEADER = 1;
   private int TYPE_BEST_HISTORY = 2;
-  private int TYPE_HISTORY = 3;
+  private int TYPE_COMMON_HISTORY = 3;
 
-  private Context mContext;
+  private final LayoutInflater mInflater;
   private List<QuChuHistoryModel.BestListBean> mBestList;
   private List<QuChuHistoryModel.PlaceListBean.ResultBean> mResultBeanList;
 
   public QuChuHistoryAdapter(Context context) {
-    mContext = context;
+    mInflater = LayoutInflater.from(context);
   }
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    if (viewType == TYPE_HEADER) {
-      return new QuChuHistoryHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_history_header, parent, false));
+    if (viewType == TYPE_COMMON_HISTORY) {
+      return new QuChuCommonHistoryViewHolder(mInflater.inflate(R.layout.item_quchu_history_common, parent, false));
+
     }
 
-    return new QuChuHistoryViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_history, parent, false));
+    return new QuChuBestHistoryViewHolder(mInflater.inflate(R.layout.item_quchu_history_best, parent, false));
+
+//    return new QuChuHistoryHeaderViewHolder(mInflater.inflate(R.layout.item_quchu_history_header, parent, false));
   }
 
   @Override
@@ -53,102 +59,49 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     if (viewHolder instanceof QuChuHistoryHeaderViewHolder) {
       QuChuHistoryHeaderViewHolder holder = (QuChuHistoryHeaderViewHolder) viewHolder;
 
-    } else if (viewHolder instanceof QuChuHistoryViewHolder) {
-      QuChuHistoryViewHolder holder = (QuChuHistoryViewHolder) viewHolder;
-      if (getItemViewType(position) == TYPE_BEST_HISTORY) {
-        //最优的
-        int actualPosition = position - 1;
-        QuChuHistoryModel.BestListBean bestListBean = mBestList.get(actualPosition);
-        QuChuHistoryModel.PlaceListBean.ResultBean bestPlaceInfo = bestListBean.getPlaceInfo();
-        holder.mCoverImg.setImageURI(Uri.parse(bestPlaceInfo.getCover()));
-        holder.mTitleTv.setText(bestPlaceInfo.getDescribed());
-        holder.mSubtitleTv.setText("- " + bestPlaceInfo.getName());
+    } else if (viewHolder instanceof QuChuBestHistoryViewHolder) {
+      final QuChuBestHistoryViewHolder holder = (QuChuBestHistoryViewHolder) viewHolder;
 
-        StringBuffer sb = new StringBuffer();
-        if (bestPlaceInfo.getTags() != null) {
-          for (QuChuHistoryModel.PlaceListBean.ResultBean.TagsBean tagsBean : bestPlaceInfo.getTags()) {
-            sb.append(tagsBean.getZh() + " ");
-          }
-        }
-        String distance = StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), bestPlaceInfo.getLatitude(), bestPlaceInfo.getLongitude());
-        holder.mTagTv.setText(TextUtils.isEmpty(sb.toString()) ? distance : sb.toString() + " | " + distance);
+      QuChuHistoryModel.BestListBean bestListBean = mBestList.get(position);
+      holder.historyDescribeTv.setText(bestListBean.getTitle());
+      final HistoryViewPagerAdapter adapter = new HistoryViewPagerAdapter(bestListBean);
+      holder.historyVp.setAdapter(adapter);
+      holder.historySiv.setViewPager(holder.historyVp);
 
-        holder.mTopLableLayout.setVisibility(View.VISIBLE);
+    } else if (viewHolder instanceof QuChuCommonHistoryViewHolder) {
+      QuChuCommonHistoryViewHolder holder = (QuChuCommonHistoryViewHolder) viewHolder;
 
-        holder.mBestDescribeTv.setVisibility(View.VISIBLE);
-        holder.mLeftIcon.setVisibility(View.GONE);
-        holder.mOffsetTv.setVisibility(View.GONE);
-        holder.mBestDescribeTv.setText(bestListBean.getTitle());
-        if (bestListBean.isBest()) {
-          holder.mRightIcon.setVisibility(View.GONE);
-        } else {
-          holder.mRightIcon.setVisibility(View.VISIBLE);
-          holder.mRightIcon.setTag(actualPosition);
-          holder.mRightIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              int position = (int) v.getTag();
-              chooseNextBest(position);
-            }
-          });
-        }
-
-        //此时选择了下一条最优数据
-        if (bestListBean.isChooseNextBest()) {
-          holder.mBestDescribeTv.setVisibility(View.GONE);
-          holder.mLeftIcon.setVisibility(View.VISIBLE);
-          holder.mOffsetTv.setVisibility(View.VISIBLE);
-          holder.mRightIcon.setVisibility(View.GONE);
-          holder.mOffsetTv.setText(bestListBean.getGapStr());
-          holder.mLeftIcon.setTag(actualPosition);
-          holder.mLeftIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              int position = (int) v.getTag();
-              chooseNextBest(position);
-            }
-          });
-        }
-
-        setItemClick(holder, bestPlaceInfo);
-
-      } else {
-        //除了最优的以外,所有记录
-        int actualPosition = position - 1;
-        if (mBestList != null) {
-          actualPosition = position - 1 - getBestListSize();
-        }
-
-        QuChuHistoryModel.PlaceListBean.ResultBean resultBean = mResultBeanList.get(actualPosition);
-        holder.mCoverImg.setImageURI(Uri.parse(resultBean.getCover()));
-        holder.mTitleTv.setText(resultBean.getDescribed());
-        holder.mSubtitleTv.setText("- " + resultBean.getName());
-
-        StringBuffer sb = new StringBuffer();
-        if (resultBean.getTags() != null) {
-          for (QuChuHistoryModel.PlaceListBean.ResultBean.TagsBean tagsBean : resultBean.getTags()) {
-            sb.append(tagsBean.getZh() + " ");
-          }
-        }
-        String distance = StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), resultBean.getLatitude(), resultBean.getLongitude());
-        holder.mTagTv.setText(TextUtils.isEmpty(sb.toString()) ? distance : sb.toString() + " | " + distance);
-
-        holder.mTopLableLayout.setVisibility(actualPosition == 0 ? View.VISIBLE : View.GONE);
-        holder.mBestDescribeTv.setVisibility(View.VISIBLE);
-        holder.mLeftIcon.setVisibility(View.GONE);
-        holder.mRightIcon.setVisibility(View.GONE);
-        holder.mOffsetTv.setVisibility(View.GONE);
-        holder.mBestDescribeTv.setText("其他");
-
-        setItemClick(holder, resultBean);
+      int actualPosition = position;
+      if (mBestList != null) {
+        actualPosition = position - getBestListSize();
       }
+
+      QuChuHistoryModel.PlaceListBean.ResultBean resultBean = mResultBeanList.get(actualPosition);
+
+      holder.historyLabelLayout.setVisibility(actualPosition == 0 ? View.VISIBLE : View.GONE);
+      holder.historyDescribeTv.setText("其他浏览记录");
+      holder.tvName.setText(resultBean.getName());
+      List<String> strTags = new ArrayList<>();
+      List<QuChuHistoryModel.PlaceListBean.ResultBean.TagsBean> tags = resultBean.getTags();
+      if (null != tags && tags.size() > 0) {
+        for (int i = 0; i < Math.min(tags.size(), 3); i++) {
+          strTags.add(" " + tags.get(i).getZh() + " ");
+        }
+      }
+
+      holder.tcvTag.setTags(strTags);
+      holder.address.setText(resultBean.getAreaCircleName());
+      holder.address.setVisibility(View.VISIBLE);
+      holder.sdvImage.setImageURI(Uri.parse(resultBean.getCover()));
+
+      setItemClick(holder, resultBean);
     }
   }
 
   /**
    * 列表点击
    */
-  private void setItemClick(QuChuHistoryViewHolder holder, QuChuHistoryModel.PlaceListBean.ResultBean resultBean) {
+  private void setItemClick(RecyclerView.ViewHolder holder, QuChuHistoryModel.PlaceListBean.ResultBean resultBean) {
     holder.itemView.setTag(resultBean);
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -189,25 +142,19 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   @Override
   public int getItemCount() {
     if (mBestList != null) {
-      return mResultBeanList != null ? mBestList.size() + mResultBeanList.size() + 1 : mBestList.size() + 1;
+      return mResultBeanList != null ? mBestList.size() + mResultBeanList.size() : mBestList.size();
 
     } else {
-      return mResultBeanList != null ? mResultBeanList.size() + 1 : 1;
+      return mResultBeanList != null ? mResultBeanList.size() : 0;
     }
   }
 
   @Override
   public int getItemViewType(int position) {
-    if (position == 0) {
-      return TYPE_HEADER;
-
-    } else {
-      if (position >= 1 && position <= getBestListSize()) {
-        return TYPE_BEST_HISTORY;
-      } else {
-        return TYPE_HISTORY;
-      }
+    if (position < getBestListSize()) {
+      return TYPE_BEST_HISTORY;
     }
+    return TYPE_COMMON_HISTORY;
   }
 
   public void setData(List<QuChuHistoryModel.BestListBean> bestList, List<QuChuHistoryModel.PlaceListBean.ResultBean> resultBeanList) {
@@ -262,19 +209,28 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public class QuChuHistoryViewHolder extends RecyclerView.ViewHolder {
+  public class QuChuBestHistoryViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.best_describe_tv) TextView mBestDescribeTv;
-    @Bind(R.id.history_right_icon) ImageView mRightIcon;
-    @Bind(R.id.history_left_icon) ImageView mLeftIcon;
-    @Bind(R.id.history_offset_tv) TextView mOffsetTv;
-    @Bind(R.id.history_cover_img) SimpleDraweeView mCoverImg;
-    @Bind(R.id.history_top_label_layout) RelativeLayout mTopLableLayout;
-    @Bind(R.id.history_title_tv) TextView mTitleTv;
-    @Bind(R.id.history_subtitle_tv) TextView mSubtitleTv;
-    @Bind(R.id.history_tag_tv) TextView mTagTv;
+    @Bind(R.id.history_describe_tv) TextView historyDescribeTv;
+    @Bind(R.id.history_siv) CircleIndicator historySiv;
+    @Bind(R.id.history_vp) ViewPager historyVp;
 
-    public QuChuHistoryViewHolder(View itemView) {
+    public QuChuBestHistoryViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+    }
+  }
+
+  public class QuChuCommonHistoryViewHolder extends RecyclerView.ViewHolder {
+
+    @Bind(R.id.history_label_layout) RelativeLayout historyLabelLayout;
+    @Bind(R.id.history_describe_tv) TextView historyDescribeTv;
+    @Bind(R.id.desc) TextView tvName;
+    @Bind(R.id.tag) TagCloudView tcvTag;
+    @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
+    @Bind(R.id.address) TextView address;
+
+    public QuChuCommonHistoryViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
     }
@@ -296,5 +252,75 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   public interface QuChuHistoryClickListener {
     void onItemClick(QuChuHistoryModel.PlaceListBean.ResultBean resultBean);
+  }
+
+  public class HistoryViewPagerAdapter extends PagerAdapter {
+
+    private List<QuChuHistoryModel.PlaceListBean.ResultBean> mResultBeanList = new ArrayList<>();
+
+    public HistoryViewPagerAdapter(QuChuHistoryModel.BestListBean bestListBean) {
+      QuChuHistoryModel.PlaceListBean.ResultBean resultBean1 = bestListBean.getPlaceInfo();
+      QuChuHistoryModel.PlaceListBean.ResultBean resultBean2 = bestListBean.getSecondPlaceInfo();
+
+      mResultBeanList.add(resultBean1);
+      if (resultBean2 != null) {
+        mResultBeanList.add(resultBean2);
+      }
+    }
+
+    @Override
+    public int getCount() {
+      return mResultBeanList.size();
+    }
+
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+      return view == object;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+      View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_nearby_quchu_detail, container, false);
+
+      QuChuHistoryModel.PlaceListBean.ResultBean resultBean = mResultBeanList.get(position);
+
+      TextView tvName = (TextView) view.findViewById(R.id.desc);
+      TagCloudView tcvTag = (TagCloudView) view.findViewById(R.id.tag);
+      SimpleDraweeView sdvImage = (SimpleDraweeView) view.findViewById(R.id.simpleDraweeView);
+      TextView tvAddress = (TextView) view.findViewById(address);
+
+      tvName.setText(resultBean.getName());
+      List<String> strTags = new ArrayList<>();
+      List<QuChuHistoryModel.PlaceListBean.ResultBean.TagsBean> tags = resultBean.getTags();
+      if (null != tags && tags.size() > 0) {
+        for (int i = 0; i < Math.min(tags.size(), 3); i++) {
+          strTags.add(" " + tags.get(i).getZh() + " ");
+        }
+      }
+
+      tcvTag.setTags(strTags);
+      tvAddress.setText(resultBean.getAreaCircleName());
+      tvAddress.setVisibility(View.VISIBLE);
+      sdvImage.setImageURI(Uri.parse(resultBean.getCover()));
+
+      view.setTag(resultBean);
+      view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          QuChuHistoryModel.PlaceListBean.ResultBean resultBean = (QuChuHistoryModel.PlaceListBean.ResultBean) v.getTag();
+          if (resultBean != null && mListener != null) {
+            mListener.onItemClick(resultBean);
+          }
+        }
+      });
+
+      container.addView(view);
+      return view;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+      container.removeView((View) object);
+    }
   }
 }

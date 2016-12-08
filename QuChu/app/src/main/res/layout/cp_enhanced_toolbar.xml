@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/appbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/appbar"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:orientation="vertical">
 
-    <co.quchu.quchu.base.EnhancedToolbar
-        android:id="@+id/enhancedToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/standard_color_white"
-        android:elevation="0dp"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        android:gravity="center_vertical"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+  <co.quchu.quchu.base.EnhancedToolbar
+      android:id="@+id/enhancedToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/standard_color_white"
+      android:elevation="0dp"
+      android:gravity="center_vertical"
+      app:contentInsetLeft="0dp"
+      app:contentInsetStart="0dp"
+      app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-    <View
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/bg_pager" />
+  <View
+      android:id="@+id/enhancedToolbarDivider"
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:background="@color/colorDivider"/>
 
 </LinearLayout>
