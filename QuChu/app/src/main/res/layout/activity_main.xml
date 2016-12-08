@@ -49,44 +49,44 @@
             android:id="@+id/drawerItemFavorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_shoucang_drawer"
-            app:divText="收藏"/>
+            app:divImage="@drawable/ic_wodeshoucang"
+            app:divText="我的收藏"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemUserCenter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:divImage="@drawable/ic_gerenzhongxin_drawer"
+            app:divImage="@drawable/ic_gerenzhongxin"
             app:divText="个人中心"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_xiaoxi_drawer"
-            app:divText="消息"/>
+            app:divImage="@drawable/ic_xiaoxizhongxin"
+            app:divText="消息中心"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_yijianhefankui_drawer"
-            app:divText="意见和帮助"/>
+            app:divImage="@drawable/ic_yijianbangzhu"
+            app:divText="意见帮助"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemSetting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_shezhi_drawer"
-            app:divText="设置"/>
+            app:divImage="@drawable/ic_wodeshezhi"
+            app:divText="我的设置"/>
 
         <co.quchu.quchu.widget.DrawerItemView
             android:id="@+id/drawerItemShareApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_fengxiang_drawer"
-            app:divText="分享 App"/>
+            app:divImage="@drawable/ic_fenxiangapp"
+            app:divText="分享App"/>
 
       </LinearLayout>
 

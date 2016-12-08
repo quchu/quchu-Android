@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
@@ -52,7 +51,6 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -108,17 +106,13 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
     mLocationStr = user.getLocation();
 
-    String avatar = user.getPhoto();
-    if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
-      avatarImg.setImageURI(Uri.parse(user.getPhoto()));
+    int geneAvatar = user.getGeneAvatar();
+    if (geneAvatar != -1) {
+      avatarImg.getHierarchy().setPlaceholderImage(geneAvatar);
     } else {
-      int imgResId = QuChuHelper.getUserAvatarByGene(SPUtils.getUserMark());
-      if (imgResId != -1) {
-        avatarImg.getHierarchy().setPlaceholderImage(imgResId);
-      } else {
-        avatarImg.setImageURI(Uri.parse(user.getPhoto()));
-      }
+      avatarImg.setImageURI(Uri.parse(user.getPhoto()));
     }
+
     nickname.setText(user.getFullname());
 //    nickname.setSelection(user.getFullname().length());
     nickname.setCursorVisible(false);
@@ -337,7 +331,6 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
           }
         });
   }
-
 
   public void refreshUserInfo() {
     NetService.get(this, NetApi.getMyUserInfo, new IRequestListener() {

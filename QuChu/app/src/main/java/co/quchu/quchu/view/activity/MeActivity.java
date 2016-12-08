@@ -1,18 +1,19 @@
 package co.quchu.quchu.view.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -22,28 +23,34 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.refactor.BaseTaskActivity;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.fragment.MeAvatarFragment;
+
+import static co.quchu.quchu.R.id.userNameTv;
+import static co.quchu.quchu.base.AppContext.user;
 
 /**
  * Created by mwb on 16/10/25.
  */
 public class MeActivity extends BaseTaskActivity {
 
-  @Bind(R.id.user_mask_layout) LinearLayout mUserMaskLayout;
-  @Bind(R.id.user_operate_layout) LinearLayout mUserOperateLayout;
   @Bind(R.id.enhancedToolbarDivider) View mEnhancedToolbarDivider;
-
-  private MaterialDialog mConfirmDialog;
+  @Bind(R.id.userAvatarImg) SimpleDraweeView mUserAvatarImg;
+  @Bind(R.id.userGenderImg) SimpleDraweeView mUserGenderImg;
+  @Bind(userNameTv) TextView mUserNameTv;
+  @Bind(R.id.userMarkTv) TextView mUserMarkTv;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_me_new);
+    setContentView(R.layout.activity_me);
     ButterKnife.bind(this);
+
+    EventBus.getDefault().register(this);
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView textView = toolbar.getTitleTv();
@@ -51,25 +58,39 @@ public class MeActivity extends BaseTaskActivity {
     textView.setText("");
     mEnhancedToolbarDivider.setVisibility(View.GONE);
 
-    FragmentManager fm = getSupportFragmentManager();
-    FragmentTransaction ft = fm.beginTransaction();
-    ft.add(R.id.me_fragment_container, new MeAvatarFragment());
-    ft.commit();
+    getGenes();
 
-    initViews();
+    fillViews();
   }
 
-  private void initViews() {
-    if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-      mUserMaskLayout.setVisibility(View.GONE);
-      mUserOperateLayout.setVisibility(View.VISIBLE);
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    EventBus.getDefault().unregister(this);
+  }
+
+  private void getGenes() {
+
+  }
+
+  private void fillViews() {
+    int geneAvatar = AppContext.user.getGeneAvatar();
+    if (geneAvatar != -1) {
+      mUserAvatarImg.getHierarchy().setPlaceholderImage(geneAvatar);
     } else {
-      mUserMaskLayout.setVisibility(View.VISIBLE);
-      mUserOperateLayout.setVisibility(View.GONE);
+      mUserAvatarImg.setImageURI(Uri.parse(AppContext.user.getPhoto()));
     }
+
+    mUserGenderImg.setImageURI(Uri.parse("res:///"
+        + (AppContext.user.getGender().equals("男") ? R.drawable.ic_male : R.drawable.ic_female)));
+
+    mUserNameTv.setText(user.getFullname());
+
+    mUserMarkTv.setText(SPUtils.getUserMark());
   }
 
-  @OnClick({R.id.me_info_view, R.id.me_social_account_view, R.id.me_change_password_view, R.id.user_logout_btn, R.id.user_login_btn})
+  @OnClick({R.id.me_info_view, R.id.me_social_account_view, R.id.me_change_password_view
+      , R.id.user_logout_btn, R.id.user_genes_btn})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.me_info_view://个人信息
@@ -77,21 +98,16 @@ public class MeActivity extends BaseTaskActivity {
         startActivity(AccountSettingActivity.class);
         break;
 
-//      case R.id.me_friend_view://趣友圈
-//        UMEvent("community_c");
-//        startActivity(QuFriendsActivity.class);
-//        break;
-
       case R.id.me_social_account_view://绑定社交账号
         startActivity(BindActivity.class);
         break;
 
       case R.id.me_change_password_view://修改密码
-        if (AppContext.user == null) {
+        if (user == null) {
           return;
         }
 
-        if (!AppContext.user.isphone()) {
+        if (!user.isphone()) {
           return;
         }
 
@@ -102,70 +118,21 @@ public class MeActivity extends BaseTaskActivity {
         logout();
         break;
 
-      case R.id.user_login_btn://登录
-        startActivity(LoginActivity.class);
+      case R.id.user_genes_btn://趣基因介绍
+        startActivity(UserGenesActivity.class);
         break;
     }
   }
 
-//  /**
-//   * 退出登录
-//   */
-//  private void logout() {
-//    mConfirmDialog = new MaterialDialog.Builder(this)
-//        .title("确认退出")
-//        .content("退出后将以游客模式登录")
-//        .positiveText("是")
-//        .negativeText("否")
-//        .cancelable(false).build();
-//
-//    mConfirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
-//      @Override
-//      public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//        showLoading("正在退出登录", false);
-//
-//        SPUtils.clearUserinfo(AppContext.mContext);
-//        AppContext.user = null;
-//        SPUtils.clearSpMap(MeActivity.this, AppKey.LOGIN_TYPE);
-//
-//        visitorRegister();
-//      }
-//    });
-//
-//    mConfirmDialog.show();
-//  }
-//
-//  /**
-//   * 游客身份登录
-//   */
-//  private void visitorRegister() {
-//    Map<String, String> map = new HashMap<>();
-//    map.put("visitors", "1");
-//    map.put("equip", StringUtils.getMyUUID());
-//
-//    executeTask(mService.visitorRegister(map), new BaseSubscriber<UserInfoModel>() {
-//      @Override
-//      public void onSuccess(UserInfoModel data) {
-//        mConfirmDialog.dismiss();
-//
-//        ArrayMap<String, Object> params = new ArrayMap<>();
-//        params.put("用户名", data.getFullname());
-//        params.put("登陆方式", "游客模式");
-//        ZGEvent(params, "用户登陆");
-//
-//        SPUtils.setUserToken(AppContext.mContext, data.getToken());
-//        AppContext.token = data.getToken();
-//        AppContext.user = data;
-//
-//        startActivity(RecommendActivity.class);
-//      }
-//
-//      @Override
-//      protected void onFinish() {
-//        hideLoading();
-//      }
-//    });
-//  }
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
+    switch (event.getFlag()) {
+      case EventFlags.EVENT_USER_INFO_UPDATE:
+        //用户信息
+        fillViews();
+        break;
+    }
+  }
 
   /**
    * 退出登录
@@ -184,7 +151,7 @@ public class MeActivity extends BaseTaskActivity {
         DialogUtil.showProgess(MeActivity.this, "正在退出登录", false);
 
         SPUtils.clearUserinfo(AppContext.mContext);
-        AppContext.user = null;
+        user = null;
         SPUtils.clearSpMap(MeActivity.this, AppKey.LOGIN_TYPE);
 
         //退出当前账号登录的融云信息
@@ -194,7 +161,7 @@ public class MeActivity extends BaseTaskActivity {
           @Override
           public void isUnique(JSONObject msg) {
             ArrayMap<String, Object> params = new ArrayMap<>();
-            params.put("用户名", AppContext.user.getFullname());
+            params.put("用户名", user.getFullname());
             params.put("登陆方式", "游客模式");
             ZGEvent(params, "用户登陆");
 

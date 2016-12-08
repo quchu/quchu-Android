@@ -44,8 +44,8 @@
     <activity
         android:name=".view.activity.SplashActivity"
         android:label="@string/app_name"
-        android:theme="@style/Translucent"
-        android:screenOrientation="portrait">
+        android:screenOrientation="portrait"
+        android:theme="@style/Translucent">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -115,6 +115,10 @@
         android:screenOrientation="portrait"/>
     <activity
         android:name=".view.activity.MeActivity"
+        android:screenOrientation="portrait"/>
+
+    <activity
+        android:name=".view.activity.UserGenesActivity"
         android:screenOrientation="portrait"/>
 
     <!-- 关注的 -->

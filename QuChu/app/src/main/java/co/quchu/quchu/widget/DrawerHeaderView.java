@@ -136,6 +136,9 @@ public class DrawerHeaderView extends LinearLayout {
       } else {
         mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
       }
+
+    } else {
+      AppContext.user.setGeneAvatar(-1);
     }
   }
 

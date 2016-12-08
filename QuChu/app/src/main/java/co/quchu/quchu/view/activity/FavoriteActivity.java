@@ -39,7 +39,7 @@ public class FavoriteActivity extends BaseBehaviorActivity {
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         TextView titleTv = toolbar.getTitleTv();
-        titleTv.setText("收藏的趣处");
+        titleTv.setText("我的收藏");
 
         FavoriteQuchuFragment quchuFragment = FavoriteQuchuFragment.newInstance(true, -1);
         FragmentManager fm = getSupportFragmentManager();
