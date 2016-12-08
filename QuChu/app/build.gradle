@@ -186,6 +186,8 @@ dependencies {
 
     //融云im
     compile project(':IMKit')
+
+    compile 'com.github.Cutta:TagView:1.3'
 }
 
 //

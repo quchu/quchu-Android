@@ -154,6 +154,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
           mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
           mAIContent.resetOffsetPassive(offset);
         }
+        toolbar.setTranslationY(Math.abs(offset));
+        placeHolder.setTranslationY(-Math.abs(appBarLayout.getTotalScrollRange()-offset));
       }
     });
 
@@ -446,13 +448,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivAllScene:
-        if (null != mAllSceneList && mAllSceneList.size() >= 1) {
+        if (null != mAllSceneList && mAllSceneList.size() >= 1 && toolbar.getAlpha()==0) {
           SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
         }
         break;
 
       case R.id.vDrawer:
-        mDrawer.openDrawer(GravityCompat.START);
+        if (toolbar.getAlpha()==1){
+          mDrawer.openDrawer(GravityCompat.START);
+        }
         break;
       case R.id.vFakeDrawer:
         if (placeHolder.getAlpha() == 1) {
@@ -461,13 +465,22 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.ivSearch:
+        if (placeHolder.getAlpha() == 1) {
+          SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
+        }
+        break;
+
       case R.id.vSearchBar://搜索
-        SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
+        if (toolbar.getAlpha() == 1) {
+          SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
+        }
         break;
 
       case R.id.ivSwitchCity:
       case R.id.tvCity://选择城市
-        UMEvent("location_c");
+        if (placeHolder.getAlpha() == 1) {
+
+          UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
           if (mCityList != null) {
             selectedCity();
@@ -484,6 +497,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
           }
         } else {
           Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+        }
         }
         break;
 

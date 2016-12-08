@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/standard_color_white"
@@ -21,6 +22,20 @@
       android:textColor="@color/colorHint"
       />
 
+
+  <co.quchu.quchu.widget.TagCloudView
+      android:id="@+id/tag_group"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="10dp"
+      app:lineMargin="5dp"
+      app:tagMargin="5dp"
+      app:textPaddingLeft="8dp"
+      app:textPaddingTop="5dp"
+      app:textPaddingRight="8dp"
+      app:textPaddingBottom="5dp"
+      android:visibility="gone"
+      />
   <RelativeLayout
       android:id="@+id/rlTags"
       android:layout_width="wrap_content"

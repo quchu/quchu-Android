@@ -112,7 +112,7 @@
     <RelativeLayout
         android:id="@+id/placeHolder"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:alpha="0"
         android:background="@color/transparent"
         >

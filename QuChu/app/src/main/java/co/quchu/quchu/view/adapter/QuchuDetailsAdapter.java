@@ -3,7 +3,9 @@ package co.quchu.quchu.view.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import android.widget.Toast;
+import com.cunoraz.tagview.Tag;
+import com.cunoraz.tagview.TagView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -41,7 +46,7 @@ import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
-import java.util.logging.Handler;
+
 
 /**
  * Created by admin on 2016/3/7.
@@ -407,6 +412,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 for (int i = 0; i < commentModel.getContent().length() ; i++) {
                   finalString += commentModel.getContent().charAt(i);
                   if (i % x ==0 && breaks<3){
+                    if (breaks==0){
+                      return;
+                    }
                     finalString += "\r\n";
                     x -=3;
                   }
@@ -428,7 +436,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       }
     } else if (holder instanceof MatchedTagsViewHolder) {
 
+
+
       final List<MatchedTagModel> tags = new ArrayList<>();
+      ArrayList<Tag> tagList = new ArrayList<>();
 
       if (null != mData.getAreaMap()) {
         MatchedTagModel areaTag = new MatchedTagModel();
@@ -436,6 +447,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         areaTag.setId(mData.getAreaMap().getId());
         areaTag.setZh(mData.getAreaMap().getName());
         tags.add(areaTag);
+
+        Tag t = new Tag(mData.getAreaMap().getName());
+        t.tagTextColor = Color.parseColor("#111111");
+        t.layoutBorderColor = Color.parseColor("#111111");
+        t.layoutColor = Color.parseColor("#ffdf4e");
+        t.layoutBorderSize = .5f;
+        t.radius = 10;
+        t.id = NearbyPresenter.TYPE_AREA;
+        tagList.add(t);
+
       }
 
       if (null != mData.getCircleMap()) {
@@ -444,6 +465,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         circleTag.setId(mData.getCircleMap().getId());
         circleTag.setZh(mData.getCircleMap().getName());
         tags.add(circleTag);
+
+        Tag t = new Tag(mData.getCircleMap().getName());
+        t.tagTextColor = Color.parseColor("#111111");
+        t.layoutBorderColor = Color.parseColor("#111111");
+        t.layoutColor = Color.parseColor("#ffdf4e");
+        t.layoutBorderSize = .5f;
+        t.radius = 10;
+        t.id = NearbyPresenter.TYPE_CIRCLE;
+
+        tagList.add(t);
       }
 
       for (int i = 0; i < mData.getTags().size(); i++) {
@@ -452,7 +483,20 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         model.setId(mData.getTags().get(i).getId());
         model.setType(-1);
         tags.add(model);
+
+        Tag t = new Tag(mData.getTags().get(i).getZh());
+        t.tagTextColor = Color.parseColor("#111111");
+        t.layoutBorderColor = Color.parseColor("#111111");
+        t.layoutColor = Color.parseColor("#ffffff");
+        t.layoutBorderSize = .5f;
+        t.radius = 10;
+        t.id = -1;
+        tagList.add(t);
       }
+
+      ((MatchedTagsViewHolder) holder).tag_group.addTags(tagList);
+
+
       MatchedTagAdapter adapter = new MatchedTagAdapter(tags);
       ((MatchedTagsViewHolder) holder).rvMatchedTags.setAdapter(adapter);
 
@@ -654,6 +698,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
     //@Bind(R.id.tcvTags) TagCloudView bizList;
     @Bind(R.id.rvMatchedTags) RecyclerView rvMatchedTags;
+    @Bind(R.id.tag_group) TagView tag_group;
 
     MatchedTagsViewHolder(View view) {
       super(view);

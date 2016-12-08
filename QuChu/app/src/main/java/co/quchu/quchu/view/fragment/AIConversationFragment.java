@@ -83,6 +83,7 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.tvOption) TextView mTvOption;
   @Bind(R.id.ivGuide) ImageView ivGuide;
   @Bind(R.id.tvPullUpToLoad) TextView tvPullUpToLoad;
+  @Bind(R.id.quickReturn) TextView quickReturn;
 
   private boolean mHistoryLoaded = false;
 
@@ -112,6 +113,16 @@ public class AIConversationFragment extends BaseFragment
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+
+        if (null!=mRecyclerView.getAdapter()){
+          System.out.println(mRecyclerView.getAdapter().getItemCount()+" | "+((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+          if (mRecyclerView.getAdapter().getItemCount()-((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition()>=10){
+            quickReturn.setVisibility(View.VISIBLE);
+          }else{
+            quickReturn.setVisibility(View.GONE);
+          }
+        }
+
 
         if (mConversation == null || mConversation.size() < 1) {
           return;
@@ -211,6 +222,13 @@ public class AIConversationFragment extends BaseFragment
     if (mConversation.size() > 0) {
       mRecyclerView.scrollToPosition(mConversation.size() - 1);
     }
+
+    quickReturn.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        quickReturn.setVisibility(View.GONE);
+        scrollToBottom();
+      }
+    });
 
     mXiaoQFab.postDelayed(new Runnable() {
       @Override public void run() {
