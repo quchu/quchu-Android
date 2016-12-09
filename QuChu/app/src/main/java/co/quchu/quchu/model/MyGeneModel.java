@@ -47,8 +47,17 @@ public class MyGeneModel implements Serializable {
     public static class GenesEntity implements Serializable {
         private String en;
         private double weight;
+        private double precent;
         private String zh;
         private String mark;
+
+        public double getPrecent() {
+            return precent;
+        }
+
+        public void setPrecent(double precent) {
+            this.precent = precent;
+        }
 
         public String getMark() {
             return mark;

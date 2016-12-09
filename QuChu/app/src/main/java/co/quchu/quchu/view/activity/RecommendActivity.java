@@ -520,7 +520,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.fab://历史记录
-        startActivity(QuChuHistoryActivity.class);
+        startActivity(QuchuHistoryActivity.class);
         break;
 
       case R.id.drawerItemFavorite://收藏

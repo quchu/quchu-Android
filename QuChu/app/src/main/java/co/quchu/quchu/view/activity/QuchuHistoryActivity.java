@@ -23,21 +23,21 @@ import co.quchu.quchu.model.QuChuHistoryModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.QuChuHistoryPresenter;
-import co.quchu.quchu.view.adapter.QuChuHistoryAdapter;
+import co.quchu.quchu.view.adapter.QuchuHistoryAdapter;
 
 /**
  * 趣处浏览记录
  * <p>
  * Created by mwb on 16/11/5.
  */
-public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeRefreshLayout.OnRefreshListener {
 
   @Bind(R.id.qu_history_recycler_view) RecyclerView mRecyclerView;
   @Bind(R.id.qu_history_refresh_layout) SwipeRefreshLayout mRefreshLayout;
 
   private int pageNo = 1;
   private String mPlaceIds = "";
-  private QuChuHistoryAdapter mAdapter;
+  private QuchuHistoryAdapter mAdapter;
   private boolean mHasMoreData;
   private boolean mIsLoadMore;
   private boolean mIsLoading;
@@ -58,7 +58,7 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
   private void initView() {
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    mAdapter = new QuChuHistoryAdapter(this);
+    mAdapter = new QuchuHistoryAdapter(this);
     mAdapter.setQuChuHistoryClickListener(onItemClickListener);
     mRecyclerView.setAdapter(mAdapter);
     mRefreshLayout.setOnRefreshListener(this);
@@ -177,7 +177,7 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
     }
   };
 
-  private QuChuHistoryAdapter.QuChuHistoryClickListener onItemClickListener = new QuChuHistoryAdapter.QuChuHistoryClickListener() {
+  private QuchuHistoryAdapter.QuChuHistoryClickListener onItemClickListener = new QuchuHistoryAdapter.QuChuHistoryClickListener() {
     @Override
     public void onItemClick(QuChuHistoryModel.PlaceListBean.ResultBean resultBean) {
       if (resultBean != null) {
