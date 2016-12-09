@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,10 +56,6 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
         }
       }
     });
-
-
-      holder.llContent.setGravity(Gravity.CENTER_HORIZONTAL);
-
 
 
 

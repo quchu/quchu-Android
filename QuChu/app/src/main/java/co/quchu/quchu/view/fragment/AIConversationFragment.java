@@ -32,7 +32,7 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.WizardHelper;
-import co.quchu.quchu.view.activity.SearchActivityNew;
+import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.view.adapter.TextOptionAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
@@ -275,7 +275,7 @@ public class AIConversationFragment extends BaseFragment
     float translationY =
         targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(
             R.dimen.half_margin);
-    float translationX = llOptions.getWidth()
+    float translationX = mRecyclerView.getWidth()
         - selectedTarget.getWidth()
         - answerLocation[0]
         - getResources().getDimensionPixelSize(R.dimen.ai_conversation_x_offset);
@@ -412,7 +412,7 @@ public class AIConversationFragment extends BaseFragment
 
         if (vertical || singleAnswer) {
           rvOptions.setLayoutManager(
-              new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+              new GridLayoutManager(getActivity(), 1,LinearLayoutManager.VERTICAL, false));
         } else {
           rvOptions.setLayoutManager(
               new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -712,7 +712,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   @Override public void onSearch() {
-    startActivity(new Intent(getActivity(), SearchActivityNew.class));
+    startActivity(new Intent(getActivity(), SearchActivity.class));
   }
 
   /**

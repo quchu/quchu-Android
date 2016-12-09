@@ -494,7 +494,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         tagList.add(t);
       }
 
-      ((MatchedTagsViewHolder) holder).tag_group.addTags(tagList);
+      //((MatchedTagsViewHolder) holder).tag_group.addTags(tagList);
 
 
       MatchedTagAdapter adapter = new MatchedTagAdapter(tags);
@@ -698,7 +698,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
     //@Bind(R.id.tcvTags) TagCloudView bizList;
     @Bind(R.id.rvMatchedTags) RecyclerView rvMatchedTags;
-    @Bind(R.id.tag_group) TagView tag_group;
+    //@Bind(R.id.tag_group) TagView tag_group;
 
     MatchedTagsViewHolder(View view) {
       super(view);
