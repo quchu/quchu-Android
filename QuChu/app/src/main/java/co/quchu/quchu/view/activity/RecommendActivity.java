@@ -466,13 +466,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       case R.id.ivSearch:
         if (placeHolder.getAlpha() == 1) {
-          SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
+          SearchActivity.launch(RecommendActivity.this, mAllSceneList);
         }
         break;
 
       case R.id.vSearchBar://搜索
         if (toolbar.getAlpha() == 1) {
-          SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
+          SearchActivity.launch(RecommendActivity.this, mAllSceneList);
         }
         break;
 

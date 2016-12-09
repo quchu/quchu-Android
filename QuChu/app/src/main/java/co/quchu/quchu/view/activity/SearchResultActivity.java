@@ -32,7 +32,7 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
-import co.quchu.quchu.view.adapter.SearchAdapterNew;
+import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.widget.DropDownMenu.MDropBean;
 import co.quchu.quchu.widget.DropDownMenu.MDropDownMenu;
 import co.quchu.quchu.widget.SearchView;
@@ -54,7 +54,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   @Bind(R.id.search_refresh_layout) SwipeRefreshLayout mSearchRefreshLayout;
   @Bind(R.id.search_drop_down_menu) MDropDownMenu mDropDownMenu;
 
-  private SearchAdapterNew mSearchAdapter;
+  private SearchAdapter mSearchAdapter;
 
   private int mCurrentPageNo = 1;
   private boolean mIsLoading = false;
@@ -79,7 +79,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_search_result_new);
+    setContentView(R.layout.activity_search_result);
     ButterKnife.bind(this);
 
     mInputStr = getIntent().getStringExtra(INTENT_KEY_SEARCH_INPUT);
@@ -127,7 +127,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
   private void initRecyclerView() {
     mSearchResultRv.setLayoutManager(new LinearLayoutManager(this));
-    mSearchAdapter = new SearchAdapterNew();
+    mSearchAdapter = new SearchAdapter();
     mSearchResultRv.setAdapter(mSearchAdapter);
     mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
     mSearchResultRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -169,10 +169,10 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   /**
    * 结果列表点击监听
    */
-  private SearchAdapterNew.OnSearchItemClickListener onItemClickListener = new SearchAdapterNew.OnSearchItemClickListener() {
+  private SearchAdapter.OnSearchItemClickListener onItemClickListener = new SearchAdapter.OnSearchItemClickListener() {
     @Override
     public void onClick(int position, Parcelable bean, int itemType) {
-      if (itemType == SearchAdapterNew.ITEM_TYPE_RESULT) {
+      if (itemType == SearchAdapter.ITEM_TYPE_RESULT) {
         RecommendModel model = (RecommendModel) bean;
 
         ArrayMap<String, Object> params = new ArrayMap<>();

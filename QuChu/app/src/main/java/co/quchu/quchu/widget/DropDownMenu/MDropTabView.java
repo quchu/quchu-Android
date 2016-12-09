@@ -64,7 +64,7 @@ public class MDropTabView extends RelativeLayout {
     addView(linearLayout, 0);
 
     View dividerView = new View(getContext());
-    LayoutParams lp = new LayoutParams(dpToPx(0.5f), RelativeLayout.LayoutParams.MATCH_PARENT);
+    LayoutParams lp = new LayoutParams(1, RelativeLayout.LayoutParams.MATCH_PARENT);
     lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
     dividerView.setLayoutParams(lp);
     dividerView.setBackgroundColor(getResources().getColor(R.color.colorDivider));

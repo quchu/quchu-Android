@@ -116,7 +116,7 @@ public class QuChuHistoryActivity extends BaseBehaviorActivity implements SwipeR
   public void onRefresh() {
     pageNo = 1;
     mIsLoadMore = false;
-//    mRefreshLayout.setRefreshing(true);
+    mRefreshLayout.setRefreshing(true);
     QuChuHistoryPresenter.getHistory(this, mPlaceIds, pageNo, mCommonListener);
   }
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -30,19 +29,11 @@
       android:text="没有该生物"
       android:visibility="gone"/>
 
-  <co.quchu.quchu.widget.DropDownMenu.DropDownMenu
-      android:id="@+id/drop_down_menu"
+  <co.quchu.quchu.widget.DropDownMenu.MDropDownMenu
+      android:id="@+id/search_drop_down_menu"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="@dimen/title_bar_height"
-      android:background="@color/transparent"
-      app:dddividerColor="@color/colorDivider"
-      app:ddmenuSelectedIcon="@drawable/ic_down"
-      app:ddmenuTextSize="13sp"
-      app:ddmenuUnselectedIcon="@drawable/ic_down"
-      app:ddtextSelectedColor="@color/standard_color_yellow"
-      app:ddtextUnselectedColor="@color/standard_color_h2_dark"
-      app:ddunderlineColor="@color/colorDivider"/>
+      android:layout_marginTop="@dimen/title_bar_height"/>
 
   <co.quchu.quchu.widget.SearchView
       android:id="@+id/search_view"

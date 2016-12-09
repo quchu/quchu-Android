@@ -34,10 +34,17 @@
 
   </RelativeLayout>
 
+  <View
+      android:id="@+id/drop_top_divider"
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:background="@color/colorDivider"/>
+
   <LinearLayout
       android:id="@+id/drop_title_layout"
       android:layout_width="match_parent"
       android:layout_height="@dimen/search_drop_tab_height"
+      android:layout_below="@+id/drop_top_divider"
       android:background="@color/standard_color_white"
       android:orientation="horizontal">
 
@@ -63,7 +70,7 @@
 
   <View
       android:layout_width="match_parent"
-      android:layout_height="0.5dp"
+      android:layout_height="1px"
       android:layout_below="@+id/drop_title_layout"
       android:background="@color/colorDivider"/>
 
