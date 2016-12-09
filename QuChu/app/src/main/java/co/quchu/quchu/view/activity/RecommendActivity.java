@@ -144,11 +144,31 @@ public class RecommendActivity extends BaseBehaviorActivity {
         float offset = Math.abs(verticalOffset);
         float progress = offset / appbar.getTotalScrollRange();
 
-        placeHolder.setAlpha(progress);
+        float fakeToolbarAlpha = (progress-0.5f)/0.5f;
 
+        if (fakeToolbarAlpha<0){
+          fakeToolbarAlpha=0;
+        }
+        placeHolder.setAlpha(fakeToolbarAlpha);
 
-        mRvScene.setAlpha(1 - progress);
-        toolbar.setAlpha(1 - progress);
+        float sceneAlpha = progress/.2f;
+        if (sceneAlpha<0){
+          sceneAlpha = 0;
+        }else if(sceneAlpha>1){
+          sceneAlpha = 1;
+        }
+
+        float toolbarAlpha = progress/.5f;
+        if (toolbarAlpha<0){
+          toolbarAlpha = 0;
+        }else if(toolbarAlpha>1){
+          toolbarAlpha = 1;
+        }
+
+        mRvScene.setAlpha(1 - sceneAlpha);
+        tvCity.setAlpha(1 - toolbarAlpha);
+        vSearchBar.setAlpha(1 - toolbarAlpha);
+
         //toolbar.setTranslationY(verticalOffset);
         if (null!=mAIContent){
           mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
@@ -448,15 +468,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivAllScene:
-        if (null != mAllSceneList && mAllSceneList.size() >= 1 && toolbar.getAlpha()==0) {
+        if (null != mAllSceneList && mAllSceneList.size() >= 1 && vSearchBar.getAlpha()==0) {
           SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
         }
         break;
 
       case R.id.vDrawer:
-        if (toolbar.getAlpha()==1){
-          mDrawer.openDrawer(GravityCompat.START);
-        }
+        mDrawer.openDrawer(GravityCompat.START);
         break;
       case R.id.vFakeDrawer:
         if (placeHolder.getAlpha() == 1) {
@@ -471,7 +489,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.vSearchBar://搜索
-        if (toolbar.getAlpha() == 1) {
+        if (vSearchBar.getAlpha() == 1) {
           SearchActivityNew.launch(RecommendActivity.this, mAllSceneList);
         }
         break;

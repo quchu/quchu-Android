@@ -40,16 +40,13 @@ import co.quchu.quchu.widget.DynamicItemDecoration;
 import co.quchu.quchu.widget.ScrollToLinearLayoutManager;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
 import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter;
-import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -414,13 +411,11 @@ public class AIConversationFragment extends BaseFragment
             new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         if (vertical || singleAnswer) {
-          textOptionAdapter.updateGravity(vertical);
           rvOptions.setLayoutManager(
               new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         } else {
-          textOptionAdapter.updateGravity(vertical);
           rvOptions.setLayoutManager(
-              new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
+              new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         }
       }
     }, 0);
@@ -764,6 +759,7 @@ public class AIConversationFragment extends BaseFragment
    */
   public void resetOffset(float scrollRange) {
 
+    quickReturn.setTranslationY(-scrollRange);
     if (mConversation.size() <= 2) {
       int[] location = new int[2];
       llOptions.getLocationOnScreen(location);

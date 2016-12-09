@@ -58,16 +58,9 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
       }
     });
 
-    if (getItemCount()==2 && !mVertical){
-      if (position==0){
-        holder.llContent.setGravity(Gravity.RIGHT);
-      }else{
-        holder.llContent.setGravity(Gravity.LEFT);
-      }
-    }else{
+
       holder.llContent.setGravity(Gravity.CENTER_HORIZONTAL);
 
-    }
 
 
 
