@@ -52,21 +52,25 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
         case "F"://未解决
           holder.settleTv.setText("未解决");
           holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
+          holder.settleTv.setTextColor(context.getResources().getColor(R.color.standard_color_h3_dark));
           break;
 
         case "D"://已回复
           holder.settleTv.setText("已回复");
           holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_settle_btn));
+          holder.settleTv.setTextColor(context.getResources().getColor(R.color.standard_color_h0_dark));
           break;
 
         case "T"://已处理
           holder.settleTv.setText("已处理");
           holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_settle_btn));
+          holder.settleTv.setTextColor(context.getResources().getColor(R.color.standard_color_h0_dark));
           break;
 
         default://未解决
           holder.settleTv.setText("未解决");
           holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
+          holder.settleTv.setTextColor(context.getResources().getColor(R.color.standard_color_h3_dark));
           break;
       }
     }

@@ -10,6 +10,8 @@
   <color name="colorBackground">#efefef</color>
   //通用背景颜色
 
+  <color name="colorBackground_db">#dbdbdb</color>
+
   <color name="colorSceneColor">#66000000</color>
 
   <color name="colorDivider">#efefef</color>

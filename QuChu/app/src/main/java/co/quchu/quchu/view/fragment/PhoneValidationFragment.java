@@ -2,7 +2,6 @@ package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -142,20 +141,24 @@ public class PhoneValidationFragment extends Fragment {
     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
       tvNext.setText(R.string.next);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
       mEmptyForum = false;
       tvNext.setClickable(true);
     } else {
       mEmptyForum = true;
       tvNext.setText(R.string.next);
-      tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvNext.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
       tvNext.setClickable(false);
     }
 
     if (!codeSent) {
       if (StringUtils.isMobileNO(userName)) {
         tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
+        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
       } else {
         tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_gray_fill);
+        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
       }
     }
   }
@@ -167,19 +170,23 @@ public class PhoneValidationFragment extends Fragment {
     if (TextUtils.isEmpty(userName)) {
       tvNext.setText(R.string.promote_empty_phone);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
       tvNext.setClickable(false);
     } else if (!StringUtils.isMobileNO(userName)) {
       tvNext.setText(R.string.promote_invalid_phone_number);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
       tvNext.setClickable(false);
     } else if (verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
       status = true;
       tvNext.setClickable(true);
     } else if (!verifyValidCode) {
       status = true;
     } else {
-      tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+      tvNext.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
       tvNext.setClickable(false);
     }
     return status;
@@ -195,6 +202,7 @@ public class PhoneValidationFragment extends Fragment {
       codeSent = true;
       if (tvSendValidCode != null) {
         tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_gray_fill);
+        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
         tvSendValidCode.setText("(" + leftSecond + ")秒后重新发送");
         tvSendValidCode.setEnabled(false);
       }
@@ -206,6 +214,7 @@ public class PhoneValidationFragment extends Fragment {
       if (tvSendValidCode != null) {
         tvSendValidCode.setText(R.string.send_valid_code);
         tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
+        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
         tvSendValidCode.setEnabled(true);
       }
     }
@@ -274,6 +283,7 @@ public class PhoneValidationFragment extends Fragment {
         isVerifying = false;
         tvNext.setText("验证码错误");
         tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+        tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
         tvNext.setClickable(false);
       }
     });
@@ -349,6 +359,7 @@ public class PhoneValidationFragment extends Fragment {
           tvLoginViaThisNumber.setVisibility(View.VISIBLE);
           tvNext.setText(R.string.promote_duplicate_username);
           tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+          tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
           tvNext.setClickable(false);
         }
       });
@@ -362,6 +373,7 @@ public class PhoneValidationFragment extends Fragment {
 //          Toast.makeText(getActivity(), R.string.promote_username_not_existed, Toast.LENGTH_SHORT).show();
           tvNext.setText(R.string.promote_username_not_existed);
           tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+          tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
           tvNext.setClickable(false);
           isRunning = false;
           errorView.hideView();

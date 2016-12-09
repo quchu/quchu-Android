@@ -79,7 +79,6 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
           holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrlSmall()));
         }
         holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
-        holder.mSceneTitleTv.setMaxLines(mLimitation > 0 ? 1 : 10);
         holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
       }
 
