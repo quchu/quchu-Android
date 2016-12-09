@@ -191,6 +191,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     commentBundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID, pId);
     commentBundle.putInt(CommentListFragment.BUNDLE_KEY_RATING_COUNT, dModel.getPlaceReviewCount());
     commentBundle.putFloat(CommentListFragment.BUNDLE_KEY_AVG_RATING, dModel.getSuggest());
+    commentBundle.putFloat(CommentListFragment.BUNDLE_KEY_RECENT_RATING, dModel.getRecentSuggest());
     commentBundle.putSerializable(CommentListFragment.BUNDLE_KEY_BIZ_LIST,
         (Serializable) dModel.getReviewGroupList());
     commentBundle.putSerializable(CommentListFragment.BUNDLE_KEY_TAG_LIST,

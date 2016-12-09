@@ -7,37 +7,18 @@
               android:layout_marginRight="@dimen/base_margin"
               android:orientation="vertical">
 
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="综合得分"
-        android:textColor="@color/standard_color_h1_dark"
-        android:textSize="13sp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="(取各网相加的平均值)"
-        android:textColor="@color/standard_color_h3_dark"
-        android:textSize="12sp"/>
-
-  </LinearLayout>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/half_margin"
-      android:gravity="center_vertical"
-      android:orientation="horizontal"
+      android:gravity="center"
+      android:orientation="vertical"
       android:paddingBottom="@dimen/half_margin">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_vertical"
@@ -62,35 +43,65 @@
           android:textColor="@color/standard_color_h3_dark"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/half_margin"
         android:orientation="horizontal">
 
+
       <TextView
+          android:id="@+id/tvDivider"
           style="@style/TextView.H3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="近期评价: "
+          android:layout_centerHorizontal="true"
+          android:text=" | "
+          android:layout_marginLeft="@dimen/half_margin"
+          android:layout_marginRight="@dimen/half_margin"
           android:textColor="@color/standard_color_h0_dark"/>
 
-      <ImageView
-          android:id="@+id/ivTrend"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          android:src="@drawable/ic_rate_rise"/>
-
       <TextView
-          android:id="@+id/tvRatingChange"
-          style="@style/TextView.H3"
+          android:layout_toLeftOf="@+id/tvDivider"
+          android:id="@+id/tvAvgRating"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textColor="@color/standard_color_red"
-          tools:text="1.2分"/>
+          android:text="综合得分"
+          android:textColor="@color/standard_color_h1_dark"
+          android:textSize="13sp"/>
 
-    </LinearLayout>
+
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:layout_toRightOf="@+id/tvDivider"
+         >
+       <TextView
+           style="@style/TextView.H3"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="近期评价: "
+           android:textColor="@color/standard_color_h0_dark"/>
+
+       <ImageView
+           android:id="@+id/ivTrend"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center_vertical"
+           android:visibility="gone"
+           android:src="@drawable/ic_rate_rise"/>
+
+       <TextView
+           android:id="@+id/tvRatingChange"
+           style="@style/TextView.H3"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/standard_color_red"
+           tools:text="1.2分"/>
+
+     </LinearLayout>
+    </RelativeLayout>
 
   </LinearLayout>
 

@@ -25,7 +25,7 @@
       android:layout_marginTop="@dimen/half_margin"
       android:layout_centerHorizontal="true"
       tools:text="@string/empty_string"
-      style="@style/TextView.H3"
+      style="@style/TextView.H2"
       />
 
   <TextView
@@ -34,8 +34,8 @@
       android:layout_marginTop="@dimen/base_margin"
       tools:text="@string/empty_string"
       android:layout_centerHorizontal="true"
-      style="@style/TextView.H2"
-
+      style="@style/TextView.H3"
+      android:textSize="@dimen/standard_text_size_h2"
       />
 
   <View

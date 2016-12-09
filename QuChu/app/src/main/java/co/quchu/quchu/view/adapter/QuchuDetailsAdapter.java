@@ -284,6 +284,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       }
 
       ((RatingInfoViewHolder) holder).tvRatingCount.setText(mData.getSuggest()+"分");
+      ((RatingInfoViewHolder) holder).tvAvgRating.setText("综合得分"+mData.getRecentSuggest()+"分");
 
     } else if (holder instanceof PartyInfoViewHolder) {
 
@@ -588,6 +589,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tvRatingCount) TextView tvRatingCount;
     @Bind(R.id.tvRatingChange) TextView tvRatingChange;
     @Bind(R.id.ivTrend) ImageView ivTrend;
+    @Bind(R.id.tvAvgRating) TextView tvAvgRating;
 
     RatingInfoViewHolder(View view) {
       super(view);

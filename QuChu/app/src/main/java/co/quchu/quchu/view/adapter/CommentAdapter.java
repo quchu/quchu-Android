@@ -30,6 +30,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   private float mAvgRating = 0;
   private int mRatingCount = 0;
+  private float mRecentRating = 0;
   private List<DetailModel.BizInfoModel> mBizList;
   private List<CommentModel> mDataSet;
   private List<String> mTagsList;
@@ -48,7 +49,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     notifyDataSetChanged();
   }
 
-  public CommentAdapter(Activity activity, List<CommentModel> mDataSet,int ratingCount,float avgRating,List<DetailModel.BizInfoModel> bizList,List<String> tagList) {
+  public CommentAdapter(Activity activity, List<CommentModel> mDataSet,int ratingCount,float avgRating,float recentRating,List<DetailModel.BizInfoModel> bizList,List<String> tagList) {
     this.mDataSet = mDataSet;
     this.mAnchorActivity = activity;
     this.mTagsList = new ArrayList<>();
@@ -57,6 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     this.mBizList.addAll(bizList);
     this.mAvgRating = avgRating;
     this.mRatingCount = ratingCount;
+    this.mRecentRating = recentRating;
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -78,7 +80,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     if (position==0){
       ((HeaderViewHolder)holder).tvAvgRating.setText(String.valueOf(mAvgRating)+"分");
       ((HeaderViewHolder) holder).rbRating.setRating(mAvgRating);
-      ((HeaderViewHolder) holder).tvRatingCount.setText(String.valueOf("全网"+mRatingCount+"人评价过"));
+      ((HeaderViewHolder) holder).tvRatingCount.setText(String.valueOf("共"+mRatingCount+"人评价"));
+      ((HeaderViewHolder) holder).tvRecentRating.setText("近期评分:"+String.valueOf(mRecentRating)+"分");
 
       if (null!=mTagsList){
         TagAdapter adapter = new TagAdapter(mTagsList);
@@ -202,6 +205,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.tvAvgRating) TextView tvAvgRating;
     @Bind(R.id.tvRatingCount) TextView tvRatingCount;
+    @Bind(R.id.tvRecentRating) TextView tvRecentRating;
     @Bind(R.id.rvBizList) RecyclerView rvBizList;
     @Bind(R.id.rvTagList) RecyclerView rvTagList;
 

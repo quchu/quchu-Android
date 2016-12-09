@@ -21,6 +21,8 @@
       android:orientation="horizontal"
       android:paddingBottom="@dimen/half_margin"
       >
+
+
     <RatingBar
         android:id="@+id/rbRating"
         android:layout_width="wrap_content"
@@ -45,13 +47,26 @@
 
 
   </RelativeLayout>
+
+  <TextView
+      android:id="@+id/tvRecentRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="近期评分:4.8分"
+      android:layout_marginTop="@dimen/base_margin"
+      android:textColor="@color/standard_color_h2_dark"
+      android:layout_gravity="center_horizontal"
+      />
+
+
   <TextView
       android:id="@+id/tvRatingCount"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center_horizontal"
       android:layout_marginLeft="@dimen/base_margin"
-      android:text="全网1200人评价过"
+      android:text="-"
+      tools:text="全网1300人评价过"
       android:layout_margin="@dimen/half_margin"
       android:textSize="13sp"
       android:textColor="@color/standard_color_h3_dark"

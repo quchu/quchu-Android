@@ -45,12 +45,14 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
   public static final String BUNDLE_KEY_RATING_COUNT = "BUNDLE_KEY_RATING_COUNT";
   public static final String BUNDLE_KEY_BIZ_LIST = "BUNDLE_KEY_BIZ_LIST";
   public static final String BUNDLE_KEY_TAG_LIST = "BUNDLE_KEY_TAG_LIST";
+  public static final String BUNDLE_KEY_RECENT_RATING = "BUNDLE_KEY_RECENT_RATING";
 
   @Bind(R.id.rv) RecyclerView rv;
   @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
   @Bind(R.id.errorView) ErrorView errorView;
 
   private float mAvgRating = 0;
+  private float mRecentRating = 0;
   private int mRatingCount = 0;
   private List<DetailModel.BizInfoModel> mBizList;
   private List<CommentModel> mDataSet;
@@ -157,7 +159,7 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
         mSceneList.addAll(response.getResult());
 
         if (firstLoad) {
-          mAdapter = new CommentAdapter(getActivity(), mSceneList, mRatingCount, mAvgRating, mBizList, mTagsList);
+          mAdapter = new CommentAdapter(getActivity(), mSceneList, mRatingCount, mAvgRating,mRecentRating , mBizList, mTagsList);
           rv.setAdapter(mAdapter);
         } else {
           mAdapter.notifyDataSetChanged();
