@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/standard_color_white"
@@ -7,148 +8,101 @@
 
   <include layout="@layout/cp_enhanced_toolbar"/>
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:text="【趣基因文案介绍】"
-      android:textColor="@color/standard_color_h1_dark"
-      android:textSize="18sp"/>
-
-  <TextView
+  <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="20dp"
-      android:layout_marginRight="20dp"
-      android:layout_marginTop="@dimen/base_margin"
-      android:gravity="center"
-      android:text="称号种类一共有四种,即小食神、好奇喵、文艺咖、大财阀、外交官、时尚精和新生宝宝"
-      android:textColor="@color/standard_color_h3_dark"
-      android:textSize="16sp"/>
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="25dp"
-      android:gravity="center"
-      android:orientation="horizontal">
+      android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-      <ImageView
-          android:layout_width="wrap_content"
+      <TextView
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher"/>
+          android:layout_marginTop="@dimen/base_margin"
+          android:gravity="center"
+          android:lineSpacingExtra="@dimen/half_margin"
+          android:text="称号种类一共有六种\n即小食神、好奇喵、文艺咖、大财阀、\n外交官、时尚精和新生宝宝"
+          android:textColor="@color/standard_color_h3_dark"
+          android:textSize="14sp"/>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="40dp"
+          android:orientation="horizontal">
+
+        <co.quchu.quchu.widget.GeneItemView
+            android:id="@+id/tuhao_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:givImage="@drawable/ic_tuhao_ahsy"
+            app:givText="大财阀"/>
+
+        <co.quchu.quchu.widget.GeneItemView
+            android:id="@+id/haoqi_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:givImage="@drawable/ic_haoqi_ahsy"
+            app:givText="好奇喵"/>
+
+        <co.quchu.quchu.widget.GeneItemView
+            android:id="@+id/shishang_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:givImage="@drawable/ic_shishang_ahsy"
+            app:givText="时尚精"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:orientation="horizontal">
+
+        <co.quchu.quchu.widget.GeneItemView
+            android:id="@+id/waijiao_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:givImage="@drawable/ic_shejiao_ahsy"
+            app:givText="外交官"/>
+
+        <co.quchu.quchu.widget.GeneItemView
+            android:id="@+id/wenyi_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:givImage="@drawable/ic_wenyi_ahsy"
+            app:givText="文艺咖"/>
+
+        <co.quchu.quchu.widget.GeneItemView
+            android:id="@+id/chihuo_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:givImage="@drawable/ic_chihuo_ahsy"
+            app:givText="小食神"/>
+
+      </LinearLayout>
 
       <TextView
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="小食神"/>
+          android:layout_marginTop="40dp"
+          android:gravity="center"
+          android:lineSpacingExtra="@dimen/half_margin"
+          android:text="系统会根据你平时的操作判断你的喜好\n并赋予你相对应的称号\n在趣星球每个人都会有一个称号\n它是你在这里的身份象征"
+          android:textColor="@color/standard_color_h3_dark"
+          android:textSize="14sp"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="小食神"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="小食神"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="小食神"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="小食神"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="小食神"/>
-
-    </LinearLayout>
-
-  </LinearLayout>
-
-
+  </ScrollView>
 
 </LinearLayout>

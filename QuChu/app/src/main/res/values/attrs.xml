@@ -289,4 +289,10 @@
     <attr name="miImage" format="reference"/>
   </declare-styleable>
 
+  <!-- GeneItemView -->
+  <declare-styleable name="GeneItemView">
+    <attr name="givText" format="string"/>
+    <attr name="givImage" format="reference"/>
+  </declare-styleable>
+
 </resources>

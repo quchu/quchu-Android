@@ -28,7 +28,7 @@ import static co.quchu.quchu.R.id.address;
 /**
  * Created by mwb on 16/11/5.
  */
-public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private int TYPE_HEADER = 1;
   private int TYPE_BEST_HISTORY = 2;
@@ -38,7 +38,7 @@ public class QuChuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private List<QuChuHistoryModel.BestListBean> mBestList;
   private List<QuChuHistoryModel.PlaceListBean.ResultBean> mResultBeanList;
 
-  public QuChuHistoryAdapter(Context context) {
+  public QuchuHistoryAdapter(Context context) {
     mInflater = LayoutInflater.from(context);
   }
 

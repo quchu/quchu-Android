@@ -295,7 +295,7 @@
 
     <!-- 趣处浏览历史记录 -->
     <activity
-        android:name=".view.activity.QuChuHistoryActivity"
+        android:name=".view.activity.QuchuHistoryActivity"
         android:screenOrientation="portrait"/>
 
     <!-- 小Q设置 -->
