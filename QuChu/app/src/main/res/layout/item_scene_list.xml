@@ -20,6 +20,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/half_margin"
+      android:singleLine="true"
       android:textColor="@color/standard_color_h3_dark"
       android:textSize="13sp"
       tools:text="寻欢作乐"/>

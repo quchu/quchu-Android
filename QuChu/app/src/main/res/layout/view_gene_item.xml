@@ -27,7 +27,8 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/half_margin"
       android:textColor="@color/standard_color_h3_dark"
-      android:textSize="20sp"
+      android:textSize="22sp"
+      android:textStyle="bold"
       tools:text="13%"/>
 
 </LinearLayout>

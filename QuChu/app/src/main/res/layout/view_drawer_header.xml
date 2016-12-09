@@ -55,9 +55,7 @@
           android:layout_height="20dp"
           android:layout_marginLeft="@dimen/half_margin"
           fresco:backgroundImage="@color/standard_color_white"
-          fresco:roundAsCircle="true"
-          fresco:roundingBorderColor="@color/colorBorder"
-          fresco:roundingBorderWidth="2dp"/>
+          fresco:roundAsCircle="true"/>
 
     </LinearLayout>
 
@@ -126,7 +124,7 @@
           android:paddingRight="40dp"
           android:paddingTop="10dp"
           android:text="登录/注册"
-          android:textColor="@color/standard_color_h1_dark"
+          android:textColor="@color/standard_color_h0_dark"
           android:textSize="14sp"/>
 
     </LinearLayout>

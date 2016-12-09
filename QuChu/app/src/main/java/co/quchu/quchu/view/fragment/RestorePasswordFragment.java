@@ -3,7 +3,6 @@ package co.quchu.quchu.view.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -81,12 +80,14 @@ public class RestorePasswordFragment extends Fragment {
         String str = s.toString().trim();
         if (TextUtils.isEmpty(str)) {
           tvNext.setText(R.string.next);
-          tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+          tvNext.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
+          tvNext.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
           tvNext.setClickable(false);
           hasPassword = false;
         } else {
           tvNext.setText(R.string.next);
           tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+          tvNext.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
           tvNext.setClickable(true);
           hasPassword = true;
         }
@@ -179,6 +180,7 @@ public class RestorePasswordFragment extends Fragment {
       mRequestRunning = false;
       tvNext.setText(R.string.hint_new_password);
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+      tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
       tvNext.setClickable(false);
     }
   }
