@@ -21,7 +21,7 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
   private int type;//type=2 服务器出错
   private String additionalShit;
   private OnInteractiveClick mOnInteractiveListener;
-  private boolean mVertical = false;
+  private boolean wrapcontent = false;
 
   public TextOptionAdapter(List<String> options, String additional,int type,OnInteractiveClick listener) {
     this.options = options;
@@ -30,8 +30,8 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
     this.mOnInteractiveListener = listener;
   }
 
-  public void updateGravity(boolean vertical){
-    this.mVertical = vertical;
+  public void updateWrapContent(boolean wrapContent){
+    this.wrapcontent = wrapContent;
     notifyDataSetChanged();
   }
 
@@ -56,6 +56,16 @@ public class TextOptionAdapter extends RecyclerView.Adapter<TextOptionAdapter.Te
         }
       }
     });
+
+    if (wrapcontent){
+      ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+      lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+      holder.itemView.requestLayout();
+    }else{
+      ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+      lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+      holder.itemView.requestLayout();
+    }
 
 
 
