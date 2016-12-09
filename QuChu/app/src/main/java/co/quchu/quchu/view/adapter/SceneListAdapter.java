@@ -55,17 +55,17 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     if (viewHolder instanceof SceneViewHolder) {
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
 
-      RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.mSceneCoverImg.getLayoutParams();
+      LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) holder.rl_cover.getLayoutParams();
       if (mLimitation > 0) {
         //首页
         lp.width = Utils.dip2px(mContext, 38);
         lp.height = Utils.dip2px(mContext, 38);
-        holder.mSceneCoverImg.setLayoutParams(lp);
+        holder.rl_cover.setLayoutParams(lp);
 
       } else {
         lp.width = Utils.dip2px(mContext, 64);
         lp.height = Utils.dip2px(mContext, 64);
-        holder.mSceneCoverImg.setLayoutParams(lp);
+        holder.rl_cover.setLayoutParams(lp);
       }
 
       //首页显示所有场景
@@ -107,6 +107,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Bind(R.id.scene_cover_img) SimpleDraweeView mSceneCoverImg;
     @Bind(R.id.scene_title_tv) TextView mSceneTitleTv;
+    @Bind(R.id.rl_cover) RelativeLayout rl_cover;
     @Bind(R.id.tvHot) TextView tvHot;
 
     public SceneViewHolder(View itemView) {
