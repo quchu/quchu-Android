@@ -20,6 +20,15 @@ public class SceneInfoModel implements Serializable{
     private String iconUrl;
     private String iconUrlBig;
     private String iconUrlSmall;
+    private boolean isHot = false;
+
+    public boolean isHot() {
+        return isHot;
+    }
+
+    public void setHot(boolean hot) {
+        isHot = hot;
+    }
 
     public String getIconUrlBig() {
         return iconUrlBig;
@@ -64,6 +73,7 @@ public class SceneInfoModel implements Serializable{
         this.sceneTitle = sceneInfoModel.getSceneTitle();
         this.width = sceneInfoModel.getWidth();
         this.sceneId = sceneInfoModel.getSceneId();
+        this.isHot = sceneInfoModel.isHot();
 
     }
 

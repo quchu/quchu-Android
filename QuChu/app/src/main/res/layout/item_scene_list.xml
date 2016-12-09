@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
@@ -15,7 +15,19 @@
       app:actualImageScaleType="fitCenter"
       app:roundAsCircle="true"/>
 
+
   <TextView
+      android:id="@+id/tvHot"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="hot"
+      android:textColor="@color/standard_color_red"
+      android:layout_alignRight="@id/scene_cover_img"
+      android:visibility="gone"
+      />
+
+  <TextView
+      android:layout_below="@+id/scene_cover_img"
       android:id="@+id/scene_title_tv"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -24,4 +36,4 @@
       android:textSize="13sp"
       tools:text="寻欢作乐"/>
 
-</LinearLayout>
+</RelativeLayout>

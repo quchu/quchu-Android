@@ -25,16 +25,19 @@
 
   <co.quchu.quchu.widget.TagCloudView
       android:id="@+id/tag_group"
+      android:layout_below="@+id/tvLabel"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_margin="10dp"
+      android:layout_margin="4dp"
+      app:tcvBorder="8dp"
+      app:tcvItemBorderHorizontal="5dp"
       app:lineMargin="5dp"
       app:tagMargin="5dp"
       app:textPaddingLeft="8dp"
       app:textPaddingTop="5dp"
       app:textPaddingRight="8dp"
       app:textPaddingBottom="5dp"
-      android:visibility="gone"
+      android:visibility="visible"
       />
   <RelativeLayout
       android:id="@+id/rlTags"

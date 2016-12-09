@@ -438,88 +438,153 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     } else if (holder instanceof MatchedTagsViewHolder) {
 
 
+      //
+      //final List<MatchedTagModel> tags = new ArrayList<>();
+      //ArrayList<Tag> tagList = new ArrayList<>();
+      //
+      //if (null != mData.getAreaMap()) {
+      //  MatchedTagModel areaTag = new MatchedTagModel();
+      //  areaTag.setType(NearbyPresenter.TYPE_AREA);
+      //  areaTag.setId(mData.getAreaMap().getId());
+      //  areaTag.setZh(mData.getAreaMap().getName());
+      //  tags.add(areaTag);
+      //
+      //  Tag t = new Tag(mData.getAreaMap().getName());
+      //  t.tagTextColor = Color.parseColor("#111111");
+      //  t.layoutBorderColor = Color.parseColor("#111111");
+      //  t.layoutColor = Color.parseColor("#ffdf4e");
+      //  t.layoutBorderSize = .5f;
+      //  t.radius = 10;
+      //  t.id = NearbyPresenter.TYPE_AREA;
+      //  tagList.add(t);
+      //
+      //}
+      //
+      //if (null != mData.getCircleMap()) {
+      //  MatchedTagModel circleTag = new MatchedTagModel();
+      //  circleTag.setType(NearbyPresenter.TYPE_CIRCLE);
+      //  circleTag.setId(mData.getCircleMap().getId());
+      //  circleTag.setZh(mData.getCircleMap().getName());
+      //  tags.add(circleTag);
+      //
+      //  Tag t = new Tag(mData.getCircleMap().getName());
+      //  t.tagTextColor = Color.parseColor("#111111");
+      //  t.layoutBorderColor = Color.parseColor("#111111");
+      //  t.layoutColor = Color.parseColor("#ffdf4e");
+      //  t.layoutBorderSize = .5f;
+      //  t.radius = 10;
+      //  t.id = NearbyPresenter.TYPE_CIRCLE;
+      //
+      //  tagList.add(t);
+      //}
+      //
+      //for (int i = 0; i < mData.getTags().size(); i++) {
+      //  MatchedTagModel model = new MatchedTagModel();
+      //  model.setZh(mData.getTags().get(i).getZh());
+      //  model.setId(mData.getTags().get(i).getId());
+      //  model.setType(-1);
+      //  tags.add(model);
+      //
+      //  Tag t = new Tag(mData.getTags().get(i).getZh());
+      //  t.tagTextColor = Color.parseColor("#111111");
+      //  t.layoutBorderColor = Color.parseColor("#111111");
+      //  t.layoutColor = Color.parseColor("#ffffff");
+      //  t.layoutBorderSize = .5f;
+      //  t.radius = 10;
+      //  t.id = -1;
+      //  tagList.add(t);
+      //}
+      //
+      ////((MatchedTagsViewHolder) holder).tag_group.addTags(tagList);
+      //
+      //
+      //MatchedTagAdapter adapter = new MatchedTagAdapter(tags);
+      //((MatchedTagsViewHolder) holder).rvMatchedTags.setAdapter(adapter);
+      //
+      //((MatchedTagsViewHolder) holder).rvMatchedTags.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
+      //adapter.setOnItemClickListener(new CommonItemClickListener() {
+      //  @Override public void onItemClick(View v, int position) {
+      //
+      //    MatchedTagModel tag = tags.get(position);
+      //    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+      //    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, tag.getId());
+      //
+      //    if (tag.getType()==NearbyPresenter.TYPE_CIRCLE){
+      //      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE, NearbyPresenter.TYPE_CIRCLE);
+      //    }else if(tag.getType()==NearbyPresenter.TYPE_AREA){
+      //      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE, NearbyPresenter.TYPE_AREA);
+      //    }
+      //    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, tag.getZh());
+      //
+      //    mAnchorActivity.startActivity(intent);
+      //
+      //  }
+      //});
 
-      final List<MatchedTagModel> tags = new ArrayList<>();
-      ArrayList<Tag> tagList = new ArrayList<>();
+      int blockIndex = 0;
+      List<String> tags = new ArrayList<>();
+      List<Boolean> highLights = new ArrayList<>();
 
-      if (null != mData.getAreaMap()) {
-        MatchedTagModel areaTag = new MatchedTagModel();
-        areaTag.setType(NearbyPresenter.TYPE_AREA);
-        areaTag.setId(mData.getAreaMap().getId());
-        areaTag.setZh(mData.getAreaMap().getName());
-        tags.add(areaTag);
-
-        Tag t = new Tag(mData.getAreaMap().getName());
-        t.tagTextColor = Color.parseColor("#111111");
-        t.layoutBorderColor = Color.parseColor("#111111");
-        t.layoutColor = Color.parseColor("#ffdf4e");
-        t.layoutBorderSize = .5f;
-        t.radius = 10;
-        t.id = NearbyPresenter.TYPE_AREA;
-        tagList.add(t);
-
-      }
-
-      if (null != mData.getCircleMap()) {
-        MatchedTagModel circleTag = new MatchedTagModel();
-        circleTag.setType(NearbyPresenter.TYPE_CIRCLE);
-        circleTag.setId(mData.getCircleMap().getId());
-        circleTag.setZh(mData.getCircleMap().getName());
-        tags.add(circleTag);
-
-        Tag t = new Tag(mData.getCircleMap().getName());
-        t.tagTextColor = Color.parseColor("#111111");
-        t.layoutBorderColor = Color.parseColor("#111111");
-        t.layoutColor = Color.parseColor("#ffdf4e");
-        t.layoutBorderSize = .5f;
-        t.radius = 10;
-        t.id = NearbyPresenter.TYPE_CIRCLE;
-
-        tagList.add(t);
-      }
-
-      for (int i = 0; i < mData.getTags().size(); i++) {
-        MatchedTagModel model = new MatchedTagModel();
-        model.setZh(mData.getTags().get(i).getZh());
-        model.setId(mData.getTags().get(i).getId());
-        model.setType(-1);
-        tags.add(model);
-
-        Tag t = new Tag(mData.getTags().get(i).getZh());
-        t.tagTextColor = Color.parseColor("#111111");
-        t.layoutBorderColor = Color.parseColor("#111111");
-        t.layoutColor = Color.parseColor("#ffffff");
-        t.layoutBorderSize = .5f;
-        t.radius = 10;
-        t.id = -1;
-        tagList.add(t);
-      }
-
-      //((MatchedTagsViewHolder) holder).tag_group.addTags(tagList);
-
-
-      MatchedTagAdapter adapter = new MatchedTagAdapter(tags);
-      ((MatchedTagsViewHolder) holder).rvMatchedTags.setAdapter(adapter);
-
-      ((MatchedTagsViewHolder) holder).rvMatchedTags.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
-      adapter.setOnItemClickListener(new CommonItemClickListener() {
-        @Override public void onItemClick(View v, int position) {
-
-          MatchedTagModel tag = tags.get(position);
-          Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
-          intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, tag.getId());
-
-          if (tag.getType()==NearbyPresenter.TYPE_CIRCLE){
-            intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE, NearbyPresenter.TYPE_CIRCLE);
-          }else if(tag.getType()==NearbyPresenter.TYPE_AREA){
-            intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE, NearbyPresenter.TYPE_AREA);
-          }
-          intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, tag.getZh());
-
-          mAnchorActivity.startActivity(intent);
-
+      if (null != mData) {
+        if (null != mData.getAreaMap()) {
+          tags.add(" " + mData.getAreaMap().getName() + " ");
+          blockIndex += 1;
+          highLights.add(true);
         }
-      });
+        if (null != mData.getCircleMap()) {
+          tags.add(" " + mData.getCircleMap().getName() + " ");
+          blockIndex += 1;
+          highLights.add(true);
+        }
+      }
+        for (int i = 0; i < mData.getTags().size(); i++) {
+          tags.add(" " + mData.getTags().get(i).getZh() + " ");
+          highLights.add(false);
+        }
+
+
+      ((MatchedTagsViewHolder) holder).tag_group.setTags(tags, highLights);
+      final int finalBlockIndex = blockIndex;
+      ((MatchedTagsViewHolder) holder).tag_group.setOnTagClickListener(
+          new TagCloudView.OnTagClickListener() {
+            @Override public void onTagClick(int position) {
+
+              Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+              if (position < finalBlockIndex) {
+                if (finalBlockIndex < 2) {
+                  if (null != mData.getCircleMap()) {
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                        NearbyPresenter.TYPE_CIRCLE);
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                        mData.getAreaMap().getId());
+                  } else {
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                        NearbyPresenter.TYPE_AREA);
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                        mData.getCircleMap().getId());
+                  }
+                } else {
+                  if (position == 0) {
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                        NearbyPresenter.TYPE_CIRCLE);
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                        mData.getAreaMap().getId());
+                  } else {
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                        NearbyPresenter.TYPE_AREA);
+                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                        mData.getCircleMap().getId());
+                  }
+                }
+              } else {
+                intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                    mData.getTags().get(position - finalBlockIndex).getId());
+                intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,
+                    mData.getTags().get(position - finalBlockIndex).getZh());
+              }
+              mAnchorActivity.startActivity(intent);
+            }
+          });
 
     } else if (holder instanceof NearbyViewHolder) {
       if (null != mData.getNearPlace()) {
@@ -700,7 +765,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
     //@Bind(R.id.tcvTags) TagCloudView bizList;
     @Bind(R.id.rvMatchedTags) RecyclerView rvMatchedTags;
-    //@Bind(R.id.tag_group) TagView tag_group;
+    @Bind(R.id.tag_group) TagCloudView tag_group;
 
     MatchedTagsViewHolder(View view) {
       super(view);

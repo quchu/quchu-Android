@@ -264,12 +264,7 @@ public class TagCloudView extends ViewGroup {
             for (int i = 0; i < tags.size(); i++) {
                 TextView tagView = (TextView) mInflater.inflate(mTagResId, null);
                 if (mTagResId == DEFAULT_TAG_RESID) {
-                    if (null!=tagsHighLight){
-                        tagView.setBackgroundResource(tagsHighLight.get(i).booleanValue()? R.drawable.shape_lineframe_yellow_fill: mBackground);
-                        tagView.setTextColor(Color.parseColor("#111111"));
-                    }else{
-                        tagView.setBackgroundResource(mBackground);
-                    }
+
 
                     //tagView.setTextSize(mTagSize);
                     tagView.setTextColor(mTagColor);
@@ -288,6 +283,13 @@ public class TagCloudView extends ViewGroup {
                         }
                     }
                 });
+                if (null!=tagsHighLight){
+                    tagView.setBackgroundResource(tagsHighLight.get(i).booleanValue()?
+                        R.drawable.shape_lineframe_yellow_fill: R.drawable.shape_lineframe_black_thin_rect);
+                    tagView.setTextColor(Color.parseColor("#333333"));
+                }else{
+                    tagView.setBackgroundResource(mBackground);
+                }
                 addView(tagView);
             }
         }

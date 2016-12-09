@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -54,7 +55,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     if (viewHolder instanceof SceneViewHolder) {
       SceneViewHolder holder = (SceneViewHolder) viewHolder;
 
-      LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) holder.mSceneCoverImg.getLayoutParams();
+      RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.mSceneCoverImg.getLayoutParams();
       if (mLimitation > 0) {
         //首页
         lp.width = Utils.dip2px(mContext, 38);
@@ -82,7 +83,9 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
       }
 
-      holder.itemView.setTag(sceneInfoModel);
+        holder.tvHot.setVisibility(sceneInfoModel.isHot()?View.VISIBLE:View.GONE);
+
+        holder.itemView.setTag(sceneInfoModel);
       holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -104,6 +107,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Bind(R.id.scene_cover_img) SimpleDraweeView mSceneCoverImg;
     @Bind(R.id.scene_title_tv) TextView mSceneTitleTv;
+    @Bind(R.id.tvHot) TextView tvHot;
 
     public SceneViewHolder(View itemView) {
       super(itemView);
