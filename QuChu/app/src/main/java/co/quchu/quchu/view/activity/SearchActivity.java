@@ -1,672 +1,436 @@
 package co.quchu.quchu.view.activity;
 
-import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.animation.DecelerateInterpolator;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.AreaBean;
-import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SearchCategoryBean;
-import co.quchu.quchu.model.SearchSortBean;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
-import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
-import co.quchu.quchu.view.adapter.SearchCategoryAdapter;
-import co.quchu.quchu.view.adapter.SearchChildCategoryAdapter;
-import co.quchu.quchu.view.adapter.SearchPopWinBaseAdapter;
-import co.quchu.quchu.view.adapter.SearchSortAdapter;
-import co.quchu.quchu.widget.AreaView;
+import co.quchu.quchu.widget.SearchView;
 
 /**
- * SearchFragment
- * User: Chenhs
- * Date: 2015-12-04
+ * 搜索界面
+ * <p>
+ * Created by mwb on 16/10/18.
  */
-public class SearchActivity extends BaseBehaviorActivity implements View.OnClickListener {
+public class SearchActivity extends BaseBehaviorActivity {
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
-    return null;
+  @Bind(R.id.search_view) SearchView mSearchView;
+  @Bind(R.id.search_category_grid_view) GridView mCategoryGridView;
+  @Bind(R.id.tag_refresh_btn) TextView mTagRefreshBtn;
+  @Bind(R.id.tags_recycler_view) RecyclerView mTagRecyclerView;
+
+  private static String INTENT_KEY_ALL_SCENE_LIST = "intent_key_all_scene_list";
+
+  private CategoryGridAdapter mCategoryAdapter;
+  private SearchAdapter mSearchHistoryAdapter;
+  private EditText mSearchInputEt;
+
+  private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
+  private List<String> mTags;
+  private List<SceneInfoModel> mAllSceneList;
+  private SearchTagAdapter mTagAdapter;
+
+  public static void launch(Activity activity, List<SceneInfoModel> allSceneList) {
+    Intent intent = new Intent(activity, SearchActivity.class);
+    intent.putExtra(INTENT_KEY_ALL_SCENE_LIST, (Serializable) allSceneList);
+    activity.startActivity(intent);
   }
 
-  @Override public int getUserBehaviorPageId() {
-    return 114;
-  }
-
-  @Override protected int activitySetup() {
-    return TRANSITION_TYPE_LEFT;
-  }
-
-  @Override protected String getPageNameCN() {
-    return getString(R.string.pname_search);
-  }
-
-  @Bind(R.id.search_input_et) EditText searchInputEt;
-  @Bind(R.id.search_button_rl) TextView searchButtonRl;
-
-  @Bind(R.id.search_result_rv) RecyclerView searchResultRv;
-  @Bind(R.id.searchFilterTV1) TextView searchFilterTV1;
-  @Bind(R.id.searchFilterTV2) TextView searchFilterTV2;
-
-  @Bind(R.id.searchFilterLL1) LinearLayout searchFilterLL1;
-  @Bind(R.id.searchFilterLL2) LinearLayout searchFilterLL2;
-  @Bind(R.id.searchFilterTV3) TextView searchFilterTV3;
-  @Bind(R.id.searchFilterLL3) LinearLayout searchFilterLL3;
-
-  @Bind(R.id.searchFilterIcon1) ImageView searchFilterIcon1;
-  @Bind(R.id.searchFilterIcon2) ImageView searchFilterIcon2;
-  @Bind(R.id.searchFilterIcon3) ImageView searchFilterIcon3;
-  @Bind(R.id.searchFilterContainer) LinearLayout searchFilterContainer;
-  @Bind(R.id.search_back) View vReturn;
-  @Bind(R.id.search_line) View searchLine;
-  @Bind(R.id.vCover) View vCover;
-  @Bind(R.id.tvNoData) TextView tvNoData;
-
-  private ArrayList<RecommendModel> resultList;
-  private SearchAdapter resultAdapter;
-  private int mMaxPageNo = -1;
-  private int mCurrentPageNo = 1;
-  private boolean mIsLoading = false;
-  private PopupWindow popupWindow;
-
-  private ImageView firstFilterIcon;
-
-  private static final int SHOWING_POPUP_TYPE_CATEGORY = 1;
-  private static final int SHOWING_POPUP_TYPE_AREA = 2;
-  private static final int SHOWING_POPUP_TYPE_SORT = 3;
-
-  private int currentShowingPopupType;
-  private View popWinView;
-  private RecyclerView categoryRecyclerView;
-  private RecyclerView categoryRecyclerViewChild;
-  private LinearLayout llCategories;
-  private AreaView areaView;
-
-  private String categoryCode = "", areaId = "", circleId = "", sortType = "";
-  private String categoryName = "";
-  private String circleName = "";
-  private String mLastCategoryCode = "";
-  private RecyclerView sortRecyclerView;
-  private SearchCategoryAdapter filterCategoryAdapter;
-  private SearchSortAdapter filterSortAdapter;
-  private SearchChildCategoryAdapter childTagsAdapter;
-  private boolean filterUserInput;
-
-  public static final String BUNDLE_KEY_CATEGORY_NAME = "BUNDLE_KEY_CATEGORY_NAME";
-  public static final String BUNDLE_KEY_CATEGORY_CODE = "BUNDLE_KEY_CATEGORY_CODE";
-  public static final String BUNDLE_KEY_KEYWORD = "BUNDLE_KEY_KEYWORD";
-  private int mInitialIndex = -1;
-
-  public static void enterActivity(Activity from,String cName,String cCode,String keyWord){
-    Intent intent = new Intent(from,SearchActivity.class);
-    intent.putExtra(BUNDLE_KEY_CATEGORY_NAME,cName);
-    intent.putExtra(BUNDLE_KEY_CATEGORY_CODE,cCode);
-    intent.putExtra(BUNDLE_KEY_KEYWORD,keyWord);
-    from.startActivity(intent);
-  }
-
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
     ButterKnife.bind(this);
-    hideKeyBoard();
 
+    mAllSceneList = (List<SceneInfoModel>) getIntent().getSerializableExtra(INTENT_KEY_ALL_SCENE_LIST);
 
-    String keyword = getIntent().getStringExtra(BUNDLE_KEY_KEYWORD);
-    categoryCode = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_CODE);
-    categoryName = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_NAME);
-    searchInputEt.setText(keyword);
-    if (!StringUtils.isEmpty(categoryCode)){
-      mInitialIndex = Integer.valueOf(categoryCode);
+    initTagView();
+
+    if (mAllSceneList == null) {
+      getSceneList();
     }
-    if (!StringUtils.isEmpty(categoryName)){
-      searchFilterTV1.setText(categoryName);
+
+    fillTags();
+
+    initSearchView();
+
+    initCategory();
+
+//    getNetArticleKeyword();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    mSearchView.queryHistory();
+  }
+
+  @Override
+  protected void onStop() {
+    mSearchView.setInputEditText("");
+
+    super.onStop();
+  }
+
+  /**
+   * 获得场景列表
+   */
+  private void getSceneList() {
+    RecommendPresenter.getSceneList(this, new CommonListener<List<SceneInfoModel>>() {
+      @Override
+      public void successListener(List<SceneInfoModel> response) {
+        if (null != mAllSceneList) {
+          mAllSceneList.clear();
+          mAllSceneList.addAll(response);
+        } else {
+          mAllSceneList = new ArrayList<>();
+          mAllSceneList.addAll(response);
+        }
+
+        fillTags();
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+      }
+    });
+  }
+
+  private void initTagView() {
+    GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+    mTagRecyclerView.setLayoutManager(layoutManager);
+    mTagAdapter = new SearchTagAdapter();
+    mTagRecyclerView.setAdapter(mTagAdapter);
+  }
+
+  private void fillTags() {
+    mTagAdapter.setTags(mAllSceneList);
+    if (mAllSceneList != null && mAllSceneList.size() > 0) {
+      mTagRefreshBtn.setVisibility(View.VISIBLE);
+    } else {
+      mTagRefreshBtn.setVisibility(View.GONE);
     }
-    filterUserInput = true;
-    doSearch(false);
+  }
 
+  /**
+   * 对场景列表随机排序
+   */
+  private void shuffleTagList() {
+    if (mAllSceneList != null && mAllSceneList.size() > 3) {
+      Collections.shuffle(mAllSceneList);
+    }
 
+    fillTags();
+  }
 
-    initPopupWindow();
-    initEdittext();
-    initData();
-    //SearchPresenter.getCategoryTag(this);
-    SearchPresenter.getGroupTags(this, null);
-    vReturn.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
+  /**
+   * 编辑框
+   */
+  private void initSearchView() {
+    mSearchView.setOnSearchViewClickListener(new SearchView.OnSearchViewClickListener() {
+      @Override
+      public void onClickBack() {
         onBackPressed();
       }
+
+      @Override
+      public void onTouchEditText() {
+        mSearchView.showHistory();
+      }
+
+      @Override
+      public void onClickSearch(String inputStr) {
+        doSearch(inputStr);
+      }
+
+      @Override
+      public void onClickHistory(String history) {
+        doSearch(history);
+      }
     });
   }
 
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    if (popupWindow.isShowing()) {
-      popupWindow.dismiss();
-    }
-    ButterKnife.unbind(this);
-  }
-
-  private ImageView searchPopIndicator;
-
-  private void initPopupWindow() {
-
-    searchFilterLL1.getViewTreeObserver()
-        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-          @Override public void onGlobalLayout() {
-            searchFilterLL1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            int[] location = new int[2];
-            searchFilterLL1.getLocationOnScreen(location);
-
-            int height = (int) (AppContext.Height - location[1] - searchFilterLL1.getHeight());
-
-            popupWindow = new PopupWindow((int) AppContext.Width, height);
-            popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
-            popupWindow.setFocusable(false);
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-              @Override public void onDismiss() {
-                if (firstFilterIcon != null) {
-                  ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
-                  animator.setDuration(400);
-                  animator.start();
-                }
-                currentShowingPopupType = -1;
-                firstFilterIcon = null;
-              }
-            });
-
-            popWinView =
-                View.inflate(getApplicationContext(), R.layout.layout_search_popupwindow, null);
-            llCategories = (LinearLayout) popWinView.findViewById(R.id.llCategories);
-            categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.rvTags);
-            categoryRecyclerViewChild = (RecyclerView) popWinView.findViewById(R.id.rvChildsTags);
-            sortRecyclerView = (RecyclerView) popWinView.findViewById(R.id.search_pop_sort_rv);
-            areaView = (AreaView) popWinView.findViewById(R.id.areaView);
-            searchPopIndicator = (ImageView) popWinView.findViewById(R.id.search_pop_indicator);
-
-            popWinView.setOnClickListener(new View.OnClickListener() {
-              @Override public void onClick(View v) {
-                doSearch(false);
-                  searchInputEt.setText(categoryName);
-
-                dismissDialog();
-              }
-            });
-
-            LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(getApplicationContext()) {
-                  @Override public void onLayoutChildren(RecyclerView.Recycler recycler,
-                      RecyclerView.State state) {
-                    super.onLayoutChildren(recycler, state);
-                    categoryRecyclerViewChild.getLayoutParams().height =
-                        categoryRecyclerView.getHeight();
-                  }
-                };
-
-            categoryRecyclerView.setLayoutManager(linearLayoutManager);
-            categoryRecyclerViewChild.setLayoutManager(
-                new LinearLayoutManager(getApplicationContext()));
-            sortRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-            //商圈
-            areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
-              @Override
-              public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
-                areaId = areaBean.getAreaId();
-                circleId = circleListBean.getCircleId();
-                circleName = circleListBean.getCircleName();
-                dismissDialog();
-
-                searchFilterTV2.setText(
-                    TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaName()
-                        : circleListBean.getCircleName());
-                doSearch(false);
-              }
-            });
-            //类别
-            filterCategoryAdapter = new SearchCategoryAdapter();
-            filterCategoryAdapter.displayDivider(false);
-            childTagsAdapter = new SearchChildCategoryAdapter();
-
-            categoryRecyclerView.setAdapter(filterCategoryAdapter);
-            filterCategoryAdapter.setItemClickListener(
-                new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
-                  @Override public void itemClick(int position, SearchCategoryBean item) {
-
-                    categoryCode = String.valueOf(item.getTagId());
-                    categoryName = String.valueOf(item.getZh());
-                    searchFilterTV1.setText(item.getZh());
-                    childTagsAdapter.setData(item.getDatas());
-                    if (item.getTagId() == -1) {
-                      categoryCode = "";
-                    }
-                    mLastCategoryCode = categoryCode;
-                  }
-                });
-
-            childTagsAdapter.setItemClickListener(
-                new SearchPopWinBaseAdapter.OnItemClickListener<DetailModel.TagsEntity>() {
-                  @Override public void itemClick(int position, DetailModel.TagsEntity item) {
-
-                    if (position == 0) {
-                      dismissDialog();
-                      doSearch(false);
-
-                    } else {
-                      categoryCode = String.valueOf(item.getTagId());
-                      categoryName = String.valueOf(item.getZh());
-                      dismissDialog();
-                      doSearch(false);
-                    }
-                    searchInputEt.setText(categoryName);
-                    mLastCategoryCode = categoryCode;
-                  }
-                });
-
-            categoryRecyclerViewChild.setAdapter(childTagsAdapter);
-            //排序
-            filterSortAdapter = new SearchSortAdapter();
-            sortRecyclerView.setAdapter(filterSortAdapter);
-            filterSortAdapter.setItemClickListener(
-                new SearchSortAdapter.OnItemClickListener<SearchSortBean>() {
-                  @Override public void itemClick(int position, SearchSortBean item) {
-                    sortType = String.valueOf(item.getSortId());
-                    dismissDialog();
-
-                    searchFilterTV3.setText(item.getSortName());
-                    doSearch(false);
-                  }
-                });
-          }
-        });
-  }
-
-  private void showPopupWindow(ImageView currentIcon, TextView currentTV, View contentView) {
-    searchLine.setVisibility(View.VISIBLE);
-    //箭头动画
-    ObjectAnimator animator = ObjectAnimator.ofFloat(currentIcon, "Rotation", 180);
-    animator.setDuration(400);
-    animator.start();
-    if (firstFilterIcon != null) {
-      animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
-      animator.setDuration(400);
-      animator.start();
+  /**
+   * 开始搜索
+   */
+  private void doSearch(String inputStr) {
+    if (!NetUtil.isNetworkConnected(this)) {
+      makeToast(R.string.network_error);
+      return;
     }
 
-    firstFilterIcon = currentIcon;
-
-    popupWindow.setContentView(contentView);
-    if (popupWindow.isShowing()) {
-      popupWindow.update();
-    } else {
-      popupWindow.showAsDropDown(searchFilterContainer);
-    }
-    vCover.setVisibility(View.VISIBLE);
+    SearchResultActivity.launch(SearchActivity.this, null, inputStr, -1);
   }
 
-  private View getPopWinView(int type) {
-    float xOff = (AppContext.Width * 2 * type + AppContext.Width) / 6;
-    ObjectAnimator animator = ObjectAnimator.ofFloat(searchPopIndicator, "TranslationX", xOff);
-    animator.setDuration(300);
-    animator.setInterpolator(new DecelerateInterpolator());
-    animator.start();
-
-    switch (type) {
-      case 0:
-        if (categoryParentList == null) {
-          //SearchPresenter.getCategoryTag(this);
+  /**
+   * 搜索分类
+   */
+  private void initCategory() {
+    mCategoryAdapter = new CategoryGridAdapter(this);
+    mCategoryGridView.setAdapter(mCategoryAdapter);
+    mCategoryGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mSearchCategoryList == null) {
+          return;
         }
-        llCategories.setVisibility(View.VISIBLE);
-        areaView.setVisibility(View.INVISIBLE);
-        sortRecyclerView.setVisibility(View.INVISIBLE);
-        break;
-      case 1:
-        if (areaData == null) {
-          SearchPresenter.getAreaList(this, null);
+
+        if (mSearchView.isShowHistory()) {
+          mSearchView.hideHistory();
         }
-        areaView.setVisibility(View.VISIBLE);
-        llCategories.setVisibility(View.INVISIBLE);
-        sortRecyclerView.setVisibility(View.INVISIBLE);
 
-        break;
-      case 2:
-        if (sortList == null) {
-          SearchPresenter.getSortTypeList(this, null);
+        SoftInputUtils.hideSoftInput(SearchActivity.this);
+
+        SearchCategoryBean categoryBean = mSearchCategoryList.get(position);
+        if (categoryBean == null) {
+          return;
         }
-        areaView.setVisibility(View.INVISIBLE);
-        llCategories.setVisibility(View.INVISIBLE);
-        sortRecyclerView.setVisibility(View.VISIBLE);
-        break;
-    }
-    return popWinView;
-  }
 
-  private List<SearchSortBean> sortList;
-  private ArrayList<SearchCategoryBean> categoryBeanList;
-  private List<SearchCategoryBean> categoryParentList;
-
-  private List<AreaBean> areaData;
-
-  public void setAreaData(List<AreaBean> areaData) {
-    this.areaData = areaData;
-    searchFilterTV2.setText("全部商圈");
-    areaView.setDatas(areaData);
-  }
-
-  public void setSortList(List<SearchSortBean> sortList) {
-    this.sortList = sortList;
-    filterSortAdapter.setDatas(sortList);
-    searchFilterTV3.setText(sortList.get(0).getSortName());
-  }
-
-  //获取大的分类
-  public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
-
-    if (resultAdapter.isCategory()) {
-      resultAdapter.setCategoryList(categoryParentList);
-      //        SearchPresenter.getTagByParentId(getActivity(), categoryParentList.get(0).getTagId());
-    }
-  }
-
-  @Override public void onClick(View v) {
-    if (KeyboardUtils.isFastDoubleClick()) return;
-    switch (v.getId()) {
-      case R.id.search_button_rl:
-        searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
-        if (popupWindow != null && popupWindow.isShowing()) {
-          dismissDialog();
+        //统计
+        switch (position) {
+          case 0:
+            UMEvent("food_c");
+            break;
+          case 1:
+            UMEvent("hotel_c");
+            break;
+          case 2:
+            UMEvent("entertainment_c");
+            break;
+          case 3:
+            UMEvent("relaxation_c");
+            break;
+          case 4:
+            UMEvent("shopping_c");
+            break;
+          case 5:
+            UMEvent("event_c");
+            break;
         }
-        break;
 
-      case R.id.searchFilterLL1:
-        if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
-          if (mLastCategoryCode != mLastCategoryCode) {
-          }
-
-          doSearch(false);
-
-          dismissDialog();
-        } else {
-          currentShowingPopupType = SHOWING_POPUP_TYPE_CATEGORY;
-          showPopupWindow(searchFilterIcon1, searchFilterTV1, getPopWinView(0));
-        }
-        break;
-      case R.id.searchFilterLL2:
-        if (currentShowingPopupType == SHOWING_POPUP_TYPE_AREA) {
-          dismissDialog();
-        } else {
-          currentShowingPopupType = SHOWING_POPUP_TYPE_AREA;
-          showPopupWindow(searchFilterIcon2, searchFilterTV2, getPopWinView(1));
-        }
-        break;
-      case R.id.searchFilterLL3:
-        if (currentShowingPopupType == SHOWING_POPUP_TYPE_SORT) {
-          dismissDialog();
-        } else {
-          currentShowingPopupType = SHOWING_POPUP_TYPE_SORT;
-          showPopupWindow(searchFilterIcon3, searchFilterTV3, getPopWinView(2));
-        }
-        break;
-      case R.id.search_input_et:
-        searchInputEt.setCursorVisible(true);
-        filterUserInput = true;
-
-        if (popupWindow != null ) {
-          dismissDialog();
-        }
-        break;
-    }
-  }
-
-  private void initData() {
-
-    searchButtonRl.setOnClickListener(this);
-
-    searchFilterLL1.setOnClickListener(this);
-    searchFilterLL2.setOnClickListener(this);
-    searchFilterLL3.setOnClickListener(this);
-    searchInputEt.setOnClickListener(this);
-
-    resultAdapter = new SearchAdapter();
-    searchResultRv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
-    searchResultRv.setAdapter(resultAdapter);
-    resultList = new ArrayList<>();
-    resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
-      @Override public void onClick(int position, Parcelable bean, int itemYype) {
-        if (itemYype == SearchAdapter.ITEM_TYPE_RESULT) {
-
-          ArrayMap<String, Object> params = new ArrayMap<>();
-          params.put("趣处名称", ((RecommendModel) bean).getName());
-          params.put("入口名称", getPageNameCN());
-          ZGEvent(params, "进入趣处详情页");
-
-          Intent intent = new Intent(getApplicationContext(), QuchuDetailsActivity.class);
-          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
-          startActivity(intent);
-        } else {
-          switch (position) {
-            case 0:
-              UMEvent("food_c");
-              break;
-            case 1:
-              UMEvent("hotel_c");
-              break;
-            case 2:
-              UMEvent("entertainment_c");
-              break;
-            case 3:
-              UMEvent("relaxation_c");
-              break;
-            case 4:
-              UMEvent("shopping_c");
-              break;
-            case 5:
-              UMEvent("event_c");
-              break;
-          }
-          categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
-          categoryName = String.valueOf(((SearchCategoryBean) bean).getZh());
-          categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
-          categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
-          searchFilterTV1.setText(categoryGroupAllString);
-          //SearchPresenter.getTagByParentId(getApplicationContext(), ((SearchCategoryBean) bean).getTagId());
-          searchInputEt.setText(((SearchCategoryBean) bean).getZh());
-          filterUserInput = false;
-          doSearch(false);
-
-          searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
-          searchInputEt.setCursorVisible(false);
-        }
+        //启动搜索结果界面
+        SearchResultActivity.launch(SearchActivity.this, categoryBean, "", position + 1);
       }
     });
 
-  }
-
-  private String categoryGroupAllString = "全部";
-  private String categoryGroupAllId = "";
-
-  private void doSearch(final boolean loadMore) {
-    tvNoData.setVisibility(View.GONE);
-
-    String str = "";
-    if (filterUserInput) str = searchInputEt.getText().toString().trim();
-
-    if (mIsLoading) return;
-
-    if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
-
-    if (!loadMore && null!=resultList) {
-
-      resultList.clear();
-      mCurrentPageNo = 1;
-    } else if (mCurrentPageNo < mMaxPageNo) {
-
-      mCurrentPageNo += 1;
-    }
-
-    mIsLoading = true;
-    if (NetUtil.isNetworkConnected(getApplicationContext())) {
-      DialogUtil.showProgess(SearchActivity.this, R.string.loading_dialog_text);
-    }
-
-    //统计搜索关键字
-    Map<String, String> p = new HashMap<>();
-    p.put("search_keyword", str);
-
-    ArrayMap<String, Object> params = new ArrayMap<>();
-    params.put("商圈名称", circleName);
-    params.put("输入文本", str);
-    params.put("分类名称", categoryName);
-    ZGEvent(params, "搜索条件");
-//    SearchPresenter.searchFromService(getApplicationContext(), mCurrentPageNo, str, categoryCode,
-//        areaId, circleId, sortType,
-//        new SearchPresenter.SearchResultListener() {
-//          @Override public void successResult(List<RecommendModel> arrayList, int maxPageNo) {
-//            searchResultRv.clearOnScrollListeners();
-//
-//            if (arrayList != null && arrayList.size() > 0) {
-//              if (mMaxPageNo == -1) {
-//                mMaxPageNo = maxPageNo;
-//              }
-//              //                    if (searchFilterContainer.getVisibility() == View.INVISIBLE) {
-//              searchFilterContainer.setVisibility(View.VISIBLE);
-//              //                        searchFilterContainer.animate().translationYBy(-searchFilterContainer.getHeight()).translationY(searchFilterContainer.getHeight()).setDuration(300).start();
-//              //                    }
-//
-//              searchLine.setBackgroundColor(
-//                  ContextCompat.getColor(getApplicationContext(), R.color.bg_pager));
-//
-//              if (searchResultRv.getLayoutManager() instanceof GridLayoutManager) {
-//                searchResultRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-//              }
-//
-//              resultAdapter.setCategory(false);
-//              resultList.addAll(arrayList);
-//
-//              hideKeyBoard();
-//              resultAdapter.changeDataSet(resultList);
-//              searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener(
-//                  (LinearLayoutManager) searchResultRv.getLayoutManager()) {
-//                @Override public void onLoadMore(int current_page) {
-//                  doSearch(true);
-//                }
-//              });
-//              tvNoData.setVisibility(View.GONE);
-//
-//            } else {
-//              tvNoData.setVisibility(View.VISIBLE);
-//            }
-//            mIsLoading = false;
-//            DialogUtil.dismissProgess();
-//          }
-//
-//          @Override public void errorNull() {
-//            //数据为空
-//            DialogUtil.dismissProgess();
-//            tvNoData.setVisibility(View.VISIBLE);
-//            mIsLoading = false;
-//            resultAdapter.notifyDataSetChanged();
-//          }
-//        });
-  }
-
-  private void hideKeyBoard() {
-
-    if(getCurrentFocus()!=null) {
-      searchInputEt.postDelayed(new Runnable() {
-        @Override public void run() {
-          InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-          inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-      },30);
-    }
-  }
-
-  private void initEdittext() {
-
-    searchInputEt.setOnKeyListener(new View.OnKeyListener() {//输入完后按键盘上的搜索键【回车键改为了搜索键】
-
-      public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {//修改回车键功能
-          if (NetUtil.isNetworkConnected(getApplicationContext())) {
-            if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
-              Toast.makeText(getApplicationContext(), "请输入搜索内容!", Toast.LENGTH_SHORT).show();
-              //                            searchInputEt.setFocusable(true);
-            } else {
-              if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
-                Toast.makeText(getApplicationContext(),
-                    getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT)
-                    .show();
-              } else {
-                if (resultAdapter.isCategory()) {
-                  categoryCode = "";
-                }
-                //分类列表显示大的分类
-                if (filterCategoryAdapter.getItemCount() == 0) {
-                  filterCategoryAdapter.setDatas(categoryParentList);
-                }
-                doSearch(false);
-              }
-            }
-          } else {
-            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT)
-                .show();
-            hideKeyBoard();
-
-          }
+    mCategoryGridView.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        if (mSearchView.isShowHistory()) {
+          mSearchView.hideHistory();
         }
         return false;
       }
     });
+
+    querySearchCategory();
   }
 
-  public void initGroupList(List<SearchCategoryBean> response) {
-    this.categoryParentList = response;
-    filterCategoryAdapter.setDatas(response);
-    if (mInitialIndex!=-1){
-      filterCategoryAdapter.setSelected(mInitialIndex+1);
-      mInitialIndex = -1;
+  /**
+   * 获取搜索分类
+   */
+  private void querySearchCategory() {
+    SearchPresenter.getCategoryTag(this, new CommonListener<ArrayList<SearchCategoryBean>>() {
+      @Override
+      public void successListener(ArrayList<SearchCategoryBean> response) {
+
+        mSearchCategoryList.clear();
+        mSearchCategoryList.addAll(response);
+        mCategoryAdapter.notifyDataSetChanged();
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+      }
+    });
+  }
+
+  @Override
+  public void onBackPressed() {
+    SoftInputUtils.hideSoftInput(this);
+
+    if (mSearchView.isShowHistory()) {
+      mSearchView.hideHistory();
+      return;
     }
-    if (response.size() > 0) {
-      childTagsAdapter.setData(response.get(0).getDatas());
+
+    super.onBackPressed();
+  }
+
+  @OnClick(R.id.tag_refresh_btn)
+  public void onClick() {
+    shuffleTagList();
+  }
+
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
+    return null;
+  }
+
+  @Override
+  public int getUserBehaviorPageId() {
+    return 114;
+  }
+
+  @Override
+  protected int activitySetup() {
+    return TRANSITION_TYPE_LEFT;
+  }
+
+  @Override
+  protected String getPageNameCN() {
+    return null;
+  }
+
+  /**
+   * 搜索分类适配器
+   */
+  private class CategoryGridAdapter extends BaseAdapter {
+
+    private Context mContext;
+
+    public CategoryGridAdapter(Context context) {
+      mContext = context;
+    }
+
+    @Override
+    public int getCount() {
+      return mSearchCategoryList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+      return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+      return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+      CategoryViewHolder holder;
+      if (convertView == null) {
+        holder = new CategoryViewHolder();
+
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_search_category, parent, false);
+        holder.coverImg = (SimpleDraweeView) convertView.findViewById(R.id.simpleDraweeView);
+        holder.nameTv = (TextView) convertView.findViewById(R.id.search_item_categoryName);
+
+        convertView.setTag(holder);
+      } else {
+        holder = (CategoryViewHolder) convertView.getTag();
+      }
+
+      //搜索分类
+      final SearchCategoryBean categoryBean = mSearchCategoryList.get(position);
+      if (!TextUtils.isEmpty(categoryBean.getIconUrl())) {
+        holder.coverImg.setImageURI(Uri.parse(categoryBean.getIconUrl()));
+      } else {
+        holder.coverImg.getHierarchy().setPlaceholderImage(R.drawable.ic_launcher);
+      }
+
+      holder.nameTv.setText(categoryBean.getZh());
+
+      return convertView;
+    }
+
+    private class CategoryViewHolder {
+      SimpleDraweeView coverImg;
+      TextView nameTv;
     }
   }
 
-  private void dismissDialog() {
-    vCover.setVisibility(View.GONE);
-    popupWindow.dismiss();
+  /**
+   * 标签适配器
+   */
+  public class SearchTagAdapter extends RecyclerView.Adapter<SearchTagAdapter.SearchTagViewHolder> {
+
+    private List<SceneInfoModel> mTags;
+
+    @Override
+    public SearchTagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new SearchTagViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_tag, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(SearchTagViewHolder holder, int position) {
+      final SceneInfoModel infoModel = mTags.get(position);
+      holder.mTagCoverImg.setImageURI(Uri.parse(infoModel.getIconUrlSmall()));
+      holder.mTagTitleTv.setText(infoModel.getSceneName());
+
+      if ((position + 1) % 2 == 0) {
+        holder.mTagDivider.setVisibility(View.GONE);
+      } else {
+        holder.mTagDivider.setVisibility(View.VISIBLE);
+      }
+
+      holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          SceneDetailActivity.enterActivity(SearchActivity.this, infoModel.getSceneId(), infoModel.getSceneName(), true);
+        }
+      });
+    }
+
+    @Override
+    public int getItemCount() {
+      return mTags != null ? mTags.size() >= 8 ? 8 : mTags.size() : 0;
+    }
+
+    public void setTags(List<SceneInfoModel> tags) {
+      mTags = tags;
+      notifyDataSetChanged();
+    }
+
+    public class SearchTagViewHolder extends RecyclerView.ViewHolder {
+
+      @Bind(R.id.tag_cover_img) SimpleDraweeView mTagCoverImg;
+      @Bind(R.id.tag_title_tv) TextView mTagTitleTv;
+      @Bind(R.id.tag_divider) View mTagDivider;
+
+      public SearchTagViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+      }
+    }
   }
 }

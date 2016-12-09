@@ -1,198 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/standard_color_white"
-    android:fitsSystemWindows="true"
-
-    android:orientation="vertical">
-
-
-    <LinearLayout
-        android:id="@+id/search_title_bar_ll"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height">
-
-        <ImageView
-            android:id="@+id/search_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/base_margin"
-            android:paddingRight="@dimen/base_margin"
-            android:visibility="visible"
-            android:src="@drawable/ic_back" />
-
-        <LinearLayout
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@color/bg_pager"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:src="@drawable/ic_pull_menus_search" />
-
-            <EditText
-                android:id="@+id/search_input_et"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:background="@null"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:background="@color/standard_color_white"
+                android:orientation="vertical">
 
-                android:hint="搜索您感兴趣的吃、喝、玩、乐"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
-                android:textColor="@color/standard_color_h2_dark"
-                android:textColorHint="@color/user_login_text_hint_text_color"
-                android:textCursorDrawable="@drawable/shape_edit_text_cursor"
-                android:textSize="@dimen/word_size_body" />
-        </LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/title_bar_height"
+      android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/search_button_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/half_margin"
-            android:gravity="center"
-            android:paddingRight="@dimen/base_margin"
-            android:text="搜索"
-            android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/word_subhead_size" />
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tags_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
+    <!--<co.quchu.quchu.widget.TagCloudView-->
+    <!--android:id="@+id/tag_cloud_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:tcvBackground="@drawable/shape_lineframe_search_tag"-->
+    <!--app:tcvBorder="10dp"-->
+    <!--app:tcvItemBorderHorizontal="10dp"-->
+    <!--app:tcvItemBorderVertical="10dp"-->
+    <!--app:tcvMultiLine="2"-->
+    <!--app:tcvTagResId="@layout/item_search_tag"-->
+    <!--app:tcvTextColor="@color/standard_color_h2_dark"-->
+    <!--app:tcvTextSize="12sp"/>-->
+
+    <TextView
+        android:id="@+id/tag_refresh_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="@dimen/base_margin"
+        android:layout_marginTop="@dimen/base_margin"
+        android:background="@drawable/shape_refresh_btn"
+        android:drawableLeft="@drawable/ic_huanyipi"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="13dp"
+        android:paddingRight="13dp"
+        android:paddingTop="5dp"
+        android:text="换一批"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="12sp"
+        android:visibility="gone"/>
 
     <LinearLayout
-        android:id="@+id/searchFilterContainer"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:visibility="invisible"
-        tools:visibility="visible">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/base_margin"
+        android:background="@color/standard_color_white"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/searchFilterLL1"
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1px"
+          android:background="@color/colorDivider"/>
+
+      <co.quchu.quchu.widget.MFrameLayout.MFrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/searchFilterTV1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="全部分类"
-                android:textColor="@color/standard_color_h2_dark"
-                android:textSize="@dimen/standard_text_size_h2" />
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true"
+              android:layout_marginBottom="30dp"
+              android:layout_marginTop="15dp"
+              android:src="@drawable/ic_search_xiahua"/>
 
-            <ImageView
-                android:id="@+id/searchFilterIcon1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_down" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <View style="@style/VerticalLine" />
-
-
-        <LinearLayout
-            android:id="@+id/searchFilterLL2"
+        <GridView
+            android:id="@+id/search_category_grid_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:fadingEdge="none"
+            android:listSelector="@color/transparent"
+            android:numColumns="3"
+            android:overScrollMode="never"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="50dp"
+            android:scrollbars="none"
+            android:verticalSpacing="30dp"/>
 
-            <TextView
-                android:id="@+id/searchFilterTV2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="全部商圈"
-                android:textColor="@color/standard_color_h2_dark"
-                android:textSize="@dimen/standard_text_size_h2" />
+      </co.quchu.quchu.widget.MFrameLayout.MFrameLayout>
 
-            <ImageView
-                android:id="@+id/searchFilterIcon2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_down" />
-        </LinearLayout>
-
-
-        <View style="@style/VerticalLine" />
-
-        <LinearLayout
-            android:id="@+id/searchFilterLL3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/searchFilterTV3"
-                android:layout_width="wrap_content"
-                android:layout_height
-                    ="match_parent"
-                android:gravity="center"
-                android:text="智能排序"
-                android:textColor="@color/standard_color_h2_dark"
-                android:textSize="@dimen/standard_text_size_h2" />
-
-            <ImageView
-                android:id="@+id/searchFilterIcon3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_down" />
-        </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/search_line"
-        android:visibility="gone"
-        style="@style/HorizontalLine" />
+  </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+  <co.quchu.quchu.widget.SearchView
+      android:id="@+id/search_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_result_rv"
-            android:background="#efefef"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <View
-            android:id="@+id/vCover"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/translucent_dark"
-            android:visibility="gone"
-            />
-
-        <TextView
-            android:id="@+id/tvNoData"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="没有该生物"
-            style="@style/TextView.H2"
-            android:visibility="gone"
-            />
-    </RelativeLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

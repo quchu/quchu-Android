@@ -30,7 +30,7 @@ import co.quchu.quchu.presenter.SearchHistoryPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.utils.ToastManager;
-import co.quchu.quchu.view.adapter.SearchAdapterNew;
+import co.quchu.quchu.view.adapter.SearchAdapter;
 
 /**
  * Created by mwb on 16/10/20.
@@ -44,7 +44,7 @@ public class SearchView extends LinearLayout {
   @Bind(R.id.search_history_layout) LinearLayout mSearchHistoryLayout;
   @Bind(R.id.search_history_mask_view) View mSearchHistoryMaskView;
 
-  private SearchAdapterNew mSearchHistoryAdapter;
+  private SearchAdapter mSearchHistoryAdapter;
   private List<String> mSearchHistoryList = new ArrayList<>();
   private String finalInputStr = "";
 
@@ -131,9 +131,9 @@ public class SearchView extends LinearLayout {
    */
   private void initHistory() {
     mSearchHistoryRv.setLayoutManager(new LinearLayoutManager(getContext()));
-    mSearchHistoryAdapter = new SearchAdapterNew();
+    mSearchHistoryAdapter = new SearchAdapter();
     mSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
-    mSearchHistoryAdapter.setOnSearchItemClickListener(new SearchAdapterNew.OnSearchItemClickListener() {
+    mSearchHistoryAdapter.setOnSearchItemClickListener(new SearchAdapter.OnSearchItemClickListener() {
 
       @Override
       public void onClick(int position, Parcelable bean, int itemType) {

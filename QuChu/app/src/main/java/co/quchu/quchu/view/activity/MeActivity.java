@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.refactor.BaseTaskActivity;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
@@ -36,7 +36,7 @@ import static co.quchu.quchu.base.AppContext.user;
 /**
  * Created by mwb on 16/10/25.
  */
-public class MeActivity extends BaseTaskActivity {
+public class MeActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.enhancedToolbarDivider) View mEnhancedToolbarDivider;
   @Bind(R.id.userAvatarImg) SimpleDraweeView mUserAvatarImg;
