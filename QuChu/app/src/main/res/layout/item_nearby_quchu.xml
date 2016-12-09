@@ -48,11 +48,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginTop="@dimen/half_margin"
-                card_view:tcvBackground="@drawable/shape_lineframe_black_cap"
-                card_view:tcvTextSize="4dp"
+                card_view:tcvBackground="@drawable/shape_lineframe_gray_cap"
+                card_view:tcvTextSize="12sp"
                 card_view:tcvCanTagClick="false"
-                card_view:tcvItemBorderHorizontal="10dp"
-                card_view:tcvRightResId="@null"
+                card_view:tcvBorder="8dp"
+                card_view:tcvItemBorderHorizontal="5dp"
                 card_view:tcvSingleLine="true"
                 card_view:tcvTextColor="@color/standard_color_h1_dark" />
 

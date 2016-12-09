@@ -70,8 +70,8 @@
             android:layout_marginTop="@dimen/half_margin"
             app:tcvBackground="@drawable/shape_lineframe_gray_cap"
             app:tcvBorder="8dp"
-            app:tcvCanTagClick="false"
             app:tcvItemBorderHorizontal="5dp"
+            app:tcvCanTagClick="false"
             app:tcvSingleLine="true"
             app:tcvTextColor="@color/standard_color_h3_dark"
             app:tcvTextSize="12sp"/>
