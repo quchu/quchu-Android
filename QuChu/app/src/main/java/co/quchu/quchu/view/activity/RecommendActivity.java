@@ -169,6 +169,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
         tvCity.setAlpha(1 - toolbarAlpha);
         vSearchBar.setAlpha(1 - toolbarAlpha);
 
+
+        tvCity.setVisibility(tvCity.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
+        mRvScene.setVisibility(mRvScene.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
+        vSearchBar.setVisibility(vSearchBar.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
+        ivSearch.setVisibility(ivSearch.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
+        ivAllScene.setVisibility(ivAllScene.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
+        ivSwitchCity.setVisibility(ivSwitchCity.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
+
+
         //toolbar.setTranslationY(verticalOffset);
         if (null!=mAIContent){
           mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
@@ -468,7 +477,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivAllScene:
-        if (null != mAllSceneList && mAllSceneList.size() >= 1 && vSearchBar.getAlpha()==0) {
+        if (null != mAllSceneList && mAllSceneList.size() >= 1 ) {
           SceneListActivity.launch(RecommendActivity.this, mAllSceneList);
         }
         break;
@@ -477,26 +486,40 @@ public class RecommendActivity extends BaseBehaviorActivity {
         mDrawer.openDrawer(GravityCompat.START);
         break;
       case R.id.vFakeDrawer:
-        if (placeHolder.getAlpha() == 1) {
           mDrawer.openDrawer(GravityCompat.START);
-        }
         break;
 
       case R.id.ivSearch:
-        if (placeHolder.getAlpha() == 1) {
           SearchActivity.launch(RecommendActivity.this, mAllSceneList);
-        }
         break;
 
       case R.id.vSearchBar://搜索
-        if (vSearchBar.getAlpha() == 1) {
-          SearchActivity.launch(RecommendActivity.this, mAllSceneList);
-        }
+            SearchActivity.launch(RecommendActivity.this, mAllSceneList);
         break;
 
       case R.id.ivSwitchCity:
+
+          UMEvent("location_c");
+          if (NetUtil.isNetworkConnected(getApplicationContext())) {
+            if (mCityList != null) {
+              selectedCity();
+            } else {
+              RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+                @Override
+                public void hasCityEntity(CityEntity response) {
+                  RecommendActivity.this.mCityList = response.getPage().getResult();
+                  if (RecommendActivity.this.mCityList != null) {
+                    selectedCity();
+                  }
+                }
+              });
+            }
+          } else {
+            Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+          }
+
+          break;
       case R.id.tvCity://选择城市
-        if (placeHolder.getAlpha() == 1) {
 
           UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
@@ -516,7 +539,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         } else {
           Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
         }
-        }
+
         break;
 
       case R.id.fab://历史记录
