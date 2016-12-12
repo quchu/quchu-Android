@@ -138,6 +138,12 @@ public interface AppKey {
   String DAHUO_SWITCH = "dahuo_switch";
 
   /**
+   * 是否播放音效
+   */
+  String ENABLE_SOUND = "enable_sound";
+
+
+  /**
    * 推荐文章
    */
   String NEWS_SWITCH = "news_switch";

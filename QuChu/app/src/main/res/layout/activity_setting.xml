@@ -59,6 +59,17 @@
       android:layout_marginLeft="@dimen/base_margin"/>
 
   <co.quchu.quchu.widget.SettingItemView
+      android:id="@+id/setting_item_sound"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stShowSwitchBtn="true"
+      app:stText="声音"/>
+
+  <View
+      style="@style/HorizontalDivider"
+      android:layout_marginLeft="@dimen/base_margin"/>
+
+  <co.quchu.quchu.widget.SettingItemView
       android:id="@+id/setting_item_about"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

@@ -279,6 +279,17 @@ public class SPUtils {
   }
 
   /**
+   * 搭伙开关
+   */
+  public static void setEnableSound(boolean checked) {
+    putBooleanToSPMap(AppContext.mContext, AppKey.ENABLE_SOUND, checked);
+  }
+
+  public static boolean isEnableSound() {
+    return getBooleanFromSPMap(AppContext.mContext, AppKey.ENABLE_SOUND, true);
+  }
+
+  /**
    * 推荐文章
    */
   public static void setNewsSwitch(boolean checked) {

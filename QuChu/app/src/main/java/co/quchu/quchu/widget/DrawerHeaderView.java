@@ -56,7 +56,7 @@ public class DrawerHeaderView extends LinearLayout {
   protected void onFinishInflate() {
     super.onFinishInflate();
 
-    Typeface face = Typeface.createFromAsset(getContext().getAssets(), "BEBAS.TTF");
+    Typeface face = Typeface.createFromAsset(getContext().getAssets(), "BEBAS.OTF");
     mDrawerAppNameTv.setTypeface(face);
     mDrawerAppDescribeTv.setTypeface(face);
   }

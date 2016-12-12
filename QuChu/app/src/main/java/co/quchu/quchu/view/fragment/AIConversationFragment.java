@@ -112,7 +112,7 @@ public class AIConversationFragment extends BaseFragment
         if (null != mRecyclerView.getAdapter()) {
           if (mRecyclerView.getAdapter().getItemCount()
               - ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition()
-              >= 10) {
+              >= 15) {
             quickReturn.setVisibility(View.VISIBLE);
           } else {
             quickReturn.setVisibility(View.GONE);
@@ -376,7 +376,7 @@ public class AIConversationFragment extends BaseFragment
    * 重置选项
    */
   private void resetOptions(final List<String> list, final String addition, final int type) {
-
+    resetOffset();
     if (!SPUtils.getConversationGuide()) {
       ivGuide.setVisibility(View.VISIBLE);
     }
@@ -757,17 +757,15 @@ public class AIConversationFragment extends BaseFragment
   /**
    * 重置选项偏移量
    */
-  public void resetOffset(float scrollRange) {
+  public void resetOffset() {
 
-    quickReturn.setTranslationY(-scrollRange);
-    if (mConversation.size() <= 2) {
-      int[] location = new int[2];
-      llOptions.getLocationOnScreen(location);
-      ivGuide.setTranslationY(-scrollRange);
-      llOptions.setTranslationY(-scrollRange);
-      offSetY = scrollRange;
-    } else {
-      offSetY = 0;
+    int[] location = new int[2];
+    llOptions.getLocationOnScreen(location);
+    if (location[1]<= ScreenUtils.getStatusHeight(getActivity())-llOptions.getHeight()) {
+      int offSet = ((ScreenUtils.getScreenHeight(getActivity())-location[1]-ScreenUtils.getScreenHeight(getActivity())-llOptions.getHeight()));
+      ivGuide.setTranslationY(-offSet);
+      quickReturn.setTranslationY(-offSet);
+      llOptions.setTranslationY(-offSet);
     }
   }
 
@@ -778,6 +776,9 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void playTheFuckingSound(int index) {
+    if (!SPUtils.isEnableSound()){
+      return;
+    }
     final MediaPlayer mPlayer =
         MediaPlayer.create(getActivity(), index == 0 ? R.raw.sound_0 : R.raw.sound_1);
     mPlayer.setLooping(false);

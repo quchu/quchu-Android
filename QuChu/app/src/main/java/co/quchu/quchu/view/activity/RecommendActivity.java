@@ -178,7 +178,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         ivSwitchCity.setVisibility(ivSwitchCity.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
 
         if (null!=mAIContent){
-          mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
+          //mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
           mAIContent.resetOffsetPassive(offset);
         }
         toolbar.setTranslationY(Math.abs(offset));

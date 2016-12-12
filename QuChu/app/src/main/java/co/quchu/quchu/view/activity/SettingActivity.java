@@ -32,6 +32,7 @@ public class SettingActivity extends BaseBehaviorActivity {
   @Bind(R.id.setting_item_dahuo) SettingItemView itemDahuo;
   @Bind(R.id.setting_item_about) SettingItemView itemAbout;
   @Bind(R.id.setting_item_getui_message) SettingItemView itemGetuiMessage;
+  @Bind(R.id.setting_item_sound) SettingItemView itemSound;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +70,34 @@ public class SettingActivity extends BaseBehaviorActivity {
           @Override
           public void onSwitch(boolean isChecked) {
             SettingPresenter.setUserMsg(SettingActivity.this, SettingPresenter.SETTING_TYPE_GETUI, isChecked);
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * 声音开关
+   */
+  private void setSoundEnable() {
+    final SwitchButton switchButton = itemSound.getSwitchButton();
+    if (AppContext.user != null) {
+      if (AppContext.user.isIsVisitors()) {
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            switchButton.setChecked(true);
+
+            showLoginDialog();
+          }
+        });
+
+      } else {
+
+        itemGetuiMessage.setSwitchChecked(SPUtils.isEnableSound(), new SettingItemView.SwitchChangedListener() {
+          @Override
+          public void onSwitch(boolean isChecked) {
+            SPUtils.setEnableSound(isChecked);
           }
         });
       }

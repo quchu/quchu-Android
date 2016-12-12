@@ -100,7 +100,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerHorizontal="true"
-          android:text="QUCHU"
+          android:text="Quchu"
           android:textColor="@color/standard_color_h0_dark"
           android:textSize="48sp"
           android:textStyle="bold"/>
@@ -109,7 +109,7 @@
           android:id="@+id/drawerAppDescribeTv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="A.I.RESEARCHLAB"
+          android:text="A.I.Research Lab"
           android:textColor="@color/standard_color_h0_dark"
           android:textSize="18sp"/>
 
