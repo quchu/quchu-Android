@@ -34,6 +34,7 @@ public class XiaoQFab extends FloatingActionButton {
   private int mOffSetSec = -1;
   private int mOffSetThd = -1;
   private int mOffSetF = -1;
+  private boolean mShowPromote = false;
 
   public XiaoQFab(Context context) {
     super(context);
@@ -123,29 +124,36 @@ public class XiaoQFab extends FloatingActionButton {
     }
 
 
-    //float width = getWidth()/2.5f;
-    //float indicatorDiameter = width/2.5f;
-    //
-    //float whiteDotsSize = indicatorDiameter/5;
-    //float radius = indicatorDiameter/2;
-    //
-    //Paint paintIndicator = new Paint();
-    //paintIndicator.setColor(Color.RED);
-    //paintIndicator.setStyle(Paint.Style.FILL);
-    //paintIndicator.setAntiAlias(true);
-    //float offset = getWidth()-width;
-    //canvas.drawRect(offset+radius,indicatorDiameter,getWidth()-radius,indicatorDiameter+indicatorDiameter,paintIndicator);
-    //canvas.drawCircle(offset+radius,radius+indicatorDiameter,radius,paintIndicator);
-    //canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,radius,paintIndicator);
-    //
-    //Paint paintIndicatorWhite = new Paint(paintIndicator);
-    //paintIndicatorWhite.setColor(Color.WHITE);
-    //canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
-    //canvas.drawCircle(offset+radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
-    //canvas.drawCircle(offset+(width/2),radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+    if (mShowPromote){
+      float width = getWidth()/2.5f;
+      float indicatorDiameter = width/2.5f;
+
+      float whiteDotsSize = indicatorDiameter/5;
+      float radius = indicatorDiameter/2;
+
+      Paint paintIndicator = new Paint();
+      paintIndicator.setColor(Color.RED);
+      paintIndicator.setStyle(Paint.Style.FILL);
+      paintIndicator.setAntiAlias(true);
+      float offset = getWidth()-width;
+      canvas.drawRect(offset+radius,indicatorDiameter,getWidth()-radius,indicatorDiameter+indicatorDiameter,paintIndicator);
+      canvas.drawCircle(offset+radius,radius+indicatorDiameter,radius,paintIndicator);
+      canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,radius,paintIndicator);
+
+      Paint paintIndicatorWhite = new Paint(paintIndicator);
+      paintIndicatorWhite.setColor(Color.WHITE);
+      canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+      canvas.drawCircle(offset+radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+      canvas.drawCircle(offset+(width/2),radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+    }
 
   }
 
+
+  public void setPromote(boolean showPromote){
+    mShowPromote = showPromote;
+    invalidate();
+  }
 
   public void endLoading(){
     if (!mLoading){

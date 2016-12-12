@@ -17,6 +17,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.CardsPagerTransformerBasic;
 import com.facebook.common.util.UriUtil;
@@ -30,6 +32,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
+import io.rong.eventbus.EventBus;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -376,8 +379,10 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       sdv.setImageURI(Uri.parse(dataObj.getCover()));
       v.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
+          EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_HOME_SHOW_PROMOTE));
           Intent intent = new Intent(mAnchor, QuchuDetailsActivity.class);
           intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
+          System.out.println("msg sent");
           mAnchor.startActivity(intent);
         }
       });

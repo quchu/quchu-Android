@@ -177,8 +177,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         ivAllScene.setVisibility(ivAllScene.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
         ivSwitchCity.setVisibility(ivSwitchCity.getAlpha()<=0?View.INVISIBLE:View.VISIBLE);
 
-
-        //toolbar.setTranslationY(verticalOffset);
         if (null!=mAIContent){
           mAIContent.resetOffset(appbar.getTotalScrollRange() - offset);
           mAIContent.resetOffsetPassive(offset);
@@ -310,11 +308,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     } else {
       mDrawer.setDrawerShadow(new ColorDrawable(Color.TRANSPARENT), GravityCompat.START);
     }
-
-    //ActionBarDrawerToggle toggle =
-    //    new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    //mDrawer.addDrawerListener(toggle);
-    //toggle.syncState();
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getGenes();
@@ -494,7 +487,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.vSearchBar://搜索
-            SearchActivity.launch(RecommendActivity.this, mAllSceneList);
+          SearchActivity.launch(RecommendActivity.this, mAllSceneList);
         break;
 
       case R.id.ivSwitchCity:
@@ -543,6 +536,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         break;
 
       case R.id.fab://历史记录
+        fab.setPromote(false);
         startActivity(QuchuHistoryActivity.class);
         break;
 
@@ -605,28 +599,22 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Subscribe
   public void onMessageEvent(QuchuEventModel event) {
     switch (event.getFlag()) {
+
+      case EventFlags.EVENT_HOME_SHOW_PROMOTE:
+        System.out.println("msg received");
+        System.out.println("msg received");
+        System.out.println("msg received");
+        System.out.println("msg received");
+        fab.setPromote(true);
+        break;
+
+
       case EventFlags.EVENT_NEW_CITY_SELECTED:
         ArrayMap<String, Object> arrayMap = new ArrayMap<>();
         arrayMap.put("城市名称", SPUtils.getCityName());
         ZGEvent(arrayMap, "选择城市");
         tvCity.setText(SPUtils.getCityName());
         break;
-
-//      case EventFlags.EVENT_USER_LOGIN_SUCCESS:
-//        //登录成功更新用户信息
-//        if (mDrawerHeaderView != null) {
-//          mDrawerHeaderView.setUser();
-//          mDrawerHeaderView.getUserInfo();
-//        }
-//        break;
-//
-//      case EventFlags.EVENT_USER_LOGOUT:
-//        //退出登录更新用户信息
-//        if (mDrawerHeaderView != null) {
-//          mDrawerHeaderView.setUser();
-//          mDrawerHeaderView.getUserInfo();
-//        }
-//        break;
 
       case EventFlags.EVENT_APPLICATION_CHECK_UPDATE:
         if (!checkUpdateRunning) {
