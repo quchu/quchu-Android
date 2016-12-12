@@ -34,7 +34,7 @@
           android:orientation="vertical">
 
         <TextView
-            android:id="@+id/desc"
+            android:id="@+id/desc_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/base_margin"
@@ -45,7 +45,7 @@
             tools:text="标题"/>
 
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/address_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

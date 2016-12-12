@@ -25,14 +25,11 @@ import co.quchu.quchu.model.QuChuHistoryModel;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
 
-import static co.quchu.quchu.R.id.address;
-
 /**
- * Created by mwb on 16/11/5.
+ * Created by mwb on 2016/12/12.
  */
-public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-  private int TYPE_HEADER = 1;
   private int TYPE_BEST_HISTORY = 2;
   private int TYPE_COMMON_HISTORY = 3;
 
@@ -44,7 +41,7 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private int mLastPageSelectedIndex = -1;
   private boolean mNotifyItemChanged;
 
-  public QuchuHistoryAdapter(Context context) {
+  public QuHistoryAdapter(Context context) {
     mInflater = LayoutInflater.from(context);
     mResources = context.getResources();
   }
@@ -57,8 +54,6 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     return new QuChuBestHistoryViewHolder(mInflater.inflate(R.layout.item_quchu_history_best, parent, false));
-
-//    return new QuChuHistoryHeaderViewHolder(mInflater.inflate(R.layout.item_quchu_history_header, parent, false));
   }
 
   @Override
@@ -265,6 +260,9 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
+  /**
+   * 重置最优列表
+   */
   public void resetBestList() {
     if (mLastSelectedPosition != -1) {
       notifyItemChanged(mLastSelectedPosition);
@@ -289,10 +287,10 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Bind(R.id.history_label_layout) RelativeLayout historyLabelLayout;
     @Bind(R.id.history_describe_tv) TextView historyDescribeTv;
-    @Bind(R.id.desc) TextView tvName;
+    @Bind(R.id.desc_tv) TextView tvName;
     @Bind(R.id.tag) TagCloudView tcvTag;
     @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
-    @Bind(R.id.address) TextView address;
+    @Bind(R.id.address_tv) TextView address;
 
     public QuChuCommonHistoryViewHolder(View itemView) {
       super(itemView);
@@ -348,10 +346,10 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
       QuChuHistoryModel.PlaceListBean.ResultBean resultBean = mResultBeanList.get(position);
 
-      TextView tvName = (TextView) view.findViewById(R.id.desc);
+      TextView tvName = (TextView) view.findViewById(R.id.desc_tv);
       TagCloudView tcvTag = (TagCloudView) view.findViewById(R.id.tag);
       SimpleDraweeView sdvImage = (SimpleDraweeView) view.findViewById(R.id.simpleDraweeView);
-      TextView tvAddress = (TextView) view.findViewById(address);
+      TextView tvAddress = (TextView) view.findViewById(R.id.address_tv);
 
       tvName.setText(resultBean.getName());
       List<String> strTags = new ArrayList<>();
