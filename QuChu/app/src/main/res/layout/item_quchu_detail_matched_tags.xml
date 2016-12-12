@@ -29,6 +29,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      app:tcvTagResId="@layout/item_tag_tall"
       app:tcvBorder="8dp"
       app:tcvItemBorderHorizontal="5dp"
       app:lineMargin="5dp"
