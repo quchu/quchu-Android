@@ -53,7 +53,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 
 public class AIConversationFragment extends BaseFragment
-    implements TextOptionAdapter.OnInteractiveClick {
+    implements TextOptionAdapter.OnInteractiveClick, AIConversationAdapter.OnPlaceClickListener {
 
   private AIConversationAdapter mAdapter;
   private List<AIConversationModel> mConversation = new ArrayList<>();
@@ -147,7 +147,7 @@ public class AIConversationFragment extends BaseFragment
     mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
     mRecyclerView.addItemDecoration(new DynamicItemDecoration());
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
-    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this);
+    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this,this);
     mRecyclerView.setAdapter(mAdapter);
 
     VerticalOverScrollBounceEffectDecorator s =
@@ -788,5 +788,9 @@ public class AIConversationFragment extends BaseFragment
         mPlayer.start();
       }
     });
+  }
+
+  @Override public void onClick() {
+    mXiaoQFab.setPromote(true);
   }
 }

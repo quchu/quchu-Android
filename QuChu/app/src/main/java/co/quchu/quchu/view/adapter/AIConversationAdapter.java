@@ -52,14 +52,16 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   private Activity mAnchor;
   private List<AIConversationModel> mDataSet;
   private co.quchu.quchu.view.adapter.TextOptionAdapter.OnInteractiveClick mOnInteractiveListener;
+  private OnPlaceClickListener mListener;
 
 
 
   public AIConversationAdapter(Activity context, List<AIConversationModel> data,
-      co.quchu.quchu.view.adapter.TextOptionAdapter.OnInteractiveClick onAnswerListener) {
+      co.quchu.quchu.view.adapter.TextOptionAdapter.OnInteractiveClick onAnswerListener,OnPlaceClickListener listener) {
     this.mAnchor = context;
     this.mDataSet = data;
     this.mOnInteractiveListener = onAnswerListener;
+    this.mListener = listener;
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -379,10 +381,13 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       sdv.setImageURI(Uri.parse(dataObj.getCover()));
       v.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-          EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_HOME_SHOW_PROMOTE));
+
+          if (null!=mListener){
+            mListener.onClick();
+          }
+
           Intent intent = new Intent(mAnchor, QuchuDetailsActivity.class);
           intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
-          System.out.println("msg sent");
           mAnchor.startActivity(intent);
         }
       });
@@ -395,5 +400,10 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override public void destroyItem(ViewGroup container, int position, Object object) {
       container.removeView((View) object);
     }
+  }
+
+
+  public interface OnPlaceClickListener{
+    void onClick();
   }
 }

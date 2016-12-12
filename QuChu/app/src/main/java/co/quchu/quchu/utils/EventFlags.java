@@ -11,8 +11,6 @@ public class EventFlags {
 
     public static final int EVENT_APPLICATION_CHECK_UPDATE = 0x101;    //检查更新
 
-    public static final int EVENT_HOME_SHOW_PROMOTE = 0x010;
-
     public static final int EVENT_LOGIN_ACTIVITY_SHOW_RETURN = 0x1001;    //登录界面显示返回
     public static final int EVENT_LOGIN_ACTIVITY_HIDE_RETURN = 0x1002;    //登录界面隐藏返回
     public static final int EVENT_FOOTPRINT_UPDATED = 0x0001;//修改脚印

@@ -598,15 +598,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
   @Subscribe
   public void onMessageEvent(QuchuEventModel event) {
-    switch (event.getFlag()) {
 
-      case EventFlags.EVENT_HOME_SHOW_PROMOTE:
-        System.out.println("msg received");
-        System.out.println("msg received");
-        System.out.println("msg received");
-        System.out.println("msg received");
-        fab.setPromote(true);
-        break;
+    switch (event.getFlag()) {
 
 
       case EventFlags.EVENT_NEW_CITY_SELECTED:

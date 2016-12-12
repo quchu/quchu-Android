@@ -595,7 +595,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         List<TagsModel> tags = mData.getNearPlace().get(imgIndex).getTags();
         if (null != tags && tags.size() > 0) {
           for (int i = 0; i < Math.min(tags.size(), 3); i++) {
-            strTags.add(" " + tags.get(i).getZh() + " ");
+            strTags.add(tags.get(i).getZh());
           }
         }
 
@@ -818,10 +818,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   public static class NearbyViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.desc) TextView tvName;
+    @Bind(R.id.desc_tv) TextView tvName;
     @Bind(R.id.tag) TagCloudView tcvTag;
     @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
-    @Bind(R.id.address) TextView address;
+    @Bind(R.id.address_tv) TextView address;
 
     NearbyViewHolder(View view) {
       super(view);

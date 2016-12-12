@@ -1,5 +1,7 @@
 package co.quchu.quchu.model;
 
+import java.util.Arrays;
+
 /**
  * Created by admin on 2016/3/10.
  */
@@ -27,5 +29,12 @@ public class QuchuEventModel {
 
     public void setContent(Object... content) {
         this.mContent = content;
+    }
+
+    @Override public String toString() {
+        return "QuchuEventModel{" +
+            "mFlag=" + mFlag +
+            ", mContent=" + Arrays.toString(mContent) +
+            '}';
     }
 }
