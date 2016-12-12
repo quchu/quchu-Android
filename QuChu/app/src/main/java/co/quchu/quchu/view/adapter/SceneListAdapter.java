@@ -82,9 +82,9 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
       }
 
-        holder.tvHot.setVisibility(sceneInfoModel.isHot()?View.VISIBLE:View.GONE);
+      holder.tvHot.setVisibility(sceneInfoModel.isHot() ? View.VISIBLE : View.GONE);
 
-        holder.itemView.setTag(sceneInfoModel);
+      holder.itemView.setTag(sceneInfoModel);
       holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {

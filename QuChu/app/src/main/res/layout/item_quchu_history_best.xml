@@ -7,21 +7,28 @@
 
   <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="#efefef"
-      android:paddingBottom="@dimen/half_margin"
+      android:layout_height="40dp"
+      android:background="@color/colorBackground"
       android:paddingLeft="@dimen/base_margin"
-      android:paddingRight="@dimen/base_margin"
-      android:paddingTop="@dimen/half_margin">
+      android:paddingRight="@dimen/base_margin">
+
+    <ImageView
+        android:id="@+id/history_describe_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/half_margin"
+        android:src="@drawable/ic_chihuo_ahsy"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/history_describe_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/history_describe_img"
         android:textColor="@color/standard_color_h3_dark"
         android:textSize="13sp"
-        android:visibility="visible"
         tools:text="距离最近的"/>
 
     <co.quchu.quchu.widget.CircleIndicator

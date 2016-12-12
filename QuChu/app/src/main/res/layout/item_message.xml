@@ -30,13 +30,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
         android:layout_weight="1"
         android:gravity="left"
         android:singleLine="true"
-        android:text="【趣处】"
         android:textColor="@color/standard_color_h1_dark"
         android:textSize="14sp"
-        tools:text="新版本上线啦"/>
+        tools:text="【趣处】"/>
 
     <TextView
         android:id="@+id/item_message_date_tv"

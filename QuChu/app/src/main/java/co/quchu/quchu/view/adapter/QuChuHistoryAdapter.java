@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,11 +37,16 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private int TYPE_COMMON_HISTORY = 3;
 
   private final LayoutInflater mInflater;
+  private final Resources mResources;
   private List<QuChuHistoryModel.BestListBean> mBestList;
   private List<QuChuHistoryModel.PlaceListBean.ResultBean> mResultBeanList;
+  private int mLastSelectedPosition = -1;
+  private int mLastPageSelectedIndex = -1;
+  private boolean mNotifyItemChanged;
 
   public QuchuHistoryAdapter(Context context) {
     mInflater = LayoutInflater.from(context);
+    mResources = context.getResources();
   }
 
   @Override
@@ -62,11 +69,60 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     } else if (viewHolder instanceof QuChuBestHistoryViewHolder) {
       final QuChuBestHistoryViewHolder holder = (QuChuBestHistoryViewHolder) viewHolder;
 
-      QuChuHistoryModel.BestListBean bestListBean = mBestList.get(position);
+      final int actualPosition = position;
+      final QuChuHistoryModel.BestListBean bestListBean = mBestList.get(actualPosition);
+      holder.historyDescribeImg.setVisibility(View.GONE);
       holder.historyDescribeTv.setText(bestListBean.getTitle());
+      holder.historyDescribeTv.setTextColor(mResources.getColor(R.color.standard_color_h3_dark));
       final HistoryViewPagerAdapter adapter = new HistoryViewPagerAdapter(bestListBean);
       holder.historyVp.setAdapter(adapter);
+      holder.historySiv.setVisibility(bestListBean.getSecondPlaceInfo() != null ? View.VISIBLE : View.GONE);
       holder.historySiv.setViewPager(holder.historyVp);
+
+      holder.historyVp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+          if (mLastSelectedPosition != -1 && mLastPageSelectedIndex != -1) {
+            if (mLastSelectedPosition == actualPosition) {
+              mNotifyItemChanged = false;
+            } else {
+              mNotifyItemChanged = true;
+            }
+          }
+
+          if (mLastPageSelectedIndex == 0) {
+            mNotifyItemChanged = false;
+          }
+
+          mLastSelectedPosition = actualPosition;
+          mLastPageSelectedIndex = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+          if (state == ViewPager.SCROLL_STATE_IDLE) {
+
+            if (mLastSelectedPosition != -1 && mNotifyItemChanged) {
+              notifyItemChanged(mLastSelectedPosition == 0 ? 1 : 0);
+              mNotifyItemChanged = false;
+            }
+
+            if (bestListBean.getSecondPlaceInfo() != null && mLastSelectedPosition == actualPosition) {
+              holder.historyDescribeImg.setVisibility(mLastPageSelectedIndex == 0 ? View.GONE : View.VISIBLE);
+              holder.historyDescribeTv.setText(mLastPageSelectedIndex == 0
+                  ? bestListBean.getTitle() : bestListBean.getGapStr());
+              holder.historyDescribeTv.setTextColor(mLastPageSelectedIndex == 0
+                  ? mResources.getColor(R.color.standard_color_h3_dark) : mResources.getColor(R.color.standard_color_red));
+            }
+          }
+        }
+      });
 
     } else if (viewHolder instanceof QuChuCommonHistoryViewHolder) {
       QuChuCommonHistoryViewHolder holder = (QuChuCommonHistoryViewHolder) viewHolder;
@@ -209,8 +265,16 @@ public class QuchuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
+  public void resetBestList() {
+    if (mLastSelectedPosition != -1) {
+      notifyItemChanged(mLastSelectedPosition);
+      mLastSelectedPosition = -1;
+    }
+  }
+
   public class QuChuBestHistoryViewHolder extends RecyclerView.ViewHolder {
 
+    @Bind(R.id.history_describe_img) ImageView historyDescribeImg;
     @Bind(R.id.history_describe_tv) TextView historyDescribeTv;
     @Bind(R.id.history_siv) CircleIndicator historySiv;
     @Bind(R.id.history_vp) ViewPager historyVp;
