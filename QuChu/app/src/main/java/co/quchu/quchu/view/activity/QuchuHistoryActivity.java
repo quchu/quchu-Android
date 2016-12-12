@@ -23,7 +23,6 @@ import co.quchu.quchu.model.QuChuHistoryModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.QuChuHistoryPresenter;
-import co.quchu.quchu.view.adapter.QuchuHistoryAdapter;
 
 /**
  * 趣处浏览记录
