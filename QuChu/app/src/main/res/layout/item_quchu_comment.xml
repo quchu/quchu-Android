@@ -110,6 +110,8 @@
          tools:text="来自大众点评"
          android:layout_centerVertical="true"
          style="@style/TextView.H3"
+         android:gravity="center"
+         android:drawableRight="@drawable/ic_tiaozhuan"
          android:textColor="@color/colorHint"
          />
      <TextView

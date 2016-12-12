@@ -78,7 +78,7 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.tvOption) TextView mTvOption;
   @Bind(R.id.ivGuide) ImageView ivGuide;
   @Bind(R.id.tvPullUpToLoad) TextView tvPullUpToLoad;
-  @Bind(R.id.quickReturn) TextView quickReturn;
+  @Bind(R.id.quickReturn) View quickReturn;
 
   private boolean mHistoryLoaded = false;
 

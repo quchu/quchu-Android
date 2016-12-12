@@ -68,15 +68,12 @@
       />
 
 
-  <TextView
+  <ImageView
       android:id="@+id/quickReturn"
-      android:layout_width="56dp"
-      android:layout_height="56dp"
-      android:text="滚"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_huidaodibu"
       android:gravity="center"
-      android:textColor="@color/standard_color_white"
-      android:background="@android:color/holo_red_light"
-      android:textSize="40sp"
       android:layout_alignParentBottom="true"
       android:layout_marginBottom="100dp"
       android:layout_centerHorizontal="true"

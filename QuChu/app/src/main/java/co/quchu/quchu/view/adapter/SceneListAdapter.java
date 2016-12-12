@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -107,7 +108,7 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Bind(R.id.scene_cover_img) SimpleDraweeView mSceneCoverImg;
     @Bind(R.id.scene_title_tv) TextView mSceneTitleTv;
     @Bind(R.id.rl_cover) RelativeLayout rl_cover;
-    @Bind(R.id.tvHot) TextView tvHot;
+    @Bind(R.id.ivHot) ImageView tvHot;
 
     public SceneViewHolder(View itemView) {
       super(itemView);
