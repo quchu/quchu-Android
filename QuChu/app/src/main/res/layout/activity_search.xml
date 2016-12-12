@@ -17,19 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!--<co.quchu.quchu.widget.TagCloudView-->
-    <!--android:id="@+id/tag_cloud_view"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:tcvBackground="@drawable/shape_lineframe_search_tag"-->
-    <!--app:tcvBorder="10dp"-->
-    <!--app:tcvItemBorderHorizontal="10dp"-->
-    <!--app:tcvItemBorderVertical="10dp"-->
-    <!--app:tcvMultiLine="2"-->
-    <!--app:tcvTagResId="@layout/item_search_tag"-->
-    <!--app:tcvTextColor="@color/standard_color_h2_dark"-->
-    <!--app:tcvTextSize="12sp"/>-->
-
     <TextView
         android:id="@+id/tag_refresh_btn"
         android:layout_width="wrap_content"
@@ -90,7 +77,7 @@
             android:overScrollMode="never"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
-            android:paddingTop="50dp"
+            android:paddingTop="45dp"
             android:scrollbars="none"
             android:verticalSpacing="30dp"/>
 

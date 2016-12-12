@@ -18,6 +18,10 @@ import co.quchu.quchu.R;
  * 日期工具类
  */
 public class DateUtils {
+
+  public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+  public static String DATE_FORMA_YYYY_MM_DD = "yyyy.MM.dd";
+
   public static String DATA_FORMAT_MM_DD_YYYY = "MM.dd.yyyy";
   public static String DATA_FORMAT_MM_DD_YYYY_CLEAR = "yyyy - MM - dd";
 
@@ -117,11 +121,48 @@ public class DateUtils {
   }
 
   /**
-   * yyyy年MM月dd日 HH:mm:ss
+   * 时间格式转换
+   * <p>格式为用户自定义</p>
+   *
+   * @param time
+   * @param format
+   * @return
    */
-  public static String dateTimeFormat(long timestamp) {
-    SimpleDateFormat datetimeFormatFull = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+  public static String dateTimeFormat(String time, String format) {
+    SimpleDateFormat datetimeFormat = new SimpleDateFormat(format);
+    long timestamp = string2Timestamp(time);
+    if (timestamp == -1) {
+      return time;
+    }
     Date date = new Date(timestamp);
-    return datetimeFormatFull.format(date);
+    return datetimeFormat.format(date);
+  }
+
+  /**
+   * 将时间字符串转为时间戳
+   * <p>默认格式为yyyy-MM-dd HH:mm:ss</p>
+   *
+   * @param time 时间字符串
+   * @return 毫秒时间戳
+   */
+  public static long string2Timestamp(String time) {
+    return string2Timestamp(time, DEFAULT_SDF);
+  }
+
+  /**
+   * 将时间字符串转为时间戳
+   * <p>格式为用户自定义</p>
+   *
+   * @param time   时间字符串
+   * @param format 时间格式
+   * @return 毫秒时间戳
+   */
+  public static long string2Timestamp(String time, SimpleDateFormat format) {
+    try {
+      return format.parse(time).getTime();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return -1;
   }
 }

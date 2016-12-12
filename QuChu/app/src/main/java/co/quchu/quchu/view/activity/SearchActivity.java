@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -40,7 +39,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
-import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.widget.SearchView;
 
 /**
@@ -58,11 +56,8 @@ public class SearchActivity extends BaseBehaviorActivity {
   private static String INTENT_KEY_ALL_SCENE_LIST = "intent_key_all_scene_list";
 
   private CategoryGridAdapter mCategoryAdapter;
-  private SearchAdapter mSearchHistoryAdapter;
-  private EditText mSearchInputEt;
 
   private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
-  private List<String> mTags;
   private List<SceneInfoModel> mAllSceneList;
   private SearchTagAdapter mTagAdapter;
 

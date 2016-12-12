@@ -5,17 +5,17 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
+              android:clipChildren="false"
               android:gravity="center"
-    android:clipChildren="false"
-    android:orientation="vertical">
-
+              android:orientation="vertical">
 
   <RelativeLayout
+      android:id="@+id/rl_cover"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:clipChildren="false"
-      android:id="@+id/rl_cover"
       >
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/scene_cover_img"
         android:layout_width="64dp"
@@ -27,22 +27,19 @@
         android:id="@+id/tvHot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hot"
-        android:translationX="10dp"
-        android:textSize="10dp"
-        android:textColor="@color/standard_color_red"
         android:layout_alignRight="@id/scene_cover_img"
-        android:visibility="gone"
-        />
+        android:text="hot"
+        android:textColor="@color/standard_color_red"
+        android:textSize="10dp"
+        android:translationX="5dp"
+        android:visibility="visible"/>
   </RelativeLayout>
 
-
-
   <TextView
-      android:layout_below="@+id/rl_cover"
       android:id="@+id/scene_title_tv"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_below="@+id/rl_cover"
       android:layout_marginTop="@dimen/half_margin"
       android:singleLine="true"
       android:textColor="@color/standard_color_h3_dark"

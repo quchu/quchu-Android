@@ -74,6 +74,8 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
       public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
+        mAdapter.resetBestList();
+
         //判断是否在顶部 false-顶部
         boolean canScrollDown = recyclerView.canScrollVertically(-1);
         //判断是否在底部 false-底部

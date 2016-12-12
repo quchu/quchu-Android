@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.MessageModel;
+import co.quchu.quchu.utils.DateUtils;
 
 /**
  * Created by mwb on 16/11/5.
@@ -32,15 +33,15 @@ public class MessageAdapter extends AdapterBase<MessageModel.ResultBean, Recycle
     MessageModel.ResultBean model = data.get(position);
     MessageViewHolder holder = (MessageViewHolder) viewHolder;
 
-    holder.mDateTv.setText(model.getTime());
     if (TextUtils.isEmpty(model.getTargetImageUrl())) {
       holder.mCoverImg.setVisibility(View.GONE);
-      holder.mTextTv.setText(model.getContent());
     } else {
       holder.mCoverImg.setVisibility(View.VISIBLE);
       holder.mCoverImg.setImageURI(Uri.parse(model.getTargetImageUrl()));
-      holder.mTextTv.setText(model.getContent());
     }
+    holder.mTitleTv.setText("【" + model.getTitle() + "】");
+    holder.mTextTv.setText(model.getContent());
+    holder.mDateTv.setText(DateUtils.dateTimeFormat(model.getTime(), DateUtils.DATE_FORMA_YYYY_MM_DD));
 
     holder.itemView.setTag(model);
     holder.itemView.setOnClickListener(new View.OnClickListener() {

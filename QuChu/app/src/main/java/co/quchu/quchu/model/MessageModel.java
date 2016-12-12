@@ -119,6 +119,7 @@ public class MessageModel {
 
   public static class ResultBean {
     private String come;
+    private String title = "趣处通知";
     private String content;
     private String form;
     private int formId;
@@ -131,6 +132,14 @@ public class MessageModel {
     private String type;
     private int height;
     private int width;
+
+    public String getTitle() {
+      return title;
+    }
+
+    public void setTitle(String title) {
+      this.title = title;
+    }
 
     public String getCome() {
       return come;
