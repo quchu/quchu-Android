@@ -1,32 +1,30 @@
 <resources>
-    <string name="app_name">趣处</string>
-    <string name="titlebar_word_qu_friends">趣星人</string>
-    <string name="titlebar_word_feedback">快速反馈</string>
-    <string name="titlebar_word_account_setting">账户设置</string>
-    <string name="titlebar_word_message_center">消息中心</string>
-    <string name="titlebar_word_about_us">关于我们</string>
-    <string name="titlebar_word_place_detail">趣处详情</string>
-    <string name="titlebar_word_user_center">个人主页</string>
-    <string name="webview_redirecting">正在跳转...</string>
-    <!-- ********** 趣星球 ********* -->
-    <string name="prb_default_symbolic_string">$</string>
-    <!-- ********** 趣基因 ********* -->
+  <string name="app_name">趣处</string>
+  <string name="titlebar_word_qu_friends">趣星人</string>
+  <string name="titlebar_word_feedback">快速反馈</string>
+  <string name="titlebar_word_account_setting">账户设置</string>
+  <string name="titlebar_word_message_center">消息中心</string>
+  <string name="titlebar_word_about_us">关于我们</string>
+  <string name="titlebar_word_place_detail">趣处详情</string>
+  <string name="titlebar_word_user_center">个人主页</string>
+  <string name="webview_redirecting">正在跳转...</string>
+  <!-- ********** 趣星球 ********* -->
+  <string name="prb_default_symbolic_string">$</string>
+  <!-- ********** 趣基因 ********* -->
 
+  <string name="hint_add_footprint">每个故事都应该有个精彩的开头...</string>
+  <!-- ********** 氛围 ********* -->
+  <!-- ********** 趣星人 ********* -->
+  <string name="text_login_resetpassowrd">密码重置成功，请重新登录</string>
+  <string name="detail_address_hint_text">%1$s &#040;%2$s&#041;</string>
 
-    <string name="hint_add_footprint">每个故事都应该有个精彩的开头...</string>
-    <!-- ********** 氛围 ********* -->
-    <!-- ********** 趣星人 ********* -->
-    <string name="text_login_resetpassowrd">密码重置成功，请重新登录</string>
-    <string name="detail_address_hint_text">%1$s &#040;%2$s&#041;</string>
+  <string name="loading_dialog_text">数据加载中...</string>
+  <string name="empty_face_text">(( _ _ ))..zzZZ</string>
+  <string name="empty_hint_text">这里什么都没有呢...</string>
+  <string name="empty_button_text">到别处看看</string>
 
-    <string name="loading_dialog_text">数据加载中...</string>
-    <string name="empty_face_text">(( _ _ ))..zzZZ</string>
-    <string name="empty_hint_text">这里什么都没有呢...</string>
-    <string name="empty_button_text">到别处看看</string>
-
-
-    <string name="app_exit_text">再按一次退出程序</string>
-    <string name="about_us">关于我们</string>
+  <string name="app_exit_text">再按一次退出程序</string>
+  <string name="about_us">关于我们</string>
     <string name="about_us_text">没人想要把时间浪费在千篇一律的内容上\n
         就像没人想要活得单调而雷同\n
         你的偏爱\n
@@ -42,246 +40,248 @@
         陪你重新定义你的生活方式\n\n\n\n
         </string>
 
-    <string name="mypost_timer_now">刚刚</string>
-    <string name="mypost_timer_minutes">分钟前</string>
-    <string name="mypost_timer_hours">小时前</string>
-    <string name="mypost_timer_days">天前</string>
-    <string name="mypost_timer_months">月前</string>
-    <string name="mypost_timer_years">年前</string>
-    <string name="search_content_has_emoji">搜索内容不能含有表情字符!</string>
-    <string name="visitor_login_prompt_text">%1$s之前需要进行登录 \r\n是否现在前往?</string>
-    <string name="more_cities_coming_soon">更多城市将陆续登陆</string>
-    <string name="error_invalid_arguments">参数错误！</string>
-    <string name="login_success">登录成功</string>
-    <string name="search">搜索</string>
-    <string name="status_quguo">去过</string>
+  <string name="mypost_timer_now">刚刚</string>
+  <string name="mypost_timer_minutes">分钟前</string>
+  <string name="mypost_timer_hours">小时前</string>
+  <string name="mypost_timer_days">天前</string>
+  <string name="mypost_timer_months">月前</string>
+  <string name="mypost_timer_years">年前</string>
+  <string name="search_content_has_emoji">搜索内容不能含有表情字符!</string>
+  <string name="visitor_login_prompt_text">%1$s之前需要进行登录 \r\n是否现在前往?</string>
+  <string name="more_cities_coming_soon">更多城市将陆续登陆</string>
+  <string name="error_invalid_arguments">参数错误！</string>
+  <string name="login_success">登录成功</string>
+  <string name="search">搜索</string>
+  <string name="status_quguo">去过</string>
 
-    <string name="foot_print">脚印</string>
-    <string name="title_activity_my_footprint_detail">MyFootprintDetailActivity</string>
+  <string name="foot_print">脚印</string>
+  <string name="title_activity_my_footprint_detail">MyFootprintDetailActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="nearby_quchu_all">附近全部趣处</string>
-    <string name="nearby_quchu">附近趣处</string>
-    <string name="tags_filter_title">筛选</string>
-    <string name="add_foot_print">添加脚印</string>
-    <string name="pre_order">预订</string>
-    <string name="save">保存</string>
-    <string name="picking_quchu">查找趣处</string>
-    <string name="hint_picking_quchu">输入关键字</string>
-    <string name="discover_quchu">发现趣处</string>
-    <string name="confirm_delete">确认删除？</string>
-    <string name="caution_action_cannot_revert">该操作无法撤销，请注意</string>
-    <string name="hint_max_text_length">剩余140字</string>
-    <string name="promote_comment_over_length">评论字数不能超过140个</string>
-    <string name="network_error">无网络</string>
-    <string name="click_to_retry">点击重试</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="nearby_quchu_all">附近全部趣处</string>
+  <string name="nearby_quchu">附近趣处</string>
+  <string name="tags_filter_title">筛选</string>
+  <string name="add_foot_print">添加脚印</string>
+  <string name="pre_order">预订</string>
+  <string name="save">保存</string>
+  <string name="picking_quchu">查找趣处</string>
+  <string name="hint_picking_quchu">输入关键字</string>
+  <string name="discover_quchu">发现趣处</string>
+  <string name="confirm_delete">确认删除？</string>
+  <string name="caution_action_cannot_revert">该操作无法撤销，请注意</string>
+  <string name="hint_max_text_length">剩余140字</string>
+  <string name="promote_comment_over_length">评论字数不能超过140个</string>
+  <string name="network_error">无网络</string>
+  <string name="click_to_retry">点击重试</string>
 
-    <string name="passFilter">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
-    <string name="filter_phone">1234567890</string>
-    <string name="add_foot_print_long">摁个脚印</string>
-    <string name="create_account_via_phone">注册账号</string>
-    <string name="login_via_phone">手机号登录</string>
-    <string name="forgotten_password">忘记密码?</string>
-    <string name="login">登录</string>
-    <string name="send_valid_code">获取验证码</string>
-    <string name="empty_string">Null</string>
-    <string name="avg_cost">人均消费</string>
+  <string name="passFilter">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
+  <string name="filter_phone">1234567890</string>
+  <string name="add_foot_print_long">摁个脚印</string>
+  <string name="create_account_via_phone">注册账号</string>
+  <string name="login_via_phone">手机号登录</string>
+  <string name="forgotten_password">忘记密码?</string>
+  <string name="login">登录</string>
+  <string name="send_valid_code">获取验证码</string>
+  <string name="empty_string">Null</string>
+  <string name="avg_cost">人均消费</string>
 
+  <string name="all_photo">全部图片</string>
 
-    <string name="all_photo">全部图片</string>
+  <string name="selected">已选(%1$s/%2$s)</string>
 
-    <string name="selected">已选(%1$s/%2$s)</string>
+  <string name="folder_photo_size">共%1$d张</string>
 
-    <string name="folder_photo_size">共%1$d张</string>
+  <string name="photo_edit">图片预览</string>
 
-    <string name="photo_edit">图片预览</string>
+  <string name="crop_suc">裁剪成功</string>
 
+  <string name="crop_fail">裁剪失败</string>
 
-    <string name="crop_suc">裁剪成功</string>
+  <string name="no_photo">无图片</string>
 
-    <string name="crop_fail">裁剪失败</string>
+  <string name="waiting">请稍等…</string>
 
-    <string name="no_photo">无图片</string>
+  <string name="empty_sdcard">没有SD卡</string>
 
-    <string name="waiting">请稍等…</string>
+  <string name="open_gallery_fail">相册初始化失败!</string>
 
+  <string name="take_photo_fail">拍照失败</string>
 
-    <string name="empty_sdcard">没有SD卡</string>
+  <string name="saving">正在保存照片…</string>
 
-    <string name="open_gallery_fail">相册初始化失败!</string>
+  <string name="please_reopen_gf">请重新打开图片浏览器</string>
 
-    <string name="take_photo_fail">拍照失败</string>
+  <string name="photo_list_empty">获取图片失败!</string>
 
-    <string name="saving">正在保存照片…</string>
+  <string name="preview">预览</string>
 
-    <string name="please_reopen_gf">请重新打开图片浏览器</string>
+  <string name="edit">编辑</string>
+  <string name="permissions_tips_gallery">这个App请求访问你的相册</string>
 
+  <string name="permissions_denied_tips">无法获取图片</string>
+  <string name="no_visitor">还没人去过</string>
+  <string name="hint_input_cellphone_number">请输入手机号</string>
+  <string name="hint_input_password">请输入密码</string>
+  <string name="hint_input_password_again">请再次输入密码</string>
+  <string name="promote_invalid_username">用户名错误</string>
+  <string name="promote_invalid_password">密码不正确</string>
+  <string name="promote_empty_username_n_password">请输入用户名及密码</string>
+  <string name="promote_empty_username_or_password">请输入用户名或密码</string>
+  <string name="promote_empty_username">请输入11位用户名</string>
+  <string name="promote_empty_phone">请输入手机号</string>
+  <string name="promote_verify_pass">验证通过</string>
+  <string name="promote_password_update_success">密码修改成功</string>
+  <string name="promote_password_update_success_login_manually">密码修改成功，请尝试手动登录</string>
+  <string name="promote_password_update_failure">密码修改失败，请重试</string>
+  <string name="hint_input_validate_code">请输入验证码</string>
+  <string name="next">下一步</string>
+  <string name="registration">注册</string>
+  <string name="reset_password">找回密码</string>
+  <string name="hint_new_password">请输入6-12位数字或字母作为密码</string>
+  <string name="hint_input_username">请输入用户名</string>
+  <string name="hint_input_nickname">请输入昵称</string>
+  <string name="promote_account_create_success_login_manually">账号注册成功，请尝试手动登陆</string>
+  <string name="promote_account_create_success">账号注册成功</string>
+  <string name="share">分享</string>
+  <string name="share_to">分享到</string>
+  <string name="promote_duplicate_username">该手机号已经被注册</string>
+  <string name="promote_username_not_existed">该手机号未被使用</string>
+  <string name="click_to_load_more">点击加载更多</string>
+  <string name="quchu_detail_share_text">你愿意和我一起去么？</string>
+  <string name="share_mode_joking">调侃模式</string>
+  <string name="share_mode_normal">认真模式</string>
+  <string name="cancel">取消</string>
+  <string name="promote_verify_fail">验证失败，请输入正确的验证码</string>
+  <string name="quchu_detail">趣处详情</string>
+  <string name="guess_what_you_like"> — Alice还找到了些别的 — </string>
+  <string name="guess_where_is_it">这是个超赞的趣处</string>
+  <string name="registration_step_1">注册（1/2）</string>
+  <string name="registration_step_2">注册（2/2）</string>
+  <string name="forget_pwd_step_1">找回密码（1/2）</string>
+  <string name="forget_pwd_step_2">找回密码（2/2）</string>
+  <string name="time">时间</string>
+  <string name="avg_cost_with_rmb_symbol">人均消费</string>
+  <string name="cash">现金</string>
+  <string name="visacard">银联卡</string>
+  <string name="parking_slot">停车位</string>
+  <string name="private_room">包间</string>
+  <string name="wechatpay">微信支付</string>
+  <string name="alipay">支付宝</string>
+  <string name="no_seat">无座</string>
+  <string name="deliver">配送</string>
+  <string name="login_via_this_number">使用此手机号码登录</string>
+  <string name="forget_password">忘记密码</string>
+  <string name="no_data">搜索无结果</string>
 
-    <string name="photo_list_empty">获取图片失败!</string>
+  <string name="string_no_data">暂无数据</string>
 
-    <string name="preview">预览</string>
+  <string name="promote_no_network_naughty">网络链接失败</string>
+  <string name="promote_no_visitor">还没有人去过</string>
+  <string name="qu_recommend">趣推荐</string>
+  <string name="qu_discover">趣发现</string>
+  <string name="mine">我的</string>
+  <string name="add_to_favorite_success">设为常用成功</string>
+  <string name="add_to_favorite_fail">设为常用失败</string>
+  <string name="del_to_favorite_success">移除常用成功</string>
+  <string name="del_to_favorite_fail">移除常用失败</string>
 
-    <string name="edit">编辑</string>
-    <string name="permissions_tips_gallery">这个App请求访问你的相册</string>
+  <string name="add_to_favorite_article_success">添加文章成功</string>
+  <string name="add_to_favorite_article_fail">添加文章失败</string>
+  <string name="del_to_favorite_article_success">删除文章成功</string>
+  <string name="del_to_favorite_article_fail">删除文章失败</string>
+  <string name="process_running_please_wait">操作正在执行，请稍后</string>
+  <string name="no_more_data">没有更多了</string>
+  <string name="no_footprint">还没有人摁过脚印</string>
 
-    <string name="permissions_denied_tips">无法获取图片</string>
-    <string name="no_visitor">还没人去过</string>
-    <string name="hint_input_cellphone_number">请输入手机号</string>
-    <string name="hint_input_password">请输入密码</string>
-    <string name="hint_input_password_again">请再次输入密码</string>
-    <string name="promote_invalid_username">用户名错误</string>
-    <string name="promote_invalid_password">密码不正确</string>
-    <string name="promote_empty_username_n_password">请输入用户名及密码</string>
-    <string name="promote_empty_username_or_password">请输入用户名或密码</string>
-    <string name="promote_empty_username">请输入11位用户名</string>
-    <string name="promote_empty_phone">请输入手机号</string>
-    <string name="promote_verify_pass">验证通过</string>
-    <string name="promote_password_update_success">密码修改成功</string>
-    <string name="promote_password_update_success_login_manually">密码修改成功，请尝试手动登录</string>
-    <string name="promote_password_update_failure">密码修改失败，请重试</string>
-    <string name="hint_input_validate_code">请输入验证码</string>
-    <string name="next">下一步</string>
-    <string name="registration">注册</string>
-    <string name="reset_password">找回密码</string>
-    <string name="hint_new_password">请输入6-12位数字或字母作为密码</string>
-    <string name="hint_input_username">请输入用户名</string>
-    <string name="hint_input_nickname">请输入昵称</string>
-    <string name="promote_account_create_success_login_manually">账号注册成功，请尝试手动登陆</string>
-    <string name="promote_account_create_success">账号注册成功</string>
-    <string name="share">分享</string>
-    <string name="share_to">分享到</string>
-    <string name="promote_duplicate_username">该手机号已经被注册</string>
-    <string name="promote_username_not_existed">该手机号未被使用</string>
-    <string name="click_to_load_more">点击加载更多</string>
-    <string name="quchu_detail_share_text">你愿意和我一起去么？</string>
-    <string name="share_mode_joking">调侃模式</string>
-    <string name="share_mode_normal">认真模式</string>
-    <string name="cancel">取消</string>
-    <string name="promote_verify_fail">验证失败，请输入正确的验证码</string>
-    <string name="quchu_detail">趣处详情</string>
-    <string name="guess_what_you_like"> — Alice还找到了些别的 — </string>
-    <string name="guess_where_is_it">这是个超赞的趣处</string>
-    <string name="registration_step_1">注册（1/2）</string>
-    <string name="registration_step_2">注册（2/2）</string>
-    <string name="forget_pwd_step_1">找回密码（1/2）</string>
-    <string name="forget_pwd_step_2">找回密码（2/2）</string>
-    <string name="time">时间</string>
-    <string name="avg_cost_with_rmb_symbol">人均消费</string>
-    <string name="cash">现金</string>
-    <string name="visacard">银联卡</string>
-    <string name="parking_slot">停车位</string>
-    <string name="private_room">包间</string>
-    <string name="wechatpay">微信支付</string>
-    <string name="alipay">支付宝</string>
-    <string name="no_seat">无座</string>
-    <string name="deliver">配送</string>
-    <string name="login_via_this_number">使用此手机号码登录</string>
-    <string name="forget_password">忘记密码</string>
-    <string name="no_data">搜索无结果</string>
+  <string name="pname_crop_image_activity">图片裁剪</string>
+  <string name="pname_select_photo">选择图片</string>
+  <string name="pname_spot_new_playground">发现新趣处*</string>
+  <string name="pname_search">搜索</string>
+  <string name="pname_account_setting">账号设置</string>
+  <string name="pname_add_footprint">添加脚印</string>
+  <string name="pname_article_detail">发现详情</string>
+  <string name="pname_bind">绑定账号</string>
+  <string name="pname_article_detail_">发现详情*</string>
+  <string name="pname_favorite">收藏</string>
+  <string name="pname_feedback">快速反馈</string>
+  <string name="pname_add_quchu">添加趣处</string>
+  <string name="pname_relationship">趣友圈</string>
+  <string name="pname_footprint">脚印</string>
+  <string name="pname_login">登录</string>
+  <string name="pname_message_center">消息中心</string>
+  <string name="pname_my_footprint">我的脚印</string>
+  <string name="pname_footprint_detail">脚印详情</string>
+  <string name="pname_guess_what_u_like">猜你喜欢</string>
+  <string name="pname_picking_quchu">选择趣处</string>
+  <string name="pname_navigation">导航</string>
+  <string name="pname_quchu_details">趣处详情</string>
+  <string name="pname_specify_tags">相关趣处（标签）</string>
+  <string name="pname_qu_friends">趣友圈*</string>
+  <string name="pname_home">首页</string>
+  <string name="pname_scene_detail">场景详情</string>
+  <string name="pname_share_quchu">分享趣处</string>
+  <string name="pname_share">分享</string>
+  <string name="pname_landing">落地页</string>
+  <string name="pname_about_us">关于我们</string>
+  <string name="pname_user_center">用户中心</string>
+  <string name="pname_inner_browser">应用内浏览器</string>
+  <string name="pname_qu_friends_description">什么是趣友圈</string>
+  <string name="pname_wx_shit">微信分享*</string>
+  <string name="pname_f_mine">我的</string>
+  <string name="pname_f_recommendation">场景</string>
+  <string name="pname_f_qufaxian">趣发现</string>
+  <string name="pname_f_favorite_articles">收藏文章</string>
+  <string name="pname_f_favorite_quchu">收藏趣处</string>
+  <string name="pname_f_foot_print">脚印详情</string>
+  <string name="pname_f_foot_print_list">脚印列表</string>
+  <string name="pname_f_subscribe">关注**</string>
+  <string name="pname_invite_user">邀请用户</string>
+  <string name="pname_comment_list">评价列表</string>
+  <string name="pname_main_activity">首页</string>
 
-    <string name="string_no_data">暂无数据</string>
+  <string name="no_update_available">当前版本已是最新！</string>
+  <string name="pre_order_not_supported">暂不支持预定</string>
+  <string name="qu_faxian_simple_title">Hello，趣星人！</string>
+  <string name="qu_faxian_simple_desc">趣发现是小编呕心沥血，一把鼻涕一把眼泪的独立整理\n的优质趣处集锦，懒癌患者的福音</string>
+  <string name="invite_user">邀人一起去</string>
+  <string name="more_comments">更多评论</string>
+  <string name="quchu_intro">趣处介绍</string>
+  <string name="view_comments">查看评论</string>
+  <string name="submitRating">提交评价</string>
+  <string name="rating">评价</string>
+  <string name="change_hangout_users_list">换一批</string>
+  <string name="match_top_genes">确定突出基因</string>
+  <string name="match_genes">趣基因分析中...</string>
+  <string name="match_hobbits">分析兴趣爱好</string>
+  <string name="match_looking_for_similarity">寻找相同基因的人</string>
+  <string name="match_final">人群筛选</string>
+  <string name="user_invited">用户邀请成功</string>
+  <string name="user_invited_faile">用户邀请失败</string>
+  <string name="scene_header_desc">场景工坊为趣处为你们量身定做的适用场景 致力解决单身狗，失恋狗的爱情 总有一款适合您.</string>
+  <string name="enable_dahuo_feature">你尚未打开搭伙开关</string>
+  <string name="promote_invalid_phone_number">手机号错误</string>
 
-    <string name="promote_no_network_naughty">网络链接失败</string>
-    <string name="promote_no_visitor">还没有人去过</string>
-    <string name="qu_recommend">趣推荐</string>
-    <string name="qu_discover">趣发现</string>
-    <string name="mine">我的</string>
-    <string name="add_to_favorite_success">设为常用成功</string>
-    <string name="add_to_favorite_fail">设为常用失败</string>
-    <string name="del_to_favorite_success">移除常用成功</string>
-    <string name="del_to_favorite_fail">移除常用失败</string>
+  <string name="follow_str">关注(%d)</string>
+  <string name="friend_str">趣粉(%d)</string>
+  <string name="editor_choice">#小编推荐</string>
+  <string name="pass">跳过</string>
+  <string name="tel">电话</string>
+  <string name="queue">排号</string>
 
+  <string name="navigation_drawer_open">打开抽屉</string>
+  <string name="navigation_drawer_close">关闭抽屉</string>
+  <string name="retry">重试</string>
+  <string name="ai_retry">重新连接</string>
+  <string name="ai_search">手动搜索</string>
+  <string name="favorite">收藏</string>
+  <string name="cancel_favorite">取消收藏</string>
 
-    <string name="add_to_favorite_article_success">添加文章成功</string>
-    <string name="add_to_favorite_article_fail">添加文章失败</string>
-    <string name="del_to_favorite_article_success">删除文章成功</string>
-    <string name="del_to_favorite_article_fail">删除文章失败</string>
-    <string name="process_running_please_wait">操作正在执行，请稍后</string>
-    <string name="no_more_data">没有更多了</string>
-    <string name="no_footprint">还没有人摁过脚印</string>
-
-    <string name="pname_crop_image_activity">图片裁剪</string>
-    <string name="pname_select_photo">选择图片</string>
-    <string name="pname_spot_new_playground">发现新趣处*</string>
-    <string name="pname_search">搜索</string>
-    <string name="pname_account_setting">账号设置</string>
-    <string name="pname_add_footprint">添加脚印</string>
-    <string name="pname_article_detail">发现详情</string>
-    <string name="pname_bind">绑定账号</string>
-    <string name="pname_article_detail_">发现详情*</string>
-    <string name="pname_favorite">收藏</string>
-    <string name="pname_feedback">快速反馈</string>
-    <string name="pname_add_quchu">添加趣处</string>
-    <string name="pname_relationship">趣友圈</string>
-    <string name="pname_footprint">脚印</string>
-    <string name="pname_login">登录</string>
-    <string name="pname_message_center">消息中心</string>
-    <string name="pname_my_footprint">我的脚印</string>
-    <string name="pname_footprint_detail">脚印详情</string>
-    <string name="pname_guess_what_u_like">猜你喜欢</string>
-    <string name="pname_picking_quchu">选择趣处</string>
-    <string name="pname_navigation">导航</string>
-    <string name="pname_quchu_details">趣处详情</string>
-    <string name="pname_specify_tags">相关趣处（标签）</string>
-    <string name="pname_qu_friends">趣友圈*</string>
-    <string name="pname_home">首页</string>
-    <string name="pname_scene_detail">场景详情</string>
-    <string name="pname_share_quchu">分享趣处</string>
-    <string name="pname_share">分享</string>
-    <string name="pname_landing">落地页</string>
-    <string name="pname_about_us">关于我们</string>
-    <string name="pname_user_center">用户中心</string>
-    <string name="pname_inner_browser">应用内浏览器</string>
-    <string name="pname_qu_friends_description">什么是趣友圈</string>
-    <string name="pname_wx_shit">微信分享*</string>
-    <string name="pname_f_mine">我的</string>
-    <string name="pname_f_recommendation">场景</string>
-    <string name="pname_f_qufaxian">趣发现</string>
-    <string name="pname_f_favorite_articles">收藏文章</string>
-    <string name="pname_f_favorite_quchu">收藏趣处</string>
-    <string name="pname_f_foot_print">脚印详情</string>
-    <string name="pname_f_foot_print_list">脚印列表</string>
-    <string name="pname_f_subscribe">关注**</string>
-    <string name="pname_invite_user">邀请用户</string>
-    <string name="pname_comment_list">评价列表</string>
-    <string name="pname_main_activity">首页</string>
-
-
-    <string name="no_update_available">当前版本已是最新！</string>
-    <string name="pre_order_not_supported">暂不支持预定</string>
-    <string name="qu_faxian_simple_title">Hello，趣星人！</string>
-    <string name="qu_faxian_simple_desc">趣发现是小编呕心沥血，一把鼻涕一把眼泪的独立整理\n的优质趣处集锦，懒癌患者的福音</string>
-    <string name="invite_user">邀人一起去</string>
-    <string name="more_comments">更多评论</string>
-    <string name="quchu_intro">趣处介绍</string>
-    <string name="view_comments">查看评论</string>
-    <string name="submitRating">提交评价</string>
-    <string name="rating">评价</string>
-    <string name="change_hangout_users_list">换一批</string>
-    <string name="match_top_genes">确定突出基因</string>
-    <string name="match_genes">趣基因分析中...</string>
-    <string name="match_hobbits">分析兴趣爱好</string>
-    <string name="match_looking_for_similarity">寻找相同基因的人</string>
-    <string name="match_final">人群筛选</string>
-    <string name="user_invited">用户邀请成功</string>
-    <string name="user_invited_faile">用户邀请失败</string>
-    <string name="scene_header_desc">场景工坊为趣处为你们量身定做的适用场景 致力解决单身狗，失恋狗的爱情 总有一款适合您.</string>
-    <string name="enable_dahuo_feature">你尚未打开搭伙开关</string>
-    <string name="promote_invalid_phone_number">手机号错误</string>
-
-    <string name="follow_str">关注(%d)</string>
-    <string name="friend_str">趣粉(%d)</string>
-    <string name="editor_choice">#小编推荐</string>
-    <string name="pass">跳过</string>
-    <string name="tel">电话</string>
-    <string name="queue">排号</string>
-
-
-    <string name="navigation_drawer_open">打开抽屉</string>
-    <string name="navigation_drawer_close">关闭抽屉</string>
-    <string name="retry">重试</string>
-    <string name="ai_retry">重新连接</string>
-    <string name="ai_search">手动搜索</string>
-    <string name="favorite">收藏</string>
-    <string name="cancel_favorite">取消收藏</string>
+  <!-- 基因名称 -->
+  <string name="gene_en_name_chihuo">foodies</string>
+  <string name="gene_en_name_tuhao">rich</string>
+  <string name="gene_en_name_wenyi">art</string>
+  <string name="gene_en_name_haoqi">curiousness</string>
+  <string name="gene_en_name_shejiao">social</string>
+  <string name="gene_en_name_shishang">fashion</string>
+  <string name="gene_en_name_baby">new bie</string>
 </resources>

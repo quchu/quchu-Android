@@ -126,12 +126,21 @@ public class MessageModel {
     private String formPhoto;
     private boolean interaction;
     private int targetId;
+    private String targetUrl;
     private String targetImageUrl;
     private String targetType;
     private String time;
     private String type;
     private int height;
     private int width;
+
+    public String getTargetUrl() {
+      return targetUrl;
+    }
+
+    public void setTargetUrl(String targetUrl) {
+      this.targetUrl = targetUrl;
+    }
 
     public String getTitle() {
       return title;

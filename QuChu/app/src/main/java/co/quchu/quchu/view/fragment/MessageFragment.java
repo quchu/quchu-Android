@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
+import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MessageAdapter;
 import co.quchu.quchu.widget.ErrorView;
@@ -164,6 +166,11 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
           break;
 
         case MessageModel.TARGET_TYPE_ACTIVITY:
+          if (TextUtils.isEmpty(model.getTargetUrl())) {
+            return;
+          }
+
+          WebViewActivity.enterActivity(getActivity(), model.getTargetUrl(), model.getTitle(), false);
           break;
 
         case MessageModel.TARGET_TYPE_CITY:
