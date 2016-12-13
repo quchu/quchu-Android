@@ -15,6 +15,7 @@
       android:textSize="@dimen/standard_text_size_h0"
       tools:text="@string/empty_string"
       android:layout_centerHorizontal="true"
+      android:gravity="center"
       android:textStyle="bold"
       style="@style/TextView.H1"
       />

@@ -137,7 +137,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         Typeface face =
             Typeface.createFromAsset(((InfoViewHolder) holder).tvENTitle.getContext().getAssets(),
-                "AGENCYFB.TTF");
+                "BEBAS.OTF");
 
         ((InfoViewHolder) holder).tvENTitle.setTypeface(face);
         ((InfoViewHolder) holder).tvENTitle.setText(mSceneInfoModel.getEn());
@@ -152,7 +152,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //          }
 //        });
 
-        ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getIconUrlBig()));
+        ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getIconUrlSmall()));
 //        ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
 //        ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getSceneContent());
         String[] tags = mSceneInfoModel.getSceneTitle();
