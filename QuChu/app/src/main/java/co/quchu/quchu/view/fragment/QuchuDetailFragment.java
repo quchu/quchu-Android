@@ -2,6 +2,8 @@ package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,6 +53,11 @@ public class QuchuDetailFragment extends BaseFragment {
 
     QuchuDetailsAdapter quchuDetailAdapter = new QuchuDetailsAdapter(getActivity(), detailModel);
     quchuDetailAdapter.updateGallery(galleryImgs);
+    quchuDetailAdapter.setRatingCountListener(new QuchuDetailsAdapter.OnRatingCountClickListener() {
+      @Override public void onClick() {
+        ((ViewPager)getActivity().findViewById(R.id.quchu_detail_view_pager)).setCurrentItem(1,true);
+      }
+    });
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     mRecyclerView.setAdapter(quchuDetailAdapter);
 

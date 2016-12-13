@@ -111,8 +111,17 @@
          android:layout_centerVertical="true"
          style="@style/TextView.H3"
          android:gravity="center"
-         android:drawableRight="@drawable/ic_tiaozhuan"
          android:textColor="@color/colorHint"
+         />
+
+     <ImageView
+         android:id="@+id/ivArrow"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerVertical="true"
+         android:src="@drawable/ic_tiaozhuan"
+         android:layout_toRightOf="@id/tvFrom"
+
          />
      <TextView
          android:id="@+id/tvCollapse"

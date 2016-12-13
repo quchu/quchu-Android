@@ -98,6 +98,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private Activity mAnchorActivity;
   private DetailModel mData;
   private List<ImageModel> mImageSet = new ArrayList<>();
+  private OnRatingCountClickListener mListener;
+
+  public void setRatingCountListener(OnRatingCountClickListener listener){
+    mListener = listener;
+  }
+
 
   /**
    * 标准趣处的固定类型
@@ -433,6 +439,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         ((CommentViewHolder) holder).tvRatingCount.setText("共"+mData.getPlaceReviewCount()+"人评价");
+        ((CommentViewHolder) holder).tvRatingCount.setOnClickListener(new View.OnClickListener() {
+          @Override public void onClick(View v) {
+            if (null!=mListener){
+              mListener.onClick();
+            }
+          }
+        });
 
       }
     } else if (holder instanceof MatchedTagsViewHolder) {
@@ -863,5 +876,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setId(int id) {
       this.id = id;
     }
+  }
+
+  public interface OnRatingCountClickListener{
+    void onClick();
   }
 }

@@ -42,6 +42,7 @@
       android:textColor="@color/standard_color_h1_dark"
       android:drawablePadding="@dimen/quarter_margin"
       android:drawableLeft="@drawable/ic_zuobiao"
+      android:drawableRight="@drawable/ic_friends_arrow"
       tools:text="环岛路30号"
       />
 </RelativeLayout>

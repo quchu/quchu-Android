@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import butterknife.Bind;
@@ -135,6 +136,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       } else {
         ((CommentViewHolder) holder).tvDate.setText("-");
       }
+
+      if (null!=commentModel.getSourceContent() && commentModel.getSourceContent().equals("趣处")){
+        ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
+      }else{
+        ((CommentViewHolder) holder).ivArrow.setVisibility(View.VISIBLE);
+      }
       ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
 
       ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
@@ -225,6 +232,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Bind(R.id.tvFrom) TextView tvFrom;
     //@Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.rvImages) RecyclerView rvImages;
+    @Bind(R.id.ivArrow) ImageView ivArrow;
     //@Bind(R.id.vDivider) View vDivider;
 
     CommentViewHolder(View view) {
