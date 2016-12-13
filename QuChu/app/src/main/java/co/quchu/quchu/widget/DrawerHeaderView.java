@@ -152,6 +152,9 @@ public class DrawerHeaderView extends LinearLayout {
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.drawerHeaderAvatarImg:
+        if (mListener != null) {
+          mListener.onAvatarClick();
+        }
         break;
 
       case R.id.drawerLoginBtn:
@@ -164,5 +167,6 @@ public class DrawerHeaderView extends LinearLayout {
 
   public interface OnDrawerHeaderClickListener {
     void onLoginClick();
+    void onAvatarClick();
   }
 }

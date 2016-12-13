@@ -313,12 +313,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
     mDrawerHeaderView.getGenes();
     showDrawerItemUserCenter();
 
-    mDrawerHeaderView.setOnDrawerHeaderClickListener(new DrawerHeaderView.OnDrawerHeaderClickListener() {
-      @Override
-      public void onLoginClick() {
-        startActivity(LoginActivity.class);
-      }
-    });
+      mDrawerHeaderView.setOnDrawerHeaderClickListener(new DrawerHeaderView.OnDrawerHeaderClickListener() {
+        @Override
+        public void onLoginClick() {
+            startActivity(LoginActivity.class);
+        }
+
+        @Override public void onAvatarClick() {
+          startActivity(MeActivity.class);
+        }
+      });
+
   }
 
   /**
@@ -466,7 +471,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @OnClick({R.id.tvCity, R.id.vSearchBar, R.id.vFakeDrawer, R.id.vDrawer,
       R.id.ivSearch, R.id.ivAllScene, R.id.ivSwitchCity, R.id.fab,
       R.id.drawerItemFavorite, R.id.drawerItemUserCenter, R.id.drawerItemMessage,
-      R.id.drawerItemFeedback, R.id.drawerItemSetting, R.id.drawerItemShareApp})
+      R.id.drawerItemFeedback, R.id.drawerItemSetting, R.id.drawerItemShareApp,R.id.drawerHeaderView})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivAllScene:
