@@ -126,7 +126,7 @@ public class MessageModel {
     private String formPhoto;
     private boolean interaction;
     private int targetId;
-    private String targetUrl;
+    private String url;
     private String targetImageUrl;
     private String targetType;
     private String time;
@@ -134,12 +134,12 @@ public class MessageModel {
     private int height;
     private int width;
 
-    public String getTargetUrl() {
-      return targetUrl;
+    public String getUrl() {
+      return url;
     }
 
-    public void setTargetUrl(String targetUrl) {
-      this.targetUrl = targetUrl;
+    public void setUrl(String targetUrl) {
+      this.url = url;
     }
 
     public String getTitle() {

@@ -45,11 +45,12 @@ public class SearchView extends LinearLayout {
   @Bind(R.id.search_history_mask_view) View mSearchHistoryMaskView;
 
   private SearchAdapter mSearchHistoryAdapter;
-  private List<String> mSearchHistoryList = new ArrayList<>();
-  private String finalInputStr = "";
+  private List<String> mSearchHistoryList;
 
   public SearchView(Context context, AttributeSet attrs) {
     super(context, attrs);
+
+    mSearchHistoryList = new ArrayList<>();
 
     LayoutInflater.from(context).inflate(R.layout.view_search, this);
   }

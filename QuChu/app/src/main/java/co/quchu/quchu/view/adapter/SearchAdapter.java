@@ -120,77 +120,68 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
       //搜索历史记录
       final HistoryViewHolder holder = (HistoryViewHolder) viewHolder;
       if (mHistoryList == null) {
+        return;
+      }
+
+      holder.mHistoryContentLayout.setVisibility(View.VISIBLE);
+
+      if (mHistoryList.size() == 0) {
         //无历史记录
-        if (position == 0) {
-          holder.mHistoryNullTv.setVisibility(View.VISIBLE);
-        } else {
-          holder.mHistoryNullTv.setVisibility(View.GONE);
-        }
+        holder.mHistoryNullTv.setVisibility(View.GONE);
         holder.mHistoryDivider.setVisibility(View.GONE);
         holder.mClockImg.setVisibility(View.GONE);
         holder.mHistoryDeleteBtn.setVisibility(View.GONE);
+        if (position == 0) {
+          holder.mHistoryNullTv.setVisibility(View.VISIBLE);
+        }
 
       } else {
-        if (mHistoryList.size() > 0 && mHistoryList.get(0) == null) {
-          //无历史记录
-          if (position == 0) {
-            holder.mHistoryNullTv.setVisibility(View.VISIBLE);
-          } else {
-            holder.mHistoryNullTv.setVisibility(View.GONE);
-          }
-          holder.mHistoryDivider.setVisibility(View.GONE);
-          holder.mClockImg.setVisibility(View.GONE);
-          holder.mHistoryDeleteBtn.setVisibility(View.GONE);
-
+        int actualCount;
+        if (mHistoryList.size() < getItemCount()) {
+          actualCount = mHistoryList.size();
         } else {
-          int actualCount;
-          if (mHistoryList.size() < getItemCount()) {
-            actualCount = mHistoryList.size();
-          } else {
-            actualCount = 5;
-          }
+          actualCount = 5;
+        }
+        if (position < actualCount) {
+          holder.mHistoryNullTv.setVisibility(View.GONE);
+          holder.mHistoryDivider.setVisibility(View.VISIBLE);
+          holder.mClockImg.setVisibility(View.VISIBLE);
+          holder.mHistoryDeleteBtn.setVisibility(View.VISIBLE);
+          holder.mHistoryTv.setVisibility(View.VISIBLE);
 
-          if (position < actualCount) {
-            holder.mHistoryNullTv.setVisibility(View.GONE);
-            holder.mHistoryDivider.setVisibility(View.VISIBLE);
-            holder.mClockImg.setVisibility(View.VISIBLE);
-            holder.mHistoryDeleteBtn.setVisibility(View.VISIBLE);
-            holder.mHistoryTv.setVisibility(View.VISIBLE);
+          final String keyword = mHistoryList.get(position);
+          holder.mHistoryTv.setText(keyword);
 
-            final String keyword = mHistoryList.get(position);
-            holder.mHistoryTv.setText(keyword);
-
-            holder.mHistoryDeleteBtn.setTag(keyword);
-            holder.mHistoryDeleteBtn.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                String keyword = (String) v.getTag();
-                if (mListener != null) {
-                  mListener.onDeleteHistory(keyword);
-                }
-              }
-            });
-
-          } else {
-            holder.mHistoryNullTv.setVisibility(View.GONE);
-            holder.mHistoryDivider.setVisibility(View.GONE);
-            holder.mClockImg.setVisibility(View.GONE);
-            holder.mHistoryDeleteBtn.setVisibility(View.GONE);
-            holder.mHistoryTv.setVisibility(View.GONE);
-            holder.mHistoryTv.setText("");
-          }
-
-          holder.itemView.setTag(holder.mHistoryTv.getText());
-          holder.itemView.setOnClickListener(new View.OnClickListener() {
+          holder.mHistoryDeleteBtn.setTag(keyword);
+          holder.mHistoryDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               String keyword = (String) v.getTag();
-              if (mListener != null && !TextUtils.isEmpty(keyword)) {
-                mListener.onClickHistory(keyword);
+              if (mListener != null) {
+                mListener.onDeleteHistory(keyword);
               }
             }
           });
+
+        } else {
+          holder.mHistoryNullTv.setVisibility(View.GONE);
+          holder.mHistoryDivider.setVisibility(View.GONE);
+          holder.mClockImg.setVisibility(View.GONE);
+          holder.mHistoryDeleteBtn.setVisibility(View.GONE);
+          holder.mHistoryTv.setVisibility(View.GONE);
+          holder.mHistoryTv.setText("");
         }
+
+        holder.itemView.setTag(holder.mHistoryTv.getText());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            String keyword = (String) v.getTag();
+            if (mListener != null && !TextUtils.isEmpty(keyword)) {
+              mListener.onClickHistory(keyword);
+            }
+          }
+        });
       }
 
     } else if (viewHolder instanceof ResultViewHolder) {

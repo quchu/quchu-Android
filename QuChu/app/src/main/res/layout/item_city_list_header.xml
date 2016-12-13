@@ -10,7 +10,7 @@
       android:id="@+id/city_group_tv"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textColor="@color/standard_color_h2_dark"
+      android:textColor="@color/standard_color_h0_dark"
       android:textSize="@dimen/word_size_body"/>
 
 </LinearLayout>

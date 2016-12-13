@@ -9,7 +9,8 @@
   <RelativeLayout
       android:id="@+id/search_item_content_layout"
       android:layout_width="match_parent"
-      android:layout_height="44dp">
+      android:layout_height="44dp"
+      android:visibility="gone">
 
     <ImageView
         android:id="@+id/search_item_clock_img"

@@ -15,11 +15,12 @@ import co.quchu.quchu.net.NetApi;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushConsts;
 
-import java.util.Random;
 import java.util.Set;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PushMessageBean;
+import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
