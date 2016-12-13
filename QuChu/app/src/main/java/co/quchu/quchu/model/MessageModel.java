@@ -1,5 +1,7 @@
 package co.quchu.quchu.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 /**
@@ -119,7 +121,7 @@ public class MessageModel {
 
   public static class ResultBean {
     private String come;
-    private String title = "趣处通知";
+    private String title;
     private String content;
     private String form;
     private int formId;
@@ -143,6 +145,9 @@ public class MessageModel {
     }
 
     public String getTitle() {
+      if (TextUtils.isEmpty(title)) {
+        return "趣处通知";
+      }
       return title;
     }
 
