@@ -1,9 +1,9 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -82,6 +82,12 @@ public class StatementActivity extends BaseBehaviorActivity {
                 }, 2000);
             }
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                (findViewById(R.id.svContent)).scrollTo(0,0);
+            }
+        },10);
 
     }
 

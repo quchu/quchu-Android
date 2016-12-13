@@ -82,11 +82,8 @@ public class SettingActivity extends BaseBehaviorActivity {
    * 声音开关
    */
   private void setSoundEnable() {
-    final SwitchButton switchButton = itemSound.getSwitchButton();
 
-    switchButton.setChecked(SPUtils.isEnableSound());
-
-        itemGetuiMessage.setSwitchChecked(SPUtils.isEnableSound(), new SettingItemView.SwitchChangedListener() {
+      itemSound.setSwitchChecked(SPUtils.isEnableSound(), new SettingItemView.SwitchChangedListener() {
           @Override
           public void onSwitch(boolean isChecked) {
             SPUtils.setEnableSound(isChecked);
