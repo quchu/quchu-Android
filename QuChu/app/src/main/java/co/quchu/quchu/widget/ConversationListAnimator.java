@@ -48,6 +48,21 @@ public class ConversationListAnimator extends DefaultItemAnimator {
           })
           .start();
       return true;
+    }else if(oldHolder instanceof AIConversationAdapter.GalleryViewHolder){
+      oldHolder.itemView.animate().alpha(1).setDuration(500).setListener(new Animator.AnimatorListener() {
+        @Override public void onAnimationStart(Animator animation) {
+          dispatchChangeStarting(oldHolder,true);
+        }
+
+        @Override public void onAnimationEnd(Animator animation) {
+          dispatchChangeFinished(oldHolder,true);
+        }
+
+        @Override public void onAnimationCancel(Animator animation) {}
+
+        @Override public void onAnimationRepeat(Animator animation) {}
+      }).start();
+      return true;
     }else{
       return super.animateChange(oldHolder, newHolder, fromX, fromY, toX, toY);
 

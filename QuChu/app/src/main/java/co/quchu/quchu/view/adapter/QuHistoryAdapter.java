@@ -40,10 +40,12 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
   private int mLastSelectedPosition = -1;
   private int mLastPageSelectedIndex = -1;
   private boolean mNotifyItemChanged;
+  private RecyclerView mRecyclerView;
 
-  public QuHistoryAdapter(Context context) {
+  public QuHistoryAdapter(Context context,RecyclerView recyclerView) {
     mInflater = LayoutInflater.from(context);
     mResources = context.getResources();
+    mRecyclerView = recyclerView;
   }
 
   @Override
@@ -104,7 +106,7 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
           if (state == ViewPager.SCROLL_STATE_IDLE) {
 
             if (mLastSelectedPosition != -1 && mNotifyItemChanged) {
-              notifyItemChanged(mLastSelectedPosition == 0 ? 1 : 0);
+              resetViewPagerIndexAt(mLastSelectedPosition == 0 ? 1 : 0);
               mNotifyItemChanged = false;
             }
 
@@ -265,8 +267,17 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
    */
   public void resetBestList() {
     if (mLastSelectedPosition != -1) {
-      notifyItemChanged(mLastSelectedPosition);
+      resetViewPagerIndexAt(mLastSelectedPosition);
       mLastSelectedPosition = -1;
+    }
+  }
+
+  public void resetViewPagerIndexAt(int position){
+    if (mRecyclerView.getChildCount()>position && null!=mRecyclerView.getChildAt(position)){
+      ViewPager v = (ViewPager) mRecyclerView.getChildAt(position).findViewById(R.id.history_vp);
+      if (null!=v && v.getChildCount()>0){
+        ((ViewPager)mRecyclerView.getChildAt(position).findViewById(R.id.history_vp)).setCurrentItem(0,true);
+      }
     }
   }
 

@@ -58,7 +58,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
   private void initView() {
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    mAdapter = new QuHistoryAdapter(this);
+    mAdapter = new QuHistoryAdapter(this,mRecyclerView);
     mAdapter.setQuChuHistoryClickListener(onItemClickListener);
     mRecyclerView.setAdapter(mAdapter);
     mRefreshLayout.setOnRefreshListener(this);
