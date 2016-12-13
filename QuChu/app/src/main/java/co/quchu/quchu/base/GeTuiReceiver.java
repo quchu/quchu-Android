@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
+import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetApi;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushConsts;
 
@@ -68,15 +71,15 @@ public class GeTuiReceiver extends BroadcastReceiver {
                     notificationManiage.notify(id, builder.build());
                 }
                 break;
-            //case PushConsts.GET_CLIENTID:
-            //    // 获取ClientID(CID)
-            //
-            //    if (!TextUtils.isEmpty(AppContext.token)) {
-            //        String cid = bundle.getString("clientid");
-            //        LogUtils.e("个推cid" + cid);
-            //        new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
-            //    }
-            //    break;
+            case PushConsts.GET_CLIENTID:
+                // 获取ClientID(CID)
+
+                if (!TextUtils.isEmpty(AppContext.token)) {
+                    String cid = bundle.getString("clientid");
+                    LogUtils.e("个推cid" + cid);
+                    new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
+                }
+                break;
         }
         Set<String> keySet = bundle.keySet();
         for (String key : keySet) {
