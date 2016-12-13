@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.FeedbackSuccessDialog;
 import co.quchu.quchu.model.FeedbackModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
@@ -223,10 +224,14 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     FeedbackPresenter.sendFeedback(this, "", inputStr, new CommonListener() {
       @Override
       public void successListener(Object response) {
-        mIsSubmitting = false;
-        makeToast("感谢您对我们的支持");
-        mInputEditText.setText("");
         hideSoftware(mInputEditText);
+        mInputEditText.setText("");
+
+        mIsSubmitting = false;
+//        makeToast("感谢您对我们的支持");
+        FeedbackSuccessDialog successDialog = new FeedbackSuccessDialog(FeedbackActivity.this);
+        successDialog.show();
+
         getFeedbackList();
       }
 

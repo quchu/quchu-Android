@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:givImage="@drawable/ic_tuhao_ahsy"
-            app:givText="大财阀"/>
+            app:givText="大财阀"
+            app:givTextEn="@string/gene_en_name_tuhao"/>
 
         <co.quchu.quchu.widget.GeneItemView
             android:id="@+id/haoqi_view"
@@ -47,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:givImage="@drawable/ic_haoqi_ahsy"
-            app:givText="好奇喵"/>
+            app:givText="好奇喵"
+            app:givTextEn="@string/gene_en_name_haoqi"/>
 
         <co.quchu.quchu.widget.GeneItemView
             android:id="@+id/shishang_view"
@@ -55,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:givImage="@drawable/ic_shishang_ahsy"
-            app:givText="时尚精"/>
+            app:givText="时尚精"
+            app:givTextEn="@string/gene_en_name_shishang"/>
 
       </LinearLayout>
 
@@ -71,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:givImage="@drawable/ic_shejiao_ahsy"
-            app:givText="外交官"/>
+            app:givText="外交官"
+            app:givTextEn="@string/gene_en_name_shejiao"/>
 
         <co.quchu.quchu.widget.GeneItemView
             android:id="@+id/wenyi_view"
@@ -79,7 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:givImage="@drawable/ic_wenyi_ahsy"
-            app:givText="文艺咖"/>
+            app:givText="文艺咖"
+            app:givTextEn="@string/gene_en_name_wenyi"/>
 
         <co.quchu.quchu.widget.GeneItemView
             android:id="@+id/chihuo_view"
@@ -87,7 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:givImage="@drawable/ic_chihuo_ahsy"
-            app:givText="小食神"/>
+            app:givText="小食神"
+            app:givTextEn="@string/gene_en_name_chihuo"/>
 
       </LinearLayout>
 

@@ -240,7 +240,20 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
    * 最优记录
    */
   public void setBestList(List<QuChuHistoryModel.BestListBean> bestList) {
-    mBestList = bestList;
+//    mBestList = bestList;
+//    notifyDataSetChanged();
+    QuChuHistoryModel.BestListBean bestListBean1 = bestList.get(0);
+    QuChuHistoryModel.BestListBean bestListBean2 = bestList.get(1);
+
+    bestListBean1.setSecondPlaceInfo(bestListBean2.getPlaceInfo());
+    bestListBean1.setGapStr("距离12312");
+    bestListBean2.setSecondPlaceInfo(bestListBean1.getPlaceInfo());
+    bestListBean2.setGapStr("距离12312");
+
+    mBestList = new ArrayList<>();
+    mBestList.add(bestListBean1);
+    mBestList.add(bestListBean2);
+
     notifyDataSetChanged();
   }
 

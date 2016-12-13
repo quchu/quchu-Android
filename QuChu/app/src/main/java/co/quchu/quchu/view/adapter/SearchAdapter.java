@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -118,30 +119,79 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     } else if (viewHolder instanceof HistoryViewHolder) {
       //搜索历史记录
       final HistoryViewHolder holder = (HistoryViewHolder) viewHolder;
-      final String keyword = mHistoryList.get(position);
-      holder.mHistoryTv.setText(keyword);
-
-      holder.itemView.setTag(keyword);
-      holder.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          String keyword = (String) v.getTag();
-          if (mListener != null) {
-            mListener.onClickHistory(keyword);
-          }
+      if (mHistoryList == null) {
+        //无历史记录
+        if (position == 0) {
+          holder.mHistoryNullTv.setVisibility(View.VISIBLE);
+        } else {
+          holder.mHistoryNullTv.setVisibility(View.GONE);
         }
-      });
+        holder.mHistoryDivider.setVisibility(View.GONE);
+        holder.mClockImg.setVisibility(View.GONE);
+        holder.mHistoryDeleteBtn.setVisibility(View.GONE);
 
-      holder.mHistoryDeleteBtn.setTag(keyword);
-      holder.mHistoryDeleteBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          String keyword = (String) v.getTag();
-          if (mListener != null) {
-            mListener.onDeleteHistory(keyword);
+      } else {
+        if (mHistoryList.size() > 0 && mHistoryList.get(0) == null) {
+          //无历史记录
+          if (position == 0) {
+            holder.mHistoryNullTv.setVisibility(View.VISIBLE);
+          } else {
+            holder.mHistoryNullTv.setVisibility(View.GONE);
           }
+          holder.mHistoryDivider.setVisibility(View.GONE);
+          holder.mClockImg.setVisibility(View.GONE);
+          holder.mHistoryDeleteBtn.setVisibility(View.GONE);
+
+        } else {
+          int actualCount;
+          if (mHistoryList.size() < getItemCount()) {
+            actualCount = mHistoryList.size();
+          } else {
+            actualCount = 5;
+          }
+
+          if (position < actualCount) {
+            holder.mHistoryNullTv.setVisibility(View.GONE);
+            holder.mHistoryDivider.setVisibility(View.VISIBLE);
+            holder.mClockImg.setVisibility(View.VISIBLE);
+            holder.mHistoryDeleteBtn.setVisibility(View.VISIBLE);
+            holder.mHistoryTv.setVisibility(View.VISIBLE);
+
+            final String keyword = mHistoryList.get(position);
+            holder.mHistoryTv.setText(keyword);
+
+            holder.mHistoryDeleteBtn.setTag(keyword);
+            holder.mHistoryDeleteBtn.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                String keyword = (String) v.getTag();
+                if (mListener != null) {
+                  mListener.onDeleteHistory(keyword);
+                }
+              }
+            });
+
+          } else {
+            holder.mHistoryNullTv.setVisibility(View.GONE);
+            holder.mHistoryDivider.setVisibility(View.GONE);
+            holder.mClockImg.setVisibility(View.GONE);
+            holder.mHistoryDeleteBtn.setVisibility(View.GONE);
+            holder.mHistoryTv.setVisibility(View.GONE);
+            holder.mHistoryTv.setText("");
+          }
+
+          holder.itemView.setTag(holder.mHistoryTv.getText());
+          holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              String keyword = (String) v.getTag();
+              if (mListener != null && !TextUtils.isEmpty(keyword)) {
+                mListener.onClickHistory(keyword);
+              }
+            }
+          });
         }
-      });
+      }
 
     } else if (viewHolder instanceof ResultViewHolder) {
       //搜索结果
@@ -232,7 +282,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     if (mIsCategory) {
       return mCategoryList != null ? mCategoryList.size() : 0;
     } else {
-      return mHistoryList != null ? mHistoryList.size() : 0;
+      return 5;
     }
   }
 
@@ -243,6 +293,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Bind(R.id.search_item_history_tv) TextView mHistoryTv;
     @Bind(R.id.search_item_history_delete_btn) ImageView mHistoryDeleteBtn;
+    @Bind(R.id.search_item_history_divider) View mHistoryDivider;
+    @Bind(R.id.search_item_content_layout) RelativeLayout mHistoryContentLayout;
+    @Bind(R.id.search_item_history_null_tv) TextView mHistoryNullTv;
+    @Bind(R.id.search_item_clock_img) ImageView mClockImg;
 
     public HistoryViewHolder(View itemView) {
       super(itemView);

@@ -22,6 +22,7 @@ public class GeneItemView extends LinearLayout {
   @Bind(R.id.gene_cover_img) ImageView mGeneCoverImg;
   @Bind(R.id.gene_text_tv) TextView mGeneTextTv;
   @Bind(R.id.gene_weight_tv) TextView mGeneWeightTv;
+  @Bind(R.id.gene_text_en_tv) TextView mGeneTextEnTv;
 
   public GeneItemView(Context context) {
     this(context, null);
@@ -41,6 +42,7 @@ public class GeneItemView extends LinearLayout {
     if (attrs != null) {
       TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GeneItemView);
       String textStr = typedArray.getString(R.styleable.GeneItemView_givText);
+      String textStrEn = typedArray.getString(R.styleable.GeneItemView_givTextEn);
       int imageResId = typedArray.getResourceId(R.styleable.GeneItemView_givImage, -1);
       typedArray.recycle();
 
@@ -48,13 +50,23 @@ public class GeneItemView extends LinearLayout {
         mGeneTextTv.setText(textStr);
       }
 
+      if (!TextUtils.isEmpty(textStrEn)) {
+        mGeneTextEnTv.setText(textStrEn);
+      }
+
       if (imageResId != -1) {
         mGeneCoverImg.setImageResource(imageResId);
       }
     }
+  }
 
-    Typeface face = Typeface.createFromAsset(context.getAssets(), "AGENCYFB.TTF");
+  @Override
+  protected void onFinishInflate() {
+    super.onFinishInflate();
+
+    Typeface face = Typeface.createFromAsset(getContext().getAssets(), "BEBAS.OTF");
     mGeneWeightTv.setTypeface(face);
+    mGeneTextEnTv.setTypeface(face);
   }
 
   public void setWeightValue(String value) {

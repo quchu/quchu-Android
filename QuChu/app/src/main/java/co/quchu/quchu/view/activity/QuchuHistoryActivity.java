@@ -7,6 +7,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -24,6 +25,7 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.QuChuHistoryPresenter;
 import co.quchu.quchu.view.adapter.QuHistoryAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * 趣处浏览记录
@@ -34,6 +36,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
   @Bind(R.id.qu_history_recycler_view) RecyclerView mRecyclerView;
   @Bind(R.id.qu_history_refresh_layout) SwipeRefreshLayout mRefreshLayout;
+  @Bind(R.id.history_error_view) ErrorView mHistoryErrorView;
 
   private int pageNo = 1;
   private String mPlaceIds = "";
@@ -54,6 +57,27 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
     textView.setTextSize(16f);
 
     initView();
+
+    if (!NetUtil.isNetworkConnected(this)) {
+      mHistoryErrorView.showViewDefault(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if (!NetUtil.isNetworkConnected(QuchuHistoryActivity.this)) {
+            makeToast(R.string.network_error);
+            return;
+          }
+          onRefresh();
+        }
+      });
+
+    } else {
+      mRefreshLayout.post(new Runnable() {
+        @Override
+        public void run() {
+          onRefresh();
+        }
+      });
+    }
   }
 
   private void initView() {
@@ -62,12 +86,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
     mAdapter.setQuChuHistoryClickListener(onItemClickListener);
     mRecyclerView.setAdapter(mAdapter);
     mRefreshLayout.setOnRefreshListener(this);
-    mRefreshLayout.post(new Runnable() {
-      @Override
-      public void run() {
-        onRefresh();
-      }
-    });
+    mRefreshLayout.setEnabled(false);
 
     mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override
@@ -125,9 +144,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
   private CommonListener<QuChuHistoryModel> mCommonListener = new CommonListener<QuChuHistoryModel>() {
     @Override
     public void successListener(QuChuHistoryModel response) {
-      if (response == null) {
-        return;
-      }
+      mHistoryErrorView.hideView();
 
       mIsLoading = false;
       if (DialogUtil.isDialogShowing()) {
@@ -136,6 +153,10 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
       if (mRefreshLayout.isRefreshing()) {
         mRefreshLayout.setRefreshing(false);
+      }
+
+      if (response == null) {
+        return;
       }
 
       if (!mIsLoadMore) {
@@ -172,6 +193,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
     public void errorListener(VolleyError error, String exception, String msg) {
       mIsLoading = false;
       DialogUtil.dismissProgess();
+      mHistoryErrorView.hideView();
 
       if (mRefreshLayout.isRefreshing()) {
         mRefreshLayout.setRefreshing(false);
