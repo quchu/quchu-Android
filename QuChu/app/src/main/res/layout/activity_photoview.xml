@@ -24,7 +24,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:layout_centerHorizontal="true"
       android:layout_gravity="bottom|left"
       android:layout_marginBottom="@dimen/base_margin"
       android:layout_marginLeft="@dimen/base_margin"
@@ -42,30 +41,30 @@
       android:layout_alignParentBottom="true"
       android:layout_alignParentRight="true"
       android:layout_marginBottom="@dimen/half_margin"
-      android:layout_marginRight="@dimen/base_margin"
       android:layout_marginTop="56dp"
-      android:gravity="center_horizontal"
       android:orientation="vertical"
       android:paddingLeft="@dimen/base_margin"
-      android:paddingRight="@dimen/base_margin"
       android:paddingTop="@dimen/quarter_margin">
 
     <TextView
         android:id="@+id/tvSource"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:text="图片来源于网络"
         android:textColor="@color/standard_color_white"
         android:textSize="13sp"
-        android:layout_centerVertical="true"
-        android:visibility="invisible"/>
+        android:layout_alignParentRight="true"
+        android:visibility="invisible"
+        />
 
     <ImageView
         android:id="@+id/ivShowSource"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/half_margin"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:padding="@dimen/half_margin"
         android:src="@drawable/ic_gantanhao"/>
 
   </RelativeLayout>
