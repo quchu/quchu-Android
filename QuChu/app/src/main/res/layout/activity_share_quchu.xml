@@ -144,7 +144,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/half_margin"
 
-                                    android:drawableLeft="@drawable/ic_dianhua"
+                                    android:drawableLeft="@drawable/ic_dianhua_small"
                                     android:drawablePadding="@dimen/half_margin"
                                     android:gravity="center"
                                     android:paddingTop="@dimen/half_margin"
