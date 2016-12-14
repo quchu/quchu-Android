@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
 
 import static co.quchu.quchu.R.id.userNameTv;
@@ -43,6 +45,7 @@ public class MeActivity extends BaseBehaviorActivity {
   @Bind(R.id.userGenderImg) SimpleDraweeView mUserGenderImg;
   @Bind(userNameTv) TextView mUserNameTv;
   @Bind(R.id.userMarkTv) TextView mUserMarkTv;
+  @Bind(R.id.userGeneNameTv) TextView mUserGeneNameTv;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,8 +61,6 @@ public class MeActivity extends BaseBehaviorActivity {
     textView.setText("");
     mEnhancedToolbarDivider.setVisibility(View.GONE);
 
-    getGenes();
-
     fillViews();
   }
 
@@ -67,10 +68,6 @@ public class MeActivity extends BaseBehaviorActivity {
   protected void onDestroy() {
     super.onDestroy();
     EventBus.getDefault().unregister(this);
-  }
-
-  private void getGenes() {
-
   }
 
   private void fillViews() {
@@ -87,6 +84,10 @@ public class MeActivity extends BaseBehaviorActivity {
     mUserNameTv.setText(user.getFullname());
 
     mUserMarkTv.setText(SPUtils.getUserMark());
+
+    Typeface face = Typeface.createFromAsset(getAssets(), "BEBAS.OTF");
+    mUserGeneNameTv.setTypeface(face);
+    mUserGeneNameTv.setText(QuChuHelper.getGeneNameByMark(SPUtils.getUserMark()));
   }
 
   @OnClick({R.id.me_info_view, R.id.me_social_account_view, R.id.me_change_password_view

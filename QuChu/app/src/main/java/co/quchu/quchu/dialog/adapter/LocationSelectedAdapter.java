@@ -61,11 +61,11 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<RecyclerView.V
       if (cityId == cityModel.getCid()) {
         holder.dialogItemCityCb.setChecked(true);
         holder.dialogItemCityCb.setClickable(false);
-//            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
+        holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_h0_dark));
       } else {
         holder.dialogItemCityCb.setChecked(false);
         holder.dialogItemCityCb.setClickable(true);
-//            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_white));
+        holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_h2_dark));
       }
     }
   }

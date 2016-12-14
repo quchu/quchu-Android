@@ -41,4 +41,39 @@ public class QuChuHelper {
 
     return resId;
   }
+
+  public static int getGeneNameByMark(String mark) {
+    int geneNameResId = -1;
+    switch (mark) {
+      case "小食神":
+        geneNameResId = R.string.gene_en_name_chihuo;
+        break;
+
+      case "艺术家":
+        geneNameResId = R.string.gene_en_name_wenyi;
+        break;
+
+      case "外交官":
+        geneNameResId = R.string.gene_en_name_shejiao;
+        break;
+
+      case "时尚精":
+        geneNameResId = R.string.gene_en_name_shishang;
+        break;
+
+      case "大财阀":
+        geneNameResId = R.string.gene_en_name_tuhao;
+        break;
+
+      case "玩乐咖":
+        geneNameResId = R.string.gene_en_name_haoqi;
+        break;
+
+      case "新生宝宝":
+        geneNameResId = R.string.gene_en_name_baby;
+        break;
+    }
+
+    return geneNameResId;
+  }
 }

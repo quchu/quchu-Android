@@ -166,11 +166,11 @@ public class MessageFragment extends BaseFragment implements SwipeRefreshLayout.
           break;
 
         case MessageModel.TARGET_TYPE_ACTIVITY:
-          if (TextUtils.isEmpty(model.getTargetUrl())) {
+          if (TextUtils.isEmpty(model.getUrl())) {
             return;
           }
 
-          WebViewActivity.enterActivity(getActivity(), model.getTargetUrl(), model.getTitle(), false);
+          WebViewActivity.enterActivity(getActivity(), model.getUrl(), model.getTitle(), false);
           break;
 
         case MessageModel.TARGET_TYPE_CITY:

@@ -1,5 +1,7 @@
 package co.quchu.quchu.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 /**
@@ -119,14 +121,14 @@ public class MessageModel {
 
   public static class ResultBean {
     private String come;
-    private String title = "趣处通知";
+    private String title;
     private String content;
     private String form;
     private int formId;
     private String formPhoto;
     private boolean interaction;
     private int targetId;
-    private String targetUrl;
+    private String url;
     private String targetImageUrl;
     private String targetType;
     private String time;
@@ -134,15 +136,18 @@ public class MessageModel {
     private int height;
     private int width;
 
-    public String getTargetUrl() {
-      return targetUrl;
+    public String getUrl() {
+      return url;
     }
 
-    public void setTargetUrl(String targetUrl) {
-      this.targetUrl = targetUrl;
+    public void setUrl(String targetUrl) {
+      this.url = url;
     }
 
     public String getTitle() {
+      if (TextUtils.isEmpty(title)) {
+        return "趣处通知";
+      }
       return title;
     }
 
