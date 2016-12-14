@@ -376,7 +376,6 @@ public class AIConversationFragment extends BaseFragment
    * 重置选项
    */
   private void resetOptions(final List<String> list, final String addition, final int type) {
-    resetOffset();
     if (!SPUtils.getConversationGuide()) {
       ivGuide.setVisibility(View.VISIBLE);
     }
@@ -754,18 +753,35 @@ public class AIConversationFragment extends BaseFragment
     }
   }
 
+  ///**
+  // * 重置选项偏移量
+  // */
+  //public void resetOffset() {
+  //
+  //  int[] location = new int[2];
+  //  llOptions.getLocationOnScreen(location);
+  //  if (location[1]<= ScreenUtils.getStatusHeight(getActivity())-llOptions.getHeight()) {
+  //    int offSet = ((ScreenUtils.getScreenHeight(getActivity())-location[1]-ScreenUtils.getScreenHeight(getActivity())-llOptions.getHeight()));
+  //    ivGuide.setTranslationY(-offSet);
+  //    quickReturn.setTranslationY(-offSet);
+  //    llOptions.setTranslationY(-offSet);
+  //  }
+  //}
+
   /**
    * 重置选项偏移量
    */
-  public void resetOffset() {
+  public void resetOffset(float scrollRange) {
 
-    int[] location = new int[2];
-    llOptions.getLocationOnScreen(location);
-    if (location[1]<= ScreenUtils.getStatusHeight(getActivity())-llOptions.getHeight()) {
-      int offSet = ((ScreenUtils.getScreenHeight(getActivity())-location[1]-ScreenUtils.getScreenHeight(getActivity())-llOptions.getHeight()));
-      ivGuide.setTranslationY(-offSet);
-      quickReturn.setTranslationY(-offSet);
-      llOptions.setTranslationY(-offSet);
+    quickReturn.setTranslationY(-scrollRange);
+    if (mConversation.size() <= 2) {
+      int[] location = new int[2];
+      llOptions.getLocationOnScreen(location);
+      ivGuide.setTranslationY(-scrollRange);
+      llOptions.setTranslationY(-scrollRange);
+      offSetY = scrollRange;
+    } else {
+      offSetY = 0;
     }
   }
 
