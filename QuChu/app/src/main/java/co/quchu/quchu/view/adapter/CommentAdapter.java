@@ -137,7 +137,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((CommentViewHolder) holder).tvDate.setText("-");
       }
 
-      if (null!=commentModel.getSourceContent() && commentModel.getSourceContent().equals("趣处")){
+      if (null!=commentModel.getSourceContent() && commentModel.getSourceContent().equals("来自趣处")){
         ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
       }else{
         ((CommentViewHolder) holder).ivArrow.setVisibility(View.VISIBLE);
