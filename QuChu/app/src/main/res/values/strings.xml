@@ -277,12 +277,12 @@
   <string name="cancel_favorite">取消收藏</string>
 
   <!-- 基因名称 -->
-  <string name="gene_en_name_chihuo">foodies</string>
-  <string name="gene_en_name_tuhao">rich</string>
-  <string name="gene_en_name_wenyi">art</string>
-  <string name="gene_en_name_haoqi">curiousness</string>
-  <string name="gene_en_name_shejiao">social</string>
-  <string name="gene_en_name_shishang">fashion</string>
-  <string name="gene_en_name_baby">new bie</string>
+  <string name="gene_en_name_chihuo">Foodie</string>
+  <string name="gene_en_name_tuhao">Rich</string>
+  <string name="gene_en_name_wenyi">Artist</string>
+  <string name="gene_en_name_haoqi">Curiosity</string>
+  <string name="gene_en_name_shejiao">Social</string>
+  <string name="gene_en_name_shishang">Fashion</string>
+  <string name="gene_en_name_baby">New Bie</string>
 
 </resources>

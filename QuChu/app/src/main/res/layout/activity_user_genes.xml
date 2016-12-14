@@ -23,7 +23,7 @@
           android:layout_height="wrap_content"
           android:gravity="center"
           android:lineSpacingExtra="@dimen/half_margin"
-          android:text="称号种类一共有六种\n即小食神、好奇喵、文艺咖、大财阀、\n外交官、时尚精和新生宝宝"
+          android:text="称号种类一共有六种\n即小食神、好奇喵、文艺咖、大财阀、\n外交官、时尚精"
           android:textColor="@color/standard_color_h3_dark"
           android:textSize="14sp"/>
 

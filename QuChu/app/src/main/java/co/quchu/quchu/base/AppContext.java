@@ -1,7 +1,6 @@
 package co.quchu.quchu.base;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 
 import com.android.volley.VolleyError;
-import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -38,7 +36,6 @@ import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import io.rong.imkit.RongIM;
 
 public class AppContext extends MultiDexApplication {
     public static Context mContext;
@@ -149,7 +146,7 @@ public class AppContext extends MultiDexApplication {
         }
 
         //融云im
-        RongIM.init(this);
+//        RongIM.init(this);
         //百度SDK
         SDKInitializer.initialize(getApplicationContext());
     }
