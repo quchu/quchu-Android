@@ -146,6 +146,8 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             @Override public void onAnimationRepeat(Animator animation) {}
           })
           .start();
+    } else{
+      return super.animateAdd(holder);
     }
     return true;
   }

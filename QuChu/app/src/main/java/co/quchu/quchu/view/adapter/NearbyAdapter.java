@@ -93,13 +93,13 @@ public class NearbyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.desc)
+        @Bind(R.id.desc_tv)
         TextView name;
         @Bind(R.id.tag)
         TagCloudView tag;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.address)
+        @Bind(R.id.address_tv)
         TextView tvAddress;
 
         public ViewHolder(View itemView) {
