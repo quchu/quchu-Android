@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -20,9 +26,6 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
-import com.facebook.drawee.view.SimpleDraweeView;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nico on 16/8/26.
@@ -140,7 +143,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       if (null!=commentModel.getSourceContent() && commentModel.getSourceContent().equals("来自趣处")){
         ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
       }else{
-        ((CommentViewHolder) holder).ivArrow.setVisibility(View.VISIBLE);
+        ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
       }
       ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
 

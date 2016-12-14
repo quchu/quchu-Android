@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.QuChuHistoryModel;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
+import co.quchu.quchu.widget.ViewPager.FixedSpeedScroller;
 
 /**
  * Created by mwb on 2016/12/12.
@@ -39,10 +43,10 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
   private List<QuChuHistoryModel.PlaceListBean.ResultBean> mResultBeanList;
   private int mLastSelectedPosition = -1;
   private int mLastPageSelectedIndex = -1;
-  private boolean mNotifyItemChanged;
+  private boolean mNeedResetViewPage;
   private RecyclerView mRecyclerView;
 
-  public QuHistoryAdapter(Context context,RecyclerView recyclerView) {
+  public QuHistoryAdapter(Context context, RecyclerView recyclerView) {
     mInflater = LayoutInflater.from(context);
     mResources = context.getResources();
     mRecyclerView = recyclerView;
@@ -85,16 +89,17 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onPageSelected(int position) {
+          holder.historyDescribeImg.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+          holder.historyDescribeTv.setText(position == 0 ? bestListBean.getTitle() : bestListBean.getGapStr());
+          holder.historyDescribeTv.setTextColor(position == 0
+              ? mResources.getColor(R.color.standard_color_h3_dark) : mResources.getColor(R.color.standard_color_red));
+
           if (mLastSelectedPosition != -1 && mLastPageSelectedIndex != -1) {
             if (mLastSelectedPosition == actualPosition) {
-              mNotifyItemChanged = false;
+              mNeedResetViewPage = false;
             } else {
-              mNotifyItemChanged = true;
+              mNeedResetViewPage = true;
             }
-          }
-
-          if (mLastPageSelectedIndex == 0) {
-            mNotifyItemChanged = false;
           }
 
           mLastSelectedPosition = actualPosition;
@@ -105,17 +110,12 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onPageScrollStateChanged(int state) {
           if (state == ViewPager.SCROLL_STATE_IDLE) {
 
-            if (mLastSelectedPosition != -1 && mNotifyItemChanged) {
+            if (mLastSelectedPosition != -1 && mNeedResetViewPage) {
               resetViewPagerIndexAt(mLastSelectedPosition == 0 ? 1 : 0);
-              mNotifyItemChanged = false;
-            }
+              mNeedResetViewPage = false;
+              int selectedPosition = mLastSelectedPosition == 0 ? 1 : 0;
 
-            if (bestListBean.getSecondPlaceInfo() != null && mLastSelectedPosition == actualPosition) {
-              //holder.historyDescribeImg.setVisibility(mLastPageSelectedIndex == 0 ? View.GONE : View.VISIBLE);
-              holder.historyDescribeTv.setText(mLastPageSelectedIndex == 0
-                  ? bestListBean.getTitle() : bestListBean.getGapStr());
-              holder.historyDescribeTv.setTextColor(mLastPageSelectedIndex == 0
-                  ? mResources.getColor(R.color.standard_color_h3_dark) : mResources.getColor(R.color.standard_color_red));
+              mLastSelectedPosition = selectedPosition;
             }
           }
         }
@@ -240,7 +240,18 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
    * 最优记录
    */
   public void setBestList(List<QuChuHistoryModel.BestListBean> bestList) {
-    mBestList = bestList;
+//    mBestList = bestList;
+//    notifyDataSetChanged();
+
+    QuChuHistoryModel.BestListBean bestListBean1 = bestList.get(0);
+    QuChuHistoryModel.BestListBean bestListBean2 = bestList.get(1);
+    bestListBean1.setSecondPlaceInfo(bestListBean2.getPlaceInfo());
+    bestListBean2.setSecondPlaceInfo(bestListBean1.getPlaceInfo());
+    bestListBean1.setGapStr("ashdkjahskjdh");
+    bestListBean2.setGapStr("asdasfgf");
+    mBestList = new ArrayList<>();
+    mBestList.add(bestListBean1);
+    mBestList.add(bestListBean2);
     notifyDataSetChanged();
   }
 
@@ -272,11 +283,11 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
   }
 
-  public void resetViewPagerIndexAt(int position){
-    if (mRecyclerView.getChildCount()>position && null!=mRecyclerView.getChildAt(position)){
+  public void resetViewPagerIndexAt(int position) {
+    if (mRecyclerView.getChildCount() > position && null != mRecyclerView.getChildAt(position)) {
       ViewPager v = (ViewPager) mRecyclerView.getChildAt(position).findViewById(R.id.history_vp);
-      if (null!=v && v.getChildCount()>0){
-        ((ViewPager)mRecyclerView.getChildAt(position).findViewById(R.id.history_vp)).setCurrentItem(0,true);
+      if (null != v && v.getChildCount() > 0) {
+        ((ViewPager) mRecyclerView.getChildAt(position).findViewById(R.id.history_vp)).setCurrentItem(0, true);
       }
     }
   }
@@ -291,6 +302,16 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public QuChuBestHistoryViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+
+      try {
+        Field field = ViewPager.class.getDeclaredField("mScroller");
+        field.setAccessible(true);
+        FixedSpeedScroller scroller = new FixedSpeedScroller(historyVp.getContext(),
+            new AccelerateInterpolator());
+        field.set(historyVp, scroller);
+      } catch (Exception e) {
+        LogUtils.e("e = " + e);
+      }
     }
   }
 
