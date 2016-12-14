@@ -93,7 +93,7 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
       errorView.showViewDefault(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          DialogUtil.showProgess(getActivity(), "加载中");
+          DialogUtil.showProgress(getActivity(), "加载中");
           getData(true, false);
         }
       });
@@ -119,7 +119,7 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
 
 
   public void getData() {
-    DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+    DialogUtil.showProgress(getActivity(), R.string.loading_dialog_text);
     getData(true, false);
   }
 
@@ -143,12 +143,12 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
     if (mActivityStop) {
       return;
     }
-    DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+    DialogUtil.showProgress(getActivity(), R.string.loading_dialog_text);
 
     CommentsPresenter.getComments(getActivity(), sceneId, mPageNo, new CommonListener<PagerModel<CommentModel>>() {
       @Override
       public void successListener(PagerModel<CommentModel> response) {
-        DialogUtil.dismissProgessDirectly();
+        DialogUtil.dismissProgressDirectly();
 
         if (mMaxPageNo == -1) {
           mMaxPageNo = response.getPageCount();
@@ -172,12 +172,12 @@ public class CommentListFragment extends BaseFragment implements SwipeRefreshLay
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
-        DialogUtil.dismissProgessDirectly();
+        DialogUtil.dismissProgressDirectly();
         if (!loadMore) {
           errorView.showViewDefault(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              DialogUtil.showProgess(getActivity(), "加载中");
+              DialogUtil.showProgress(getActivity(), "加载中");
               getData(true, false);
             }
           });

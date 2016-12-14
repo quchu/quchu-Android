@@ -55,12 +55,12 @@ public abstract class MvpActivity<P extends BasePresenter> extends BaseBehaviorA
   }
 
   public void showLoading(String msg, boolean isCancelable) {
-    DialogUtil.showProgess(this, msg, isCancelable);
+    DialogUtil.showProgress(this, msg, isCancelable);
   }
 
   public void hideLoading() {
     if (DialogUtil.isDialogShowing()) {
-      DialogUtil.dismissProgess();
+      DialogUtil.dismissProgress();
     }
   }
 

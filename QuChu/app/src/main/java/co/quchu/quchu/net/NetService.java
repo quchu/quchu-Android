@@ -48,9 +48,9 @@ public class NetService {
                             IRequestListener pListener) {
         LogUtils.d(pUrl);
 //        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-//            //     NetErrorDialog.showProgess(cont);
-////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-//            DialogUtil.dismissProgess();
+//            //     NetErrorDialog.showProgress(cont);
+////            NetErrorDialogUtil.showProgress(cont, "请检查网络");
+//            DialogUtil.dismissProgress();
 //            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
 //        } else {
 
@@ -64,9 +64,9 @@ public class NetService {
                             IRequestListener pListener) {
         LogUtils.d(pUrl);
 //        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-//            //     NetErrorDialog.showProgess(cont);
-////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-//            DialogUtil.dismissProgess();
+//            //     NetErrorDialog.showProgress(cont);
+////            NetErrorDialogUtil.showProgress(cont, "请检查网络");
+//            DialogUtil.dismissProgress();
 //            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
 //        } else {
 
@@ -79,10 +79,10 @@ public class NetService {
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         LogUtils.d(pUrl);
 //        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-//            //  NetErrorDialog.showProgess(cont);
-////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            //  NetErrorDialog.showProgress(cont);
+////            NetErrorDialogUtil.showProgress(cont, "请检查网络");
 //            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
-//            DialogUtil.dismissProgess();
+//            DialogUtil.dismissProgress();
 //        } else {
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0, true);
 //        }
@@ -91,10 +91,10 @@ public class NetService {
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
         LogUtils.d(pUrl);
 //        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-//            //    NetErrorDialog.showProgess(cont);
-////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            //    NetErrorDialog.showProgress(cont);
+////            NetErrorDialogUtil.showProgress(cont, "请检查网络");
 //            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
-//            DialogUtil.dismissProgess();
+//            DialogUtil.dismissProgress();
 //        } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
 //                    .theme(Theme.DARK)
@@ -124,7 +124,7 @@ public class NetService {
         LogUtils.d(pUrl+sbArguments);
 //        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
 //            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
-//            DialogUtil.dismissProgess();
+//            DialogUtil.dismissProgress();
 //        } else {
             addToQueue(Request.Method.GET, pUrl+sbArguments, null, pListener, 0, true);
 //        }
@@ -229,7 +229,7 @@ public class NetService {
 //                if (dialog != null) {
 //                    dialog.dismiss();
 //                }
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 if (error != null && error.networkResponse != null) {
                     pListener.onError(error.toString());
                     if (error.networkResponse.statusCode == 401) {

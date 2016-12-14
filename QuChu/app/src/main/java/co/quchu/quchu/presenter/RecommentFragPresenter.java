@@ -33,17 +33,17 @@ public class RecommentFragPresenter {
     }
 
     public void init() {
-        DialogUtil.showProgess(context, R.string.loading_dialog_text);
+        DialogUtil.showProgress(context, R.string.loading_dialog_text);
         model.getTab(new CommonListener<List<TagsModel>>() {
             @Override
             public void successListener(List<TagsModel> response) {
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 view.initTab(false, response);
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 view.initTab(true, null);
             }
         });
@@ -54,12 +54,12 @@ public class RecommentFragPresenter {
     public void initTabData(boolean isRefresh, String selectedTag) {
 
         if (!isRefresh) {
-            DialogUtil.showProgess(context, R.string.loading_dialog_text);
+            DialogUtil.showProgress(context, R.string.loading_dialog_text);
         }
         model.getTabData(selectedTag, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 if (response != null)
                     view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo(), response.getRowCount());
                 else
@@ -69,7 +69,7 @@ public class RecommentFragPresenter {
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 view.initTabData(true, null, 0, 0, 0);
             }
         });

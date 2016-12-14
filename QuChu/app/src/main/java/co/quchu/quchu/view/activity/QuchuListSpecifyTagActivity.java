@@ -113,7 +113,7 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
     };
     mRecyclerView.addOnScrollListener(mLoadingListener);
 
-    DialogUtil.showProgess(QuchuListSpecifyTagActivity.this, R.string.loading_dialog_text);
+    DialogUtil.showProgress(QuchuListSpecifyTagActivity.this, R.string.loading_dialog_text);
     getData(true, false);
   }
 
@@ -139,13 +139,13 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
     if (mActivityStop) {
       return;
     }
-    DialogUtil.showProgess(QuchuListSpecifyTagActivity.this, R.string.loading_dialog_text);
+    DialogUtil.showProgress(QuchuListSpecifyTagActivity.this, R.string.loading_dialog_text);
 
     NearbyPresenter.getQuchuListViaTagId(getApplicationContext(), mDataType, mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()),
         String.valueOf(SPUtils.getLongitude()), new CommonListener<PagerModel>() {
           @Override
           public void successListener(PagerModel response) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             mData.addAll(response.getResult());
             if (mMaxPageNo == -1) {
               mMaxPageNo = response.getPageCount();
@@ -161,12 +161,12 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
 
           @Override
           public void errorListener(VolleyError error, String exception, String msg) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             if (!loadMore) {
               //errorView.showViewDefault(new View.OnClickListener() {
               //    @Override
               //    public void onClick(View v) {
-              //        DialogUtil.showProgess(getActivity(), "加载中");
+              //        DialogUtil.showProgress(getActivity(), "加载中");
               //        getData(true, false);
               //    }
               //});

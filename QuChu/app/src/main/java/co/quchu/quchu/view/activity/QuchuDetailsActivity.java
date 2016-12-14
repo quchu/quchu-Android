@@ -30,7 +30,6 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
@@ -152,11 +151,11 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   private void getData() {
-    DialogUtil.showProgess(this, "数据加载中...");
+    DialogUtil.showProgress(this, "数据加载中...");
     InterestingDetailPresenter.getInterestingData(this, pId, new CommonListener<DetailModel>() {
       @Override
       public void successListener(DetailModel response) {
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
         bindingDetailData(response);
 
         mErrorView.hideView();
@@ -167,7 +166,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         mErrorView.showViewDefault(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            DialogUtil.showProgess(QuchuDetailsActivity.this, "加载中");
+            DialogUtil.showProgress(QuchuDetailsActivity.this, "加载中");
             getData();
           }
         });

@@ -218,7 +218,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
    * get nearby data
    */
   private void getNearbyData() {
-    DialogUtil.showProgess(this, R.string.loading_dialog_text);
+    DialogUtil.showProgress(this, R.string.loading_dialog_text);
     NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", lat, lont, new CommonListener<List<NearbyMapModel>>() {
       @Override
       public void successListener(List<NearbyMapModel> response) {
@@ -230,12 +230,12 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         }
         mAdapter.notifyDataSetChanged();
         initMarks();
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
       }
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
 
       }
     });

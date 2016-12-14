@@ -205,14 +205,18 @@ public class LoginByPhoneFragment extends Fragment
       }
     });
 
-    etUsername.requestFocus();
-    etUsername.postDelayed(new Runnable() {
+    showSoftInput(etUsername);
+  }
+
+  private void showSoftInput(final EditText editText) {
+    editText.requestFocus();
+    editText.postDelayed(new Runnable() {
 
       @Override
       public void run() {
         InputMethodManager keyboard =
             (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        keyboard.showSoftInput(etUsername, 0);
+        keyboard.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
       }
     }, 350);
   }
@@ -239,7 +243,7 @@ public class LoginByPhoneFragment extends Fragment
       return;
     }
 
-    DialogUtil.showProgess(getActivity(), "正在登录", false);
+    DialogUtil.showProgress(getActivity(), "正在登录", false);
 
     //退出已经登录的融云账号
 //    new IMPresenter().logout();
@@ -254,7 +258,7 @@ public class LoginByPhoneFragment extends Fragment
 
         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
 
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
 
         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
       }
@@ -277,7 +281,9 @@ public class LoginByPhoneFragment extends Fragment
           }
         }
 
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
+
+        showSoftInput(etPassword);
       }
     });
   }
@@ -306,7 +312,7 @@ public class LoginByPhoneFragment extends Fragment
     updateButtonStatus();
   }
 
-  @OnClick(R.id.backgroundLayout)
+  @OnClick(R.id.hideSoftInputView)
   public void onClick() {
     ((LoginActivity) getActivity()).hideSoftware();
   }

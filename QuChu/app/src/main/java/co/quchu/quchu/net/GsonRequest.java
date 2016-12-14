@@ -173,7 +173,7 @@ public class GsonRequest<T> extends Request<T> {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    DialogUtil.dismissProgessDirectly();
+                    DialogUtil.dismissProgressDirectly();
                 }
             });
         }
@@ -183,7 +183,7 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected void deliverResponse(T t) {
         if (showDialog) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
         }
         if (!TextUtils.isEmpty(msg)) {
             switch (msg) {
@@ -245,7 +245,7 @@ public class GsonRequest<T> extends Request<T> {
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
         if (showDialog)
-            DialogUtil.showProgess(context, "加载中~~");
+            DialogUtil.showProgress(context, "加载中~~");
     }
 
     @Override

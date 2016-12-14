@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -158,12 +157,12 @@ public class InviteHangoutUsersActivity extends BaseActivity {
       return;
     }
     mLoading = true;
-    DialogUtil.showProgess(this, R.string.loading_dialog_text);
+    DialogUtil.showProgress(this, R.string.loading_dialog_text);
 
     HangoutPresenter.getHangoutUsers(getApplicationContext(),
         new CommonListener<List<HangoutUserModel>>() {
           @Override public void successListener(List<HangoutUserModel> response) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             mUsers.clear();
             mUsers.addAll(response);
             mAdapter.notifyDataSetChanged();
@@ -171,7 +170,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
           }
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             mLoading = false;
           }
         });

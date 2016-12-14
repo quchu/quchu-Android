@@ -142,7 +142,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
       errorView.showViewDefault(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+          DialogUtil.showProgress(SceneDetailActivity.this, "加载中");
           getData(true, false);
         }
       });
@@ -168,7 +168,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   }
 
   public void getData() {
-//    DialogUtil.showProgess(this, R.string.loading_dialog_text);
+//    DialogUtil.showProgress(this, R.string.loading_dialog_text);
     int delay = 0;
     if (Math.abs(AppContext.mLastLocatingTimeStamp - System.currentTimeMillis()) >= (60000 * 5)) {
       AppContext.initLocation();
@@ -206,13 +206,13 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     }
 
     if (loadMore) {
-      DialogUtil.showProgess(this, R.string.loading_dialog_text);
+      DialogUtil.showProgress(this, R.string.loading_dialog_text);
     }
 
     ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), mPageNo, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), placeIds, new CommonListener<SceneDetailModel>() {
       @Override
       public void successListener(SceneDetailModel response) {
-        DialogUtil.dismissProgessDirectly();
+        DialogUtil.dismissProgressDirectly();
 
         if (null!=response ){
           errorView.hideView();
@@ -288,12 +288,12 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
-        DialogUtil.dismissProgessDirectly();
+        DialogUtil.dismissProgressDirectly();
         if (!loadMore) {
           errorView.showViewDefault(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+              DialogUtil.showProgress(SceneDetailActivity.this, "加载中");
               getData(true, false);
             }
           });

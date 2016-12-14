@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="10dp"
             android:drawablePadding="4dp"
             android:drawableRight="@drawable/ic_down"
             android:gravity="center_vertical"
@@ -67,15 +67,15 @@
             android:id="@+id/vDrawer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="@dimen/half_margin"/>
 
         <LinearLayout
             android:id="@+id/vSearchBar"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="11dp"
             android:gravity="center"
             android:background="@drawable/shape_lineframe_ai_search_bar"
             android:orientation="horizontal"
@@ -123,7 +123,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerVertical="true"
-          android:layout_marginLeft="8dp"/>
+          android:layout_marginLeft="@dimen/half_margin"/>
 
       <LinearLayout
           android:layout_width="match_parent"

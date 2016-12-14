@@ -31,12 +31,12 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
   }
 
   public void showLoading(String msg, boolean isCancelable) {
-    DialogUtil.showProgess(getActivity(), msg, isCancelable);
+    DialogUtil.showProgress(getActivity(), msg, isCancelable);
   }
 
   public void hideLoading() {
     if (DialogUtil.isDialogShowing()) {
-      DialogUtil.dismissProgess();
+      DialogUtil.dismissProgress();
     }
   }
 }

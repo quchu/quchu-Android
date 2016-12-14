@@ -123,7 +123,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
     if (mIsLoading) return;
 
     if (NetUtil.isNetworkConnected(this)) {
-      DialogUtil.showProgess(this, R.string.loading_dialog_text);
+      DialogUtil.showProgress(this, R.string.loading_dialog_text);
     }
 
     mIsLoading = true;
@@ -148,7 +148,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
       mIsLoading = false;
       if (DialogUtil.isDialogShowing()) {
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
       }
 
       if (mRefreshLayout.isRefreshing()) {
@@ -192,7 +192,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
     @Override
     public void errorListener(VolleyError error, String exception, String msg) {
       mIsLoading = false;
-      DialogUtil.dismissProgess();
+      DialogUtil.dismissProgress();
       mHistoryErrorView.hideView();
 
       if (mRefreshLayout.isRefreshing()) {

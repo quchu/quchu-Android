@@ -132,7 +132,7 @@ public class SearchPresenter {
 //      @Override
 //      public void onErrorResponse(@Nullable VolleyError error) {
 //        LogUtils.json("onError=" + error.toString());
-//        DialogUtil.dismissProgess();
+//        DialogUtil.dismissProgress();
 //        listener.errorNull();
 //      }
 //
@@ -152,12 +152,12 @@ public class SearchPresenter {
 //            } else {
 //              listener.errorNull();
 //            }
-//            DialogUtil.dismissProgess();
+//            DialogUtil.dismissProgress();
 //          } else {
 //            listener.errorNull();
 //          }
 //        } catch (JSONException e) {
-//          DialogUtil.dismissProgess();
+//          DialogUtil.dismissProgress();
 //          listener.errorNull();
 //          e.printStackTrace();
 //        }

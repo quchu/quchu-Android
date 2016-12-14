@@ -57,7 +57,7 @@ public class RecommendPresenter {
 
   public static void getRecommendList(final Context context, boolean isDefaultData,
                                       final GetRecommendListener listener) {
-    DialogUtil.showProgess(context, "数据加载中...");
+    DialogUtil.showProgress(context, "数据加载中...");
     final String urlStr;
     if (isDefaultData) {
       urlStr = String.format(NetApi.getDefaultPlaceList, SPUtils.getCityId(), SPUtils.getLatitude(),
@@ -67,7 +67,7 @@ public class RecommendPresenter {
           SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""),
           SPUtils.getLatitude(), SPUtils.getLongitude(), 1);
     }
-    DialogUtil.showProgess(context, "加载中!!");
+    DialogUtil.showProgress(context, "加载中!!");
 
     NetService.get(context, urlStr, new IRequestListener() {
 
@@ -95,12 +95,12 @@ public class RecommendPresenter {
         } catch (JSONException e) {
           e.printStackTrace();
         }
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
       }
 
       @Override
       public boolean onError(String error) {
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
         return false;
       }
     });
@@ -115,7 +115,7 @@ public class RecommendPresenter {
    */
   public static void loadMoreRecommendList(final Context context, boolean isDefaultData,
                                            int pageNumber, final GetRecommendListener listener) {
-    //    DialogUtil.showProgess(context, "数据加载中...");
+    //    DialogUtil.showProgress(context, "数据加载中...");
     String urlStr = "";
     if (isDefaultData) {
       urlStr = String.format(NetApi.getDefaultPlaceList, SPUtils.getCityId(), SPUtils.getLatitude(),

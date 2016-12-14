@@ -88,6 +88,13 @@
       android:text="@string/forget_password"
       android:visibility="gone"/>
 
+  <View
+      android:id="@+id/hideSoftInputView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/tvLoginViaPhone"
+      android:layout_below="@+id/rlPasswordField"/>
+
   <TextView
       android:id="@+id/tvLoginViaPhone"
       android:layout_width="match_parent"

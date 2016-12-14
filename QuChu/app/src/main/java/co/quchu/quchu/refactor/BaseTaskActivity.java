@@ -52,16 +52,16 @@ public class BaseTaskActivity extends BaseBehaviorActivity {
   }
 
   public void showLoading(String msg, boolean isCancelable) {
-    DialogUtil.showProgess(this, msg, isCancelable);
+    DialogUtil.showProgress(this, msg, isCancelable);
   }
 
   public void showLoading(String msg) {
-    DialogUtil.showProgess(this, msg);
+    DialogUtil.showProgress(this, msg);
   }
 
   public void hideLoading() {
     if (DialogUtil.isDialogShowing()) {
-      DialogUtil.dismissProgess();
+      DialogUtil.dismissProgress();
     }
   }
 

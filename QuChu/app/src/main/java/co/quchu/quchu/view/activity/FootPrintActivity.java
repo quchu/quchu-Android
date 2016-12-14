@@ -2,46 +2,29 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.net.GsonRequest;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.FootPrintPresenter;
-import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FootPrintAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.SpacesItemDecoration;
@@ -159,7 +142,7 @@ public class FootPrintActivity extends BaseBehaviorActivity {
         if (!loadMore) {
             mData.clear();
             mCurrentPageNo = 1;
-            DialogUtil.showProgess(this, R.string.loading_dialog_text);
+            DialogUtil.showProgress(this, R.string.loading_dialog_text);
         } else if (mCurrentPageNo < mMaxPageNo) {
             mCurrentPageNo += 1;
 
@@ -180,7 +163,7 @@ public class FootPrintActivity extends BaseBehaviorActivity {
                 }
                 mIsLoading = false;
                 if (DialogUtil.isDialogShowing()) {
-                    DialogUtil.dismissProgess();
+                    DialogUtil.dismissProgress();
                 }
             }
 

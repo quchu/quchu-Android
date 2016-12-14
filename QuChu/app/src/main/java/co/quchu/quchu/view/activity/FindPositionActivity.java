@@ -152,7 +152,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     }
                 }
                 if (im.size() > 0) {
-                    DialogUtil.showProgess(FindPositionActivity.this, "上传中");
+                    DialogUtil.showProgress(FindPositionActivity.this, "上传中");
                     new ImageUpload(FindPositionActivity.this, im, new ImageUpload.UploadResponseListener() {
                         @Override
                         public void finish(String result) {
@@ -161,12 +161,12 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
 
                         @Override
                         public void error() {
-                            DialogUtil.dismissProgessDirectly();
+                            DialogUtil.dismissProgressDirectly();
                             Toast.makeText(FindPositionActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    DialogUtil.showProgess(FindPositionActivity.this, "上传中");
+                    DialogUtil.showProgress(FindPositionActivity.this, "上传中");
                     sendToServer(nameText, positionText, descText, "");
                 }
             }
@@ -244,7 +244,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(FindPositionActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
             }
 
             @Override
@@ -255,7 +255,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 } else {
                     Toast.makeText(FindPositionActivity.this, msg, Toast.LENGTH_SHORT).show();
                 }
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
             }
         });
         request.start(this);

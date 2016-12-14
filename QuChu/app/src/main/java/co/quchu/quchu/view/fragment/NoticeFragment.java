@@ -140,7 +140,7 @@ public class NoticeFragment extends BaseFragment {
     public void itemClick(RecyclerView.ViewHolder holder, final MessageModel.ResultBean item, int type, @Deprecated int position) {
       switch (type) {
         case MessageCenterAdapter.CLICK_TYPE_FOLLOW://关注
-          DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+          DialogUtil.showProgress(getActivity(), R.string.loading_dialog_text);
           MessagePresenter.followMessageCenterFriends(getActivity(), item.getFormId(),
               "yes".equals(item.getCome()), new MessagePresenter.MessageGetDataListener() {
                 @Override
@@ -153,12 +153,12 @@ public class NoticeFragment extends BaseFragment {
                     item.setInteraction(true);
                   }
                   adapter.notifyDataSetChanged();
-                  DialogUtil.dismissProgess();
+                  DialogUtil.dismissProgress();
                 }
 
                 @Override
                 public void onError() {
-                  DialogUtil.dismissProgess();
+                  DialogUtil.dismissProgress();
                 }
               });
           break;

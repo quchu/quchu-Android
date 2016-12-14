@@ -21,7 +21,7 @@
       android:background="@color/standard_color_white"
       android:paddingLeft="@dimen/base_margin"
       android:paddingTop="@dimen/base_margin"
-      android:textColor="@color/standard_color_h2_dark"
+      android:textColor="@color/standard_color_h0_dark"
       android:textSize="14sp"
       android:visibility="gone"
       tools:text="您当前所在的城市:厦门"/>

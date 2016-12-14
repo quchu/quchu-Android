@@ -67,6 +67,11 @@
 
   </LinearLayout>
 
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:background="@color/colorDivider"/>
+
   <LinearLayout
       android:id="@+id/search_history_layout"
       android:layout_width="match_parent"
@@ -74,11 +79,6 @@
       android:layout_weight="1"
       android:orientation="vertical"
       android:visibility="gone">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/half_margin"
-        android:background="@color/colorDivider"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_history_rv"

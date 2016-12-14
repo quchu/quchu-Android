@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.android.volley.VolleyError;
 
@@ -19,10 +18,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.TagsModel;
@@ -114,7 +111,7 @@ public class NearbyActivity extends BaseBehaviorActivity {
 //                            }
 //                            mNearbyFilterSelectionAdapter.notifyDataSetChanged();
 //
-//                            DialogUtil.showProgess(NearbyActivity.this, R.string.loading_dialog_text);
+//                            DialogUtil.showProgress(NearbyActivity.this, R.string.loading_dialog_text);
 //                            NearbyPresenter.getNearbyData(getApplicationContext(), mRecommendPlaceIds, mStrFilterPattern, 0, mPlaceId, SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
 //                                @Override
 //                                public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
@@ -126,7 +123,7 @@ public class NearbyActivity extends BaseBehaviorActivity {
 //                                        mData.addAll(model);
 //                                    }
 //                                    mAdapter.notifyDataSetChanged();
-//                                    DialogUtil.dismissProgess();
+//                                    DialogUtil.dismissProgress();
 //                                }
 //                            });
 //                        }
@@ -222,7 +219,7 @@ public class NearbyActivity extends BaseBehaviorActivity {
 
             mCurrentPageNo += 1;
         }
-        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        DialogUtil.showProgress(this, R.string.loading_dialog_text);
 
         mIsLoading = true;
 
@@ -241,7 +238,7 @@ public class NearbyActivity extends BaseBehaviorActivity {
                 }
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
-                DialogUtil.dismissProgess();
+                DialogUtil.dismissProgress();
             }
         });
     }

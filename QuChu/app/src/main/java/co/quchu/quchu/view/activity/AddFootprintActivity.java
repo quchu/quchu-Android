@@ -200,7 +200,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
             }
           }
           if (im.size() > 0) {
-            DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接收中");
+            DialogUtil.showProgress(AddFootprintActivity.this, "母星正在接收中");
             new ImageUpload(AddFootprintActivity.this, im,
                 new ImageUpload.UploadResponseListener() {
                   @Override public void finish(String result) {
@@ -221,13 +221,13 @@ public class AddFootprintActivity extends BaseBehaviorActivity
                   }
 
                   @Override public void error() {
-                    DialogUtil.dismissProgessDirectly();
+                    DialogUtil.dismissProgressDirectly();
                     Toast.makeText(AddFootprintActivity.this, getString(R.string.network_error),
                         Toast.LENGTH_SHORT).show();
                   }
                 });
           } else {
-            DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接收中");
+            DialogUtil.showProgress(AddFootprintActivity.this, "母星正在接收中");
 //            StringBuffer sb = new StringBuffer();
 //            for (int i = 0; i < tags.size(); i++) {
 //              if (tags.get(i).isPraise()) {
@@ -293,13 +293,13 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     InterestingDetailPresenter.submitDetailRating(this, images, tagIds, pId, content, score,
         new CommonListener() {
           @Override public void successListener(Object response) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             Toast.makeText(AddFootprintActivity.this, "评价提交成功!", Toast.LENGTH_SHORT).show();
             AddFootprintActivity.this.finish();
           }
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             Toast.makeText(AddFootprintActivity.this, "评价提交失败!", Toast.LENGTH_SHORT).show();
           }
         });

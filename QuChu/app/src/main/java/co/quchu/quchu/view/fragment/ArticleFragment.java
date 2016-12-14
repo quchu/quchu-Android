@@ -38,7 +38,6 @@ import co.quchu.quchu.view.adapter.ArticleAdapter;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
-import co.quchu.quchu.widget.SpacesItemDecoration;
 
 /**
  * ArticleFragment
@@ -104,7 +103,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtil.showProgess(getActivity(), "加载中");
+                    DialogUtil.showProgress(getActivity(), "加载中");
                     getArticles(true);
                 }
             });
@@ -127,20 +126,20 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
             mAdapter.showPageEnd(true);
             return;
         }
-        DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+        DialogUtil.showProgress(getActivity(), R.string.loading_dialog_text);
 
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), mMaxPageNo, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(ArticleWithBannerModel response) {
                 articleModels.addAll(response.getArticleList().getResult());
                 mAdapter.notifyDataSetChanged();
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 mListener.loadingComplete();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 mListener.loadingComplete();
             }
         });
@@ -153,7 +152,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
      */
     public void getArticles(final boolean firstLoad) {
         if (firstLoad) {
-            DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+            DialogUtil.showProgress(getActivity(), R.string.loading_dialog_text);
         }
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
@@ -162,7 +161,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                     mAdapter.showPageEnd(false);
                 }
                 if (firstLoad) {
-                    DialogUtil.dismissProgessDirectly();
+                    DialogUtil.dismissProgressDirectly();
                 }
                 if (null == recyclerView) {
                     return;
@@ -185,13 +184,13 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 if (firstLoad) {
-                    DialogUtil.dismissProgessDirectly();
+                    DialogUtil.dismissProgressDirectly();
                 }
                 recyclerView.setVisibility(View.GONE);
                 errorView.showViewDefault(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogUtil.showProgess(getActivity(), "加载中");
+                        DialogUtil.showProgress(getActivity(), "加载中");
                         getArticles(false);
                     }
                 });

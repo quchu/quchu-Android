@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginRight="@dimen/base_margin"
         android:layout_marginTop="@dimen/base_margin"
         android:background="@drawable/shape_refresh_btn"
         android:drawableLeft="@drawable/ic_huanyipi"
@@ -33,7 +32,7 @@
         android:paddingRight="13dp"
         android:paddingTop="5dp"
         android:text="换一批"
-        android:textColor="@color/standard_color_h1_dark"
+        android:textColor="@color/standard_color_h3_dark"
         android:textSize="12sp"
         android:visibility="gone"/>
 

@@ -149,7 +149,7 @@ public class MeActivity extends BaseBehaviorActivity {
     confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
       @Override
       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-        DialogUtil.showProgess(MeActivity.this, "正在退出登录", false);
+        DialogUtil.showProgress(MeActivity.this, "正在退出登录", false);
 
         SPUtils.clearUserinfo(AppContext.mContext);
         user = null;
@@ -170,14 +170,14 @@ public class MeActivity extends BaseBehaviorActivity {
 //            new IMPresenter().getToken(MeActivity.this, null);
 
             confirmDialog.dismiss();
-            DialogUtil.dismissProgess();
+            DialogUtil.dismissProgress();
 
             startActivity(RecommendActivity.class);
           }
 
           @Override
           public void notUnique(String msg) {
-            DialogUtil.dismissProgess();
+            DialogUtil.dismissProgress();
           }
         });
       }

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -72,7 +71,6 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
       final int actualPosition = position;
       final QuChuHistoryModel.BestListBean bestListBean = mBestList.get(actualPosition);
-      holder.historyDescribeImg.setVisibility(View.GONE);
       holder.historyDescribeTv.setText(bestListBean.getTitle());
       holder.historyDescribeTv.setTextColor(mResources.getColor(R.color.standard_color_h3_dark));
       final HistoryViewPagerAdapter adapter = new HistoryViewPagerAdapter(bestListBean);
@@ -89,7 +87,6 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onPageSelected(int position) {
-          //holder.historyDescribeImg.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
           holder.historyDescribeTv.setText(position == 0 ? bestListBean.getTitle() : bestListBean.getGapStr());
           holder.historyDescribeTv.setTextColor(position == 0
               ? mResources.getColor(R.color.standard_color_h3_dark) : mResources.getColor(R.color.standard_color_red));
@@ -240,18 +237,7 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
    * 最优记录
    */
   public void setBestList(List<QuChuHistoryModel.BestListBean> bestList) {
-//    mBestList = bestList;
-//    notifyDataSetChanged();
-
-    QuChuHistoryModel.BestListBean bestListBean1 = bestList.get(0);
-    QuChuHistoryModel.BestListBean bestListBean2 = bestList.get(1);
-    bestListBean1.setSecondPlaceInfo(bestListBean2.getPlaceInfo());
-    bestListBean2.setSecondPlaceInfo(bestListBean1.getPlaceInfo());
-    bestListBean1.setGapStr("ashdkjahskjdh");
-    bestListBean2.setGapStr("asdasfgf");
-    mBestList = new ArrayList<>();
-    mBestList.add(bestListBean1);
-    mBestList.add(bestListBean2);
+    mBestList = bestList;
     notifyDataSetChanged();
   }
 
@@ -294,7 +280,6 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
   public class QuChuBestHistoryViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.history_describe_img) ImageView historyDescribeImg;
     @Bind(R.id.history_describe_tv) TextView historyDescribeTv;
     @Bind(R.id.history_siv) CircleIndicator historySiv;
     @Bind(R.id.history_vp) ViewPager historyVp;

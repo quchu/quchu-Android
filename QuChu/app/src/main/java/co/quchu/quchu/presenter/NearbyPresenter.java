@@ -26,7 +26,6 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.utils.SPUtils;
 
 /**
  * InterestingDetailPresenter
@@ -64,7 +63,7 @@ public class NearbyPresenter {
 
             @Override
             public boolean onError(String error) {
-                DialogUtil.dismissProgess();
+                DialogUtil.dismissProgress();
                 return false;
             }
         });
@@ -95,7 +94,7 @@ public class NearbyPresenter {
 
             @Override
             public boolean onError(String error) {
-                DialogUtil.dismissProgess();
+                DialogUtil.dismissProgress();
                 return false;
             }
         });

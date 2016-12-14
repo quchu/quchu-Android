@@ -106,7 +106,7 @@ public class WebViewActivity extends BaseActivity {
         if (!StringUtils.isEmpty(url) && URLUtil.isValidUrl(url)) {
             Log.d(TAG, url);
             mWebView.loadUrl(url);
-            DialogUtil.showProgess(WebViewActivity.this, R.string.loading_dialog_text);
+            DialogUtil.showProgress(WebViewActivity.this, R.string.loading_dialog_text);
         } else {
             showErrorToast();
         }
@@ -126,7 +126,7 @@ public class WebViewActivity extends BaseActivity {
 
     private void showErrorToast() {
         if (DialogUtil.isDialogShowing()) {
-            DialogUtil.dismissProgess();
+            DialogUtil.dismissProgress();
         }
         Toast.makeText(WebViewActivity.this, R.string.error_invalid_arguments, Toast.LENGTH_SHORT).show();
     }
@@ -180,7 +180,7 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            DialogUtil.dismissProgess();
+            DialogUtil.dismissProgress();
             refreshLayout.setRefreshing(false);
         }
 

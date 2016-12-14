@@ -17,16 +17,16 @@ public class DialogUtil {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    dismissProgessDirectly();
+                    dismissProgressDirectly();
                     break;
                 case 2:
-                    dismissProgess();
+                    dismissProgress();
                     break;
             }
         }
     };
 
-    public static void showProgess(Context activity, int resId) {
+    public static void showProgress(Context activity, int resId) {
         if (activity != null) {
 
             if (loadingDialog!=null && loadingDialog.isShowing()){
@@ -45,7 +45,7 @@ public class DialogUtil {
         }
     }
 
-    public static void showProgess(Context activity, String msg) {
+    public static void showProgress(Context activity, String msg) {
         if (activity != null) {
 
             if (loadingDialog!=null && loadingDialog.isShowing()){
@@ -64,7 +64,7 @@ public class DialogUtil {
         }
     }
 
-    public static void showProgess(Context activity, String msg, boolean isCancelable) {
+    public static void showProgress(Context activity, String msg, boolean isCancelable) {
         if (activity != null) {
 
             if (loadingDialog!=null && loadingDialog.isShowing()){
@@ -84,7 +84,7 @@ public class DialogUtil {
         }
     }
 
-    public static void dismissProgessDirectly() {
+    public static void dismissProgressDirectly() {
         if (loadingDialog != null && loadingDialog.isShowing()) {
             try{
                 loadingDialog.dismiss();
@@ -105,7 +105,7 @@ public class DialogUtil {
 
     }
 
-    public static void dismissProgess() {
+    public static void dismissProgress() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -115,28 +115,28 @@ public class DialogUtil {
         }, 500);
     }
 
-    public static void dismissProgess(int resId) {
-        dismissProgess();
+    public static void dismissProgress(int resId) {
+        dismissProgress();
     }
 
-    public static void dismissProgess(String msg) {
-        dismissProgess();
+    public static void dismissProgress(String msg) {
+        dismissProgress();
     }
 
-    public static void dismissProgessWithSuccess(int resId) {
-        dismissProgess();
+    public static void dismissProgressWithSuccess(int resId) {
+        dismissProgress();
     }
 
-    public static void dismissProgessWithSuccess(String msg) {
-        dismissProgess();
+    public static void dismissProgressWithSuccess(String msg) {
+        dismissProgress();
     }
 
-    public static void dismissProgessWithError(int resId) {
-        dismissProgess();
+    public static void dismissProgressWithError(int resId) {
+        dismissProgress();
     }
 
-    public static void dismissProgessWithError(String msg) {
-        dismissProgess();
+    public static void dismissProgressWithError(String msg) {
+        dismissProgress();
     }
 //	
 //	public static void showCancleDialog(final Context context) {

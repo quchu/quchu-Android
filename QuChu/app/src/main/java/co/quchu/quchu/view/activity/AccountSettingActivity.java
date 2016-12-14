@@ -180,10 +180,10 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
     }
   }
 
-  @OnClick({R.id.editHeadImage, R.id.male_cb, R.id.female_cb})
+  @OnClick({R.id.headContainer, R.id.male_cb, R.id.female_cb})
   public void onClick(View v) {
     switch (v.getId()) {
-      case R.id.editHeadImage://编辑头像
+      case R.id.headContainer://编辑头像
         ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
         photoDialogFg.setOnOriginListener(listener);
         photoDialogFg.show(getSupportFragmentManager(), "photo");
@@ -297,7 +297,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
     //    return;
     //}
 
-    DialogUtil.showProgess(this, R.string.loading_dialog_text);
+    DialogUtil.showProgress(this, R.string.loading_dialog_text);
     if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
       AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
         @Override
@@ -307,7 +307,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
         @Override
         public void onError() {
-          DialogUtil.dismissProgess();
+          DialogUtil.dismissProgress();
           Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
         }
       });
@@ -327,7 +327,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
           @Override
           public void onError() {
             Toast.makeText(AccountSettingActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-            DialogUtil.dismissProgess();
+            DialogUtil.dismissProgress();
           }
         });
   }
@@ -338,7 +338,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
       public void onSuccess(JSONObject response) {
         UserInfoHelper.saveUserInfo(response);
         Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATE));
         SPUtils.putBooleanToSPMap(AccountSettingActivity.this, AppKey.IS_MENU_NEED_REFRESH, true);
         finish();
@@ -346,7 +346,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
       @Override
       public boolean onError(String error) {
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
         return false;
       }
     });
@@ -386,7 +386,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
       @Override
       public void onError() {
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
         Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
       }
     });

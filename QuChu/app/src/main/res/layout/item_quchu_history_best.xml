@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -7,26 +8,16 @@
 
   <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="40dp"
+      android:layout_height="30dp"
       android:background="@color/colorBackground"
       android:paddingLeft="@dimen/base_margin"
       android:paddingRight="@dimen/base_margin">
-
-    <ImageView
-        android:id="@+id/history_describe_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/half_margin"
-        android:src="@drawable/ic_chihuo_ahsy"
-        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/history_describe_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/history_describe_img"
         android:textColor="@color/standard_color_h3_dark"
         android:textSize="13sp"
         tools:text="距离最近的"/>
@@ -36,7 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        app:ci_drawable_unselected="@drawable/shape_indicator_grey_radius"/>
 
   </RelativeLayout>
 

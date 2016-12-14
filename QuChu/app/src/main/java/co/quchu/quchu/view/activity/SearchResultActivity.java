@@ -273,7 +273,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     if (mIsLoading) return;
 
     if (!mIsPullDownRefresh && NetUtil.isNetworkConnected(this)) {
-      DialogUtil.showProgess(this, R.string.loading_dialog_text);
+      DialogUtil.showProgress(this, R.string.loading_dialog_text);
       mIsPullDownRefresh = false;
     }
     mIsLoading = true;
@@ -290,7 +290,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       public void onSuccess(List<RecommendModel> data, int pageNo, int pageCount, int resultCount) {
         mIsLoading = false;
         mSearchNoDataTv.setVisibility(View.GONE);
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
 
         if (mSearchRefreshLayout.isRefreshing()) {
           mSearchRefreshLayout.setRefreshing(false);
@@ -321,7 +321,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       @Override
       public void onError() {
         mIsLoading = false;
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgress();
 
         if (mSearchRefreshLayout.isRefreshing()) {
           mSearchRefreshLayout.setRefreshing(false);

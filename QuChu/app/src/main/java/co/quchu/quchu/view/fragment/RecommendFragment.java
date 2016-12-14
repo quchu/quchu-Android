@@ -290,13 +290,13 @@ public class RecommendFragment extends BaseFragment
       errorView.showViewDefault(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          DialogUtil.showProgess(getActivity(), "加载中");
+          DialogUtil.showProgress(getActivity(), "加载中");
           getMyScene();
         }
       });
     }
 
-    DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+    DialogUtil.showProgress(getActivity(), R.string.loading_dialog_text);
 
     getMyScene();
     getData(false);
@@ -337,7 +337,7 @@ public class RecommendFragment extends BaseFragment
         new CommonListener<PagerModel<SceneModel>>() {
           @Override
           public void successListener(PagerModel<SceneModel> response) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             errorView.hideView();
 
             if (response != null && response.getResult() != null) {
@@ -351,11 +351,11 @@ public class RecommendFragment extends BaseFragment
 
           @Override
           public void errorListener(VolleyError error, String exception, String msg) {
-            DialogUtil.dismissProgessDirectly();
+            DialogUtil.dismissProgressDirectly();
             errorView.showViewDefault(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                DialogUtil.showProgess(getActivity(), "加载中");
+                DialogUtil.showProgress(getActivity(), "加载中");
                 getMyScene();
               }
             });

@@ -121,7 +121,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtil.showProgess(ArticleDetailActivity.this, "加载中");
+                    DialogUtil.showProgress(ArticleDetailActivity.this, "加载中");
                     getData(articleId,true);
                 }
             });
@@ -148,20 +148,20 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
             mAdapter.showPageEnd(true);
             return;
         }
-        DialogUtil.showProgess(ArticleDetailActivity.this, R.string.loading_dialog_text);
+        DialogUtil.showProgress(ArticleDetailActivity.this, R.string.loading_dialog_text);
 
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), mPageNo, id, new CommonListener<ArticleDetailModel>() {
             @Override
             public void successListener(ArticleDetailModel response) {
                 mSimplePlaceModels.addAll(response.getPlaceList().getResult());
                 mAdapter.notifyDataSetChanged();
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 mListener.loadingComplete();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgressDirectly();
                 mListener.loadingComplete();
             }
         });
@@ -171,7 +171,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
 
     private void getData(String id, final boolean firstLoad) {
         if (firstLoad){
-            DialogUtil.showProgess(this,R.string.loading_dialog_text);
+            DialogUtil.showProgress(this,R.string.loading_dialog_text);
         }
 
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, id, new CommonListener<ArticleDetailModel>() {
@@ -182,7 +182,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 }
 
                 if (firstLoad){
-                    DialogUtil.dismissProgessDirectly();
+                    DialogUtil.dismissProgressDirectly();
                 }
                 if (null!=mAdapter){
                     mAdapter.showPageEnd(false);
@@ -227,12 +227,12 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 if (firstLoad){
-                    DialogUtil.dismissProgessDirectly();
+                    DialogUtil.dismissProgressDirectly();
                 }
                 errorView.showViewDefault(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogUtil.showProgess(ArticleDetailActivity.this, "加载中");
+                        DialogUtil.showProgress(ArticleDetailActivity.this, "加载中");
                         getData(articleId,false);
                     }
                 });
