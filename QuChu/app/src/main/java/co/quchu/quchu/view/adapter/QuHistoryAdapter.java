@@ -89,7 +89,7 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onPageSelected(int position) {
-          holder.historyDescribeImg.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+          //holder.historyDescribeImg.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
           holder.historyDescribeTv.setText(position == 0 ? bestListBean.getTitle() : bestListBean.getGapStr());
           holder.historyDescribeTv.setTextColor(position == 0
               ? mResources.getColor(R.color.standard_color_h3_dark) : mResources.getColor(R.color.standard_color_red));

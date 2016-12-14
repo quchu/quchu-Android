@@ -30,6 +30,7 @@
         android:layout_alignRight="@id/scene_cover_img"
         android:src="@drawable/ic_hot"
         android:translationX="5dp"
+        android:translationY="5dp"
         android:visibility="visible"/>
   </RelativeLayout>
 

@@ -23,6 +23,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
+      android:visibility="gone"
       android:src="@drawable/ic_map_pin_blue"
       />
 
@@ -35,8 +36,7 @@
       android:layout_marginLeft="@dimen/double_margin"
       android:layout_marginRight="@dimen/double_margin"
       android:layout_marginBottom="@dimen/half_margin"
-      android:layout_above="@+id/ivIndicator"
-      android:layout_centerHorizontal="true"
+      android:layout_centerInParent="true"
       android:background="@drawable/bg_map_pin"
       android:textSize="@dimen/standard_text_size_h2"
       android:textColor="@color/standard_color_h1_dark"

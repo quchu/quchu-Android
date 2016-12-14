@@ -86,7 +86,7 @@
               android:layout_height="36dp"
               android:layout_marginLeft="8dp"
               android:drawableLeft="@drawable/ic_sousuokuang"
-              android:drawablePadding="8dp"
+              android:drawablePadding="4dp"
               android:gravity="left|center_vertical"
               android:hint="搜索您喜欢的吃喝玩乐"
               android:textSize="@dimen/word_size_body"
