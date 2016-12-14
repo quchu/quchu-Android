@@ -75,7 +75,7 @@
       android:src="@drawable/ic_huidaodibu"
       android:gravity="center"
       android:layout_alignParentBottom="true"
-      android:layout_marginBottom="100dp"
+      android:layout_marginBottom="@dimen/base_margin"
       android:layout_centerHorizontal="true"
 
       />

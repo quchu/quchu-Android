@@ -26,7 +26,6 @@
       android:layout_alignParentBottom="true"
       android:layout_gravity="bottom|left"
       android:layout_marginBottom="@dimen/base_margin"
-      android:layout_marginLeft="@dimen/base_margin"
       android:paddingBottom="@dimen/quarter_margin"
       android:paddingLeft="@dimen/base_margin"
       android:paddingRight="@dimen/base_margin"

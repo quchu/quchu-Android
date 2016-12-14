@@ -798,7 +798,7 @@ public class AIConversationFragment extends BaseFragment
     final MediaPlayer mPlayer =
         MediaPlayer.create(getActivity(), index == 0 ? R.raw.sound_0 : R.raw.sound_1);
     mPlayer.setLooping(false);
-    mPlayer.setVolume(30, 30);
+    mPlayer.setVolume(20, 20);
     mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
       @Override public void onPrepared(MediaPlayer mp) {
         mPlayer.seekTo(0);
