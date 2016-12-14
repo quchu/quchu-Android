@@ -21,7 +21,6 @@
       <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/base_margin"
           android:gravity="center"
           android:lineSpacingExtra="@dimen/half_margin"
           android:text="称号种类一共有六种\n即小食神、好奇喵、文艺咖、大财阀、\n外交官、时尚精和新生宝宝"

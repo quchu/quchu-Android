@@ -12,17 +12,29 @@
       android:layout_marginTop="@dimen/title_bar_height"
       android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="热 门 搜 索"
+        android:textColor="@color/standard_color_h0_dark"
+        android:textSize="13sp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tags_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
 
     <TextView
         android:id="@+id/tag_refresh_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginTop="@dimen/quarter_margin"
         android:background="@drawable/shape_refresh_btn"
         android:drawableLeft="@drawable/ic_huanyipi"
         android:drawablePadding="5dp"
@@ -46,41 +58,32 @@
       <View
           android:layout_width="match_parent"
           android:layout_height="1px"
+          android:layout_marginLeft="@dimen/base_margin"
+          android:layout_marginRight="@dimen/base_margin"
           android:background="@color/colorDivider"/>
 
-      <co.quchu.quchu.widget.MFrameLayout.MFrameLayout
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginBottom="@dimen/half_margin"
+          android:layout_marginTop="@dimen/half_margin"
+          android:text="搜 索 分 类"
+          android:textColor="@color/standard_color_h0_dark"
+          android:textSize="13sp"/>
+
+      <GridView
+          android:id="@+id/search_category_grid_view"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-          <ImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerHorizontal="true"
-              android:layout_marginBottom="30dp"
-              android:layout_marginTop="15dp"
-              android:src="@drawable/ic_search_xiahua"/>
-
-        </RelativeLayout>
-
-        <GridView
-            android:id="@+id/search_category_grid_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fadingEdge="none"
-            android:listSelector="@color/transparent"
-            android:numColumns="3"
-            android:overScrollMode="never"
-            android:paddingLeft="@dimen/base_margin"
-            android:paddingRight="@dimen/base_margin"
-            android:paddingTop="45dp"
-            android:scrollbars="none"
-            android:verticalSpacing="30dp"/>
-
-      </co.quchu.quchu.widget.MFrameLayout.MFrameLayout>
+          android:layout_height="wrap_content"
+          android:fadingEdge="none"
+          android:listSelector="@color/transparent"
+          android:numColumns="3"
+          android:overScrollMode="never"
+          android:paddingLeft="@dimen/base_margin"
+          android:paddingRight="@dimen/base_margin"
+          android:scrollbars="none"
+          android:verticalSpacing="30dp"/>
 
     </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -28,6 +29,8 @@ public class ASUserPhotoDialogFg extends DialogFragment implements View.OnClickL
   TextView selectQutouxiang;
   @Bind(R.id.select_cancle)
   Button selectCancle;
+  @Bind(R.id.dialog_selected_photo_background_layout)
+  RelativeLayout backgroundLayout;
 
   public static ASUserPhotoDialogFg newInstance() {
     return new ASUserPhotoDialogFg();
@@ -66,6 +69,8 @@ public class ASUserPhotoDialogFg extends DialogFragment implements View.OnClickL
     selectCancle.setOnClickListener(this);
     selectQutouxiang.setOnClickListener(this);
     selectPhoto.setOnClickListener(this);
+    backgroundLayout.setOnClickListener(this);
+
     return dialog;
   }
 
