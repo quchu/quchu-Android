@@ -111,7 +111,7 @@ public class QuHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             if (bestListBean.getSecondPlaceInfo() != null && mLastSelectedPosition == actualPosition) {
-              holder.historyDescribeImg.setVisibility(mLastPageSelectedIndex == 0 ? View.GONE : View.VISIBLE);
+              //holder.historyDescribeImg.setVisibility(mLastPageSelectedIndex == 0 ? View.GONE : View.VISIBLE);
               holder.historyDescribeTv.setText(mLastPageSelectedIndex == 0
                   ? bestListBean.getTitle() : bestListBean.getGapStr());
               holder.historyDescribeTv.setTextColor(mLastPageSelectedIndex == 0

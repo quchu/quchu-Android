@@ -53,9 +53,9 @@
         <ImageView
             android:id="@+id/ivPingJia"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
             android:layout_weight="1"
-            android:padding="@dimen/base_margin"
             android:src="@drawable/ic_pingjia"/>
 
         <View
@@ -66,9 +66,9 @@
         <ImageView
             android:id="@+id/ivShare"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
             android:layout_weight="1"
-            android:padding="@dimen/base_margin"
             android:src="@drawable/ic_share"/>
 
         <View
