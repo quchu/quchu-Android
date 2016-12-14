@@ -136,15 +136,16 @@ public class XiaoQFab extends FloatingActionButton {
       paintIndicator.setStyle(Paint.Style.FILL);
       paintIndicator.setAntiAlias(true);
       float offset = getWidth()-width;
-      canvas.drawRect(offset+radius,indicatorDiameter,getWidth()-radius,indicatorDiameter+indicatorDiameter,paintIndicator);
-      canvas.drawCircle(offset+radius,radius+indicatorDiameter,radius,paintIndicator);
-      canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,radius,paintIndicator);
+      float verticalOffset = 10;
+      canvas.drawRect(offset+radius,indicatorDiameter+verticalOffset,getWidth()-radius,indicatorDiameter+indicatorDiameter+verticalOffset,paintIndicator);
+      canvas.drawCircle(offset+radius,radius+indicatorDiameter+verticalOffset,radius,paintIndicator);
+      canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter+verticalOffset,radius,paintIndicator);
 
       Paint paintIndicatorWhite = new Paint(paintIndicator);
       paintIndicatorWhite.setColor(Color.WHITE);
-      canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
-      canvas.drawCircle(offset+radius,radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
-      canvas.drawCircle(offset+(width/2),radius+indicatorDiameter,whiteDotsSize,paintIndicatorWhite);
+      canvas.drawCircle(getWidth()-radius,radius+indicatorDiameter+verticalOffset,whiteDotsSize,paintIndicatorWhite);
+      canvas.drawCircle(offset+radius,radius+indicatorDiameter+verticalOffset,whiteDotsSize,paintIndicatorWhite);
+      canvas.drawCircle(offset+(width/2),radius+indicatorDiameter+verticalOffset,whiteDotsSize,paintIndicatorWhite);
     }
 
   }
