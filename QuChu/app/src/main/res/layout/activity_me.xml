@@ -34,7 +34,9 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:placeholderImage="@drawable/head_place_hold"
-            app:roundAsCircle="true"/>
+            app:roundAsCircle="true"
+            app:roundingBorderColor="@color/colorBackground"
+            app:roundingBorderWidth="3px"/>
 
       </RelativeLayout>
 
