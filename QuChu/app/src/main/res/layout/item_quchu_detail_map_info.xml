@@ -23,11 +23,12 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:visibility="gone"
+      android:visibility="visible"
       android:src="@drawable/ic_map_pin_blue"
       />
 
   <TextView
+      android:layout_above="@+id/ivIndicator"
       android:id="@+id/tvAddress"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -41,7 +42,6 @@
       android:textSize="@dimen/standard_text_size_h2"
       android:textColor="@color/standard_color_h1_dark"
       android:drawablePadding="@dimen/quarter_margin"
-      android:drawableLeft="@drawable/ic_zuobiao"
       android:drawableRight="@drawable/ic_friends_arrow"
       tools:text="环岛路30号"
       />
