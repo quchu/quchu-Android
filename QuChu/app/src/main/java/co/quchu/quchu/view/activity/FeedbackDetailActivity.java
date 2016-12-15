@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -68,6 +69,12 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView titleTv = toolbar.getTitleTv();
     titleTv.setText("意见和帮助");
+    toolbar.getRightIv().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onBackPressed();
+      }
+    });
 
     mFeedbackModel = (FeedbackModel) getIntent().getSerializableExtra(INTENT_KEY_FEEDBACK_MODEL);
     if (mFeedbackModel != null) {
@@ -82,6 +89,12 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     recyclerView.setAdapter(mAdapter);
 
     mInputEditText.addTextChangedListener(textChangedListener);
+  }
+
+  @Override
+  public void onBackPressed() {
+    SoftInputUtils.hideSoftInput(this);
+    super.onBackPressed();
   }
 
   private TextWatcher textChangedListener = new TextWatcher() {
