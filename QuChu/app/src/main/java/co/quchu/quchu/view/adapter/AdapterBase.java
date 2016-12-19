@@ -257,12 +257,26 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     void itemClick(RecyclerView.ViewHolder holder, DT item, int type, @Deprecated int position);
   }
 
-
   public void removeItem(RecyclerView.ViewHolder holder, DT item) {
     data.remove(item);
     if (getItemCount() > 2)
       notifyItemRemoved(holder.getAdapterPosition());
     else notifyDataSetChanged();
+  }
 
+  public void removeItem(RecyclerView.ViewHolder holder, DT item, RefreshDataListener listener) {
+    data.remove(item);
+
+    if (getItemCount() > 2)
+      notifyItemRemoved(holder.getAdapterPosition());
+    else notifyDataSetChanged();
+
+    if (getItemCount() == 1) {
+      listener.onRefresh();
+    }
+  }
+
+  public interface RefreshDataListener {
+    void onRefresh();
   }
 }

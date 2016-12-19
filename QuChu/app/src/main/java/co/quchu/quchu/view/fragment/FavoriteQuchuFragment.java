@@ -192,10 +192,21 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
         .onPositive(new MaterialDialog.SingleButtonCallback() {
           @Override
           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+            if (!NetUtil.isNetworkConnected(getActivity())) {
+              makeToast(R.string.network_error);
+              return;
+            }
+
             InterestingDetailPresenter.setDetailFavorite(getActivity(), item.getPid(), true, new InterestingDetailPresenter.DetailDataListener() {
               @Override
               public void onSuccessCall(String str) {
-                adapter.removeItem(holder, item);
+                adapter.removeItem(holder, item, new AdapterBase.RefreshDataListener() {
+                  @Override
+                  public void onRefresh() {
+                    refreshLayout.setRefreshing(true);
+                    onRefresh();
+                  }
+                });
                 Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
               }
 

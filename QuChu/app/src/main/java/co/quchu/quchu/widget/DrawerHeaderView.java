@@ -27,6 +27,8 @@ import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
 
+import static co.quchu.quchu.base.AppContext.user;
+
 /**
  * Created by mwb on 16/10/18.
  */
@@ -62,22 +64,29 @@ public class DrawerHeaderView extends LinearLayout {
   }
 
   public void setUser() {
-    if (AppContext.user == null || (AppContext.user != null && AppContext.user.isIsVisitors())) {
+    if (user == null || (user != null && user.isIsVisitors())) {
       mDrawerLoginLayout.setVisibility(VISIBLE);
       mDrawerUserLayout.setVisibility(INVISIBLE);
     } else {
       mDrawerLoginLayout.setVisibility(GONE);
       mDrawerUserLayout.setVisibility(VISIBLE);
 
-      mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
-      String avatar = AppContext.user.getPhoto();
+      mDrawerHeaderNameTv.setText(user.getFullname());
+      String avatar = user.getPhoto();
       if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
         hasAvatar = true;
-        mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+        mDrawerHeaderAvatarImg.setImageURI(user.getPhoto());
       }
-      mDrawerHeaderGenderImg.setImageURI(Uri.parse(
-          "res:///" + (AppContext.user.getGender().equals("男") ? R.drawable.ic_male
-              : R.drawable.ic_female)));
+
+      String genderStr = AppContext.user.getGender();
+      if (genderStr.equals("男") || genderStr.equals("女")) {
+        mDrawerHeaderAvatarImg.setVisibility(VISIBLE);
+        mDrawerHeaderGenderImg.setImageURI(Uri.parse(
+            "res:///" + (AppContext.user.getGender().equals("男") ? R.drawable.ic_male
+                : R.drawable.ic_female)));
+      } else {
+        mDrawerHeaderGenderImg.setVisibility(GONE);
+      }
     }
   }
 
@@ -131,14 +140,14 @@ public class DrawerHeaderView extends LinearLayout {
     if (!hasAvatar) {
       int imgResId = QuChuHelper.getUserAvatarByGene(mark);
       if (imgResId != -1) {
-        AppContext.user.setGeneAvatar(imgResId);
+        user.setGeneAvatar(imgResId);
         mDrawerHeaderAvatarImg.getHierarchy().setPlaceholderImage(imgResId);
       } else {
-        mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+        mDrawerHeaderAvatarImg.setImageURI(user.getPhoto());
       }
 
     } else {
-      AppContext.user.setGeneAvatar(-1);
+      user.setGeneAvatar(-1);
     }
   }
 

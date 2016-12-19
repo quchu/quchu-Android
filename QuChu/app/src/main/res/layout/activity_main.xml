@@ -34,64 +34,65 @@
         android:layout_height="1px"
         android:background="@color/colorDivider"/>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerInParent="true"
-          android:gravity="center_vertical"
-          android:orientation="vertical">
-
-        <co.quchu.quchu.widget.DrawerItemView
-            android:id="@+id/drawerItemFavorite"
+        <LinearLayout
+            android:id="@+id/drawerItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_wodeshoucang"
-            app:divText="我的收藏"/>
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-        <co.quchu.quchu.widget.DrawerItemView
-            android:id="@+id/drawerItemUserCenter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:divImage="@drawable/ic_gerenzhongxin"
-            app:divText="个人中心"/>
+          <co.quchu.quchu.widget.DrawerItemView
+              android:id="@+id/drawerItemFavorite"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:divImage="@drawable/ic_wodeshoucang"
+              app:divText="我的收藏"/>
 
-        <co.quchu.quchu.widget.DrawerItemView
-            android:id="@+id/drawerItemMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_xiaoxizhongxin"
-            app:divText="消息中心"/>
+          <co.quchu.quchu.widget.DrawerItemView
+              android:id="@+id/drawerItemUserCenter"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:visibility="gone"
+              app:divImage="@drawable/ic_gerenzhongxin"
+              app:divText="个人中心"/>
 
-        <co.quchu.quchu.widget.DrawerItemView
-            android:id="@+id/drawerItemFeedback"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_yijianbangzhu"
-            app:divText="意见帮助"/>
+          <co.quchu.quchu.widget.DrawerItemView
+              android:id="@+id/drawerItemMessage"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:divImage="@drawable/ic_xiaoxizhongxin"
+              app:divText="消息中心"/>
 
-        <co.quchu.quchu.widget.DrawerItemView
-            android:id="@+id/drawerItemSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_wodeshezhi"
-            app:divText="我的设置"/>
+          <co.quchu.quchu.widget.DrawerItemView
+              android:id="@+id/drawerItemFeedback"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:divImage="@drawable/ic_yijianbangzhu"
+              app:divText="意见帮助"/>
 
-        <co.quchu.quchu.widget.DrawerItemView
-            android:id="@+id/drawerItemShareApp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:divImage="@drawable/ic_fenxiangapp"
-            app:divText="分享App"/>
+          <co.quchu.quchu.widget.DrawerItemView
+              android:id="@+id/drawerItemSetting"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:divImage="@drawable/ic_wodeshezhi"
+              app:divText="我的设置"/>
 
-      </LinearLayout>
+          <co.quchu.quchu.widget.DrawerItemView
+              android:id="@+id/drawerItemShareApp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:divImage="@drawable/ic_fenxiangapp"
+              app:divText="分享App"/>
 
-    </RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
   </LinearLayout>
 

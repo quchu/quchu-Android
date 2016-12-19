@@ -13,24 +13,22 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerVertical="true"
-      android:visibility="gone"
-      tools:src="@drawable/ic_shoucang"/>
+      tools:src="@drawable/ic_wodeshezhi"/>
 
   <TextView
       android:id="@+id/drawerTitleTv"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerVertical="true"
+      android:layout_marginLeft="@dimen/base_margin"
       android:layout_toRightOf="@+id/drawerItemImg"
-      android:drawableLeft="@drawable/ic_wodeshezhi"
-      android:drawablePadding="15dp"
       android:gravity="center|left"
       android:textColor="@color/standard_color_h0_dark"
       android:textSize="14sp"
       tools:text="个人中心"/>
 
   <TextView
-      android:id="@+id/unReadMessageView"
+      android:id="@+id/drawerUnReadTv"
       android:layout_width="5dp"
       android:layout_height="5dp"
       android:layout_marginLeft="5dp"

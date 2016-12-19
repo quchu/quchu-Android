@@ -289,7 +289,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
     newUserNickName = nickname.getText().toString().trim();
 
     if (newUserNickName.length() < 1 || newUserNickName.length() > 16) {
-      Toast.makeText(this, "昵称必须为1-16位字符", Toast.LENGTH_SHORT).show();
+      Toast.makeText(this, "昵称最多可以输入14个字符", Toast.LENGTH_SHORT).show();
       return;
     }
     //if (StringUtils.containsEmoji(newUserNickName)) {

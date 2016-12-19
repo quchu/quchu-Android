@@ -26,6 +26,7 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
@@ -78,8 +79,14 @@ public class MeActivity extends BaseBehaviorActivity {
       mUserAvatarImg.setImageURI(Uri.parse(AppContext.user.getPhoto()));
     }
 
-    mUserGenderImg.setImageURI(Uri.parse("res:///"
-        + (AppContext.user.getGender().equals("男") ? R.drawable.ic_male : R.drawable.ic_female)));
+    String genderStr = AppContext.user.getGender();
+    if (genderStr.equals("男") || genderStr.equals("女")) {
+      mUserGenderImg.setVisibility(View.VISIBLE);
+      mUserGenderImg.setImageURI(Uri.parse("res:///"
+          + (AppContext.user.getGender().equals("男") ? R.drawable.ic_male : R.drawable.ic_female)));
+    } else {
+      mUserGenderImg.setVisibility(View.GONE);
+    }
 
     mUserNameTv.setText(user.getFullname());
 
@@ -150,6 +157,12 @@ public class MeActivity extends BaseBehaviorActivity {
       @Override
       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         DialogUtil.showProgress(MeActivity.this, "正在退出登录", false);
+
+        if (!NetUtil.isNetworkConnected(MeActivity.this)) {
+          makeToast(R.string.network_error);
+          DialogUtil.dismissProgress();
+          return;
+        }
 
         SPUtils.clearUserinfo(AppContext.mContext);
         user = null;
