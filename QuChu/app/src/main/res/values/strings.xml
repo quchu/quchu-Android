@@ -175,7 +175,7 @@
 
   <string name="string_no_data">暂无数据</string>
 
-  <string name="promote_no_network_naughty">网络链接失败</string>
+  <string name="promote_no_network_naughty">网络连接失败</string>
   <string name="promote_no_visitor">还没有人去过</string>
   <string name="qu_recommend">趣推荐</string>
   <string name="qu_discover">趣发现</string>

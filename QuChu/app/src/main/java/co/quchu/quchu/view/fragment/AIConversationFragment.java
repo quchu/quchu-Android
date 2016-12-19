@@ -260,6 +260,9 @@ public class AIConversationFragment extends BaseFragment
 
     playTheFuckingSound(index);
 
+    if(null==rvOptions.getChildAt(index) || null==rvOptions.findViewById(R.id.tvOption)){
+      return;
+    }
     final TextView selectedTarget =
         (TextView) rvOptions.getChildAt(index).findViewById(R.id.tvOption);
 
@@ -672,9 +675,15 @@ public class AIConversationFragment extends BaseFragment
     }
   }
 
+  boolean mAnswering = false;
+
   @Override
   public void onAnswer(final String answer, final String additionalShit, final int index) {
 
+    if (mAnswering){
+      return;
+    }
+    mAnswering = true;
     ivGuide.setVisibility(View.GONE);
 
     if (!NetUtil.isNetworkConnected(getActivity())) {
@@ -701,6 +710,7 @@ public class AIConversationFragment extends BaseFragment
         mAdapter.notifyItemInserted(mConversation.size() - 1);
         hideAndUpdate(index);
         getNext(answer, additionalShit);
+        mAnswering = false;
       }
     }, 300);
   }

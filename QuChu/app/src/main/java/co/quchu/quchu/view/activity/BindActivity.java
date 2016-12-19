@@ -218,7 +218,7 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
             request.start(BindActivity.this);
           }
         })
-        .onNegative(new MaterialDialog.SingleButtonCallback() {
+        .onNeutral(new MaterialDialog.SingleButtonCallback() {
           @Override
           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
             Intent intent = new Intent(BindActivity.this, StatementActivity.class);

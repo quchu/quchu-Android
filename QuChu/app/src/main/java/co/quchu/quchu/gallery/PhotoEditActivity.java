@@ -85,7 +85,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
 
         if (mTakePhotoAction) {
             if (path == null) {
-                if (mFunctionConfig.getSelectedPhoto() != null) {
+                if (null!= mFunctionConfig && mFunctionConfig.getSelectedPhoto() != null) {
                     for (PhotoInfo item : mFunctionConfig.getSelectedPhoto()) {
                         if (!item.getPhotoPath().startsWith("res:///")) {
                             if (!item.getPhotoPath().startsWith("http://") || item.getPhotoPath().startsWith("file://"))

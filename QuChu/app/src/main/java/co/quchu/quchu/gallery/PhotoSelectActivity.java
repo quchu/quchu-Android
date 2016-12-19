@@ -28,6 +28,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -203,7 +204,11 @@ public class PhotoSelectActivity extends BaseActivity implements View.OnClickLis
         if (callback != null) {
             int requestCode = GalleryFinal.getRequestCode();
             if (photoList != null && photoList.size() > 0) {
-                callback.onHanlderSuccess(requestCode, photoList);
+                try{
+                    callback.onHanlderSuccess(requestCode, photoList);
+                }catch (UndeclaredThrowableException ex){
+                    callback.onHanlderFailure(requestCode, getString(R.string.photo_list_empty));
+                }
             } else {
                 callback.onHanlderFailure(requestCode, getString(R.string.photo_list_empty));
             }

@@ -8,6 +8,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +92,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
   private boolean mFavoriteRunning = false;
   private boolean mActivityStop = false;
+  private boolean mIsRefreshing = false;
 
   private TextView mTitleTv;
 
@@ -133,6 +135,16 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 //    });
 //    mLikeFab.setVisibility(View.VISIBLE);
 //    changeFavoriteBtn(isFavorite);
+
+    mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View v, MotionEvent event) {
+        if (mIsRefreshing) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
   }
 
   private void initRecyclerView() {
@@ -149,7 +161,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     }
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
-    mLoadingListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
+    mLoadingListener = new EndlessRecyclerOnScrollListener( mRecyclerView.getLayoutManager()) {
       @Override
       public void onLoadMore(int current_page) {
         getData(false, true);
@@ -184,6 +196,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   }
 
   private void getData(final boolean firstLoad, final boolean loadMore) {
+    if (!loadMore){
+      mIsRefreshing = true;
+    }
+
     if (firstLoad) {
 
       mSceneList.clear();
@@ -212,6 +228,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), mPageNo, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), placeIds, new CommonListener<SceneDetailModel>() {
       @Override
       public void successListener(SceneDetailModel response) {
+        mIsRefreshing = false;
         DialogUtil.dismissProgressDirectly();
 
         if (null!=response ){
@@ -288,6 +305,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
+        mIsRefreshing = false;
         DialogUtil.dismissProgressDirectly();
         if (!loadMore) {
           errorView.showViewDefault(new View.OnClickListener() {
