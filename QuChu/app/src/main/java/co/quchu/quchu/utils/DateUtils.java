@@ -19,8 +19,11 @@ import co.quchu.quchu.R;
  */
 public class DateUtils {
 
-  public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-  public static String DATE_FORMA_YYYY_MM_DD = "yyyy.MM.dd";
+  //  public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+  public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
+  public static final String DATE_FORMAT_YMD = "yyyy-MM-dd";
+
+  public static String DATE_FORMAT_YYYY_MM_DD = "yyyy.MM.dd";
 
   public static String DATA_FORMAT_MM_DD_YYYY = "MM.dd.yyyy";
   public static String DATA_FORMAT_MM_DD_YYYY_CLEAR = "yyyy - MM - dd";
@@ -122,20 +125,61 @@ public class DateUtils {
 
   /**
    * 时间格式转换
-   * <p>格式为用户自定义</p>
+   * <p>默认格式为yyyy-MM-dd HH:mm:ss</p>
    *
    * @param time
-   * @param format
    * @return
    */
-  public static String dateTimeFormat(String time, String format) {
-    SimpleDateFormat datetimeFormat = new SimpleDateFormat(format);
+  public static String dateTimeFormat(String time) {
+    SimpleDateFormat format = new SimpleDateFormat(DEFAULT_FORMAT);
     long timestamp = string2Timestamp(time);
     if (timestamp == -1) {
       return time;
     }
     Date date = new Date(timestamp);
-    return datetimeFormat.format(date);
+    return format.format(date);
+  }
+
+  /**
+   * 时间格式转换
+   * <p>格式为用户自定义</p>
+   *
+   * @param time
+   * @param string
+   * @return
+   */
+  public static String dateTimeFormat(String time, String string) {
+    SimpleDateFormat format = new SimpleDateFormat(string);
+    long timestamp = string2Timestamp(time);
+    if (timestamp == -1) {
+      return time;
+    }
+    Date date = new Date(timestamp);
+    return format.format(date);
+  }
+
+  /**
+   * 将时间戳转为时间字符串
+   * <p>默认格式为yyyy-MM-dd HH:mm:ss</p>
+   *
+   * @param millis 毫秒时间戳
+   * @return 时间字符串
+   */
+  public static String millis2String(long millis) {
+    return millis2String(millis, DEFAULT_FORMAT);
+  }
+
+  /**
+   * 将时间戳转为时间字符串
+   * <p>格式为用户自定义</p>
+   *
+   * @param millis 毫秒时间戳
+   * @param string 时间格式
+   * @return 时间字符串
+   */
+  public static String millis2String(long millis, String string) {
+    SimpleDateFormat format = new SimpleDateFormat(string, Locale.getDefault());
+    return format.format(new Date(millis));
   }
 
   /**
@@ -146,7 +190,7 @@ public class DateUtils {
    * @return 毫秒时间戳
    */
   public static long string2Timestamp(String time) {
-    return string2Timestamp(time, DEFAULT_SDF);
+    return string2Timestamp(time, DEFAULT_FORMAT);
   }
 
   /**
@@ -154,10 +198,11 @@ public class DateUtils {
    * <p>格式为用户自定义</p>
    *
    * @param time   时间字符串
-   * @param format 时间格式
+   * @param string 时间格式
    * @return 毫秒时间戳
    */
-  public static long string2Timestamp(String time, SimpleDateFormat format) {
+  public static long string2Timestamp(String time, String string) {
+    SimpleDateFormat format = new SimpleDateFormat(string, Locale.getDefault());
     try {
       return format.parse(time).getTime();
     } catch (ParseException e) {

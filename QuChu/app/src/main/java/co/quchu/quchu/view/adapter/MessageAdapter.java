@@ -41,7 +41,7 @@ public class MessageAdapter extends AdapterBase<MessageModel.ResultBean, Recycle
     }
     holder.mTitleTv.setText("【" + model.getTitle() + "】");
     holder.mTextTv.setText(model.getContent());
-    holder.mDateTv.setText(DateUtils.dateTimeFormat(model.getTime(), DateUtils.DATE_FORMA_YYYY_MM_DD));
+    holder.mDateTv.setText(DateUtils.dateTimeFormat(model.getTime(), DateUtils.DATE_FORMAT_YYYY_MM_DD));
 
     holder.itemView.setTag(model);
     holder.itemView.setOnClickListener(new View.OnClickListener() {

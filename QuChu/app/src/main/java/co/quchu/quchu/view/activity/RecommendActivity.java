@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -53,6 +54,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MessagePresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
+import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -61,6 +63,7 @@ import co.quchu.quchu.view.fragment.AIConversationFragment;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
 import co.quchu.quchu.widget.DrawerMenu;
+import co.quchu.quchu.widget.SnowView.SnowView;
 import co.quchu.quchu.widget.XiaoQFab;
 
 /**
@@ -93,6 +96,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.ivSwitchCity) View ivSwitchCity;
   @Bind(R.id.ivAllScene) View ivAllScene;
   @Bind(R.id.vSearchBar) View vSearchBar;
+  @Bind(R.id.snow_view) SnowView mSnowView;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
   public static final String BUNDLE_KEY_FROM_PUSH = "BUNDLE_KEY_FROM_PUSH";
@@ -137,6 +141,35 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     initCity();
 
+    initTitleBar();
+
+    initFragment();
+
+    startIntentIfFromPush(getIntent());
+
+    showSnow();
+  }
+
+  /**
+   * 显示下雪特效
+   */
+  private void showSnow() {
+    Calendar calendar = Calendar.getInstance();
+    long currentTime = calendar.getTimeInMillis();
+    long targetTime = DateUtils.string2Timestamp("2017-01-01 00:00:00");
+
+    LogUtils.e(TAG, "currentTime = " + currentTime + ", targetTime = " + targetTime);
+
+    if (currentTime < targetTime) {
+      mSnowView.setVisibility(View.VISIBLE);
+      mSnowView.start();
+    } else {
+      mSnowView.stop();
+      mSnowView.setVisibility(View.GONE);
+    }
+  }
+
+  private void initTitleBar() {
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
       @Override
       public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -185,10 +218,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         placeHolder.setTranslationY(-Math.abs(appBarLayout.getTotalScrollRange() - offset));
       }
     });
-
-    initFragment();
-
-    startIntentIfFromPush(getIntent());
   }
 
   @Override
