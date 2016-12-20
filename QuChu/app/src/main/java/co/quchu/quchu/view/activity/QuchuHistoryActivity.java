@@ -53,7 +53,7 @@ public class QuchuHistoryActivity extends BaseBehaviorActivity implements SwipeR
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView textView = toolbar.getTitleTv();
-    textView.setText("Alice已经将你的历史记录整理好了");
+    textView.setText("历史记录");
     textView.setTextSize(16f);
 
     initView();

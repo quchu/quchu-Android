@@ -432,6 +432,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
               .onPositive(new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                  SPUtils.setCityId(1);
+                  SPUtils.setCityName("厦门");
+                  EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
+                  tvCity.setText("厦门");
                 }
               })
               .show();

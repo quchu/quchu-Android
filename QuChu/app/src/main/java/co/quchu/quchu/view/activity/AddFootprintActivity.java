@@ -18,6 +18,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import co.quchu.quchu.net.NetUtil;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -184,7 +185,13 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     recyclerView.setAdapter(adapter);
     tvSubmit.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
+
         if (dataChange) {
+
+          if (!NetUtil.isNetworkConnected(getApplicationContext())){
+            makeToast(R.string.network_error);
+            return;
+          }
 
           if (etContent.length() > 140) {
             Toast.makeText(AddFootprintActivity.this, R.string.promote_comment_over_length,

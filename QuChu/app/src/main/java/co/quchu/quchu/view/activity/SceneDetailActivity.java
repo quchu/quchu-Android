@@ -258,6 +258,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
             @Override
             public void onFavoriteClick(int pid, final boolean status, final int index,
                                         final boolean fromRecommand) {
+              if (!NetUtil.isNetworkConnected(getApplicationContext())){
+                makeToast(R.string.network_error);
+                return;
+              }
               InterestingDetailPresenter.setDetailFavorite(SceneDetailActivity.this,
                   pid, status, new InterestingDetailPresenter.DetailDataListener() {
                     @Override
