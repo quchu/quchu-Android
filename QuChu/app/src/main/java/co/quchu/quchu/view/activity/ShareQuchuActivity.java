@@ -83,8 +83,9 @@ public class ShareQuchuActivity extends BaseActivity {
         tvPlaceName.setText(mDetailModel.getName());
 
         tvPhone.setText(mDetailModel.getTel());
-        tvMoney.setText(mDetailModel.getPrice()+"元/人");
-        prbRating.setRating(mDetailModel.getSuggest());
+        String strAvgSpent = mDetailModel.getPrice()+"元/人";
+        tvMoney.setText(strAvgSpent.replace("元元","元"));
+        prbRating.setRating(mDetailModel.getRecentSuggest());
         tvAuthor.setText("By 趣处");
         tvDate.setText(DateUtils.getDateToString(DateUtils.DATA_FORMAT_MM_DD_YYYY_CLEAR,System.currentTimeMillis()));
 
