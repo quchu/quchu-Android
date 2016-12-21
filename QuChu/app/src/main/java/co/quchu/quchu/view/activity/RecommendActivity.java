@@ -97,6 +97,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.ivAllScene) View ivAllScene;
   @Bind(R.id.vSearchBar) View vSearchBar;
   @Bind(R.id.snow_view) SnowView mSnowView;
+  @Bind(R.id.ivStupidBackground) View ivStupidBackground;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
   public static final String BUNDLE_KEY_FROM_PUSH = "BUNDLE_KEY_FROM_PUSH";
@@ -201,6 +202,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
         mRvScene.setAlpha(1 - sceneAlpha);
         tvCity.setAlpha(1 - toolbarAlpha);
         vSearchBar.setAlpha(1 - toolbarAlpha);
+
+        ivStupidBackground.setAlpha(1- toolbarAlpha);
 
 
         tvCity.setVisibility(tvCity.getAlpha() <= 0 ? View.INVISIBLE : View.VISIBLE);

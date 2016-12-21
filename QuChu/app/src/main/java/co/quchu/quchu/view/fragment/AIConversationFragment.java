@@ -170,7 +170,6 @@ public class AIConversationFragment extends BaseFragment
     s.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
       @Override public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
         float scrollDistance = ScreenUtils.getScreenHeight(getActivity())/20;
-        System.out.println(scrollDistance+"|"+offset);
 
         if (offset > scrollDistance && mHistoryHourBefore.size() > 0) {
           tvPullUpToLoad.setVisibility(View.VISIBLE);
@@ -178,7 +177,6 @@ public class AIConversationFragment extends BaseFragment
           tvPullUpToLoad.setVisibility(View.GONE);
         }
 
-        //System.out.println(offset +" | "+state +" - "+mHistoryLoaded +" | " +mHistoryHourBefore.size());
         if (offset > scrollDistance && state == 3 && !mHistoryLoaded && mHistoryHourBefore.size() > 0) {
           mHistoryLoaded = true;
           new Handler().postDelayed(new Runnable() {
@@ -394,16 +392,13 @@ public class AIConversationFragment extends BaseFragment
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
     }
 
-    new Handler().postDelayed(new Runnable() {
-      @Override public void run() {
         TextOptionAdapter textOptionAdapter =
             new TextOptionAdapter(list, addition, type, AIConversationFragment.this);
         boolean vertical = false;
         boolean singleAnswer = list.size() == 1 ? true : false;
         for (int i = 0; i < list.size(); i++) {
 
-          if (mTvOption.getPaint().measureText(list.get(i))
-              >= (ScreenUtils.getScreenWidth(getActivity()) / 2) * 0.7) {
+          if (mTvOption.getPaint().measureText(list.get(i)) >= (ScreenUtils.getScreenWidth(getActivity()) / 2) * 0.7) {
             vertical = true;
           }
         }
@@ -422,8 +417,6 @@ public class AIConversationFragment extends BaseFragment
           rvOptions.setLayoutManager(
               new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         }
-      }
-    }, 0);
   }
 
   @Override public void onResume() {
@@ -617,15 +610,23 @@ public class AIConversationFragment extends BaseFragment
               mNetworkInterrupted = false;
               updateNoNetwork(false);
             }
-            if (!TextUtils.isEmpty(response.getAnswer())) {
+            System.out.println("6 "+response.toString()+"||");
+            if (!TextUtils.isEmpty(response.getAnswer()) && null!=response.getAnswerPramms()) {
               addModel(response);
             }
             if (Integer.valueOf(response.getType()) == 1) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
             } else {
 
+              String s = "";
+              for (int i = 0; i < response.getAnswerPramms().size(); i++) {
+                s+= response.getAnswerPramms().get(i)+",";
+              }
+
+              System.out.println("1 "+response.getAnswer()+"||"+s);
               if (mConversation.get(mConversation.size() - 1).getDataType()
                   != AIConversationModel.EnumDataType.OPTION) {
+                System.out.println("2 add model ||");
                 AIConversationModel modelOption = new AIConversationModel();
                 modelOption.setAnswerPramms(response.getAnswerPramms());
                 modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
