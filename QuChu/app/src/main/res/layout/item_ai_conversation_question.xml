@@ -17,73 +17,88 @@
 
   <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:layout_marginTop="8dp"
-      android:layout_marginBottom="8dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginRight="16dp"
-      android:gravity="center_vertical"
-      >
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/sdvAvatar"
-        android:layout_width="@dimen/ai_conversation_avatar_size"
-        android:layout_height="@dimen/ai_conversation_avatar_size"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        fresco:placeholderImage="@color/translucent_dark"
-        android:scaleType="fitXY"
-        android:layout_marginRight="8dp"
-        fresco:roundAsCircle="true"
-        android:visibility="gone"
-        android:layout_alignBottom="@+id/rvContent"
-
-        />
-
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="40dp"
-        android:layout_centerVertical="true"
-        android:layout_height="@dimen/ai_conversation_avatar_size"
-        tools:text="17:01"
-        android:textSize="12sp"
-        android:textColor="#cccccc"
-        android:visibility="invisible"
-        android:gravity="center_vertical"
-        />
-
-
+      android:layout_height="wrap_content">
     <RelativeLayout
-        android:id="@+id/rvContent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tvDate"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
         >
 
       <com.facebook.drawee.view.SimpleDraweeView
-          android:id="@+id/sdvImage"
-          android:layout_width="250px"
-          android:layout_height="250px"
-          fresco:roundedCornerRadius="10px"
+          android:id="@+id/sdvAvatar"
+          android:layout_width="@dimen/ai_conversation_avatar_size"
+          android:layout_height="@dimen/ai_conversation_avatar_size"
+          android:layout_alignParentLeft="true"
+          android:layout_centerVertical="true"
           fresco:placeholderImage="@color/translucent_dark"
-          android:visibility="gone"
+          android:scaleType="fitXY"
+          android:layout_marginRight="8dp"
+          fresco:roundAsCircle="true"
+          android:visibility="invisible"
+          android:layout_alignBottom="@+id/rvContent"
+
           />
 
       <TextView
-          android:id="@+id/tvQuestion"
+          android:id="@+id/tvDate"
+          android:layout_width="40dp"
+          android:layout_centerVertical="true"
+          android:layout_height="@dimen/ai_conversation_avatar_size"
+          tools:text="17:01"
+          android:textSize="12sp"
+          android:textColor="#cccccc"
+          android:visibility="invisible"
+          android:gravity="center_vertical"
+          />
+
+
+      <RelativeLayout
+          android:id="@+id/rvContent"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@drawable/bg_conversation_white"
-          android:lineSpacingExtra="2dp"
-          android:textSize="14sp"
-          android:textColor="@color/standard_color_white"
-          android:gravity="left|center_vertical"
-          tools:text="Question Number 1"
-          />
+          android:layout_toRightOf="@+id/tvDate"
+          >
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvImage"
+            android:layout_width="250px"
+            android:layout_height="250px"
+            fresco:roundedCornerRadius="10px"
+            fresco:placeholderImage="@color/translucent_dark"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_conversation_white"
+            android:lineSpacingExtra="2dp"
+            android:textSize="14sp"
+            android:textColor="@color/standard_color_white"
+            android:gravity="left|center_vertical"
+            tools:text="Question Number 1"
+            />
+      </RelativeLayout>
+
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/tvHat"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_width="22dp"
+        android:layout_height="14dp"
+        android:src="@drawable/ic_maozi"
+        android:visibility="invisible"
+        />
   </RelativeLayout>
+
 
 
 </LinearLayout>

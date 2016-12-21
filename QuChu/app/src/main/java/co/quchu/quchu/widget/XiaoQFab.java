@@ -3,6 +3,8 @@ package co.quchu.quchu.widget;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -15,6 +17,8 @@ import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+
+import co.quchu.quchu.R;
 
 /**
  * Created by Nico on 16/11/5.
@@ -35,6 +39,7 @@ public class XiaoQFab extends FloatingActionButton {
   private int mOffSetThd = -1;
   private int mOffSetF = -1;
   private boolean mShowPromote = false;
+  private Bitmap mBitmapAlice;
 
   public XiaoQFab(Context context) {
     super(context);
@@ -59,9 +64,12 @@ public class XiaoQFab extends FloatingActionButton {
     if(-1==mOffSetSec) mOffSetSec = (int) (mSize / 7f);
     if(-1==mOffSetThd) mOffSetThd = (int) (mSize / 4.5f);
     if(-1==mOffSetF) mOffSetF = (int) (mSize / 3.15f);
+    if (null==mBitmapAlice){
+      mBitmapAlice = BitmapFactory.decodeResource(getResources(), R.drawable.ic_alice);
+    }
 
     Paint paint = new Paint();
-    paint.setColor(Color.BLACK);
+    paint.setColor(Color.parseColor("#2d313c"));
     paint.setStrokeWidth(mStrokeWidth);
     paint.setStyle(Paint.Style.STROKE);
     paint.setAntiAlias(true);
@@ -91,26 +99,27 @@ public class XiaoQFab extends FloatingActionButton {
 
         paint.setColor(Color.WHITE);
 
-        canvas.drawArc(new RectF(mOffSetSec, mOffSetSec, mSize - mOffSetSec, mSize - mOffSetSec),
-            180 * mAnimationProgress[1], radius2, false, paint);
 
-        paint.setStrokeWidth(mSize/12);
-        paint.setColor(Color.parseColor("#ffd702"));
-
-        canvas.drawArc(new RectF(mOffSetThd, mOffSetThd, mSize - mOffSetThd, mSize - mOffSetThd),
-            120 * mAnimationProgress[2], radius3, false, paint);
-
-        paint.setStrokeWidth(mSize/9);
-        paint.setColor(Color.BLACK);
-        canvas.drawArc(new RectF(mOffSetF, mOffSetF, mSize - mOffSetF, mSize - mOffSetF),
-            240 * mAnimationProgress[3], radius4, false, paint);
-
-        canvas.save();
-        canvas.rotate(-180 + (mAnimationProgress[4] * 180), getWidth() / 2, getHeight() / 2);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.parseColor("#eaeaea"));
-        canvas.drawCircle(mSize / 4, mSize - (mSize/4), (mHalfSize/7) * mAnimationProgress[3], paint);
-        canvas.restore();
+//        canvas.drawArc(new RectF(mOffSetSec, mOffSetSec, mSize - mOffSetSec, mSize - mOffSetSec),
+//            180 * mAnimationProgress[1], radius2, false, paint);
+//
+//        paint.setStrokeWidth(mSize/12);
+//        paint.setColor(Color.parseColor("#ffd702"));
+//
+//        canvas.drawArc(new RectF(mOffSetThd, mOffSetThd, mSize - mOffSetThd, mSize - mOffSetThd),
+//            120 * mAnimationProgress[2], radius3, false, paint);
+//
+//        paint.setStrokeWidth(mSize/9);
+//        paint.setColor(Color.BLACK);
+//        canvas.drawArc(new RectF(mOffSetF, mOffSetF, mSize - mOffSetF, mSize - mOffSetF),
+//            240 * mAnimationProgress[3], radius4, false, paint);
+//
+//        canvas.save();
+//        canvas.rotate(-180 + (mAnimationProgress[4] * 180), getWidth() / 2, getHeight() / 2);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setColor(Color.parseColor("#eaeaea"));
+//        canvas.drawCircle(mSize / 4, mSize - (mSize/4), (mHalfSize/7) * mAnimationProgress[3], paint);
+//        canvas.restore();
 
       }
 
@@ -148,6 +157,8 @@ public class XiaoQFab extends FloatingActionButton {
       canvas.drawCircle(offset+(width/2),radius+indicatorDiameter+verticalOffset,whiteDotsSize,paintIndicatorWhite);
     }
 
+    canvas.drawBitmap(mBitmapAlice,(getWidth()-mBitmapAlice.getWidth())/2 ,(getHeight()-mBitmapAlice.getHeight())/2 -mOffSetOutBlk,paint);
+
   }
 
 
@@ -171,7 +182,7 @@ public class XiaoQFab extends FloatingActionButton {
     mLoading = true;
 
     ValueAnimator animator = new ValueAnimator().ofFloat(1,0);
-    animator.setDuration(500);
+    animator.setDuration(750);
     animator.setInterpolator(new AccelerateDecelerateInterpolator());
     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {

@@ -206,8 +206,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   private void resetFavorite() {
-    mLlFavorite.setBackgroundResource(!dModel.isIsf() ? R.color.standard_color_yellow : R.color.colorHint);
-    mTvFavorite.setTextColor(!dModel.isIsf() ? getResources().getColor(R.color.standard_color_h1_dark) : getResources().getColor(R.color.standard_color_h3_dark));
+    mLlFavorite.setBackgroundResource(!dModel.isIsf() ? R.color.colorChristmasDark : R.color.colorHint);
+    mTvFavorite.setTextColor(!dModel.isIsf() ? getResources().getColor(R.color.standard_color_white) : getResources().getColor(R.color.standard_color_white));
     mTvFavorite.setText(dModel.isIsf() ? R.string.cancel_favorite : R.string.favorite);
   }
 

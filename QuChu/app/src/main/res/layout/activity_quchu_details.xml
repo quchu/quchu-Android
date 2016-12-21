@@ -93,7 +93,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
-          android:background="@color/standard_color_yellow"
+          android:background="@color/colorChristmasDark"
           android:gravity="center">
 
         <TextView

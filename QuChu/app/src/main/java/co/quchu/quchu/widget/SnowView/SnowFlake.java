@@ -25,8 +25,8 @@ public class SnowFlake {
   private static final float INCREMENT_UPPER = 3f;
 
   // 雪花的大小
-  private static final float FLAKE_SIZE_LOWER = 7f;
-  private static final float FLAKE_SIZE_UPPER = 20f;
+  private static final float FLAKE_SIZE_LOWER = 2f;
+  private static final float FLAKE_SIZE_UPPER = 7f;
 
   private final RandomGenerator mRandom; // 随机控制器
   private final Point mPosition; // 雪花位置

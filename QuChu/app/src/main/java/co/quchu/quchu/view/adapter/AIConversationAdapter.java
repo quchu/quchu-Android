@@ -149,25 +149,27 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           }else{
             ((QuestionViewHolder) holder).sdvImage.setVisibility(View.GONE);
             ((QuestionViewHolder) holder).tvQuestion.setVisibility(View.VISIBLE);
-
           }
 
           Uri xiaoQLogoUri = new Uri.Builder()
               .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-              .path(String.valueOf(R.drawable.ic_xiaoq_logo))
+              .path(String.valueOf(R.drawable.ic_alice_wbg))
               .build();
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
           ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.INVISIBLE);
+          ((QuestionViewHolder) holder).tvHat.setVisibility(View.GONE);
           if (position>0){
             if (mDataSet.get(position-1).getDataType()!= AIConversationModel.EnumDataType.QUESTION){
               ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
               ((QuestionViewHolder) holder).tvDate.setVisibility(View.INVISIBLE);
+              ((QuestionViewHolder) holder).tvHat.setVisibility(View.VISIBLE);
             }else{
               ((QuestionViewHolder) holder).tvDate.setVisibility(View.VISIBLE);
             }
           }else if(position==0){
             ((QuestionViewHolder) holder).sdvAvatar.setVisibility(View.VISIBLE);
+            ((QuestionViewHolder) holder).tvHat.setVisibility(View.VISIBLE);
             ((QuestionViewHolder) holder).tvDate.setVisibility(View.INVISIBLE);
           }else{
             ((QuestionViewHolder) holder).tvDate.setVisibility(View.VISIBLE);
@@ -287,6 +289,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
     @Bind(R.id.sdvImage) SimpleDraweeView sdvImage;
     @Bind(R.id.tvDate) TextView tvDate;
+    @Bind(R.id.tvHat) View tvHat;
 
     QuestionViewHolder(View view) {
       super(view);

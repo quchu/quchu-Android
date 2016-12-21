@@ -285,8 +285,8 @@ public class TagCloudView extends ViewGroup {
                 });
                 if (null!=tagsHighLight){
                     tagView.setBackgroundResource(tagsHighLight.get(i).booleanValue()?
-                        R.drawable.shape_lineframe_yellow_fill: R.drawable.shape_lineframe_black_thin_rect);
-                    tagView.setTextColor(Color.parseColor("#333333"));
+                        R.drawable.shape_lineframe_christmasdark_fill: R.drawable.shape_lineframe_black_thin_rect);
+                    tagView.setTextColor(tagsHighLight.get(i).booleanValue()?Color.parseColor("#ffffff"):Color.parseColor("#333333"));
                 }else{
                     tagView.setBackgroundResource(mBackground);
                 }

@@ -44,7 +44,6 @@
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="56dp"
-          android:background="@color/colorChristmasDark"
           app:contentInsetStart="0dp"
           app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
           >
@@ -56,7 +55,7 @@
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="10dp"
             android:drawablePadding="4dp"
-            android:drawableRight="@drawable/ic_down"
+            android:drawableRight="@drawable/ic_christmas_arrow_down"
             android:gravity="center_vertical"
             android:text="厦门"
             android:textColor="@color/standard_color_white"
@@ -85,7 +84,7 @@
               android:layout_width="match_parent"
               android:layout_height="36dp"
               android:layout_marginLeft="8dp"
-              android:drawableLeft="@drawable/ic_sousuokuang"
+              android:drawableLeft="@drawable/ic_christmas_search"
               android:drawablePadding="4dp"
               android:gravity="left|center_vertical"
               android:hint="搜索您喜欢的吃喝玩乐"
@@ -204,6 +203,9 @@
       app:layout_behavior="co.quchu.quchu.widget.DisableAutoHideFABBehavior"
       app:useCompatPadding="true"
       />
+
+
+
 
   <co.quchu.quchu.widget.SnowView.SnowView
       android:id="@+id/snow_view"
