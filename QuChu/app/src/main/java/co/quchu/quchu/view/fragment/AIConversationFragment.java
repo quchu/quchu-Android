@@ -169,14 +169,17 @@ public class AIConversationFragment extends BaseFragment
         });
     s.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
       @Override public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
-        if (offset > 100 && mHistoryHourBefore.size() > 0) {
+        float scrollDistance = ScreenUtils.getScreenHeight(getActivity())/20;
+        System.out.println(scrollDistance+"|"+offset);
+
+        if (offset > scrollDistance && mHistoryHourBefore.size() > 0) {
           tvPullUpToLoad.setVisibility(View.VISIBLE);
         } else {
           tvPullUpToLoad.setVisibility(View.GONE);
         }
 
         //System.out.println(offset +" | "+state +" - "+mHistoryLoaded +" | " +mHistoryHourBefore.size());
-        if (offset > 100 && state == 3 && !mHistoryLoaded && mHistoryHourBefore.size() > 0) {
+        if (offset > scrollDistance && state == 3 && !mHistoryLoaded && mHistoryHourBefore.size() > 0) {
           mHistoryLoaded = true;
           new Handler().postDelayed(new Runnable() {
             @Override public void run() {
