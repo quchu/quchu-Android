@@ -67,20 +67,21 @@ public class SceneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         lp.width = Utils.dip2px(mContext, 64);
         lp.height = Utils.dip2px(mContext, 64);
         holder.rl_cover.setLayoutParams(lp);
+
       }
 
       //首页显示所有场景
       if (mLimitation > 0 && position == 3) {
         holder.mSceneCoverImg.getHierarchy().setPlaceholderImage(R.drawable.ic_suoyouchangjing_main);
         holder.mSceneTitleTv.setText("所有场景");
-        holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h1_dark));
+        holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_white));
 
       } else {
         if (!TextUtils.isEmpty(sceneInfoModel.getIconUrlSmall())) {
           holder.mSceneCoverImg.setImageURI(Uri.parse(sceneInfoModel.getIconUrlSmall()));
         }
         holder.mSceneTitleTv.setText(sceneInfoModel.getSceneName());
-        holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_h1_dark : R.color.standard_color_h3_dark));
+        holder.mSceneTitleTv.setTextColor(mContext.getResources().getColor(mLimitation > 0 ? R.color.standard_color_white : R.color.standard_color_h3_dark));
       }
 
       holder.tvHot.setVisibility(sceneInfoModel.isHot() ? View.VISIBLE : View.GONE);
