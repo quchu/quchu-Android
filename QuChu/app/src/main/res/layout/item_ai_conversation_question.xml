@@ -77,6 +77,7 @@
           android:background="@drawable/bg_conversation_white"
           android:lineSpacingExtra="2dp"
           android:textSize="14sp"
+          android:textColor="@color/standard_color_white"
           android:gravity="left|center_vertical"
           tools:text="Question Number 1"
           />
