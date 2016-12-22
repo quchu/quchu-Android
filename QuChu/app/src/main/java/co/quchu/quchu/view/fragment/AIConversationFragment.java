@@ -81,6 +81,7 @@ public class AIConversationFragment extends BaseFragment
   @Bind(R.id.quickReturn) View quickReturn;
 
   private boolean mHistoryLoaded = false;
+  private AIConversationModel mOptionsModel;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -147,7 +148,7 @@ public class AIConversationFragment extends BaseFragment
     mRecyclerView.setLayoutManager(new ScrollToLinearLayoutManager(getActivity()));
     mRecyclerView.addItemDecoration(new DynamicItemDecoration());
     mRecyclerView.setItemAnimator(new ConversationListAnimator());
-    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this,this);
+    mAdapter = new AIConversationAdapter(getActivity(), mConversation, this, this);
     mRecyclerView.setAdapter(mAdapter);
 
     VerticalOverScrollBounceEffectDecorator s =
@@ -169,7 +170,7 @@ public class AIConversationFragment extends BaseFragment
         });
     s.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
       @Override public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
-        float scrollDistance = ScreenUtils.getScreenHeight(getActivity())/20;
+        float scrollDistance = ScreenUtils.getScreenHeight(getActivity()) / 20;
 
         if (offset > scrollDistance && mHistoryHourBefore.size() > 0) {
           tvPullUpToLoad.setVisibility(View.VISIBLE);
@@ -177,7 +178,10 @@ public class AIConversationFragment extends BaseFragment
           tvPullUpToLoad.setVisibility(View.GONE);
         }
 
-        if (offset > scrollDistance && state == 3 && !mHistoryLoaded && mHistoryHourBefore.size() > 0) {
+        if (offset > scrollDistance
+            && state == 3
+            && !mHistoryLoaded
+            && mHistoryHourBefore.size() > 0) {
           mHistoryLoaded = true;
           new Handler().postDelayed(new Runnable() {
             @Override public void run() {
@@ -261,7 +265,7 @@ public class AIConversationFragment extends BaseFragment
 
     playTheFuckingSound(index);
 
-    if(null==rvOptions.getChildAt(index) || null==rvOptions.findViewById(R.id.tvOption)){
+    if (null == rvOptions.getChildAt(index) || null == rvOptions.findViewById(R.id.tvOption)) {
       return;
     }
     final TextView selectedTarget =
@@ -271,7 +275,7 @@ public class AIConversationFragment extends BaseFragment
     int[] targetLocation = new int[2];
     selectedTarget.getLocationInWindow(answerLocation);
 
-    mRecyclerView.getChildAt(mRecyclerView.getChildCount() - 2).getLocationInWindow(targetLocation);
+    mRecyclerView.getChildAt(mRecyclerView.getChildCount() - 1).getLocationInWindow(targetLocation);
 
     float translationY =
         targetLocation[1] - answerLocation[1] + getResources().getDimensionPixelSize(
@@ -340,21 +344,11 @@ public class AIConversationFragment extends BaseFragment
    */
   private void showOptions() {
 
-    if (mConversation.size() < 1) {
+
+    if (mShowAnimRunning || null==mOptionsModel|| mOptionsModel.getAnswerPramms().size()<=0) {
       return;
     }
-
-    AIConversationModel last = mConversation.get(mConversation.size() - 1);
-
-    if (mShowAnimRunning) {
-      return;
-    }
-
-    if (last.getAnswerPramms() != null && last.getAnswerPramms().size() > 0 && !(null
-        != last.getType() && Integer.valueOf(last.getType()) == 1)) {
-
       mShowAnimRunning = true;
-
       int offSet = 0;
       if (mConversation.size() <= 2) {
         int[] location = new int[2];
@@ -373,50 +367,53 @@ public class AIConversationFragment extends BaseFragment
           mShowAnimRunning = false;
         }
       }, 700);
-    }
   }
 
   /**
    * 重置选项
    */
-  private void resetOptions(final List<String> list, final String addition, final int type) {
-    if (!SPUtils.getConversationGuide()) {
-      ivGuide.setVisibility(View.VISIBLE);
+  private void resetOptions() {
+
+
+    if (null==mOptionsModel || mOptionsModel.getAnswerPramms().size() <=0) {
+      return;
     }
 
-    if (type == 1 || null == list) {
-      return;
+    if (!SPUtils.getConversationGuide()) {
+      ivGuide.setVisibility(View.VISIBLE);
     }
 
     if (mConversation.size() > 3) {
       ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
     }
 
-        TextOptionAdapter textOptionAdapter =
-            new TextOptionAdapter(list, addition, type, AIConversationFragment.this);
-        boolean vertical = false;
-        boolean singleAnswer = list.size() == 1 ? true : false;
-        for (int i = 0; i < list.size(); i++) {
+    TextOptionAdapter textOptionAdapter =
+        new TextOptionAdapter(mOptionsModel.getAnswerPramms(), mOptionsModel.getFlash(),
+            Integer.valueOf(mOptionsModel.getType()), AIConversationFragment.this);
+    boolean vertical = false;
+    boolean singleAnswer = mOptionsModel.getAnswerPramms().size() == 1 ? true : false;
+    for (int i = 0; i < mOptionsModel.getAnswerPramms().size(); i++) {
 
-          if (mTvOption.getPaint().measureText(list.get(i)) >= (ScreenUtils.getScreenWidth(getActivity()) / 2) * 0.7) {
-            vertical = true;
-          }
-        }
+      if (mTvOption.getPaint().measureText(mOptionsModel.getAnswerPramms().get(i))
+          >= (ScreenUtils.getScreenWidth(getActivity()) / 2) * 0.7) {
+        vertical = true;
+      }
+    }
 
-        rvOptions.setAdapter(textOptionAdapter);
-        textOptionAdapter.updateWrapContent(false);
-        rvOptions.setLayoutManager(
-            new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        if (vertical || singleAnswer) {
-          textOptionAdapter.updateWrapContent(false);
-          rvOptions.setLayoutManager(
-              new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        } else {
-          textOptionAdapter.updateWrapContent(true);
+    rvOptions.setAdapter(textOptionAdapter);
+    textOptionAdapter.updateWrapContent(false);
+    rvOptions.setLayoutManager(
+        new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+    if (vertical || singleAnswer) {
+      textOptionAdapter.updateWrapContent(false);
+      rvOptions.setLayoutManager(
+          new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+    } else {
+      textOptionAdapter.updateWrapContent(true);
 
-          rvOptions.setLayoutManager(
-              new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        }
+      rvOptions.setLayoutManager(
+          new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+    }
   }
 
   @Override public void onResume() {
@@ -489,12 +486,6 @@ public class AIConversationFragment extends BaseFragment
 
     if (model.getAnswerPramms().size() > 0 && !"1".equals(model.getType())) {
 
-      final AIConversationModel modelOption = new AIConversationModel();
-      modelOption.setAnswerPramms(model.getAnswerPramms());
-      modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
-      modelOption.setFlash(model.getFlash());
-      modelOption.setType(model.getType());
-
       final AIConversationModel galleryModel = new AIConversationModel();
       galleryModel.setPlaceList(model.getPlaceList());
       galleryModel.setDataType(AIConversationModel.EnumDataType.GALLERY);
@@ -512,9 +503,8 @@ public class AIConversationFragment extends BaseFragment
           }
         }
       }, 750);
+      resetOptions();
       scrollToBottom();
-      resetOptions(modelOption.getAnswerPramms(), modelOption.getFlash(),
-          null != modelOption.getType() ? Integer.valueOf(modelOption.getType()) : 0);
     }
   }
 
@@ -572,6 +562,18 @@ public class AIConversationFragment extends BaseFragment
                 } else {
                   mXiaoQFab.endLoading();
                 }
+
+                if (response.getType().equals("0") && null != response.getAnswerPramms()) {
+                  AIConversationModel modelOption = new AIConversationModel();
+                  modelOption.setAnswerPramms(response.getAnswerPramms());
+                  modelOption.setFlash(response.getFlash());
+                  modelOption.setType(response.getType());
+                  mOptionsModel = modelOption;
+                  resetOptions();
+                }else{
+                  mOptionsModel = null;
+                }
+
                 mNetworkBusy = false;
               }
 
@@ -610,31 +612,23 @@ public class AIConversationFragment extends BaseFragment
               mNetworkInterrupted = false;
               updateNoNetwork(false);
             }
-            System.out.println("6 "+response.toString()+"||");
-            if (!TextUtils.isEmpty(response.getAnswer()) && null!=response.getAnswerPramms()) {
+            if (!TextUtils.isEmpty(response.getAnswer())) {
               addModel(response);
             }
             if (Integer.valueOf(response.getType()) == 1) {
               getNext(response.getAnswerPramms().get(0), response.getFlash());
-            } else {
+            }
 
-              String s = "";
-              for (int i = 0; i < response.getAnswerPramms().size(); i++) {
-                s+= response.getAnswerPramms().get(i)+",";
-              }
-
-              System.out.println("1 "+response.getAnswer()+"||"+s);
-              if (mConversation.get(mConversation.size() - 1).getDataType()
-                  != AIConversationModel.EnumDataType.OPTION) {
-                System.out.println("2 add model ||");
-                AIConversationModel modelOption = new AIConversationModel();
-                modelOption.setAnswerPramms(response.getAnswerPramms());
-                modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
-                modelOption.setFlash(response.getFlash());
-                modelOption.setType(response.getType());
-                addModel(modelOption);
-                mXiaoQFab.endLoading();
-              }
+            if (response.getType().equals("0") && null != response.getAnswerPramms()) {
+              AIConversationModel modelOption = new AIConversationModel();
+              modelOption.setAnswerPramms(response.getAnswerPramms());
+              modelOption.setFlash(response.getFlash());
+              modelOption.setType(response.getType());
+              mOptionsModel = modelOption;
+              resetOptions();
+              mXiaoQFab.endLoading();
+            }else{
+              mOptionsModel = null;
             }
             mNetworkBusy = false;
           }
@@ -684,7 +678,7 @@ public class AIConversationFragment extends BaseFragment
   @Override
   public void onAnswer(final String answer, final String additionalShit, final int index) {
 
-    if (mAnswering){
+    if (mAnswering) {
       return;
     }
     mAnswering = true;
@@ -697,12 +691,7 @@ public class AIConversationFragment extends BaseFragment
     if (mNetworkBusy) {
       return;
     }
-    int position = mConversation.size() - 1;
-    if (null != mConversation.get(position).getAnswerPramms()) {
-      mConversation.get(position).getAnswerPramms().clear();
-    }
-    AIConversationPresenter.delOptionMessages(getActivity());
-    mAdapter.notifyItemChanged(position);
+
 
     mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {
@@ -758,10 +747,18 @@ public class AIConversationFragment extends BaseFragment
     }
 
     if (noNetWork) {
+
       List<String> retryAction = new ArrayList<>();
       retryAction.add("手动刷新");
       retryAction.add("手动搜索");
-      resetOptions(retryAction, null, 2);
+
+      AIConversationModel modelOption = new AIConversationModel();
+      modelOption.setAnswerPramms(retryAction);
+      modelOption.setFlash(null);
+      modelOption.setType("2");
+      mOptionsModel = modelOption;
+
+      resetOptions();
     } else {
       hideOptions();
     }
@@ -806,7 +803,7 @@ public class AIConversationFragment extends BaseFragment
   }
 
   private void playTheFuckingSound(int index) {
-    if (!SPUtils.isEnableSound()){
+    if (!SPUtils.isEnableSound()) {
       return;
     }
     final MediaPlayer mPlayer =
