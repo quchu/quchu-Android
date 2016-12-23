@@ -31,7 +31,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.social.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;

@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,14 +29,11 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.im.IMPresenter;
-import co.quchu.quchu.thirdhelp.UserLoginListener;
-import co.quchu.quchu.thirdhelp.WechatHelper;
-import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.social.SocialHelper;
+import co.quchu.quchu.social.UserLoginListener;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
@@ -78,14 +75,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
   }
 
   public void sinaLogin() {
-    WeiboHelper instance = WeiboHelper.getInstance(getActivity());
-    ((LoginActivity) getActivity()).handler =
-        new SsoHandler(getActivity(), instance.getmAuthInfo());
-    instance.weiboLogin(((LoginActivity) getActivity()).handler, this, true);
+    SocialHelper.getPlatformInfo(getActivity(), SHARE_MEDIA.SINA, true, this);
   }
 
   public void weixinLogin() {
-    WechatHelper.getInstance(getActivity()).login(this);
+    SocialHelper.getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, true, this);
   }
 
   private FragmentTransaction getFragmentTransactor() {
@@ -95,10 +89,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
             R.animator.card_flip_horizontal_right_out);
   }
 
-  @OnClick({
-      R.id.tvForgottenPassword, R.id.tvLoginViaPhone, R.id.tvCreateAccountViaPhone,
-      R.id.llAuthorizationViaMm, R.id.llAuthorizationViaWeibo
-  })
+  @OnClick({R.id.tvForgottenPassword, R.id.tvLoginViaPhone, R.id.tvCreateAccountViaPhone,
+      R.id.llAuthorizationViaMm, R.id.llAuthorizationViaWeibo})
   public void onClick(View v) {
     mContainerId = mContainerId == -1 ? ((ViewGroup) getView().getParent()).getId() : mContainerId;
     switch (v.getId()) {
@@ -114,6 +106,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         getFragmentManager().executePendingTransactions();
         ((BaseActivity) getActivity()).getEnhancedToolbar().show();
         break;
+
       case R.id.tvLoginViaPhone:
         //手机账号登录
         getFragmentTransactor().replace(mContainerId, new LoginByPhoneFragment())
@@ -124,6 +117,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
         MobclickAgent.onEvent(getActivity(), "pop_login_c");
         break;
+
       case R.id.tvCreateAccountViaPhone:
         //手机号注册
         getFragmentTransactor().replace(mContainerId, new PhoneValidationFragment())
@@ -133,6 +127,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         ((BaseActivity) getActivity()).getEnhancedToolbar().show();
         MobclickAgent.onEvent(getActivity(), "pop_registerphone_c");
         break;
+
       case R.id.llAuthorizationViaMm:
         //微信登录
         if (NetUtil.isNetworkConnected(getActivity())) {
@@ -141,8 +136,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
           Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
         }
         MobclickAgent.onEvent(getActivity(), "pop_loginwechat_c");
-
         break;
+
       case R.id.llAuthorizationViaWeibo:
         //微博登录
         if (NetUtil.isNetworkConnected(getActivity())) {
@@ -151,16 +146,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
           Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
         }
         MobclickAgent.onEvent(getActivity(), "pop_loginweibo_c");
-
         break;
     }
   }
 
   @Override
   public void loginSuccess(int type, String token, String appId) {
-
-    //连接融云服务
-    new IMPresenter().getToken(getActivity(), null);
 
     ArrayMap<String, Object> params = new ArrayMap<>();
 

@@ -39,7 +39,7 @@ import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.thirdhelp.UserInfoHelper;
+import co.quchu.quchu.utils.UserInfoHelper;
 import co.quchu.quchu.utils.StringUtils;
 
 /**

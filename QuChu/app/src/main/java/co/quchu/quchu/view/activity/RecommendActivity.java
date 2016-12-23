@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
+import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -203,7 +204,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         tvCity.setAlpha(1 - toolbarAlpha);
         vSearchBar.setAlpha(1 - toolbarAlpha);
 
-        ivStupidBackground.setAlpha(1- toolbarAlpha);
+        ivStupidBackground.setAlpha(1 - toolbarAlpha);
 
 
         tvCity.setVisibility(tvCity.getAlpha() <= 0 ? View.INVISIBLE : View.VISIBLE);
@@ -705,4 +706,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
   }
 
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+  }
 }

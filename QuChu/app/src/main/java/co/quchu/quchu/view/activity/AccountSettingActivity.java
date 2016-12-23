@@ -46,7 +46,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
-import co.quchu.quchu.thirdhelp.UserInfoHelper;
+import co.quchu.quchu.utils.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ImageUtils;

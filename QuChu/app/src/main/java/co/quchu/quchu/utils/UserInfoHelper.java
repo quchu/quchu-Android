@@ -1,4 +1,4 @@
-package co.quchu.quchu.thirdhelp;
+package co.quchu.quchu.utils;
 
 import com.google.gson.Gson;
 
@@ -7,8 +7,6 @@ import org.json.JSONObject;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.SPUtils;
 
 /**
  * UserInfoHelper

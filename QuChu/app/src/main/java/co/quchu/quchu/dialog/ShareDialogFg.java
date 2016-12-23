@@ -25,21 +25,18 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.image.CloseableStaticBitmap;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.tencent.tauth.Tencent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.adapter.DialogShareAdapter;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.thirdhelp.QQHelper;
-import co.quchu.quchu.thirdhelp.WechatHelper;
-import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.social.SocialHelper;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 
@@ -49,6 +46,9 @@ import co.quchu.quchu.utils.LogUtils;
  * Date: 2015-12-23
  */
 public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+
+  private String TAG = "ShareDialogFg";
+
   /**
    * Bundle key used to start the blur dialog with a given scale factor (float).
    */
@@ -65,6 +65,12 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
 
   private int imageId;
   private String path;
+
+  private int shareId = 0;
+  private String shareTitle = "";
+  private boolean isPlace = false;
+  String shareUrlFinal = "";
+  String shareUrl = "";
 
   public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace, @Nullable int imageId, @Nullable String imagePath) {
     ShareDialogFg fragment = new ShareDialogFg();
@@ -110,14 +116,6 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
 
     return fragment;
   }
-
-  private int shareId = 0;
-  private String shareTitle = "";
-  private boolean isPlace = false;
-  Tencent mTencent;
-  String shareUrlFinal = "";
-
-  String shareUrl = "";
 
   @NonNull
   @Override
@@ -217,18 +215,21 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
   private void share(int position) {
     switch (position) {
       case 0:
-        WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, true, shareBitmap);
+        SocialHelper.share(getActivity(), SHARE_MEDIA.WEIXIN, shareTitle, shareUrlFinal, shareBitmap);
         break;
+
       case 1:
-        WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, false, shareBitmap);
+        SocialHelper.share(getActivity(), SHARE_MEDIA.WEIXIN_CIRCLE, shareTitle, shareUrlFinal, shareBitmap);
         break;
+
       case 2:
-        mTencent = Tencent.createInstance("1104964977", AppContext.mContext);
-        QQHelper.share2QQ(getActivity(), mTencent, shareUrlFinal, shareTitle, path);
+        SocialHelper.share(getActivity(), SHARE_MEDIA.QQ, shareTitle, shareUrlFinal, shareBitmap);
         break;
+
       case 3:
-        WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle, shareBitmap);
+        SocialHelper.share(getActivity(), SHARE_MEDIA.SINA, shareTitle, shareUrlFinal, shareBitmap);
         break;
+
       case 4:
         copyToClipBoard(shareTitle, shareUrlFinal);
         break;

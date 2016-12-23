@@ -14,7 +14,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +31,11 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.thirdhelp.UserInfoHelper;
-import co.quchu.quchu.thirdhelp.UserLoginListener;
-import co.quchu.quchu.thirdhelp.WechatHelper;
-import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.social.SocialHelper;
+import co.quchu.quchu.social.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.UserInfoHelper;
 
 public class BindActivity extends BaseBehaviorActivity implements UserLoginListener, View.OnClickListener {
 
@@ -60,7 +60,6 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
   public static final String TYPE_WEIBO = "weibo";
   public static final String TYPE_Wecha = "weixin";
 
-  private SsoHandler ssoHandler;
   private BindPhoneNumDialog mDialog;
 
   @Override
@@ -137,8 +136,7 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
             unBind(true, TYPE_Wecha);
           }
         } else {
-          WechatHelper helper = WechatHelper.getInstance(this);
-          helper.bind(this);
+          SocialHelper.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, false, this);
         }
         break;
 
@@ -150,9 +148,7 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
             unBind(false, TYPE_WEIBO);
           }
         } else {
-          WeiboHelper instance = WeiboHelper.getInstance(this);
-          ssoHandler = new SsoHandler(this, instance.getmAuthInfo());
-          instance.weiboLogin(ssoHandler, this, false);
+          SocialHelper.getPlatformInfo(this, SHARE_MEDIA.SINA, false, this);
         }
         break;
     }
@@ -180,6 +176,9 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
 
   }
 
+  /**
+   * 合并账号
+   */
   private void merger(final int type, final String token, final String appId) {
 
     new MaterialDialog.Builder(this)
@@ -233,14 +232,17 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
         .show();
   }
 
-  private void bind(final boolean isWecha, final String token, final String appId) {
+  /**
+   * 绑定第三方账号
+   */
+  private void bind(final boolean isWeChat, final String token, final String appId) {
     Map<String, String> params = new HashMap<>();
     params.put("token", token);
     params.put("openId", appId);
     params.put("type", "bind");
     params.put("accesstoken", SPUtils.getUserToken(this));
 
-    GsonRequest<Object> request = new GsonRequest<>(isWecha ? NetApi.WechatBind : NetApi.WeiboBind, Object.class, params, new ResponseListener<Object>() {
+    GsonRequest<Object> request = new GsonRequest<>(isWeChat ? NetApi.WechatBind : NetApi.WeiboBind, Object.class, params, new ResponseListener<Object>() {
       @Override
       public void onErrorResponse(@Nullable VolleyError error) {
         Toast.makeText(BindActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
@@ -250,11 +252,11 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
       public void onResponse(Object response, boolean isNull, String exception, @Nullable String msg) {
         if (isNull) {
           Toast.makeText(BindActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
-          saveInfo(true, isWecha);
+          saveInfo(true, isWeChat);
         } else {
           switch (exception) {
             case "10132":
-              merger(isWecha ? 2 : 3, token, appId);
+              merger(isWeChat ? 2 : 3, token, appId);
               break;
             case "10133":
             case "10134":
@@ -271,23 +273,9 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
   }
 
   /**
-   * 绑定成功后更新数据
-   *
-   * @param isWecha 是不是绑定了微信
+   * 解除绑定第三方账号
    */
-  private void saveInfo(boolean isBind, boolean isWecha) {
-    UserInfoModel user = AppContext.user;
-    if (isWecha) {
-      user.setIsweixin(isBind);
-    } else {
-      user.setIsweibo(isBind);
-    }
-
-    UserInfoHelper.saveUserInfo(user);
-    initViews();
-  }
-
-  private void unBind(final boolean isWache, final String type) {
+  private void unBind(final boolean isWaChat, final String type) {
     Map<String, String> params = new HashMap<>();
     params.put("type", type);
     params.put("accesstoken", SPUtils.getUserToken(this));
@@ -302,7 +290,7 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
       public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
         if (result) {
           Toast.makeText(BindActivity.this, "解绑成功", Toast.LENGTH_SHORT).show();
-          saveInfo(false, isWache);
+          saveInfo(false, isWaChat);
         } else {
           Toast.makeText(BindActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
@@ -311,12 +299,26 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
     request.start(this);
   }
 
+  /**
+   * 绑定成功后更新数据
+   *
+   * @param isWeChat 是不是绑定了微信
+   */
+  private void saveInfo(boolean isBind, boolean isWeChat) {
+    UserInfoModel user = AppContext.user;
+    if (isWeChat) {
+      user.setIsweixin(isBind);
+    } else {
+      user.setIsweibo(isBind);
+    }
+
+    UserInfoHelper.saveUserInfo(user);
+    initViews();
+  }
+
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (ssoHandler != null) {
-      LogUtils.e("onActivityResult:不为空");
-      ssoHandler.authorizeCallBack(requestCode, resultCode, data);
-    }
+    UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
   }
 }

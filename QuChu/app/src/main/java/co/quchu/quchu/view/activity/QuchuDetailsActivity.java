@@ -227,7 +227,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   @OnClick({llFavorite, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia})
-  public void detailClick(View v) {
+  public void onClick(View v) {
     if (!NetUtil.isNetworkConnected(this)) {
       makeToast(R.string.network_error);
     }

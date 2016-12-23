@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.umeng.socialize.UMShareAPI;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class LoginActivity extends BaseBehaviorActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
+    UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     if (handler != null) handler.authorizeCallBack(requestCode, resultCode, data);
   }
 
