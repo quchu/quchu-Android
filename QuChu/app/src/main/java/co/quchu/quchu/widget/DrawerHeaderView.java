@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -75,7 +76,9 @@ public class DrawerHeaderView extends LinearLayout {
       String avatar = user.getPhoto();
       if (!TextUtils.isEmpty(avatar) && !avatar.contains("app-default")) {
         hasAvatar = true;
-        mDrawerHeaderAvatarImg.setImageURI(user.getPhoto());
+        mDrawerHeaderAvatarImg.setImageURI(Uri.parse(user.getPhoto()));
+      } else {
+        hasAvatar = false;
       }
 
       String genderStr = AppContext.user.getGender();
@@ -88,6 +91,8 @@ public class DrawerHeaderView extends LinearLayout {
         mDrawerHeaderGenderImg.setVisibility(GONE);
       }
     }
+
+    getGenes();
   }
 
   private void setMark(String mark) {
@@ -143,7 +148,7 @@ public class DrawerHeaderView extends LinearLayout {
         user.setGeneAvatar(imgResId);
         mDrawerHeaderAvatarImg.getHierarchy().setPlaceholderImage(imgResId);
       } else {
-        mDrawerHeaderAvatarImg.setImageURI(user.getPhoto());
+        mDrawerHeaderAvatarImg.setImageURI(Uri.parse(user.getPhoto()));
       }
 
     } else {
@@ -176,6 +181,7 @@ public class DrawerHeaderView extends LinearLayout {
 
   public interface OnDrawerHeaderClickListener {
     void onLoginClick();
+
     void onAvatarClick();
   }
 }

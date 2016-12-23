@@ -323,7 +323,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     if (mDrawerHeaderView != null) {
       mDrawerHeaderView.setUser();
-      mDrawerHeaderView.getGenes();
     }
     showDrawerItemUserCenter();
 
@@ -343,7 +342,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
 
     mDrawerHeaderView.setUser();
-    mDrawerHeaderView.getGenes();
     showDrawerItemUserCenter();
 
     mDrawerHeaderView.setOnDrawerHeaderClickListener(new DrawerHeaderView.OnDrawerHeaderClickListener() {
@@ -674,7 +672,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         //用户信息更新
         if (mDrawerHeaderView != null) {
           mDrawerHeaderView.setUser();
-          mDrawerHeaderView.getGenes();
         }
         break;
     }
