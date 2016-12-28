@@ -310,7 +310,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
       } else {
         ((PlaceViewHolder) holder).tvDistance.setText(
             StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(),
-                Double.valueOf(objScene.getLatitude()), Double.valueOf(objScene.gdLongitude)));
+                Double.valueOf(objScene.getLatitude()), Double.valueOf(objScene.getLongitude())));
         ((PlaceViewHolder) holder).tvDistance.setVisibility(View.VISIBLE);
       }
 

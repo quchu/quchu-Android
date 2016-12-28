@@ -160,6 +160,9 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
     mAdapter = new AMapNearbyVPAdapter(mDataSet, new AMapNearbyVPAdapter.OnMapItemClickListener() {
       @Override
       public void onItemClick(int position) {
+        if (null==mDataSet || mDataSet.size()<=position){
+          return;
+        }
         ArrayMap<String, Object> params = new ArrayMap<>();
         params.put("趣处名称", mDataSet.get(position).getName());
         params.put("入口名称", getPageNameCN());
