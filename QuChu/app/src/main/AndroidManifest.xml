@@ -100,6 +100,7 @@
     <activity
         android:name=".view.activity.QuchuDetailsActivity"
         android:label="@string/titlebar_word_place_detail"
+        android:configChanges="fontScale"
         android:screenOrientation="portrait"/>
     <activity
         android:name=".view.activity.NearbyActivity"

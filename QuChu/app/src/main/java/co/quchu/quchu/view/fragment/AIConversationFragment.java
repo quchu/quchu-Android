@@ -575,9 +575,11 @@ public class AIConversationFragment extends BaseFragment
                 }
 
                 mNetworkBusy = false;
+                mAnswering = false;
               }
 
               @Override public void errorListener(VolleyError error, String exception, String msg) {
+                mAnswering = false;
                 mNetworkInterrupted = true;
                 updateNoNetwork(true);
                 scrollToBottom();

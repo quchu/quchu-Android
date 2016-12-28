@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.android.volley.VolleyError;
 
 import org.greenrobot.eventbus.EventBus;
@@ -79,6 +81,11 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   @Bind(errorView) ErrorView mErrorView;
   @Bind(llFavorite) LinearLayout mLlFavorite;
   @Bind(detail_bottom_group_ll) LinearLayout mDetailBottomGroupLl;
+
+  @Override public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    onRestart();
+  }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
