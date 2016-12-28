@@ -4,227 +4,228 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
     android:background="@color/standard_color_white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".view.activity.QuchuDetailsActivity"
     >
 
 
-    <include
-        layout="@layout/cp_enhanced_toolbar"
-        />
-    <ScrollView
-        android:layout_weight="1"
+  <include
+      layout="@layout/cp_enhanced_toolbar"
+      />
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1">
+
+
+    <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-            <RelativeLayout
+      <View
+          android:layout_width="1px"
+          android:layout_height="wrap_content"
+          android:layout_above="@+id/vAnchor"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:layout_marginLeft="@dimen/base_margin"
+          android:background="@color/standard_color_h3_dark"/>
 
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/half_margin"
+          android:layout_marginTop="56dp"
+          android:src="@drawable/ic_timeline_circle_active"/>
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/half_margin"
+          android:layout_marginTop="303dp"
+          android:src="@drawable/ic_timeline_circle_active"/>
+
+      <LinearLayout
+          android:id="@+id/llContent"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/double_margin"
+          android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            >
+
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="56dp"
+              android:src="@drawable/ic_dingbu"/>
+
+        </LinearLayout>
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivQuchuCover"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginRight="@dimen/half_margin"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="left"
+                android:orientation="vertical">
 
 
-                <View
-                    android:layout_width="1px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_above="@+id/vAnchor"
-                    android:layout_marginLeft="@dimen/base_margin"
-                    android:background="@color/standard_color_h3_dark" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="56dp"
-                    android:layout_marginLeft="@dimen/half_margin"
-                    android:src="@drawable/ic_timeline_circle_active" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="303dp"
-                    android:layout_marginLeft="@dimen/half_margin"
-                    android:src="@drawable/ic_timeline_circle_active" />
-
-                <LinearLayout
-                    android:id="@+id/llContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/double_margin"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        >
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_dingbu" />
-
-                    </LinearLayout>
+              <TextView
+                  android:id="@+id/tvPlaceName"
+                  style="@style/TextView.H1"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                  android:gravity="left"
+                  android:text="@string/empty_string"
+                  android:textColor="@color/standard_color_h1_dark"
+                  android:textSize="28sp"
+                  tools:text="THANK U MUM 炸鸡（罗炳森）"/>
 
 
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/ivQuchuCover"
-                        android:layout_width="match_parent"
-                        android:layout_marginRight="@dimen/half_margin"
-                        android:layout_height="230dp"/>
+              <RatingBar
+                  android:id="@+id/prbRating"
+                  style="@style/CustomProgressBarLarge"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_above="@+id/tvTagsLabel"
+                  android:layout_centerHorizontal="true"
+                  android:layout_marginTop="20dp"
+                  android:isIndicator="true"
+                  android:max="5"
+                  android:rating="3"
+                  android:stepSize="1"/>
+
+              <TextView
+                  android:id="@+id/tvPlaceLocation"
+                  style="@style/TextView.H3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/half_margin"
+                  android:drawableLeft="@drawable/ic_zuobiao"
+                  android:drawablePadding="@dimen/half_margin"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/half_margin"
+                  android:paddingRight="@dimen/half_margin"
+                  android:paddingTop="@dimen/half_margin"
+                  android:singleLine="true"
+                  android:text="@string/empty_string"
+                  android:textColor="@color/standard_color_h1_dark"/>
+
+              <TextView
+                  android:id="@+id/tvPhone"
+                  style="@style/TextView.H3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/half_margin"
+
+                  android:drawableLeft="@drawable/ic_dianhua_small"
+                  android:drawablePadding="@dimen/half_margin"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/half_margin"
+                  android:paddingRight="@dimen/half_margin"
+                  android:paddingTop="@dimen/half_margin"
+                  android:singleLine="true"
+                  android:text="@string/empty_string"
+                  android:textColor="@color/standard_color_h1_dark"/>
+
+              <TextView
+                  android:id="@+id/tvMoney"
+                  style="@style/TextView.H3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/half_margin"
+                  android:drawableLeft="@drawable/ic_money"
+                  android:drawablePadding="@dimen/half_margin"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/half_margin"
+                  android:paddingRight="@dimen/half_margin"
+                  android:paddingTop="@dimen/half_margin"
+                  android:singleLine="true"
+                  android:text="@string/empty_string"
+                  android:textColor="@color/standard_color_h1_dark"/>
 
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:src="@drawable/ic_qr_code"
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:gravity="left"
-                                android:orientation="vertical">
+                  />
 
 
-                                <TextView
-                                    android:id="@+id/tvPlaceName"
-                                    style="@style/TextView.H1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="left"
-                                    android:layout_marginTop="10dp"
-                                    android:text="@string/empty_string"
-                                    android:textColor="@color/standard_color_h1_dark"
-                                    android:textSize="28sp"
-                                    tools:text="THANK U MUM 炸鸡（罗炳森）" />
+              <TextView
+                  android:id="@+id/tvAuthor"
+                  style="@style/TextView.H3"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="@dimen/half_margin"
+                  android:gravity="right"
+                  android:text="author"
+                  />
 
+              <TextView
+                  android:id="@+id/tvDate"
+                  style="@style/TextView.H5"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="@dimen/half_margin"
+                  android:gravity="right"
+                  android:text="author"
+                  />
+            </LinearLayout>
+          </RelativeLayout>
+        </RelativeLayout>
 
-                                <RatingBar
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:max="5"
-                                    android:stepSize="1"
-                                    android:rating="3"
-                                    style="@style/CustomProgressBarLarge"
-                                    android:id="@+id/prbRating"
-                                    android:isIndicator="true"
-                                    android:layout_above="@+id/tvTagsLabel"
-                                    android:layout_centerHorizontal="true"/>
+      </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/tvPlaceLocation"
-                                    style="@style/TextView.H3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/half_margin"
-                                    android:drawableLeft="@drawable/ic_zuobiao"
-                                    android:drawablePadding="@dimen/half_margin"
-                                    android:gravity="center"
-                                    android:paddingTop="@dimen/half_margin"
-                                    android:paddingBottom="@dimen/half_margin"
-                                    android:paddingRight="@dimen/half_margin"
-                                    android:singleLine="true"
-                                    android:text="@string/empty_string"
-                                    android:textColor="@color/standard_color_h1_dark" />
+      <TextView
+          android:id="@+id/vAnchor"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/toolbar_item_size"
+          android:layout_below="@+id/llContent"
+          android:layout_marginTop="@dimen/base_margin"
+          />
+    </RelativeLayout>
 
-                                <TextView
-                                    android:id="@+id/tvPhone"
-                                    style="@style/TextView.H3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/half_margin"
+  </ScrollView>
 
-                                    android:drawableLeft="@drawable/ic_dianhua_small"
-                                    android:drawablePadding="@dimen/half_margin"
-                                    android:gravity="center"
-                                    android:paddingTop="@dimen/half_margin"
-                                    android:paddingBottom="@dimen/half_margin"
-                                    android:paddingRight="@dimen/half_margin"
-                                    android:singleLine="true"
-                                    android:text="@string/empty_string"
-                                    android:textColor="@color/standard_color_h1_dark" />
-
-                                <TextView
-                                    android:id="@+id/tvMoney"
-                                    style="@style/TextView.H3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/half_margin"
-                                    android:drawableLeft="@drawable/ic_money"
-                                    android:drawablePadding="@dimen/half_margin"
-                                    android:gravity="center"
-                                    android:paddingTop="@dimen/half_margin"
-                                    android:paddingBottom="@dimen/half_margin"
-                                    android:paddingRight="@dimen/half_margin"
-                                    android:singleLine="true"
-                                    android:text="@string/empty_string"
-                                    android:textColor="@color/standard_color_h1_dark" />
-
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_qr_code"
-
-                                    />
-
-
-                                <TextView
-                                    android:id="@+id/tvAuthor"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    style="@style/TextView.H3"
-                                    android:layout_marginRight="@dimen/half_margin"
-                                    android:text="author"
-                                    android:gravity="right"
-                                    />
-
-                                <TextView
-                                    android:id="@+id/tvDate"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    style="@style/TextView.H5"
-                                    android:layout_marginRight="@dimen/half_margin"
-                                    android:text="author"
-                                    android:gravity="right"
-                                    />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/vAnchor"
-                    android:layout_below="@+id/llContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/toolbar_item_size"
-                    android:layout_marginTop="@dimen/base_margin"
-                    />
-            </RelativeLayout>
-
-    </ScrollView>
-
-    <TextView
-        android:id="@+id/tvShare"
-        android:layout_below="@+id/llContent"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:layout_marginTop="@dimen/base_margin"
-        android:background="@color/standard_color_h1_dark"
-        android:gravity="center"
-        android:text="@string/share_to"
-        android:textColor="@color/standard_color_white"
-        android:textSize="@dimen/standard_text_size_h1"
-        />
+  <TextView
+      android:id="@+id/tvShare"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/toolbar_item_size"
+      android:layout_below="@+id/llContent"
+      android:layout_marginTop="@dimen/base_margin"
+      android:background="@color/standard_color_h1_dark"
+      android:gravity="center"
+      android:text="@string/share_to"
+      android:textColor="@color/standard_color_white"
+      android:textSize="@dimen/standard_text_size_h1"
+      />
 </LinearLayout>

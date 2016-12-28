@@ -204,7 +204,7 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
                   @Override
                   public void onRefresh() {
                     refreshLayout.setRefreshing(true);
-                    onRefresh();
+                    FavoriteQuchuFragment.this.onRefresh();
                   }
                 });
                 Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();

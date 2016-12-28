@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.FeedbackModel;
 
 /**
@@ -62,10 +64,12 @@ public class FeedbackDetailAdapter
         holder.rightUserNameTv.setText(msgListBean.getUserName());
         holder.leftAvatarImg.setVisibility(View.INVISIBLE);
         holder.rightAvatarImg.setVisibility(View.VISIBLE);
-        if (TextUtils.isEmpty(mIAvatar)) {
-          holder.rightAvatarImg.setImageURI("");
+
+        int geneAvatar = AppContext.user.getGeneAvatar();
+        if (geneAvatar != -1) {
+          holder.rightAvatarImg.getHierarchy().setPlaceholderImage(geneAvatar);
         } else {
-          holder.rightAvatarImg.setImageURI(mIAvatar);
+          holder.rightAvatarImg.setImageURI(Uri.parse(mIAvatar));
         }
       }
 

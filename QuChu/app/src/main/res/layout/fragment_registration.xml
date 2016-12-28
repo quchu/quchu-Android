@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:digits="1234567890qwertyuiopasdfghjklzxcvbnm._-"
+        android:digits="@string/passFilter"
         android:hint="@string/hint_input_password"
         android:maxLength="12"
         android:paddingLeft="@dimen/base_margin"

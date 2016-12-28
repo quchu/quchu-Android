@@ -70,6 +70,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
   @Override
   public void onDestroyView() {
+
     super.onDestroyView();
     ButterKnife.unbind(this);
   }

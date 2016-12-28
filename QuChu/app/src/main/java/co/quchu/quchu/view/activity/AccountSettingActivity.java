@@ -326,7 +326,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
           @Override
           public void onError() {
-            Toast.makeText(AccountSettingActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(AccountSettingActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             DialogUtil.dismissProgress();
           }
         });

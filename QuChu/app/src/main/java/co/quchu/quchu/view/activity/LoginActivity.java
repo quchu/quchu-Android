@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.util.ArrayMap;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.fragment.LoginFragment;
 import co.quchu.quchu.widget.RitalinLayout;
 
@@ -62,6 +64,17 @@ public class LoginActivity extends BaseBehaviorActivity {
         .add(R.id.flContent, loginFragment, LoginFragment.TAG)
         .commit();
     getFragmentManager().executePendingTransactions();
+  }
+
+  @Override
+  protected void onRestart() {
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        SoftInputUtils.hideSoftInput(LoginActivity.this);
+      }
+    }, 200);
+    super.onRestart();
   }
 
   @Override

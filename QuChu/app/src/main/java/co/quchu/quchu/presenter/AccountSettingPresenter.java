@@ -22,7 +22,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
@@ -160,7 +159,7 @@ public class AccountSettingPresenter {
         GsonRequest<Object> request = new GsonRequest<>(NetApi.updateUser, Object.class, params, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(mContext, (R.string.network_error), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, (R.string.network_error), Toast.LENGTH_SHORT).show();
                 listener.onError();
             }
 

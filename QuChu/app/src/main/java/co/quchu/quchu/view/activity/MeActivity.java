@@ -32,6 +32,7 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.QuChuHelper;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.widget.MeItemView;
 
 import static co.quchu.quchu.R.id.userNameTv;
 import static co.quchu.quchu.base.AppContext.user;
@@ -47,6 +48,7 @@ public class MeActivity extends BaseBehaviorActivity {
   @Bind(userNameTv) TextView mUserNameTv;
   @Bind(R.id.userMarkTv) TextView mUserMarkTv;
   @Bind(R.id.userGeneNameTv) TextView mUserGeneNameTv;
+  @Bind(R.id.me_change_password_view) MeItemView mChangePasswordView;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +63,12 @@ public class MeActivity extends BaseBehaviorActivity {
     toolbar.setBackground(null);
     textView.setText("");
     mEnhancedToolbarDivider.setVisibility(View.GONE);
+
+    if (AppContext.user != null) {
+      if (!AppContext.user.isphone()) {
+        mChangePasswordView.setVisibility(View.GONE);
+      }
+    }
 
     fillViews();
   }
