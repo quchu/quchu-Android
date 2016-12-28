@@ -49,6 +49,7 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
             holder.delete.setVisibility(View.GONE);
             holder.simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.simpleDraweeView.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.standard_color_yellow));
+            holder.simpleDraweeView.getHierarchy().setPlaceholderImage(R.drawable.ic_camera);
         } else {
             holder.delete.setVisibility(View.VISIBLE);
             holder.simpleDraweeView.setScaleType(ImageView.ScaleType.FIT_CENTER);
