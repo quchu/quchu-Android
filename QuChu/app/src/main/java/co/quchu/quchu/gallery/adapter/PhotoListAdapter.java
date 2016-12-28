@@ -24,6 +24,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
@@ -121,6 +122,14 @@ public class PhotoListAdapter extends BaseAdapter {
 
         String path;
         path = photoInfo.getPhotoPath();
+
+
+        Uri xiaoQLogoUri = new Uri.Builder()
+            .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+            .path(String.valueOf(R.drawable.ic_gf_default_photo))
+            .build();
+        holder.mIvThumb.setImageURI(xiaoQLogoUri);
+
 
         if (null != photoInfo.getThumbPath()) {
             holder.mIvThumb.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
