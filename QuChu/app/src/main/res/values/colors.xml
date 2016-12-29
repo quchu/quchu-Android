@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <color name="colorPrimary">@color/standard_color_yellow</color>
+  <color name="colorPrimary">@color/colorChristmasDark</color>
   //应用主题色
-  <color name="colorPrimaryDark">@color/standard_color_yellow</color>
+  <color name="colorPrimaryDark">@color/colorChristmasDark</color>
   //应用主题色 暗
-  <color name="colorAccent">@color/standard_color_yellow</color>
+  <color name="colorAccent">@color/colorChristmasDark</color>
   //应用次主题色
   <color name="colorBackground">#efefef</color>
   //通用背景颜色
@@ -39,7 +39,7 @@
   //主题黄
   <color name="standard_color_yellow">#ffdf4e</color>
   //标签黄
-  <color name="standard_color_yellow_label">#ffdf4e</color>
+  <color name="standard_color_yellow_label">@color/colorChristmasDark</color>
   <color name="standard_color_h0_dark">#111111</color>
   //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
   <color name="standard_color_h1_dark">#333333</color>

@@ -33,7 +33,7 @@
           android:layout_gravity="center_vertical"
           android:layout_marginLeft="@dimen/half_margin"
           android:layout_marginRight="@dimen/half_margin"
-          android:src="@drawable/ic_sousuokuang"/>
+          android:src="@drawable/ic_christmas_search"/>
 
       <EditText
           android:id="@+id/search_input_et"
