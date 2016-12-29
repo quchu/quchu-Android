@@ -85,8 +85,8 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
 
     } else {
       bindWecha.setText("绑定");
-      bindWecha.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-      bindWecha.setTextColor(ContextCompat.getColor(this, R.color.standard_color_h0_dark));
+      bindWecha.setBackgroundResource(R.drawable.shape_lineframe_christmas_dark_fill);
+      bindWecha.setTextColor(ContextCompat.getColor(this, R.color.standard_color_white));
     }
 
     if (AppContext.user.isIsweibo()) {
@@ -96,8 +96,8 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
 
     } else {
       bindSina.setText("绑定");
-      bindSina.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-      bindSina.setTextColor(ContextCompat.getColor(this, R.color.standard_color_h0_dark));
+      bindSina.setBackgroundResource(R.drawable.shape_lineframe_christmas_dark_fill);
+      bindSina.setTextColor(ContextCompat.getColor(this, R.color.standard_color_white));
     }
 
     if (AppContext.user.isphone()) {
@@ -107,8 +107,8 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
 
     } else {
       bindPhone.setText("绑定");
-      bindPhone.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-      bindPhone.setTextColor(ContextCompat.getColor(this, R.color.standard_color_h0_dark));
+      bindPhone.setBackgroundResource(R.drawable.shape_lineframe_christmas_dark_fill);
+      bindPhone.setTextColor(ContextCompat.getColor(this, R.color.standard_color_white));
     }
   }
 
