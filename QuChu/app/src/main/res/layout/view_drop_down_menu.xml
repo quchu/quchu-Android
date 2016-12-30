@@ -52,7 +52,8 @@
         android:id="@+id/drop_tab_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:visibility="gone"/>
 
     <co.quchu.quchu.widget.DropDownMenu.MDropTabView
         android:id="@+id/drop_tab_2"

@@ -233,10 +233,10 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
   private void resetSearch() {
     mTagId = "";
-    mAreaId = "";
-    mCircleId = "";
-    mSortType = "";
-    mDropDownMenu.reset();
+//    mAreaId = "";
+//    mCircleId = "";
+//    mSortType = "";
+//    mDropDownMenu.reset();
   }
 
   /**
@@ -412,9 +412,9 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   }
 
   private void initDropDownMenu() {
-    if (!TextUtils.isEmpty(mCategoryZh)) {
-      mDropDownMenu.setTabText(0, mCategoryZh);
-    }
+//    if (!TextUtils.isEmpty(mCategoryZh)) {
+//      mDropDownMenu.setTabText(0, mCategoryZh);
+//    }
 
     queryGroupTags();
     queryAreaList();
@@ -479,11 +479,11 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         if (child.getText().substring(0, 2).equals("全部")) {
           String selectedParentId = mDropDownMenu.getSelectedParentId(MDropBean.DATA_TYPE_CATEGORY);
           mTagId = selectedParentId;
-          setInputEditText(selectedParentValue);
+//          setInputEditText(selectedParentValue);
           mDropDownMenu.setTabText(selectedParentValue);
         } else {
           mTagId = child.getId();
-          setInputEditText(child.getText());
+//          setInputEditText(child.getText());
         }
         mDropDownMenu.setTabText(0, selectedParentValue);
 
@@ -495,12 +495,12 @@ public class SearchResultActivity extends BaseBehaviorActivity {
           mAreaId = selectedParentId;
           mCircleId = "";
           mDropDownMenu.setTabText(selectedParentValue);
-          setInputEditText(selectedParentValue);
+//          setInputEditText(selectedParentValue);
 
         } else {
           mCircleId = child.getId();
           mDropDownMenu.setTabText(child.getText());
-          setInputEditText(child.getText());
+//          setInputEditText(child.getText());
         }
       }
 

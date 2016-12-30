@@ -234,6 +234,10 @@ public class MDropDownMenu extends LinearLayout {
     }
   }
 
+  public void hideTab(int i) {
+    mTab1.setVisibility(GONE);
+  }
+
   /**
    * 改变 tab 文字
    */
