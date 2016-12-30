@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +43,7 @@ import co.quchu.quchu.widget.ErrorView;
  * desc :收藏的趣处
  */
 public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener,
-    SwipeRefreshLayout.OnRefreshListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
+    SwipeRefreshLayout.OnRefreshListener, PageLoadListener<FavoriteBean>, FavoriteQuchuAdapter.OnItemClickListener {
 
   protected String getPageNameCN() {
     return getString(R.string.pname_f_favorite_quchu);
@@ -87,10 +86,9 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.setHasFixedSize(true);
     presenter = new FavoritePresenter(getContext());
-    adapter = new FavoriteQuchuAdapter(mIsMe);
+    adapter = new FavoriteQuchuAdapter();
     adapter.setLoadmoreListener(this);
-    adapter.setItemClickListener(this);
-//    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+    adapter.setOnItemClickListener(this);
     recyclerView.setAdapter(adapter);
 
     if (mIsMe) {
@@ -146,38 +144,6 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
 
   RecyclerView.ViewHolder holder;
   FavoriteBean.ResultBean item;
-
-  @Override
-  public void itemClick(final RecyclerView.ViewHolder holder, final FavoriteBean.ResultBean item, int type, int position) {
-    this.holder = holder;
-    this.item = item;
-    switch (type) {
-      case R.id.swipe_delete_action:
-        setFavorite(holder, item);
-        break;
-
-      case R.id.swipe_delete_content:
-        ArrayMap<String, Object> params = new ArrayMap<>();
-        JSONObject jsonObject = new JSONObject();
-        try {
-          jsonObject.put("趣处名称", item.getName());
-          jsonObject.put("入口名称", getPageNameCN());
-          jsonObject.put("时间", System.currentTimeMillis());
-        } catch (JSONException e) {
-          e.printStackTrace();
-        }
-        ZhugeSDK.getInstance().track(getActivity(), "进入趣处详情页", jsonObject);
-
-        Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
-        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
-        startActivityForResult(intent, REQUEST_CODE_JUMP_DETAIL);
-        if (!EventBus.getDefault().isRegistered(this)) {
-          EventBus.getDefault().register(this);
-        }
-        break;
-    }
-  }
 
   /**
    * 收藏
@@ -300,5 +266,35 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
   public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
+  }
+
+  @Override
+  public void onItemClick(RecyclerView.ViewHolder holder, FavoriteBean.ResultBean item, int type, @Deprecated int position) {
+    this.holder = holder;
+    this.item = item;
+    JSONObject jsonObject = new JSONObject();
+    try {
+      jsonObject.put("趣处名称", item.getName());
+      jsonObject.put("入口名称", getPageNameCN());
+      jsonObject.put("时间", System.currentTimeMillis());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    ZhugeSDK.getInstance().track(getActivity(), "进入趣处详情页", jsonObject);
+
+    Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
+    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
+    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
+    startActivityForResult(intent, REQUEST_CODE_JUMP_DETAIL);
+    if (!EventBus.getDefault().isRegistered(this)) {
+      EventBus.getDefault().register(this);
+    }
+  }
+
+  @Override
+  public void onItemLongClick(RecyclerView.ViewHolder holder, FavoriteBean.ResultBean item, int type, @Deprecated int position) {
+    this.holder = holder;
+    this.item = item;
+    setFavorite(holder, item);
   }
 }
