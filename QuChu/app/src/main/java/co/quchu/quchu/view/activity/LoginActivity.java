@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.util.ArrayMap;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.umeng.socialize.UMShareAPI;
@@ -84,20 +82,6 @@ public class LoginActivity extends BaseBehaviorActivity {
     } else {
       super.onBackPressed();
     }
-  }
-
-  /**
-   * 隐藏键盘
-   */
-  public void hideSoftware() {
-    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-      if (getCurrentFocus() != null)
-        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    //manager
-    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
   }
 
   @Override

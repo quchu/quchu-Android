@@ -36,6 +36,7 @@ public class SoftInputUtils {
    * 显示软键盘
    */
   public static void showSoftInput(Context context, final EditText editText) {
+    editText.requestFocus();
     final InputMethodManager manager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
     editText.postDelayed(new Runnable() {
       @Override

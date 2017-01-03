@@ -29,15 +29,15 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.VCodeTimeService;
-import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by Nico on 16/5/13.
  */
-public class PhoneValidationFragment extends Fragment {
+public class PhoneValidationFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener {
 
   @Bind(R.id.etUsername) EditText etUsername;
   @Bind(R.id.ivIconClear) ImageView ivIconClear;
@@ -78,42 +78,14 @@ public class PhoneValidationFragment extends Fragment {
 
     tvLoginViaThisNumber.setVisibility(View.GONE);
     ivIconClear.setVisibility(View.INVISIBLE);
-    etUsername.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-      }
 
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-      }
+    tvNext.setEnabled(false);
+    tvNext.setSelected(false);
 
-      @Override
-      public void afterTextChanged(Editable s) {
-        updateButtonStatus();
-      }
-    });
-
-    etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-      @Override
-      public void onFocusChange(View v, boolean hasFocus) {
-        updateButtonStatus();
-      }
-    });
-
-    etValidCode.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-      }
-
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-      }
-
-      @Override
-      public void afterTextChanged(Editable s) {
-        updateButtonStatus();
-      }
-    });
+    etUsername.setOnFocusChangeListener(this);
+    etUsername.addTextChangedListener(this);
+    etValidCode.setOnFocusChangeListener(this);
+    etValidCode.addTextChangedListener(this);
 
     if (null != mPhoneNumber) {
       etUsername.setText(mPhoneNumber);
@@ -140,25 +112,21 @@ public class PhoneValidationFragment extends Fragment {
     ivIconClear.setVisibility(userName.length() > 0 ? View.VISIBLE : View.INVISIBLE);
     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
       tvNext.setText(R.string.next);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
+      tvNext.setEnabled(true);
+      tvNext.setSelected(true);
       mEmptyForum = false;
-      tvNext.setClickable(true);
     } else {
       mEmptyForum = true;
       tvNext.setText(R.string.next);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
-      tvNext.setClickable(false);
+      tvNext.setEnabled(false);
+      tvNext.setSelected(false);
     }
 
     if (!codeSent) {
       if (StringUtils.isMobileNO(userName)) {
-        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
+        tvSendValidCode.setEnabled(true);
       } else {
-        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_gray_fill);
-        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
+        tvSendValidCode.setEnabled(false);
       }
     }
   }
@@ -169,25 +137,27 @@ public class PhoneValidationFragment extends Fragment {
 
     if (TextUtils.isEmpty(userName)) {
       tvNext.setText(R.string.promote_empty_phone);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvNext.setClickable(false);
+      tvNext.setEnabled(false);
+      tvNext.setSelected(true);
+
     } else if (!StringUtils.isMobileNO(userName)) {
       tvNext.setText(R.string.promote_invalid_phone_number);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvNext.setClickable(false);
+      tvNext.setEnabled(false);
+      tvNext.setSelected(true);
+
     } else if (verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
+      tvNext.setText(R.string.next);
+      tvNext.setEnabled(true);
+      tvNext.setSelected(true);
       status = true;
-      tvNext.setClickable(true);
+
     } else if (!verifyValidCode) {
       status = true;
+
     } else {
-      tvNext.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
-      tvNext.setClickable(false);
+      tvNext.setText(R.string.next);
+      tvNext.setEnabled(false);
+      tvNext.setSelected(false);
     }
     return status;
   }
@@ -201,8 +171,6 @@ public class PhoneValidationFragment extends Fragment {
     public void timeRemaining(int leftSecond) {
       codeSent = true;
       if (tvSendValidCode != null) {
-        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_gray_fill);
-        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
         tvSendValidCode.setText("(" + leftSecond + ")秒后重新发送");
         tvSendValidCode.setEnabled(false);
       }
@@ -213,8 +181,6 @@ public class PhoneValidationFragment extends Fragment {
       codeSent = false;
       if (tvSendValidCode != null) {
         tvSendValidCode.setText(R.string.send_valid_code);
-        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-        tvSendValidCode.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
         tvSendValidCode.setEnabled(true);
       }
     }
@@ -282,9 +248,8 @@ public class PhoneValidationFragment extends Fragment {
         Toast.makeText(getActivity(), R.string.promote_verify_fail, Toast.LENGTH_SHORT).show();
         isVerifying = false;
         tvNext.setText("验证码错误");
-        tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-        tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
-        tvNext.setClickable(false);
+        tvNext.setEnabled(false);
+        tvNext.setSelected(true);
       }
     });
   }
@@ -358,9 +323,8 @@ public class PhoneValidationFragment extends Fragment {
           registed = true;
           tvLoginViaThisNumber.setVisibility(View.VISIBLE);
           tvNext.setText(R.string.promote_duplicate_username);
-          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-          tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
-          tvNext.setClickable(false);
+          tvNext.setEnabled(false);
+          tvNext.setSelected(true);
         }
       });
     } else {
@@ -372,9 +336,8 @@ public class PhoneValidationFragment extends Fragment {
         public void isUnique(JSONObject msg) {
 //          Toast.makeText(getActivity(), R.string.promote_username_not_existed, Toast.LENGTH_SHORT).show();
           tvNext.setText(R.string.promote_username_not_existed);
-          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-          tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
-          tvNext.setClickable(false);
+          tvNext.setEnabled(false);
+          tvNext.setSelected(true);
           isRunning = false;
           errorView.hideView();
         }
@@ -463,8 +426,28 @@ public class PhoneValidationFragment extends Fragment {
         break;
 
       case R.id.backgroundLayout:
-        ((LoginActivity) getActivity()).hideSoftware();
+        SoftInputUtils.hideSoftInput(getActivity());
         break;
     }
+  }
+
+  @Override
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+  }
+
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+  }
+
+  @Override
+  public void afterTextChanged(Editable s) {
+    updateButtonStatus();
+  }
+
+  @Override
+  public void onFocusChange(View v, boolean hasFocus) {
+    updateButtonStatus();
   }
 }

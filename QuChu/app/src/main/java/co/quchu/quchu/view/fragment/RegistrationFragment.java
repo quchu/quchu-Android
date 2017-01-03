@@ -24,8 +24,8 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 import static co.quchu.quchu.base.AppContext.user;
@@ -65,6 +65,9 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
         etUsername.requestFocus();
       }
     }, 30);
+
+    tvLoginViaPhone.setEnabled(false);
+    tvLoginViaPhone.setSelected(false);
 
     etUsername.setOnFocusChangeListener(this);
     etPassword.setOnFocusChangeListener(this);
@@ -147,24 +150,21 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
 
     if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(true);
       return false;
     }
 
     if (!StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_password);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(true);
       return false;
     }
 
-    tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-    tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
+    tvLoginViaPhone.setEnabled(true);
+    tvLoginViaPhone.setSelected(true);
     tvLoginViaPhone.setText(R.string.next);
-    tvLoginViaPhone.setClickable(true);
 
     return true;
   }
@@ -194,14 +194,12 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.next);
       mEmptyForum = false;
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
-      tvLoginViaPhone.setClickable(true);
+      tvLoginViaPhone.setEnabled(true);
+      tvLoginViaPhone.setSelected(true);
     } else {
       tvLoginViaPhone.setText(R.string.next);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvLoginViaPhone.setClickable(true);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(true);
     }
   }
 
@@ -225,6 +223,6 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
 
   @OnClick(R.id.backgroundLayout)
   public void onClick() {
-    ((LoginActivity) getActivity()).hideSoftware();
+    SoftInputUtils.hideSoftInput(getActivity());
   }
 }

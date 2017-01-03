@@ -34,8 +34,8 @@ import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.social.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -84,6 +84,10 @@ public class LoginByPhoneFragment extends Fragment
         }
       }, 50);
     }
+
+    tvLoginViaPhone.setEnabled(false);
+    tvLoginViaPhone.setSelected(false);
+
     etUsername.setOnFocusChangeListener(this);
     etPassword.setOnFocusChangeListener(this);
     etUsername.addTextChangedListener(this);
@@ -117,9 +121,6 @@ public class LoginByPhoneFragment extends Fragment
         mDisplayPassword = !mDisplayPassword;
       }
     });
-
-    //rlUserNameField.animate().translationY(200).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).start();
-    //rlPasswordField.animate().translationY(200).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).start();
     return view;
   }
 
@@ -131,30 +132,29 @@ public class LoginByPhoneFragment extends Fragment
 
     if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(true);
+
     } else if (!StringUtils.isMobileNO(userName)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_username);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(true);
+
     } else if (!StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_password);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(true);
+
     } else if (StringUtils.isMobileNO(userName) && StringUtils.isGoodPassword(userPwd)) {
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
       tvLoginViaPhone.setText(R.string.login);
+      tvLoginViaPhone.setEnabled(true);
+      tvLoginViaPhone.setSelected(true);
       status = true;
-      tvLoginViaPhone.setClickable(true);
+
     } else {
       tvLoginViaPhone.setText(R.string.login);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(false);
     }
     return status;
   }
@@ -171,15 +171,14 @@ public class LoginByPhoneFragment extends Fragment
     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)) {
       mEmptyForum = false;
       tvLoginViaPhone.setText(R.string.login);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
-      tvLoginViaPhone.setClickable(true);
+      tvLoginViaPhone.setEnabled(true);
+      tvLoginViaPhone.setSelected(true);
+
     } else {
       mEmptyForum = true;
       tvLoginViaPhone.setText(R.string.login);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
-      tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
-      tvLoginViaPhone.setClickable(false);
+      tvLoginViaPhone.setEnabled(false);
+      tvLoginViaPhone.setSelected(false);
     }
   }
 
@@ -205,20 +204,7 @@ public class LoginByPhoneFragment extends Fragment
       }
     });
 
-    showSoftInput(etUsername);
-  }
-
-  private void showSoftInput(final EditText editText) {
-    editText.requestFocus();
-    editText.postDelayed(new Runnable() {
-
-      @Override
-      public void run() {
-        InputMethodManager keyboard =
-            (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        keyboard.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-      }
-    }, 350);
+    SoftInputUtils.showSoftInput(getActivity(), etUsername);
   }
 
   @Override
@@ -245,16 +231,10 @@ public class LoginByPhoneFragment extends Fragment
 
     DialogUtil.showProgress(getActivity(), "正在登录", false);
 
-    //退出已经登录的融云账号
-//    new IMPresenter().logout();
-
     UserLoginPresenter.userLogin(getActivity(), userName, password, new UserLoginListener() {
       @Override
       public void loginSuccess(int type, String token, String appId) {
         LogUtils.e("LoginByPhoneFragment", "login success");
-
-        //连接融云服务
-//        new IMPresenter().getToken(getActivity(), null);
 
         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
 
@@ -272,9 +252,8 @@ public class LoginByPhoneFragment extends Fragment
             JSONObject object = new JSONObject(message);
             if (object.has("msg") && !object.isNull("msg")) {
               tvLoginViaPhone.setText(object.get("msg").toString());
-              tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-              tvLoginViaPhone.setTextColor(getResources().getColor(R.color.standard_color_white));
-              tvLoginViaPhone.setClickable(false);
+              tvLoginViaPhone.setEnabled(false);
+              tvLoginViaPhone.setSelected(true);
             }
           } catch (JSONException e) {
             e.printStackTrace();
@@ -283,7 +262,7 @@ public class LoginByPhoneFragment extends Fragment
 
         DialogUtil.dismissProgress();
 
-        showSoftInput(etPassword);
+        SoftInputUtils.showSoftInput(getActivity(), etPassword);
       }
     });
   }
@@ -314,6 +293,6 @@ public class LoginByPhoneFragment extends Fragment
 
   @OnClick(R.id.hideSoftInputView)
   public void onClick() {
-    ((LoginActivity) getActivity()).hideSoftware();
+    SoftInputUtils.hideSoftInput(getActivity());
   }
 }

@@ -13,7 +13,7 @@
       android:background="@drawable/selector_city_btn"
       android:button="@null"
       android:gravity="center"
-      android:textColor="@color/standard_color_h0_dark"
+      android:textColor="@color/selector_city_btn"
       android:textSize="@dimen/word_size_body"/>
 
 </LinearLayout>

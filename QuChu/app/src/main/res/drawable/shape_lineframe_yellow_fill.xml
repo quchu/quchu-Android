@@ -3,9 +3,9 @@
     android:shape="rectangle">
     <stroke
         android:width="1px"
-        android:color="@color/standard_color_yellow" />
+        android:color="@color/colorPrimary" />
     <!-- 圆角 -->
     <corners android:radius="4dp" />
-    <solid android:color="@color/standard_color_yellow"/>
+    <solid android:color="@color/colorPrimary"/>
 
 </shape>

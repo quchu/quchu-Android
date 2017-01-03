@@ -8,11 +8,9 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -22,7 +20,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
@@ -32,8 +29,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.view.adapter.FeedbackDetailAdapter;
-
-import static co.quchu.quchu.R.id.inputEditText;
+import co.quchu.quchu.widget.InputView;
 
 /**
  * 用户反馈详情
@@ -41,12 +37,11 @@ import static co.quchu.quchu.R.id.inputEditText;
  * Created by mwb on 16/8/29.
  */
 public class FeedbackDetailActivity extends BaseBehaviorActivity
-    implements SwipeRefreshLayout.OnRefreshListener {
+    implements SwipeRefreshLayout.OnRefreshListener, View.OnTouchListener {
 
   @Bind(R.id.feedback_swipeRefreshLayout) SwipeRefreshLayout refreshLayout;
   @Bind(R.id.feedback_recycler_view) RecyclerView recyclerView;
-  @Bind(inputEditText) EditText mInputEditText;
-  @Bind(R.id.submitBtn) TextView mSubmitBtn;
+  @Bind(R.id.input_view) InputView mInputView;
 
   private static String INTENT_KEY_FEEDBACK_MODEL = "intent_key_feedback_model";
   private FeedbackDetailAdapter mAdapter;
@@ -87,8 +82,14 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     mAdapter = new FeedbackDetailAdapter(this);
     recyclerView.setAdapter(mAdapter);
+    recyclerView.setOnTouchListener(this);
 
-    mInputEditText.addTextChangedListener(textChangedListener);
+    mInputView.setOnInputViewClickListener(new InputView.OnInputViewClickListener() {
+      @Override
+      public void onClick(String inputStr) {
+        submitFeedbackClick(inputStr);
+      }
+    });
   }
 
   @Override
@@ -96,27 +97,6 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     SoftInputUtils.hideSoftInput(this);
     super.onBackPressed();
   }
-
-  private TextWatcher textChangedListener = new TextWatcher() {
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-      if (s.toString().trim().length() > 0) {
-        mSubmitBtn.setEnabled(true);
-      } else {
-        mSubmitBtn.setEnabled(false);
-      }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
-  };
 
   /**
    * 获取反馈详情
@@ -197,9 +177,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     getFeedbackDetail(mFeedbackId);
   }
 
-  @OnClick(R.id.submitBtn)
-  public void onClick() {
-    String inputStr = mInputEditText.getText().toString().trim();
+  private void submitFeedbackClick(String inputStr) {
     if (TextUtils.isEmpty(inputStr)) {
       makeToast("请输入您的宝贵意见");
       return;
@@ -215,17 +193,14 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     }
     mIsSubmitting = true;
 
-    inputStr = mInputEditText.getText().toString();
-
     //提交反馈消息
     FeedbackPresenter
         .sendFeedMsg(this, String.valueOf(mFeedbackId), inputStr, new CommonListener() {
           @Override
           public void successListener(Object response) {
+            mInputView.init();
             mIsSubmitting = false;
             makeToast("感谢您对我们的支持");
-            mInputEditText.setText("");
-            SoftInputUtils.hideSoftInput(FeedbackDetailActivity.this);
             getFeedbackDetail(mFeedbackId);
           }
 
@@ -250,5 +225,11 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
   @Override
   protected String getPageNameCN() {
     return null;
+  }
+
+  @Override
+  public boolean onTouch(View v, MotionEvent event) {
+    mInputView.hideSoftInput();
+    return false;
   }
 }

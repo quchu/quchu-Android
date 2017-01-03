@@ -39,7 +39,7 @@
         android:paddingLeft="@dimen/base_margin"
         android:paddingRight="@dimen/base_margin"
         android:text="发送"
-        android:textColor="@color/standard_color_h2_dark"
+        android:textColor="@color/selector_feedback_confirm_btn"
         android:textSize="14sp"/>
 
   </LinearLayout>

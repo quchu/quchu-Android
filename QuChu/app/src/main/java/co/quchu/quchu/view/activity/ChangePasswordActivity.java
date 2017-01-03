@@ -1,6 +1,5 @@
 package co.quchu.quchu.view.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
@@ -8,8 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,6 +24,7 @@ import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.utils.SoftInputUtils;
 
 /**
  * 修改密码
@@ -49,6 +47,9 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
     TextView textView = toolbar.getTitleTv();
     textView.setText("修改密码");
 
+    tvSubmit.setEnabled(false);
+    tvSubmit.setSelected(false);
+
     mEtOldPassword.setOnFocusChangeListener(this);
     mEtNewPassword.setOnFocusChangeListener(this);
     mEtOldPassword.addTextChangedListener(this);
@@ -63,7 +64,7 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
         break;
 
       case R.id.userBackgroundLayout:
-        hideSoftware();
+        SoftInputUtils.hideSoftInput(this);
         break;
     }
   }
@@ -77,29 +78,29 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
 
     if (TextUtils.isEmpty(originPassword)) {
       tvSubmit.setText("请输入当前密码");
-      tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvSubmit.setClickable(false);
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
       return;
     }
 
     if (TextUtils.isEmpty(newPassword)) {
       tvSubmit.setText("请输入新密码");
-      tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvSubmit.setClickable(false);
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
       return;
     }
 
     if (newPassword.length() < 6 || newPassword.length() > 12) {
       tvSubmit.setText("密码为6-12位字母或者数字");
-      tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvSubmit.setClickable(false);
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
       return;
     }
 
     if (originPassword.equals(newPassword)) {
       tvSubmit.setText("新旧密码不能相同");
-      tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvSubmit.setClickable(false);
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
       return;
     }
 
@@ -116,8 +117,8 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
       public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
         if (!result) {
           tvSubmit.setText(msg);
-          tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-          tvSubmit.setClickable(false);
+          tvSubmit.setEnabled(false);
+          tvSubmit.setSelected(true);
         } else {
           makeToast("密码修改成功");
           finish();
@@ -125,20 +126,6 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
       }
     });
     request.start(this);
-  }
-
-  /**
-   * 隐藏键盘
-   */
-  private void hideSoftware() {
-    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-      if (getCurrentFocus() != null)
-        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    //manager
-    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
   }
 
   @Override
@@ -167,14 +154,14 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
 
     if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(originPassword)) {
       tvSubmit.setText("提交");
-      tvSubmit.setBackgroundColor(Color.parseColor("#dbdbdb"));
-      tvSubmit.setClickable(false);
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(false);
       return;
     }
 
     tvSubmit.setText("提交");
-    tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-    tvSubmit.setClickable(true);
+    tvSubmit.setEnabled(true);
+    tvSubmit.setSelected(true);
   }
 
   @Override

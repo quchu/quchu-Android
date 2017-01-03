@@ -17,7 +17,7 @@
       android:id="@+id/feedback_swipeRefreshLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_above="@+id/feedback_input_view"
+      android:layout_above="@+id/input_view"
       android:layout_below="@+id/appbar"
       android:visibility="visible">
 
@@ -29,9 +29,8 @@
 
   </android.support.v4.widget.SwipeRefreshLayout>
 
-  <include
-      android:id="@+id/feedback_input_view"
-      layout="@layout/view_common_input"
+  <co.quchu.quchu.widget.InputView
+      android:id="@+id/input_view"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"/>

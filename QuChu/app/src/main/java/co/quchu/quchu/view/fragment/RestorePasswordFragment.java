@@ -30,8 +30,8 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.social.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.SoftInputUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
@@ -66,6 +66,9 @@ public class RestorePasswordFragment extends Fragment {
       mUserName = getArguments().getString(BUNDLE_KEY_USERNAME);
     }
 
+    tvNext.setEnabled(false);
+    tvNext.setSelected(false);
+
     etPassword.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,15 +83,13 @@ public class RestorePasswordFragment extends Fragment {
         String str = s.toString().trim();
         if (TextUtils.isEmpty(str)) {
           tvNext.setText(R.string.next);
-          tvNext.setBackgroundColor(getResources().getColor(R.color.colorBackground_db));
-          tvNext.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
-          tvNext.setClickable(false);
+          tvNext.setEnabled(false);
+          tvNext.setSelected(false);
           hasPassword = false;
         } else {
           tvNext.setText(R.string.next);
-          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-          tvNext.setTextColor(getResources().getColor(R.color.standard_color_h0_dark));
-          tvNext.setClickable(true);
+          tvNext.setEnabled(true);
+          tvNext.setSelected(true);
           hasPassword = true;
         }
       }
@@ -131,7 +132,7 @@ public class RestorePasswordFragment extends Fragment {
         break;
 
       case R.id.backgroundLayout:
-        ((LoginActivity) getActivity()).hideSoftware();
+        SoftInputUtils.hideSoftInput(getActivity());
         break;
     }
   }
@@ -179,9 +180,8 @@ public class RestorePasswordFragment extends Fragment {
     } else {
       mRequestRunning = false;
       tvNext.setText(R.string.hint_new_password);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-      tvNext.setTextColor(getResources().getColor(R.color.standard_color_white));
-      tvNext.setClickable(false);
+      tvNext.setEnabled(false);
+      tvNext.setSelected(true);
     }
   }
 

@@ -6,13 +6,9 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +20,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
@@ -34,6 +29,7 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
 import co.quchu.quchu.view.adapter.FeedbackAdapter;
+import co.quchu.quchu.widget.InputView;
 
 /**
  * FeedbackActivity
@@ -43,14 +39,12 @@ import co.quchu.quchu.view.adapter.FeedbackAdapter;
  */
 public class FeedbackActivity extends BaseBehaviorActivity {
 
-  private FeedbackAdapter adapter;
-
   @Bind(R.id.feedback_recycler_view) RecyclerView recyclerView;
   @Bind(R.id.feedback_swipeRefreshLayout) SwipeRefreshLayout refreshLayout;
-  @Bind(R.id.inputEditText) EditText mInputEditText;
-  @Bind(R.id.submitBtn) TextView mSubmitBtn;
   @Bind(R.id.background_layout) RelativeLayout mBackgroundLayout;
+  @Bind(R.id.input_view) InputView mInputView;
 
+  private FeedbackAdapter adapter;
   private boolean mIsSubmitting;
 
   @Override
@@ -65,34 +59,19 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     adapter = new FeedbackAdapter(this);
     recyclerView.setAdapter(adapter);
+    recyclerView.setOnTouchListener(onTouchListener);
     adapter.setOnFeedbackItemClickListener(onItemClickListener);
     refreshLayout.setOnRefreshListener(onRefreshListener);
 
-    mInputEditText.addTextChangedListener(textChangedListener);
-
     getFeedbackList();
-  }
 
-  private TextWatcher textChangedListener = new TextWatcher() {
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-      if (s.toString().trim().length() > 0) {
-        mSubmitBtn.setEnabled(true);
-      } else {
-        mSubmitBtn.setEnabled(false);
+    mInputView.setOnInputViewClickListener(new InputView.OnInputViewClickListener() {
+      @Override
+      public void onClick(String inputStr) {
+        submitFeedbackClick(inputStr);
       }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
-  };
+    });
+  }
 
   /**
    * 获取反馈列表
@@ -188,6 +167,14 @@ public class FeedbackActivity extends BaseBehaviorActivity {
         }
       };
 
+  private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+      mInputView.hideSoftInput();
+      return false;
+    }
+  };
+
   /**
    * 下拉刷新
    */
@@ -202,8 +189,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
   /**
    * 提交反馈
    */
-  private void submitFeedbackClick() {
-    String inputStr = mInputEditText.getText().toString().trim();
+  private void submitFeedbackClick(String inputStr) {
     if (TextUtils.isEmpty(inputStr)) {
       makeToast("请输入您的宝贵意见");
       return;
@@ -219,13 +205,10 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     }
     mIsSubmitting = true;
 
-    inputStr = mInputEditText.getText().toString();
-
     FeedbackPresenter.sendFeedback(this, "", inputStr, new CommonListener() {
       @Override
       public void successListener(Object response) {
-        hideSoftware(mInputEditText);
-        mInputEditText.setText("");
+        mInputView.init();
 
         mIsSubmitting = false;
 //        makeToast("感谢您对我们的支持");
@@ -243,20 +226,6 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     });
   }
 
-  /**
-   * 隐藏键盘
-   */
-  private void hideSoftware(EditText editText) {
-    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-      if (getCurrentFocus() != null)
-        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    //manager
-    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-  }
-
   @Override
   public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
@@ -270,10 +239,5 @@ public class FeedbackActivity extends BaseBehaviorActivity {
   @Override
   protected String getPageNameCN() {
     return "意见和帮助";
-  }
-
-  @OnClick(R.id.submitBtn)
-  public void onClick() {
-    submitFeedbackClick();
   }
 }

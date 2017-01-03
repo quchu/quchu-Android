@@ -25,10 +25,9 @@
 
   </android.support.v4.widget.SwipeRefreshLayout>
 
-  <include
-      layout="@layout/view_common_input"
+  <co.quchu.quchu.widget.InputView
+      android:id="@+id/input_view"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"/>
+      android:layout_height="wrap_content"/>
 
 </LinearLayout>
