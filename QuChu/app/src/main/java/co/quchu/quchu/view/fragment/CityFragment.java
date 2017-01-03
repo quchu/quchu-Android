@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
+import co.quchu.quchu.dialog.adapter.CityListAdapter;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -72,7 +72,7 @@ public class CityFragment extends BaseFragment {
         }
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(cityList, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
+        CityListAdapter selectedAdapter = new CityListAdapter(cityList, getActivity(), new CityListAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(String cityName, int cityId) {
 //                if (getActivity() instanceof RecommendActivity)

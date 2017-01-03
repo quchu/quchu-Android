@@ -330,7 +330,7 @@
 
     <!-- 选择城市 -->
     <activity
-        android:name=".view.activity.SelectedCityActivity"
+        android:name=".view.activity.CityListActivity"
         android:screenOrientation="portrait"/>
 
     <!-- 设置 -->

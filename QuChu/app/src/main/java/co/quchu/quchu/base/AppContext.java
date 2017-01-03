@@ -42,6 +42,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 public class AppContext extends MultiDexApplication {
+
   public static Context mContext;
   public static UserInfoModel user;//用户信息
 
@@ -49,20 +50,25 @@ public class AppContext extends MultiDexApplication {
   public static float Width = 0;
   // 屏幕高度
   public static float Height = 0;
+
   public static RecommendModel selectedPlace; //推荐分类 数据源
   public static boolean dCardListNeedUpdate = false;
 
   public static String token = "";
   public static long mLastLocatingTimeStamp = -1;
 
-
   private RefWatcher refWatcher;
   public static PackageInfo packageInfo;
 
-
   private BroadcastReceiver mPowerKeyReceiver = null;
 
-  private void registBroadcastReceiver() {
+  private static LocationClient mLocationClient = null;
+  private static BDLocationListener mLocationListener = new AppLocationListener();
+
+  //声明mLocationOption对象
+  private static LocationClientOption mLocationOption = null;
+
+  private void registerBroadcastReceiver() {
     final IntentFilter theFilter = new IntentFilter();
     theFilter.addAction(Intent.ACTION_SCREEN_ON);
     theFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -105,7 +111,7 @@ public class AppContext extends MultiDexApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    registBroadcastReceiver();
+    registerBroadcastReceiver();
     refWatcher = LeakCanary.install(this);
     mContext = getApplicationContext();
     token = SPUtils.getUserToken(getApplicationContext());
@@ -119,21 +125,21 @@ public class AppContext extends MultiDexApplication {
     PushManager.getInstance().initialize(this.getApplicationContext());
     //}
 
-
     //禁用页面自动统计
     MobclickAgent.openActivityDurationTrack(false);
     ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
         .setBitmapsConfig(Bitmap.Config.RGB_565)
 //                .setWebpSupportEnabled(true)
         .build();
+
     Fresco.initialize(getApplicationContext(), imagePipelineConfig);
+
     if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
       LogUtils.json(SPUtils.getUserInfo(this));
       user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-
     }
-    initWidths();
 
+    getScreenInfo();
 
     if (UserBehaviorPresentor.getDataSize(getApplicationContext()) >= 200) {
       UserBehaviorPresentor.postBehaviors(getApplicationContext(), UserBehaviorPresentor.getBehaviors(getApplicationContext()), new CommonListener() {
@@ -149,8 +155,6 @@ public class AppContext extends MultiDexApplication {
       });
     }
 
-    //融云im
-//        RongIM.init(this);
     //百度SDK
     SDKInitializer.initialize(getApplicationContext());
 
@@ -172,12 +176,11 @@ public class AppContext extends MultiDexApplication {
     UMShareAPI.get(this);
   }
 
-  public void initWidths() {
+  public void getScreenInfo() {
     DisplayMetrics dm = getResources().getDisplayMetrics();
     Width = dm.widthPixels;
     Height = dm.heightPixels;
   }
-
 
   @Override
   public void onTerminate() {
@@ -188,13 +191,6 @@ public class AppContext extends MultiDexApplication {
     }
     //   System.exit(0);
   }
-
-  private static LocationClient mLocationClient = null;
-  private static BDLocationListener mLocationListener = new AppLocationListener();
-
-
-  //声明mLocationOption对象
-  private static LocationClientOption mLocationOption = null;
 
   @Override
   protected void attachBaseContext(Context base) {
@@ -242,7 +238,6 @@ public class AppContext extends MultiDexApplication {
     mLocationClient.start();
   }
 
-
   public static void stopLocation() {
     if (null != mLocationClient) {
       mLocationClient.stop();
@@ -251,5 +246,4 @@ public class AppContext extends MultiDexApplication {
     }
     mLocationListener = null;
   }
-
 }

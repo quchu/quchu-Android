@@ -598,7 +598,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
    */
   private void selectedCity() {
     if (mCityEntity != null) {
-      SelectedCityActivity.launch(this, mCityEntity);
+      CityListActivity.launch(this, mCityEntity);
     }
   }
 

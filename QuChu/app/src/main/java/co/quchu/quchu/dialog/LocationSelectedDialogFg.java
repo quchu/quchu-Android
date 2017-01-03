@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
+import co.quchu.quchu.dialog.adapter.CityListAdapter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.EventFlags;
@@ -97,7 +97,7 @@ public class LocationSelectedDialogFg extends DialogFragment {
         }
     }
 
-    private LocationSelectedAdapter adapter;
+    private CityListAdapter adapter;
 
     @NonNull
     @Override
@@ -119,7 +119,7 @@ public class LocationSelectedDialogFg extends DialogFragment {
         });
 
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new LocationSelectedAdapter(cityList, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
+        adapter = new CityListAdapter(cityList, getActivity(), new CityListAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(String cityName, int CityId) {
                 //保存数据 而后关闭

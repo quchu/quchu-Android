@@ -212,8 +212,8 @@ public class SPUtils {
     return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "1"));
   }
 
-  public static void setCityName(String cityId) {
-    putValueToSPMap(AppContext.mContext, AppKey.CITYNAME, cityId);
+  public static void setCityName(String cityName) {
+    putValueToSPMap(AppContext.mContext, AppKey.CITYNAME, cityName);
   }
 
   public static String getCityName() {

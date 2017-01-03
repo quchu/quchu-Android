@@ -22,7 +22,7 @@ import co.quchu.quchu.utils.SPUtils;
  * User: Chenhs
  * Date: 2015-12-24
  */
-public class LocationSelectedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private int ITEM_TYPE_HEADER = 1;
   private int ITEM_TYPE_NORMAL = 2;
@@ -32,7 +32,7 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<RecyclerView.V
   private int selectedIndex = 0;
   private OnItemSelectedListener mListener;
 
-  public LocationSelectedAdapter(ArrayList<CityModel> cityList, Context mContext, OnItemSelectedListener listener) {
+  public CityListAdapter(ArrayList<CityModel> cityList, Context mContext, OnItemSelectedListener listener) {
     mCityList = cityList;
     this.mContext = mContext;
     this.mListener = listener;

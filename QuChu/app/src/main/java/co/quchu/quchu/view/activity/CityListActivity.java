@@ -26,7 +26,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
+import co.quchu.quchu.dialog.adapter.CityListAdapter;
 import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -38,18 +38,19 @@ import co.quchu.quchu.utils.SPUtils;
  * <p/>
  * Created by mwb on 16/8/19.
  */
-public class SelectedCityActivity extends BaseBehaviorActivity {
+public class CityListActivity extends BaseBehaviorActivity {
 
   private static final String CITY_LIST_MODEL = "city_list_model";
   private ArrayList<CityModel> mCityList = new ArrayList<>();
 
+  @Bind(R.id.location_layout) LinearLayout mLocationLayout;
   @Bind(R.id.location_tv) TextView mLocationTv;
   @Bind(R.id.future_city_tv) TextView mFutureCityTv;
   @Bind(R.id.city_list_bottom_layout) LinearLayout mBottomLayout;
   @Bind(R.id.city_recycler_view) RecyclerView mRecyclerView;
 
   public static void launch(Activity activity, CityEntity cityEntity) {
-    Intent intent = new Intent(activity, SelectedCityActivity.class);
+    Intent intent = new Intent(activity, CityListActivity.class);
     intent.putExtra(CITY_LIST_MODEL, cityEntity);
     activity.startActivity(intent);
   }
@@ -70,7 +71,7 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
     String currentCity = "";
     if (AppLocationListener.currentCity != null) {
       currentCity = AppLocationListener.currentCity;
-      mLocationTv.setVisibility(View.VISIBLE);
+      mLocationLayout.setVisibility(View.VISIBLE);
       mLocationTv.setText("您当前所在的城市: " + currentCity);
     }
 
@@ -96,7 +97,7 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
     });
     mRecyclerView.setLayoutManager(layoutManager);
 //    mRecyclerView.addItemDecoration(new SpacesItemDecoration(32, 3));
-    LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(mCityList, this, new LocationSelectedAdapter.OnItemSelectedListener() {
+    CityListAdapter selectedAdapter = new CityListAdapter(mCityList, this, new CityListAdapter.OnItemSelectedListener() {
       @Override
       public void onSelected(String cityName, int cityId) {
         //保存数据 而后关闭
