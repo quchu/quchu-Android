@@ -1,5 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +22,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.SceneDetailActivity;
 
 import static co.quchu.quchu.R.id.vDivider2;
 
@@ -38,15 +42,25 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
   public static final int ITEM_TYPE_HISTORY = -2;//搜索历史记录
   public static final int ITEM_TYPE_RESULT = -3;//搜索结果
   public static final int ITEM_TYPE_FOOTER = -4;
+  public static final int ITEM_TYPE_TAG = -5;//热门标签
 
   private List<SearchCategoryBean> mCategoryList;
   private List<String> mHistoryList;
   private List<RecommendModel> mResultList;
+  private List<SceneInfoModel> mTags;
 
   private boolean mIsCategory;
   private boolean mIsResult;
+  private boolean mIsTag;
 
   private boolean mHasMoreData;//有更多数据
+  private Context mContext;
+
+  public void setTags(List<SceneInfoModel> tags) {
+    mIsTag = true;
+    mTags = tags;
+    notifyDataSetChanged();
+  }
 
   public void setHasMoreData(boolean hasMoreData) {
     mHasMoreData = hasMoreData;
@@ -78,6 +92,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    mContext = parent.getContext();
     if (viewType == ITEM_TYPE_CATEGORY) {
       return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_category, parent, false));
 
@@ -86,6 +101,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     } else if (viewType == ITEM_TYPE_FOOTER) {
       return new FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_footer, parent, false));
+
+    } else if (viewType == ITEM_TYPE_TAG) {
+      return new TagViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_tag, parent, false));
     }
 
     return new HistoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_history, parent, false));
@@ -245,11 +263,36 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
           }
         }
       });
+
+    } else if (viewHolder instanceof TagViewHolder) {
+      //热门搜索
+      TagViewHolder holder = (TagViewHolder) viewHolder;
+      final SceneInfoModel infoModel = mTags.get(position);
+      holder.mTagCoverImg.setImageURI(Uri.parse(infoModel.getIconUrlSmall()));
+      holder.mTagTitleTv.setText(infoModel.getSceneName());
+      holder.mTagTitleEnTv.setText(infoModel.getEn());
+
+//      if ((position + 1) % 2 == 0) {
+//        holder.mTagDivider.setVisibility(View.GONE);
+//      } else {
+//        holder.mTagDivider.setVisibility(View.VISIBLE);
+//      }
+
+      holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          SceneDetailActivity.enterActivity((Activity) mContext, infoModel.getSceneId(), infoModel.getSceneName(), true);
+        }
+      });
     }
   }
 
   @Override
   public int getItemViewType(int position) {
+    if (mIsTag) {
+      return ITEM_TYPE_TAG;
+    }
+
     if (mIsResult) {
       if (!mHasMoreData && position == getItemCount() - 1) {
         return ITEM_TYPE_FOOTER;
@@ -263,6 +306,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   @Override
   public int getItemCount() {
+    if (mIsTag) {
+      return mTags != null ? mTags.size() >= 6 ? 6 : mTags.size() : 0;
+    }
+
     if (mIsResult) {
       if (!mHasMoreData) {
         return mResultList != null ? mResultList.size() + 1 : 0;
@@ -331,6 +378,19 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Bind(R.id.tvDescribe) TextView mTvDescribe;
 
     public ResultViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+    }
+  }
+
+  public class TagViewHolder extends RecyclerView.ViewHolder {
+
+    @Bind(R.id.tag_cover_img) SimpleDraweeView mTagCoverImg;
+    @Bind(R.id.tag_title_tv) TextView mTagTitleTv;
+    @Bind(R.id.tag_title_en_tv) TextView mTagTitleEnTv;
+    @Bind(R.id.tag_divider) View mTagDivider;
+
+    public TagViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
     }

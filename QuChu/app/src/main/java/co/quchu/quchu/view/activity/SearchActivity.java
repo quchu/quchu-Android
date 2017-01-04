@@ -1,26 +1,18 @@
 package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +31,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.SoftInputUtils;
+import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.widget.SearchView;
 
 /**
@@ -49,17 +42,17 @@ import co.quchu.quchu.widget.SearchView;
 public class SearchActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.search_view) SearchView mSearchView;
-  @Bind(R.id.search_category_grid_view) GridView mCategoryGridView;
+  @Bind(R.id.search_category_grid_view) RecyclerView mCategoryGridView;
   @Bind(R.id.tag_refresh_btn) TextView mTagRefreshBtn;
   @Bind(R.id.tags_recycler_view) RecyclerView mTagRecyclerView;
 
   private static String INTENT_KEY_ALL_SCENE_LIST = "intent_key_all_scene_list";
 
-  private CategoryGridAdapter mCategoryAdapter;
+  private SearchAdapter mCategoryAdapter;
 
   private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
   private List<SceneInfoModel> mAllSceneList;
-  private SearchTagAdapter mTagAdapter;
+  private SearchAdapter mTagAdapter;
 
   public static void launch(Activity activity, List<SceneInfoModel> allSceneList) {
     Intent intent = new Intent(activity, SearchActivity.class);
@@ -131,7 +124,7 @@ public class SearchActivity extends BaseBehaviorActivity {
   private void initTagView() {
     GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
     mTagRecyclerView.setLayoutManager(layoutManager);
-    mTagAdapter = new SearchTagAdapter();
+    mTagAdapter = new SearchAdapter();
     mTagRecyclerView.setAdapter(mTagAdapter);
   }
 
@@ -198,11 +191,12 @@ public class SearchActivity extends BaseBehaviorActivity {
    * 搜索分类
    */
   private void initCategory() {
-    mCategoryAdapter = new CategoryGridAdapter(this);
+    mCategoryAdapter = new SearchAdapter();
     mCategoryGridView.setAdapter(mCategoryAdapter);
-    mCategoryGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    mCategoryGridView.setLayoutManager(new GridLayoutManager(this, 3));
+    mCategoryAdapter.setOnSearchItemClickListener(new SearchAdapter.OnSearchItemClickListener() {
       @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+      public void onClick(int position, Parcelable bean, int itemType) {
         if (mSearchCategoryList == null) {
           return;
         }
@@ -243,6 +237,16 @@ public class SearchActivity extends BaseBehaviorActivity {
         //启动搜索结果界面
         SearchResultActivity.launch(SearchActivity.this, categoryBean, "", position + 1);
       }
+
+      @Override
+      public void onClickHistory(String keyword) {
+
+      }
+
+      @Override
+      public void onDeleteHistory(String keyword) {
+
+      }
     });
 
     mCategoryGridView.setOnTouchListener(new View.OnTouchListener() {
@@ -268,7 +272,7 @@ public class SearchActivity extends BaseBehaviorActivity {
 
         mSearchCategoryList.clear();
         mSearchCategoryList.addAll(response);
-        mCategoryAdapter.notifyDataSetChanged();
+        mCategoryAdapter.setCategoryList(mSearchCategoryList);
       }
 
       @Override
@@ -312,120 +316,5 @@ public class SearchActivity extends BaseBehaviorActivity {
   @Override
   protected String getPageNameCN() {
     return null;
-  }
-
-  /**
-   * 搜索分类适配器
-   */
-  private class CategoryGridAdapter extends BaseAdapter {
-
-    private Context mContext;
-
-    public CategoryGridAdapter(Context context) {
-      mContext = context;
-    }
-
-    @Override
-    public int getCount() {
-      return mSearchCategoryList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-      return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-      return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-      CategoryViewHolder holder;
-      if (convertView == null) {
-        holder = new CategoryViewHolder();
-
-        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_search_category, parent, false);
-        holder.coverImg = (SimpleDraweeView) convertView.findViewById(R.id.simpleDraweeView);
-        holder.nameTv = (TextView) convertView.findViewById(R.id.search_item_categoryName);
-
-        convertView.setTag(holder);
-      } else {
-        holder = (CategoryViewHolder) convertView.getTag();
-      }
-
-      //搜索分类
-      final SearchCategoryBean categoryBean = mSearchCategoryList.get(position);
-      if (!TextUtils.isEmpty(categoryBean.getIconUrl())) {
-        holder.coverImg.setImageURI(Uri.parse(categoryBean.getIconUrl()));
-      } else {
-        holder.coverImg.getHierarchy().setPlaceholderImage(R.drawable.ic_launcher);
-      }
-
-      holder.nameTv.setText(categoryBean.getZh());
-
-      return convertView;
-    }
-
-    private class CategoryViewHolder {
-      SimpleDraweeView coverImg;
-      TextView nameTv;
-    }
-  }
-
-  /**
-   * 标签适配器
-   */
-  public class SearchTagAdapter extends RecyclerView.Adapter<SearchTagAdapter.SearchTagViewHolder> {
-
-    private List<SceneInfoModel> mTags;
-
-    @Override
-    public SearchTagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return new SearchTagViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_tag, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(SearchTagViewHolder holder, int position) {
-      final SceneInfoModel infoModel = mTags.get(position);
-      holder.mTagCoverImg.setImageURI(Uri.parse(infoModel.getIconUrlSmall()));
-      holder.mTagTitleTv.setText(infoModel.getSceneName());
-
-      if ((position + 1) % 2 == 0) {
-        holder.mTagDivider.setVisibility(View.GONE);
-      } else {
-        holder.mTagDivider.setVisibility(View.VISIBLE);
-      }
-
-      holder.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          SceneDetailActivity.enterActivity(SearchActivity.this, infoModel.getSceneId(), infoModel.getSceneName(), true);
-        }
-      });
-    }
-
-    @Override
-    public int getItemCount() {
-      return mTags != null ? mTags.size() >= 8 ? 8 : mTags.size() : 0;
-    }
-
-    public void setTags(List<SceneInfoModel> tags) {
-      mTags = tags;
-      notifyDataSetChanged();
-    }
-
-    public class SearchTagViewHolder extends RecyclerView.ViewHolder {
-
-      @Bind(R.id.tag_cover_img) SimpleDraweeView mTagCoverImg;
-      @Bind(R.id.tag_title_tv) TextView mTagTitleTv;
-      @Bind(R.id.tag_divider) View mTagDivider;
-
-      public SearchTagViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
-      }
-    }
   }
 }

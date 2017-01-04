@@ -5,7 +5,9 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/base_margin"
+              android:paddingTop="@dimen/half_margin">
 
   <com.facebook.drawee.view.SimpleDraweeView
       android:id="@+id/simpleDraweeView"

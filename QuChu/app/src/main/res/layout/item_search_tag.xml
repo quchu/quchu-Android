@@ -5,7 +5,9 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center|center_vertical"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/half_margin"
+              android:paddingTop="@dimen/half_margin">
 
   <LinearLayout
       android:layout_width="0dp"
@@ -14,7 +16,7 @@
       android:gravity="center_vertical"
       android:orientation="horizontal"
       android:paddingBottom="2dp"
-      android:paddingLeft="30dp"
+      android:paddingLeft="@dimen/base_margin"
       android:paddingTop="2dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -24,14 +26,29 @@
         fresco:actualImageScaleType="fitCenter"
         fresco:roundAsCircle="true"/>
 
-    <TextView
-        android:id="@+id/tag_title_tv"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/half_margin"
-        android:textColor="@color/standard_color_h3_dark"
-        android:textSize="13sp"
-        tools:text="寻欢作乐"/>
+        android:orientation="vertical">
+
+      <TextView
+          android:id="@+id/tag_title_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/standard_color_h3_dark"
+          android:textSize="13sp"
+          tools:text="寻欢作乐"/>
+
+      <TextView
+          android:id="@+id/tag_title_en_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/standard_color_h3_dark"
+          android:textSize="13sp"
+          tools:text="寻欢作乐"/>
+
+    </LinearLayout>
 
   </LinearLayout>
 
@@ -41,6 +58,7 @@
       android:layout_height="match_parent"
       android:layout_marginBottom="@dimen/base_margin"
       android:layout_marginTop="@dimen/base_margin"
-      android:background="@color/colorDivider"/>
+      android:background="@color/colorDivider"
+      android:visibility="gone"/>
 
 </LinearLayout>

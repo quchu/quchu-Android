@@ -68,22 +68,19 @@
           android:layout_gravity="center_horizontal"
           android:layout_marginBottom="@dimen/half_margin"
           android:layout_marginTop="@dimen/half_margin"
-          android:text="搜 索 分 类"
+          android:text="所 有 分 类"
           android:textColor="@color/standard_color_h0_dark"
           android:textSize="13sp"/>
 
-      <GridView
+      <android.support.v7.widget.RecyclerView
           android:id="@+id/search_category_grid_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fadingEdge="none"
-          android:listSelector="@color/transparent"
-          android:numColumns="3"
           android:overScrollMode="never"
           android:paddingLeft="@dimen/base_margin"
           android:paddingRight="@dimen/base_margin"
-          android:scrollbars="none"
-          android:verticalSpacing="30dp"/>
+          android:scrollbars="none"/>
 
     </LinearLayout>
 
