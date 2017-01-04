@@ -3,6 +3,7 @@ package co.quchu.quchu.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.EmojiFilter;
 import co.quchu.quchu.utils.SoftInputUtils;
 
 /**
@@ -39,6 +41,7 @@ public class InputView extends LinearLayout {
 
     ButterKnife.bind(this);
 
+    mInputEditText.setFilters(new InputFilter[]{new EmojiFilter(context, 1000)});
     mInputEditText.addTextChangedListener(textChangedListener);
   }
 

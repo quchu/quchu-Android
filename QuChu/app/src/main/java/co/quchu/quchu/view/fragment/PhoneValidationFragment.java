@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
@@ -196,6 +197,8 @@ public class PhoneValidationFragment extends Fragment implements TextWatcher, Vi
       return;
     }
 
+    DialogUtil.showProgress(getActivity(), "正在提交", false);
+
     if (isVerifying) {
       return;
     }
@@ -204,6 +207,7 @@ public class PhoneValidationFragment extends Fragment implements TextWatcher, Vi
     UserLoginPresenter.verifyNext(getActivity(), etUsername.getText().toString(), etValidCode.getText().toString(), new CommonListener() {
       @Override
       public void successListener(Object response) {
+        DialogUtil.dismissProgress();
         Toast.makeText(getActivity(), R.string.promote_verify_pass, Toast.LENGTH_SHORT).show();
         isVerifying = false;
         if (mIsRegistration) {
@@ -245,6 +249,7 @@ public class PhoneValidationFragment extends Fragment implements TextWatcher, Vi
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
+        DialogUtil.dismissProgress();
         Toast.makeText(getActivity(), R.string.promote_verify_fail, Toast.LENGTH_SHORT).show();
         isVerifying = false;
         tvNext.setText("验证码错误");

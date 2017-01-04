@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
@@ -93,6 +94,8 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
       return;
     }
 
+    DialogUtil.showProgress(getActivity(), "正在提交", false);
+
     if (!mEmptyForum && verifyForm()) {
 
       if (mRequestRunning) {
@@ -114,16 +117,19 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
             SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
             getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN, true));
             getActivity().finish();
+            DialogUtil.dismissProgress();
             mRequestRunning = false;
           }
 
           @Override
           public void notUnique(String msg) {
+            DialogUtil.dismissProgress();
             Toast.makeText(getActivity(), R.string.promote_account_create_success_login_manually, Toast.LENGTH_SHORT).show();
             mRequestRunning = false;
           }
         });
       } else {
+        DialogUtil.dismissProgress();
         mRequestRunning = false;
       }
     }
@@ -147,6 +153,8 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
   private boolean verifyForm() {
     String userName = etUsername.getText().toString();
     String userPwd = etPassword.getText().toString();
+
+    DialogUtil.dismissProgress();
 
     if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);

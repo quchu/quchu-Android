@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -73,34 +74,13 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
    * 提交
    */
   private void submitClick() {
+    DialogUtil.showProgress(this, "正在提交", false);
+
     String newPassword = mEtNewPassword.getText().toString().trim();
     String originPassword = mEtOldPassword.getText().toString().trim();
 
-    if (TextUtils.isEmpty(originPassword)) {
-      tvSubmit.setText("请输入当前密码");
-      tvSubmit.setEnabled(false);
-      tvSubmit.setSelected(true);
-      return;
-    }
-
-    if (TextUtils.isEmpty(newPassword)) {
-      tvSubmit.setText("请输入新密码");
-      tvSubmit.setEnabled(false);
-      tvSubmit.setSelected(true);
-      return;
-    }
-
-    if (newPassword.length() < 6 || newPassword.length() > 12) {
-      tvSubmit.setText("密码为6-12位字母或者数字");
-      tvSubmit.setEnabled(false);
-      tvSubmit.setSelected(true);
-      return;
-    }
-
-    if (originPassword.equals(newPassword)) {
-      tvSubmit.setText("新旧密码不能相同");
-      tvSubmit.setEnabled(false);
-      tvSubmit.setSelected(true);
+    if (!isValid(newPassword, originPassword)) {
+      DialogUtil.dismissProgress();
       return;
     }
 
@@ -110,6 +90,7 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
     final GsonRequest<String> request = new GsonRequest<>(NetApi.midiff_password, String.class, params, new ResponseListener<String>() {
       @Override
       public void onErrorResponse(@Nullable VolleyError error) {
+        DialogUtil.dismissProgress();
         makeToast(R.string.network_error);
       }
 
@@ -123,9 +104,41 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
           makeToast("密码修改成功");
           finish();
         }
+        DialogUtil.dismissProgress();
       }
     });
     request.start(this);
+  }
+
+  private boolean isValid(String newPassword, String originPassword) {
+    if (TextUtils.isEmpty(originPassword)) {
+      tvSubmit.setText("请输入当前密码");
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
+      return false;
+    }
+
+    if (TextUtils.isEmpty(newPassword)) {
+      tvSubmit.setText("请输入新密码");
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
+      return false;
+    }
+
+    if (newPassword.length() < 6 || newPassword.length() > 12) {
+      tvSubmit.setText("密码为6-12位字母或者数字");
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
+      return false;
+    }
+
+    if (originPassword.equals(newPassword)) {
+      tvSubmit.setText("新旧密码不能相同");
+      tvSubmit.setEnabled(false);
+      tvSubmit.setSelected(true);
+      return false;
+    }
+    return true;
   }
 
   @Override

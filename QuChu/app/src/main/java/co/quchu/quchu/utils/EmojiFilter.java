@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.InputFilter;
 import android.text.Spanned;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -31,17 +30,17 @@ public class EmojiFilter implements InputFilter {
   public CharSequence filter(CharSequence source, int start, int end,
                              Spanned dest, int dstart, int dend) {
 
-    Matcher emojiMatcher = emoji.matcher(source);
-    if (emojiMatcher.find()) {
-      ToastManager.getInstance(mContext).show("不能输入表情");
-      return "";
-    }
+//    Matcher emojiMatcher = emoji.matcher(source);
+//    if (emojiMatcher.find()) {
+//      ToastManager.getInstance(mContext).show("不能输入表情");
+//      return "";
+//    }
 
     //--------------以下限制EditText字符数--------------
     int keep = maxLength - (dest.length() - (dend - dstart));
 
     if (keep <= 0) {
-      ToastManager.getInstance(mContext).show("字数过长");
+      ToastManager.getInstance(mContext).show(String.format("最多输入%d字", maxLength));
       return "";
     } else if (keep >= end - start) {
       return null;

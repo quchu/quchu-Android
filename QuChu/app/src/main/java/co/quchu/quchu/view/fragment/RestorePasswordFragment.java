@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.social.UserLoginListener;
@@ -143,6 +144,8 @@ public class RestorePasswordFragment extends Fragment {
       return;
     }
 
+    DialogUtil.showProgress(getActivity(), "正在提交", false);
+
     if (mRequestRunning) {
       return;
     }
@@ -160,11 +163,13 @@ public class RestorePasswordFragment extends Fragment {
               SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
               getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN, true));
               getActivity().finish();
+              DialogUtil.dismissProgress();
               mRequestRunning = false;
             }
 
             @Override
             public void loginFail(String errorMsg) {
+              DialogUtil.dismissProgress();
               mRequestRunning = false;
               Toast.makeText(getActivity(), R.string.promote_password_update_success_login_manually, Toast.LENGTH_SHORT).show();
             }
@@ -173,11 +178,13 @@ public class RestorePasswordFragment extends Fragment {
 
         @Override
         public void notUnique(String msg) {
+          DialogUtil.dismissProgress();
           mRequestRunning = false;
           Toast.makeText(getActivity(), R.string.promote_password_update_failure, Toast.LENGTH_SHORT).show();
         }
       });
     } else {
+      DialogUtil.dismissProgress();
       mRequestRunning = false;
       tvNext.setText(R.string.hint_new_password);
       tvNext.setEnabled(false);
